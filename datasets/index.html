@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Practice sets · Excel and Power BI</title>
+<style>
+  :root{--ink:#1f2430;--muted:#5b6472;--line:#e3e7ee;--bg:#f6f8fb;--green:#1d6f42;}
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.55;}
+  header{background:linear-gradient(120deg,#1d6f42,#0b3d63 70%);color:#fff;padding:32px 26px;}
+  header h1{margin:0 0 6px;font-size:26px;}
+  header p{margin:0;max-width:860px;font-size:14.5px;}
+  header a{color:#fff;}
+  .wrap{max-width:1100px;margin:22px auto 60px;padding:0 22px;}
+  .intro{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin-bottom:18px;font-size:14px;}
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .card{background:#fff;border:1px solid var(--line);border-top:6px solid var(--green);border-radius:14px;padding:16px 18px;text-decoration:none;color:inherit;display:flex;flex-direction:column;}
+  .card h2{margin:0 0 4px;font-size:18px;}
+  .who{font-size:13px;color:var(--muted);margin-bottom:10px;}
+  .mini{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
+  .mini div{background:#f3f6fa;border-radius:8px;padding:8px 10px;font-size:12px;color:var(--muted);}
+  .mini b{display:block;font-size:15px;color:var(--ink);}
+  .btn{margin-top:auto;background:var(--ink);color:#fff;text-align:center;padding:10px 12px;border-radius:8px;font-weight:700;font-size:14px;}
+  footer{text-align:center;color:var(--muted);font-size:12px;padding:10px 16px 28px;}
+  @media(max-width:800px){.cards{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<header>
+  <h1>Practice sets · Excel then Power BI</h1>
+  <p>Every practice file is in this folder. Each numbered folder is one dataset and one guide. The totals in the guide were computed from that folder's file. Start at 01 (a few hundred rows). 19 and 20 are the long case studies, about 220,000 rows each.</p>
+</header>
+<div class="wrap">
+  <div class="intro"><b>How to use a set:</b> open <code>guide.html</code> → Phase A in Excel → Phase B in Power BI → tick the sign-off only when your total matches the guide. Sets 01–18 are public tables you can open directly. Sets 19 and 20 are the long generated case studies (about 220,000 rows each).</div>
+  <div class="cards">
+        <a class="card" href="01-financial-sample/guide.html">
+          <h2>01 · Financial sample</h2>
+          <div class="who">A small Microsoft finance workbook: country, segment, product, sales, and profit.</div>
+          <div class="mini">
+            <div><b>$16.89M</b>total Profit</div>
+            <div><b>France</b>leading group</div>
+            <div><b>700</b>rows in the check total</div>
+            <div><b>1</b>table</div>
+          </div>
+          <span class="btn">Open practice guide →</span>
+        </a>
+        <a class="card" href="02-college-majors/guide.html">
+          <h2>02 · College majors and pay</h2>
+          <div class="who">Recent US college graduates by major: employment, earnings, and the share of women.</div>
+          <div class="mini">
+            <div><b>$40,151</b>average Median</div>
+            <div><b>Engineering</b>leading group</div>
+            <div><b>173</b>rows in the check total</div>
+            <div><b>1</b>table</div>
+          </div>
+          <span class="btn">Open practice guide →</span>
+        </a>
+        <a class="card" href="03-gapminder/guide.html">
+          <h2>03 · Gapminder: life expectancy and income</h2>
+          <div class="who">Country-year rows for population, life expectancy, and GDP per person.</div>
+          <div class="mini">
+            <div><b>67</b>average lifeExp</div>
+            <div><b>Oceania</b>leading group</div>
+            <div><b>142</b>rows in the check total</div>
+            <div><b>1</b>table</div>
+          </div>
+          <span class="btn">Open practice guide →</span>
+        </a>
+        <a class="card" href="04-walmart-openings/guide.html">
+          <h2>04 · Walmart store openings</h2>
+          <div class="who">Where and when Walmart stores opened, including supercenter conversions.</div>
+          <div class="mini">
+            <div><b>1,557</b>total conversion</div>
+            <div><b>TX</b>leading group</div>
+            <div><b>2,992</b>rows in the check total</div>
+            <div><b>1</b>table</div>
+          </div>
+          <span class="btn">Open practice guide →</span>
+        </a>
+        <a class="card" href="05-bike-sharing/guide.html">
+          <h2>05 · Bike sharing</h2>
+          <div class="who">Daily and hourly rentals, with weather. Use the daily file in Excel and the hourly file in Power BI.</div>
+          <div class="mini">
+            <div><b>3,292,679</b>total cnt</div>
+            <div><b>3</b>leading group</div>
+            <div><b>731</b>rows in the check total</div>
+            <div><b>1</b>table</div>
+          </div>
+          <span class="btn">Open practice guide →</span>
+        </a>
+        <a class="card" href="06-bank-marketing/guide.html">
+          <h2>06 · Bank marketing</h2>
+          <div class="who">Phone-campaign contacts. The outcome column y is whether the client subscribed.</div>
+          <div class="mini">
+            <div><b>11.7%</b>average Subscribed</div>
+            <div><b>student</b>leading group</div>
+            <div><b>45,211</b>rows in the check total</div>
+            <div><b>1</b>table</div>
+          </div>
+          <span class="btn">Open practice guide →</span>
+        </a>
+        <a class="card" href="07-credit-clients/guide.html">
+          <h2>07 · Credit-card clients</h2>
+          <div class="who">30,000 card clients and whether they defaulted next month.</div>
+          <div class="mini">
+            <div><b>22.1%</b>average default payment next month</div>
+            <div><b>3</b>leading group</div>
+            <div><b>30,000</b>rows in the check total</div>
+            <div><b>1</b>table</div>
+          </div>
+          <span class="btn">Open practice guide →</span>
+        </a>
+        <a class="card" href="08-chicago-payroll/guide.html">
+          <h2>08 · Chicago payroll</h2>
+          <div class="who">City of Chicago employee payroll: department, job, annual salary, and hourly rate.</div>
+          <div class="mini">
+            <div><b>$2.88B</b>total Annual Salary</div>
+            <div><b>CHICAGO POLICE DEPARTM</b>leading group</div>
+            <div><b>32,226</b>rows in the check total</div>
+            <div><b>1</b>table</div>
+          </div>
+          <span class="btn">Open practice guide →</span>
+        </a>
+        <a class="card" href="09-world-population/guide.html">
+          <h2>09 · World population</h2>
+          <div class="who">Population by country and year from the World Bank open data.</div>
+          <div class="mini">
+            <div><b>8,117,484,624</b>total Population</div>
+            <div><b>India</b>leading group</div>
+            <div><b>217</b>rows in the check total</div>
+            <div><b>1</b>table</div>
+          </div>
+          <span class="btn">Open practice guide →</span>
+        </a>
+        <a class="card" href="10-air-quality/guide.html">
+          <h2>10 · Air quality sensors</h2>
+          <div class="who">Hourly sensor readings from an Italian city, with a reference analyzer and several metal-oxide sensors.</div>
+          <div class="mini">
+            <div><b>2.15</b>average CO(GT)</div>
+            <div><b>19:00:00</b>leading group</div>
+            <div><b>9,357</b>rows in the check total</div>
+            <div><b>1</b>table</div>
+          </div>
+          <span class="btn">Open practice guide →</span>
+        </a>
+        <a class="card" href="11-netflix-titles/guide.html">
+          <h2>11 · Netflix catalog</h2>
+          <div class="who">Movies and TV shows in a Netflix catalog snapshot: type, country, year, and rating.</div>
+          <div class="mini">
+            <div><b>—</b>row count</div>
+            <div><b>TV-MA</b>leading group</div>
+            <div><b>7,787</b>rows in the check total</div>
+            <div><b>1</b>table</div>
+          </div>
+          <span class="btn">Open practice guide →</span>
+        </a>
+        <a class="card" href="12-openflights/guide.html">
+          <h2>12 · OpenFlights routes</h2>
+          <div class="who">World airline routes plus an airport lookup. Two files, one relationship.</div>
+          <div class="mini">
+            <div><b>—</b>row count</div>
+            <div><b>United States</b>leading group</div>
+            <div><b>67,663</b>rows in the check total</div>
+            <div><b>2</b>tables</div>
+          </div>
+          <span class="btn">Open practice guide →</span>
+        </a>
+        <a class="card" href="13-monthly-sales/guide.html">
+          <h2>13 · Twelve months of product sales</h2>
+          <div class="who">One CSV per month for 2019. The Excel practice is a single month. The Power BI practice is the folder.</div>
+          <div class="mini">
+            <div><b>$34.49M</b>total LineSales</div>
+            <div><b>Macbook Pro Laptop</b>leading group</div>
+            <div><b>185,950</b>rows in the check total</div>
+            <div><b>1</b>table</div>
+          </div>
+          <span class="btn">Open practice guide →</span>
+        </a>
+        <a class="card" href="14-online-retail/guide.html">
+          <h2>14 · Online retail invoices</h2>
+          <div class="who">UK online gift wholesaler. One row is one invoice line. About 540,000 lines — Excel will feel slow; that is part of the lesson.</div>
+          <div class="mini">
+            <div><b>$9.75M</b>total LineSales</div>
+            <div><b>United Kingdom</b>leading group</div>
+            <div><b>541,909</b>rows in the check total</div>
+            <div><b>1</b>table</div>
+          </div>
+          <span class="btn">Open practice guide →</span>
+        </a>
+        <a class="card" href="15-hotel-bookings/guide.html">
+          <h2>15 · Hotel bookings</h2>
+          <div class="who">City and resort hotel reservations, including cancellations, lead time, and daily rate.</div>
+          <div class="mini">
+            <div><b>$26.00M</b>total Revenue</div>
+            <div><b>City Hotel</b>leading group</div>
+            <div><b>119,390</b>rows in the check total</div>
+            <div><b>1</b>table</div>
+          </div>
+          <span class="btn">Open practice guide →</span>
+        </a>
+        <a class="card" href="16-co2-emissions/guide.html">
+          <h2>16 · CO₂ emissions</h2>
+          <div class="who">Our World in Data country-year CO₂ series. The file also contains regional totals. Those must be filtered out or every chart double-counts.</div>
+          <div class="mini">
+            <div><b>37,748</b>total co2</div>
+            <div><b>China</b>leading group</div>
+            <div><b>223</b>rows in the check total</div>
+            <div><b>1</b>table</div>
+          </div>
+          <span class="btn">Open practice guide →</span>
+        </a>
+        <a class="card" href="17-customer-feedback/guide.html">
+          <h2>17 · Support tickets and customers</h2>
+          <div class="who">A multi-table Microsoft sample: customers, tickets, devices, and small lookup tables.</div>
+          <div class="mini">
+            <div><b>3.67</b>average Duration</div>
+            <div><b>1</b>leading group</div>
+            <div><b>126,644</b>rows in the check total</div>
+            <div><b>7</b>tables</div>
+          </div>
+          <span class="btn">Open practice guide →</span>
+        </a>
+        <a class="card" href="18-adventureworks-sales/guide.html">
+          <h2>18 · AdventureWorks sales</h2>
+          <div class="who">The full AdventureWorks sales model: fact sales plus product, customer, reseller, territory, and date.</div>
+          <div class="mini">
+            <div><b>$109.81M</b>total Sales Amount</div>
+            <div><b>—</b>leading group</div>
+            <div><b>121,253</b>rows in the check total</div>
+            <div><b>7</b>tables</div>
+          </div>
+          <span class="btn">Open practice guide →</span>
+        </a>
+        <a class="card" href="19-northwind-retail/guide.html">
+          <h2>19 · Northwind retail</h2>
+          <div class="who">Long retail case study: 220,000 order lines, 2021–2024. Sales, profit, discount, and time.</div>
+          <div class="mini">
+            <div><b>$704.3M</b>total sales</div>
+            <div><b>$18.7M</b>total profit</div>
+            <div><b>220,000</b>order lines</div>
+            <div><b>1</b>table</div>
+          </div>
+          <span class="btn">Open practice guide →</span>
+        </a>
+        <a class="card" href="20-talentfirst-hr/guide.html">
+          <h2>20 · TalentFirst HR</h2>
+          <div class="who">Long workforce case study: 220,000 employees. Attrition, salary, and overtime risk.</div>
+          <div class="mini">
+            <div><b>21.1%</b>attrition rate</div>
+            <div><b>$104K</b>average salary</div>
+            <div><b>220,000</b>employees</div>
+            <div><b>1</b>table</div>
+          </div>
+          <span class="btn">Open practice guide →</span>
+        </a></div>
+</div>
+<footer>Practice files stay in this folder. Open any guide offline.</footer>
+</body>
+</html>

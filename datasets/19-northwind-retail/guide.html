@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Practice Guide 1 · Northwind Retail Group — Retail Sales (Analysis-Based)</title>
+<style>
+  :root{
+    --calc:#1d6f42; --calc-soft:#e7f3ec;
+    --pbi:#caa400; --pbi-soft:#fff8e0;
+    --ink:#1f2430; --muted:#5b6472; --line:#e3e7ee; --bg:#f6f8fb; --accent:#0b3d63;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink);background:var(--bg);line-height:1.6;}
+  header{background:linear-gradient(120deg,#1d6f42,#0b3d63);color:#fff;padding:30px 26px;}
+  header h1{margin:0 0 6px;font-size:24px;}
+  header p{margin:0;opacity:.92;max-width:820px;font-size:14.5px;}
+  .wrap{max-width:1080px;margin:22px auto 70px;padding:0 22px;}
+  .facts{background:#fff;border:1px solid var(--line);border-left:5px solid var(--calc);
+    border-radius:12px;padding:16px 20px;margin-bottom:22px;}
+  .facts h2{margin:0 0 10px;font-size:16px;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;}
+  .stat{background:var(--calc-soft);border-radius:9px;padding:10px 12px;}
+  .stat b{display:block;font-size:18px;color:var(--calc);}
+  .stat span{font-size:12px;color:var(--muted);}
+  .neg{background:#fdeaea;border-color:#f3b5b5;} .neg b{color:#c0392b;}
+  section{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 24px;margin-bottom:20px;}
+  h2.t{font-size:20px;margin:0 0 12px;border-bottom:2px solid var(--calc);padding-bottom:6px;}
+  h3{font-size:16px;margin:18px 0 8px;color:var(--accent);}
+  code{background:#eef2f7;padding:1px 6px;border-radius:5px;font-size:13px;font-family:"SF Mono",Consolas,monospace;}
+  pre{background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:10px;overflow:auto;font-size:13px;
+    font-family:"SF Mono",Consolas,monospace;line-height:1.5;}
+  table{border-collapse:collapse;width:100%;margin:10px 0;font-size:13.5px;}
+  th,td{border:1px solid var(--line);padding:7px 10px;text-align:left;}
+  th{background:#f1f5f9;}
+  .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;color:#fff;}
+  .g{background:#27ae60;} .y{background:#e0a800;} .r{background:#c0392b;}
+  .req{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px dashed var(--line);}
+  .req:last-child{border-bottom:none;}
+  .step{background:var(--calc-soft);border-radius:8px;padding:12px 14px;margin:10px 0;}
+  .step b{color:var(--calc);}
+  .pbi-box{background:var(--pbi-soft);border-radius:8px;padding:12px 14px;margin:10px 0;}
+  .pbi-box b{color:var(--pbi);}
+  .note{background:#fffaf0;border-left:4px solid #e0a800;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
+  .chk{font-size:14px;} .chk li{margin:4px 0;}
+  .toc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:20px;font-size:14px;}
+  .toc a{color:var(--accent);text-decoration:none;} .toc a:hover{text-decoration:underline;}
+  footer{text-align:center;color:var(--muted);font-size:12px;padding:20px;}
+  @media(max-width:640px){.wrap{padding:0 12px;}}
+</style>
+</head>
+<body>
+<header>
+  <h1>📗 Practice Guide 1 — Northwind Retail Group</h1>
+  <p>Retail Sales Dashboard · <b>Analysis-based &amp; verified</b> against the actual 220,000-row dataset.
+  Every figure below was computed from <code>data/retail_sales_2021_2024.csv</code>. Beginner → Advanced. Train offline. <a href="../index.html" style="color:#fff">All practice sets</a></p>
+</header>
+
+<div class="wrap">
+
+  <div class="toc">
+    <b>Jump to:</b>
+    <a href="#profile">1. Verified Data Profile</a> ·
+    <a href="#brief">2. Client Brief</a> ·
+    <a href="#req">3. Requirements</a> ·
+    <a href="#calc">4. Phase A — Microsoft Excel</a> ·
+    <a href="#pbi">5. Phase B — Power BI</a> ·
+    <a href="#sign">6. Sign-off</a> ·
+    <a href="#stretch">7. Stretch</a> ·
+    <a href="#mist">8. Mistakes</a>
+  </div>
+
+  <!-- 1. PROFILE -->
+  <section id="profile">
+    <h2 class="t">1. Verified Data Profile (computed from the file)</h2>
+    <div class="facts">
+      <div class="grid">
+        <div class="stat"><b>220,000</b><span>order lines</span></div>
+        <div class="stat"><b>2021-01-01 → 2024-12-31</b><span>order date range (4 yrs)</span></div>
+        <div class="stat"><b>$704,313,163</b><span>total sales</span></div>
+        <div class="stat"><b>$18,710,044</b><span>total profit (2.7% margin)</span></div>
+        <div class="stat neg"><b>43.4%</b><span>lines with NEGATIVE profit</span></div>
+        <div class="stat neg"><b>−$40,937,877</b><span>total $ lost on those lines</span></div>
+      </div>
+    </div>
+
+    <h3>By Category (the real story)</h3>
+    <table>
+      <tr><th>Category</th><th>Rows</th><th>Total Sales</th><th>Total Profit</th><th>Loss-making lines</th></tr>
+      <tr><td>Technology</td><td>73,498</td><td>$414,653,249</td><td style="color:#1d6f42"><b>+$31,703,328</b></td><td>22,689</td></tr>
+      <tr><td>Office Supplies</td><td>73,465</td><td>$38,911,740</td><td style="color:#1d6f42"><b>+$266,035</b></td><td>31,418</td></tr>
+      <tr><td>Furniture</td><td>73,037</td><td>$250,748,174</td><td style="color:#c0392b"><b>−$13,259,319</b></td><td>41,454</td></tr>
+    </table>
+    <div class="note">🔎 <b>Trainer insight:</b> The client "made money" overall only because <b>Technology</b> carries the business.
+    <b>Furniture is a $13.3M hole</b>, and nearly half of all order lines lose money. Your dashboard must expose this.</div>
+
+    <h3>Discount vs Average Profit per Line (proves the client's fear)</h3>
+    <table>
+      <tr><th>Discount</th><th>0%</th><th>10%</th><th>20%</th><th>30%</th><th>40%</th><th>50%</th><th>60%</th><th>70%</th><th>80%</th></tr>
+      <tr><td>Avg profit / line</td><td>$668.6</td><td>$461.8</td><td>$259.8</td><td>$64.4</td>
+          <td style="color:#c0392b">−$126.1</td><td style="color:#c0392b">−$310.8</td>
+          <td style="color:#c0392b">−$491.0</td><td style="color:#c0392b">−$672.1</td><td style="color:#c0392b">−$817.0</td></tr>
+    </table>
+    <div class="note">Above 30% discount, the <b>average line loses money</b>. At 80% discount the average line loses <b>$817</b>.
+    This is the single most important chart for the client.</div>
+
+    <h3>Worst Sub-Categories (where the losses live)</h3>
+    <table>
+      <tr><th>Sub-Category</th><th>Furnishings</th><th>Chairs</th><th>Tables</th><th>Bookcases</th></tr>
+      <tr><td>Total Profit</td><td style="color:#c0392b">−$3,469,842</td><td style="color:#c0392b">−$3,318,356</td>
+          <td style="color:#c0392b">−$3,278,177</td><td style="color:#c0392b">−$3,192,944</td></tr>
+    </table>
+    <p style="font-size:13px;color:var(--muted)">Best performers are all Technology: Phones +$6.41M, Accessories +$6.38M, Computers +$6.38M, Copiers +$6.33M, Printers +$6.19M.</p>
+
+    <h3>Regions &amp; Years (for slicers / trend)</h3>
+    <table>
+      <tr><th>Region</th><th>West</th><th>South</th><th>East</th><th>Central</th><th>APAC</th><th>EMEA</th></tr>
+      <tr><td>Total Profit</td><td>$3.21M</td><td>$3.34M</td><td>$3.17M</td><td>$3.11M</td><td>$2.81M</td><td>$3.08M</td></tr>
+    </table>
+    <p style="font-size:13px;color:var(--muted)">Yearly profit is flat (~$4.6–4.8M/yr) — there is <b>no real growth</b>, another point the client will want to see.</p>
+  </section>
+
+  <!-- 2. BRIEF -->
+  <section id="brief">
+    <h2 class="t">2. The Client Brief (real-style)</h2>
+    <p><b>Who:</b> Northwind Retail Group — multi-region retailer (Technology, Furniture, Office Supplies).</p>
+    <p><b>The ask:</b> <i>"We sold $704M over four years but I'm not convinced we actually profited. Discounts feel
+    out of control and our furniture line looks weak. I want ONE screen where I — and my regional managers — can
+    see how we're doing, slice it by region, category and segment, and find where we're bleeding money. And I need
+    to compare this year vs last year."</i></p>
+    <p>You receive <code>retail_sales_2021_2024.csv</code> (220,000 lines). Translate the vague ask into the
+    requirements in §3.</p>
+  </section>
+
+  <!-- 3. REQUIREMENTS -->
+  <section id="req">
+    <h2 class="t">3. Client Requirements (with difficulty)</h2>
+    <div class="req"><span class="tag g">Beginner</span><div><b>KPI strip</b> — Total Sales, Total Profit, Order Count, Avg Discount.</div></div>
+    <div class="req"><span class="tag g">Beginner</span><div><b>Sales by Region</b> — bar + a map (Country) for geography.</div></div>
+    <div class="req"><span class="tag g">Beginner</span><div><b>Monthly Sales Trend</b> — line chart 2021–2024.</div></div>
+    <div class="req"><span class="tag y">Inter.</span><div><b>Profit by Category &amp; Sub-Category</b> — tree-map; flag negatives in red.</div></div>
+    <div class="req"><span class="tag y">Inter.</span><div><b>Discount vs Profit</b> — scatter proving discounts destroy margin (see §1 table).</div></div>
+    <div class="req"><span class="tag y">Inter.</span><div><b>Top 10 Products by Profit</b> with a dynamic Top-N slicer.</div></div>
+    <div class="req"><span class="tag r">Advan.</span><div><b>Profit Margin %</b> and <b>Sales Year-over-Year %</b>.</div></div>
+    <div class="req"><span class="tag r">Advan.</span><div><b>Running Total of Sales</b> (cumulative curve).</div></div>
+    <div class="req"><span class="tag r">Advan.</span><div><b>What-if:</b> "Impact if we cap discounts at X%" (slider).</div></div>
+    <div class="req"><span class="tag r">Advan.</span><div><b>Slicers:</b> Year, Region, Category, Customer Segment — cross-filter everything.</div></div>
+  </section>
+
+  <!-- 4. CALC -->
+  <section id="calc">
+    <h2 class="t">4. Phase A — Organize &amp; Clean in Microsoft Excel</h2>
+    <p>Goal: understand + tidy the data, add helper columns, validate with a Pivot, then hand a clean <code>.xlsx</code> to Power BI.</p>
+
+    <h3>Step 1 — Open correctly</h3>
+    <div class="step">
+      <b>Open the file:</b> <code>data/retail_sales_2021_2024.csv</code>, in the folder next to this guide (Excel auto-splits columns by comma).
+      For full control of types use <b>Data ▸ Get Data ▸ From Text/CSV</b> → choose the file → set Delimiter = Comma → <b>Load</b>.<br>
+      <b>Set formats:</b> select <code>OrderDate, ShipDate</code> → <b>Home ▸ Number ▸ Date</b>;
+      <code>Sales, Profit, Discount</code> → <b>Number</b> with 2 decimals; everything else stays Text.
+      Then <b>View ▸ Freeze Panes ▸ Freeze Top Row</b>.
+    </div>
+
+    <h3>Step 2 — Inspect for dirt (trainer habit)</h3>
+    <div class="step">
+      The file is clean, but on a real client file do: <b>Data ▸ Filter</b> → check Discount &gt; 0.8, Profit blank,
+      or future OrderDate. Use <b>Data ▸ Remove Duplicates</b> on <code>OrderID</code>.
+    </div>
+
+    <h3>Step 3 — Add helper columns (columns T–Y, after Profit in S)</h3>
+    <div class="step">
+      <b>T Year</b> &nbsp; <code>=YEAR(B2)</code><br>
+      <b>U MonthNum</b> &nbsp; <code>=MONTH(B2)</code><br>
+      <b>V MonthName</b> &nbsp; <code>=TEXT(B2,"MMM")</code> &nbsp;<i>(Excel uses <code>,</code> as the argument separator, as shown. If your regional setting uses <code>;</code>, swap commas for semicolons.)</i><br>
+      <b>W Quarter</b> &nbsp; <code>="Q"&amp;ROUNDUP(MONTH(B2)/3,1)</code><br>
+      <b>X ProfitMargin</b> &nbsp; <code>=IF(N2=0,0,Q2/N2)</code> → format <b>Percent</b><br>
+      <b>Y LossFlag</b> &nbsp; <code>=IF(Q2&lt;0,"LOSS","OK")</code><br>
+      Fill down (double-click the small square at the cell's bottom-right).
+    </div>
+
+    <h3>Step 4 — Validate with a PivotTable</h3>
+    <div class="step">
+      Select all data → <b>Insert ▸ PivotTable</b>. Rows = <code>Category</code>, Columns = <code>Year</code>,
+      Values = <code>Sum of Profit</code>. Confirm Technology ≈ +$31.7M, Furniture ≈ −$13.3M (matches §1). This is your sanity check.
+    </div>
+
+    <h3>Step 5 — Format &amp; export</h3>
+    <div class="step">
+      Sales/Profit → <code>#,##0.00</code>; Discount/Margin → <code>0.0%</code>.<br>
+      <b>Save As</b> <code>retail_sales_clean.xlsx</code> — keep this as your working copy;
+      Power BI reads the typed Excel file most reliably (better than the raw CSV).
+    </div>
+  </section>
+
+  <!-- 5. POWER BI -->
+  <section id="pbi">
+    <h2 class="t">5. Phase B — Build the Dashboard in Power BI</h2>
+
+    <h3>Step 1 — Get Data</h3>
+    <div class="pbi-box"><b>Get Data ▸ Excel</b> → <code>retail_sales_clean.xlsx</code> → Load. (Or <b>Text/CSV</b> → comma → Transform → Load.)</div>
+
+    <h3>Step 2 — Power Query (trust the types)</h3>
+    <div class="pbi-box">
+      <b>Transform Data</b>: OrderDate/ShipDate = <b>Date</b>; Sales/Profit/Discount = <b>Decimal</b>;
+      Year/MonthNum = <b>Whole Number</b>. If a column is Text, change type and watch <b>Applied Steps</b> (you can undo any).
+      <b>Close &amp; Apply.</b>
+    </div>
+
+    <h3>Step 3 — Data Modeling (the "BI")</h3>
+    <div class="pbi-box">
+      Create a Date table (enables time intelligence):<br>
+      <code>Calendar = CALENDAR(DATE(2021,1,1), DATE(2024,12,31))</code><br>
+      Add <code>Calendar[Year]=YEAR([Date])</code>, <code>Calendar[Month]=FORMAT([Date],"MMM")</code>,
+      <code>Calendar[MonthNo]=MONTH([Date])</code>, <code>Calendar[Quarter]="Q"&amp;ROUNDUP(MONTH([Date])/3,0)</code>.<br>
+      Draw relationship: <code>Calendar[Date] → retail_sales[OrderDate]</code>. Hide the row-level Year/Quarter to avoid confusion.
+    </div>
+
+    <h3>Step 4 — DAX Measures (write as measures, NOT columns)</h3>
+    <pre>Total Sales     = SUM(retail_sales[Sales])
+Total Profit    = SUM(retail_sales[Profit])
+Order Count     = DISTINCTCOUNT(retail_sales[OrderID])
+Avg Discount    = AVERAGE(retail_sales[Discount])
+Profit Margin % = DIVIDE([Total Profit], [Total Sales])   -- ≈ 2.7% overall
+Avg Order Value = DIVIDE([Total Sales], [Order Count])
+
+Sales YoY % =
+VAR PY = CALCULATE([Total Sales], SAMEPERIODLASTYEAR('Calendar'[Date]))
+RETURN DIVIDE([Total Sales] - PY, PY)
+
+Sales Running Total =
+CALCULATE([Total Sales],
+    FILTER(ALL('Calendar'), 'Calendar'[Date] &lt;= MAX('Calendar'[Date])))
+
+Loss Lines = CALCULATE(COUNTROWS(retail_sales), retail_sales[LossFlag]="LOSS")</pre>
+
+    <h3>Step 5 — Visuals (map each to a requirement)</h3>
+    <table>
+      <tr><th>Req</th><th>Visual</th><th>Fields</th></tr>
+      <tr><td>KPIs</td><td>Card ×4</td><td>Total Sales, Total Profit, Order Count, Avg Discount</td></tr>
+      <tr><td>Region</td><td>Bar + Map (Country)</td><td>Axis Region/Country, Value Total Sales</td></tr>
+      <tr><td>Trend</td><td>Line</td><td>Axis Calendar[Date] (month), Value Total Sales</td></tr>
+      <tr><td>Profit</td><td>Tree-map</td><td>Category→SubCategory, Value Total Profit (red = loss)</td></tr>
+      <tr><td>Discount</td><td>Scatter</td><td>X Avg Discount, Y Profit Margin %, detail SubCategory</td></tr>
+      <tr><td>Top 10</td><td>Bar + Top-N filter</td><td>SubCategory by Total Profit, Top 10</td></tr>
+      <tr><td>Margin/YoY</td><td>Card</td><td>Profit Margin %, Sales YoY %</td></tr>
+      <tr><td>Running</td><td>Line</td><td>Sales Running Total by Date</td></tr>
+      <tr><td>Slicers</td><td>Slicer ×4</td><td>Calendar[Year], Region, Category, CustomerSegment</td></tr>
+    </table>
+
+    <h3>Step 6 — What-if &amp; polish (advanced)</h3>
+    <div class="pbi-box">
+      <b>Modeling ▸ New Parameter ▸ Numeric</b> → <code>Discount Cap</code> (0 to 0.8, step 0.05). New measure:<br>
+      <code>Sales at Cap = CALCULATE([Total Sales], retail_sales[Discount] &lt;= [Discount Cap Value])</code><br>
+      Add a card/slicer so the client drags the cap and watches Sales/Profit change. Set a theme, align to a grid, add title + refresh date.
+    </div>
+  </section>
+
+  <!-- 6. SIGN-OFF -->
+  <section id="sign">
+    <h2 class="t">6. Client Sign-off Checklist</h2>
+    <ul class="chk">
+      <li>☐ KPIs show Total Sales <b>$704.3M</b>, Total Profit <b>$18.7M</b>, and Avg Discount.</li>
+      <li>☐ Region bar + Country map present and cross-filter.</li>
+      <li>☐ Monthly trend line covers 2021–2024.</li>
+      <li>☐ Profit tree-map shows <b>Furniture in red (−$13.3M)</b> and Technology positive.</li>
+      <li>☐ Discount→Profit scatter reproduces the §1 table (losses above 30% discount).</li>
+      <li>☐ Profit Margin % (≈2.7%) and Sales YoY % compute correctly.</li>
+      <li>☐ Running total line and Discount-Cap what-if work.</li>
+      <li>☐ Slicers (Year/Region/Category/Segment) filter every visual.</li>
+    </ul>
+  </section>
+
+  <!-- 7. STRETCH -->
+  <section id="stretch">
+    <h2 class="t">7. Stretch (after sign-off)</h2>
+    <ul>
+      <li>Add a <b>"Loss Analysis"</b> page filtered to <code>LossFlag = "LOSS"</code> to rank the worst discounts/categories.</li>
+      <li>Build a <b>matrix</b> Region × Category with Profit Margin % and conditional data bars.</li>
+      <li>Add <b>drill-through</b>: right-click a region → order-level detail page.</li>
+    </ul>
+  </section>
+
+  <!-- 8. MISTAKES -->
+  <section id="mist">
+    <h2 class="t">8. Trainer's Common Mistakes</h2>
+    <ul>
+      <li>Importing CSV with dates as <b>Text</b> → no time intelligence. Fix types in Power Query.</li>
+      <li>Forgetting the Date-table relationship → <code>SAMEPERIODLASTYEAR</code> returns blank.</li>
+      <li>Putting calculations in <b>columns</b> instead of <b>measures</b> → totals break.</li>
+      <li>Averaging a percentage column directly → wrong. Use <code>DIVIDE(SUM(Profit), SUM(Sales))</code>.</li>
+    </ul>
+  </section>
+
+</div>
+<footer>Analysis-verified training guide · built from retail_sales_2021_2024.csv (220,000 rows) · open offline, no internet needed.</footer>
+</body>
+</html>

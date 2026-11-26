@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Learning Index · Microsoft Excel &amp; Power BI</title>
+<style>
+  :root{
+    --calc:#1d6f42;
+    --calc-soft:#e7f3ec;
+    --pbi:#f2c811;
+    --pbi-soft:#fff8e0;
+    --ink:#1f2430;
+    --muted:#5b6472;
+    --line:#e3e7ee;
+    --bg:#f6f8fb;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink);background:var(--bg);line-height:1.55;
+  }
+  header{
+    background:linear-gradient(120deg,#1d6f42 0%,#0f5132 55%,#0b3d63 100%);
+    color:#fff;padding:34px 28px 30px;
+  }
+  header h1{margin:0 0 6px;font-size:26px;letter-spacing:.2px;}
+  header p{margin:0;opacity:.92;max-width:820px;font-size:15px;}
+  header a{color:#fff;}
+  .badge{display:inline-block;margin-top:14px;background:rgba(255,255,255,.16);
+    border:1px solid rgba(255,255,255,.35);padding:5px 12px;border-radius:20px;font-size:12.5px;}
+
+  .toolbar{max-width:1080px;margin:18px auto 0;padding:0 22px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+  .toolbar button, .toolbar input{
+    border:1px solid var(--line);background:#fff;color:var(--ink);
+    padding:8px 14px;border-radius:8px;font-size:13px;
+  }
+  .toolbar button{font-weight:600;cursor:pointer;}
+  .toolbar button:hover{background:#eef2f7;}
+  .toolbar button[aria-pressed="true"]{background:#e7f3ec;border-color:#b7d8c6;}
+  .toolbar input{min-width:200px;}
+  .progress{font-size:13px;color:var(--muted);margin-left:auto;}
+  .how{max-width:1080px;margin:10px auto 0;padding:0 22px;font-size:13px;color:var(--muted);}
+
+  .wrap{max-width:1080px;margin:14px auto 60px;padding:0 22px;display:grid;grid-template-columns:230px 1fr;gap:26px;}
+  nav.toc{position:sticky;top:16px;align-self:start;background:#fff;border:1px solid var(--line);
+    border-radius:12px;padding:14px;font-size:13px;max-height:calc(100vh - 32px);overflow:auto;}
+  nav.toc h3{margin:12px 0 6px;font-size:12px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);}
+  nav.toc h3:first-child{margin-top:2px;}
+  nav.toc a{display:block;color:var(--ink);text-decoration:none;padding:4px 8px;border-radius:6px;}
+  nav.toc a:hover{background:#eef2f7;}
+  nav.toc .c a:hover{color:var(--calc);}
+  nav.toc .p a:hover{color:#9a7b00;}
+
+  main{display:flex;flex-direction:column;gap:22px;}
+  .card{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 1px 2px rgba(20,30,50,.04);}
+  .card > .head{padding:16px 20px;display:flex;align-items:center;gap:12px;cursor:pointer;user-select:none;}
+  .card.calc .head{background:var(--calc-soft);}
+  .card.pbi  .head{background:var(--pbi-soft);}
+  .dot{width:12px;height:12px;border-radius:50%;flex:none;}
+  .calc .dot{background:var(--calc);}
+  .pbi  .dot{background:var(--pbi);}
+  .head h2{margin:0;font-size:18px;}
+  .head .sub{margin-left:auto;font-size:12.5px;color:var(--muted);}
+  .modules{padding:6px 20px 16px;}
+  .module{border-top:1px solid var(--line);padding:14px 0;}
+  .module:first-child{border-top:none;}
+  .module h3{margin:0 0 10px;font-size:15px;display:flex;align-items:center;gap:8px;}
+  .step{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:6px;
+    font-size:12px;font-weight:700;color:#fff;flex:none;}
+  .calc .step{background:var(--calc);}
+  .pbi  .step{background:#caa400;}
+
+  .topic{border:1px solid var(--line);border-radius:10px;padding:8px 12px 6px;background:#fbfcfe;margin:0 0 8px;}
+  .topic.complete{background:#f3faf6;border-color:#cfe6d8;}
+  .pbi .topic.complete{background:#fffdf6;border-color:#f0e2a8;}
+  .topic-h{display:flex;align-items:baseline;gap:8px;}
+  .topic-name{font-weight:700;font-size:14.5px;}
+  .count{margin-left:auto;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap;}
+  ul.subs{list-style:none;margin:6px 0 2px;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:1px 16px;}
+  ul.subs li{font-size:13.5px;color:#33404f;}
+  ul.subs label{display:flex;gap:8px;align-items:flex-start;cursor:pointer;padding:3px 0;}
+  ul.subs input{margin-top:3px;width:15px;height:15px;flex:none;accent-color:var(--calc);}
+  .pbi ul.subs input{accent-color:#caa400;}
+  .ptag{font-size:10px;font-weight:700;letter-spacing:.3px;text-transform:uppercase;
+    color:#0f5132;background:#e7f3ec;border-radius:4px;padding:1px 5px;margin-left:6px;white-space:nowrap;}
+  .pbi .ptag{color:#7a5b00;background:#fff3c4;}
+
+  .note{background:#fff;border:1px dashed #c7d0dc;border-radius:12px;padding:16px 20px;font-size:14px;color:#33404f;}
+  .note b{color:var(--ink);}
+  .note a{color:#0f5132;}
+  footer{max-width:1080px;margin:0 auto 40px;padding:0 22px;color:var(--muted);font-size:12.5px;text-align:center;}
+  footer a{color:#3d4a5c;}
+
+  .topic.is-hidden, .module.is-hidden{display:none;}
+  body.hide-done ul.subs li:has(input:checked){display:none;}
+  body.hide-done .topic:not(:has(input:not(:checked))){display:none;}
+  body.hide-done .module:not(:has(input:not(:checked))){display:none;}
+
+  @media(max-width:780px){
+    .wrap{grid-template-columns:1fr;}
+    nav.toc{position:static;max-height:none;}
+    ul.subs{grid-template-columns:1fr;}
+    .progress{margin-left:0;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Trainer's Learning Index · Microsoft Excel + Power BI</h1>
+  <p>Welcome! I'll be your trainer. The <b>bold line is the topic</b>. The checks under it are the <b>small skills</b> — tick those, or it is easy to skip the part that actually makes the topic work. A topic is finished only when every small check under it is ticked. Progress is saved in this browser. Practice files are in the <a href="datasets/index.html">datasets folder</a>. Each numbered folder is one dataset and one guide.</p>
+  <span class="badge">Beginner path · Small points included · Nothing advanced hidden inside a single tick</span>
+</header>
+
+<div class="toolbar">
+  <button type="button" onclick="expandAll()">Expand all</button>
+  <button type="button" onclick="collapseAll()">Collapse all</button>
+  <button type="button" id="hideBtn" aria-pressed="false" onclick="toggleHide()">Hide done</button>
+  <button type="button" onclick="clearProgress()">Reset progress</button>
+  <input id="findBox" type="search" placeholder="Search small points" aria-label="Search small points" oninput="filterTopics()">
+  <span class="progress" id="progressText">0 / 0 small points done</span>
+</div>
+<p class="how">The number on the right of each topic is how many of its small skills are ticked. <span class="ptag">practice</span> marks a skill used in the retail or HR guides.</p>
+
+<div class="wrap">
+
+  <nav class="toc">
+    <h3>Excel</h3>
+    <div class="c">
+      <a href="#x1">1 · Interface</a>
+      <a href="#x2">2 · Entering data</a>
+      <a href="#x3">3 · Formulas</a>
+      <a href="#x4">4 · Cell references</a>
+      <a href="#x5">5 · Functions</a>
+      <a href="#x6">6 · Sort, filter, tables</a>
+      <a href="#x7">7 · Charts</a>
+      <a href="#x8">8 · PivotTable</a>
+      <a href="#x9">9 · Validation &amp; print</a>
+    </div>
+    <h3>Power BI</h3>
+    <div class="p">
+      <a href="#p1">1 · What it is</a>
+      <a href="#p2">2 · Get data</a>
+      <a href="#p3">3 · Power Query</a>
+      <a href="#p4">4 · Modeling</a>
+      <a href="#p5">5 · DAX</a>
+      <a href="#p6">6 · Visuals</a>
+      <a href="#p7">7 · Share</a>
+    </div>
+    <h3>Good to know</h3>
+    <a href="#tips">Trainer's tips</a>
+    <a href="#order">Suggested order</a>
+  </nav>
+
+  <main>
+
+    <section class="card calc" id="calc">
+      <div class="head" onclick="toggle('calc-body')">
+        <span class="dot"></span>
+        <h2>📗 Microsoft Excel — The Spreadsheet</h2>
+        <span class="sub">click to expand ▾</span>
+      </div>
+      <div class="modules" id="calc-body">
+
+        <div class="module" id="x1">
+          <h3><span class="step">1</span> Getting Started — the Interface</h3>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">Workbook vs worksheet</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="excel"> A workbook is the file. A worksheet is one tab inside that file.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Rename a sheet, change its tab color, and move or copy a sheet.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Insert and delete sheets. One workbook can hold data, a pivot, and charts on separate tabs.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Sheet names should say what is on them (Sales, Calendar), not Sheet1.</label></li>
+            </ul>
+          </div>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">Ribbon, formula bar, Name Box, status bar</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="excel"> Tabs you will use first: Home, Insert, Page Layout, Formulas, Data, View.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> The formula bar shows what is really stored. The cell may only show a formatted result.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> The Name Box (left of the formula bar) shows the address of the active cell, such as A1.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Select numbers and read Sum, Average, and Count on the status bar before you write a formula.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Right-click a cell, a row number, or a column letter. Many everyday commands live there.</label></li>
+            </ul>
+          </div>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">Cells, rows, columns, and the address</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="excel"> A cell address is the column letter plus the row number: A1, B2, C10.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> A range is written A1:B10. The colon means “everything between.”</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Click a column letter or a row number to select the whole column or row.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Shift selects a block. Ctrl selects cells that are not next to each other.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Arrow keys move. F2 edits the cell in place. Esc cancels what you are typing.</label></li>
+            </ul>
+          </div>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">Create, save, and open files</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="excel"> New workbook, Open, Save (Ctrl+S), and Save As.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> .xlsx keeps formulas, formats, and many sheets. .csv is plain text: one sheet, no formulas.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Open a CSV with Data → From Text/CSV, set the delimiter to comma, and check the preview. <span class="ptag">practice</span></label></li>
+              <li><label><input type="checkbox" data-g="excel"> Undo is Ctrl+Z. Redo puts the undone step back.</label></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="module" id="x2">
+          <h3><span class="step">2</span> Entering &amp; Organizing Data</h3>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">Text, numbers, and dates</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="excel"> Enter moves down. Tab moves right. Esc throws away the current edit.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Text, numbers, and dates are different types. A date is a number wearing a date format.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> A date stored as text will not sort, filter, or work in YEAR/MONTH. <span class="ptag">practice</span></label></li>
+              <li><label><input type="checkbox" data-g="excel"> A leading apostrophe forces text. Use it for IDs that must keep leading zeros (00123).</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Find (Ctrl+F) and Replace (Ctrl+H) to fix a repeated spelling or a placeholder.</label></li>
+            </ul>
+          </div>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">AutoFill, series, and Flash Fill</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="excel"> Drag the fill handle (the small square at the corner) to copy a cell or continue a pattern.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Double-click the fill handle to fill down to the last row of the neighboring column. <span class="ptag">practice</span></label></li>
+              <li><label><input type="checkbox" data-g="excel"> Series: 1, 2, 3… or Mon, Tue… or month names. Give Excel two starting cells if the pattern is not obvious.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Flash Fill (Ctrl+E, or Data → Flash Fill) splits or joins text after you type one example.</label></li>
+            </ul>
+          </div>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">Copy, cut, paste, and Paste Special</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="excel"> Ctrl+C copy, Ctrl+X cut, Ctrl+V paste. You can paste into another sheet or another file.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Paste Special → Values keeps the result and drops the formula.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Paste Special can also paste formulas only, formats only, or transpose (turn rows into columns).</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Drag the border of a selection to move it. Hold Ctrl while dragging to copy.</label></li>
+            </ul>
+          </div>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">Number formats</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="excel"> General, Number, Currency, Accounting, Percentage, Date, and Time.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Set decimal places. A thousands format looks like #,##0 or #,##0.00. <span class="ptag">practice</span></label></li>
+              <li><label><input type="checkbox" data-g="excel"> Percent format displays 0.15 as 15%. The stored value is still 0.15.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> A wrong format can make a real date look like a huge number, or a number look like a date.</label></li>
+            </ul>
+          </div>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">Width, height, alignment, insert, and merge</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="excel"> Drag a column or row border. Double-click the border to AutoFit.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Wrap text, align left/center/right, and make the header row bold.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Add borders and a fill color so the header is obvious and the data block has an edge.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Format Painter copies the look of one cell onto others.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Insert and delete rows or columns. Hide and unhide when a column is in the way.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Merge cells for a title only. Merged cells inside a data table break sort, filter, and pivot.</label></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="module" id="x3">
+          <h3><span class="step">3</span> Formulas &amp; Basic Functions</h3>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">The = sign and operators</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="excel"> Every formula starts with =. Without it, Excel stores the text you typed.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Operators: + − * /. Multiplication and division happen before addition and subtraction.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Parentheses force the order: =(A1+A2)*B1.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Click cells while writing a formula instead of typing the addresses by hand.</label></li>
+            </ul>
+          </div>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">AutoSum, SUM, and AVERAGE</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="excel"> AutoSum (Σ on the Home tab) guesses the numbers above or to the left.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> =SUM(A2:A100) adds the range. =AVERAGE(A2:A100) averages it.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> SUM skips text. A blank cell is not the same as a cell that contains 0.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Check the status-bar Sum against your formula. If they disagree, the range is wrong.</label></li>
+            </ul>
+          </div>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">MIN, MAX, COUNT, COUNTA, COUNTBLANK</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="excel"> MIN and MAX return the smallest and largest number in the range.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> COUNT counts cells that contain numbers. Text is ignored.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> COUNTA counts cells that are not blank, including text.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> COUNTBLANK counts empty cells. Use it to see if a column is missing values.</label></li>
+            </ul>
+          </div>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">Formula errors</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="excel"> #DIV/0! means you divided by zero or by a blank.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> #VALUE! means the wrong type, usually text where a number is required.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> #NAME? is a misspelled function. #REF! means a cell the formula used was deleted.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> #N/A means a lookup found no match. It is not the same as a blank.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Formulas → Trace Precedents shows which cells feed the formula. Ctrl+` shows every formula on the sheet.</label></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="module" id="x4">
+          <h3><span class="step">4</span> Cell References (very important)</h3>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">Relative reference (A1)</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="excel"> A relative address moves when you copy the formula.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Copy down and A1 becomes A2. Copy to the right and A1 becomes B1.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> This is what you want for a formula that should run on every row of a list.</label></li>
+            </ul>
+          </div>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">Absolute reference ($A$1) with F4</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="excel"> A dollar sign locks that part of the address so copying does not move it.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> While editing, press F4 to cycle $A$1 → A$1 → $A1 → A1.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Lock a tax rate, a target, or a lookup table that must stay on the same cells.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Name that cell from the Name Box (type TaxRate and press Enter) so the formula can say TaxRate instead of $B$1.</label></li>
+            </ul>
+          </div>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">Mixed reference ($A1 and A$1)</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="excel"> $A1 locks the column only. The row can still change. Use it when you copy across.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> A$1 locks the row only. The column can still change. Use it when you copy down.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> A multiplication grid (prices down the side, quantities across the top) needs mixed locks.</label></li>
+            </ul>
+          </div>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">Why this matters when you copy</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="excel"> After filling down, open the first formula and the last formula and compare the addresses.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> A missing $ is the usual reason a copied formula is “almost right.”</label></li>
+              <li><label><input type="checkbox" data-g="excel"> An extra $ is the usual reason every row shows the same answer.</label></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="module" id="x5">
+          <h3><span class="step">5</span> Must-Know Functions</h3>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">IF, AND, and OR</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="excel"> =IF(test, value if true, value if false).</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Tests use =, &gt;, &lt;, &gt;=, &lt;=, and &lt;&gt; (not equal).</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Nest IF to build buckets, such as tenure 0–2, 3–5, 6–10, 11+. <span class="ptag">practice</span></label></li>
+              <li><label><input type="checkbox" data-g="excel"> AND is true only when every test is true. OR is true when any one test is true.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> =IF(AND(S2="Yes",Q2=1),"HIGH","OK") checks two cells at once. <span class="ptag">practice</span></label></li>
+            </ul>
+          </div>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">COUNTIF, SUMIF, and the IFS versions</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="excel"> =COUNTIF(range, criteria) counts cells that match. Criteria can be "Yes", "&gt;0", or a cell.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> =SUMIF(range, criteria, sum_range) adds a second column where the first column matches.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> COUNTIFS and SUMIFS take more than one condition. All of them must be true.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> SUMIFS argument order is different from SUMIF: the sum range comes first.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> AVERAGEIF (and AVERAGEIFS) averages only the rows that match.</label></li>
+            </ul>
+          </div>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">VLOOKUP and XLOOKUP</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="excel"> =VLOOKUP(lookup value, table, column number, FALSE).</label></li>
+              <li><label><input type="checkbox" data-g="excel"> The column you search must be the leftmost column of the table you give it.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> FALSE means exact match. Leaving this off, or using TRUE, can return the wrong neighbor.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> The column number is counted inside the table, not from column A of the sheet.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> #N/A means no exact match. Check spaces and spelling before you change the formula.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> XLOOKUP (Microsoft 365 / Excel 2021) can look left or right and does not need a column number. Use it when your Excel has it.</label></li>
+            </ul>
+          </div>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">Text functions</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="excel"> LEFT, RIGHT, and MID pull characters. LEN counts them.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Join text with &amp; or with CONCAT. ="Q"&amp;A2 sticks a Q onto a number.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> TRIM removes extra spaces. UPPER, LOWER, and PROPER fix capitalization.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> TEXT(A2,"MMM") turns a date into a month name such as Jan. <span class="ptag">practice</span></label></li>
+              <li><label><input type="checkbox" data-g="excel"> Data → Text to Columns splits one column on a comma, space, or other delimiter.</label></li>
+            </ul>
+          </div>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">Date functions</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="excel"> TODAY() is today’s date. NOW() is the date and the time. Both update when the file calculates.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> YEAR, MONTH, and DAY pull those parts out of a real date. <span class="ptag">practice</span></label></li>
+              <li><label><input type="checkbox" data-g="excel"> EDATE moves a date by a number of months. EOMONTH returns the last day of a month.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> If YEAR returns #VALUE!, the “date” is text. Fix the type before you write more formulas.</label></li>
+            </ul>
+          </div>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">ROUND and IFERROR</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="excel"> ROUND(number, 2) rounds to two decimal places. The displayed format is not the same as a rounded value.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> ROUNDUP rounds away from zero. The practice guides use it for a quarter number. <span class="ptag">practice</span></label></li>
+              <li><label><input type="checkbox" data-g="excel"> IFERROR(formula, 0) or IFERROR(formula, "—") replaces an error with a clean result.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Do not wrap a new formula in IFERROR until you have seen the real error once.</label></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="module" id="x6">
+          <h3><span class="step">6</span> Sorting, Filtering, Tables &amp; Highlighting</h3>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">Sort</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="excel"> Sort A→Z, Z→A, and oldest→newest.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Sort by more than one column (department, then name).</label></li>
+              <li><label><input type="checkbox" data-g="excel"> If Excel asks, expand the selection so each row stays together.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> You can also sort by cell color or font color.</label></li>
+            </ul>
+          </div>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">AutoFilter</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="excel"> Data → Filter puts arrows on the header row. One header row, no blank header cells.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Filter text, numbers (greater than, between), and dates. Filter several columns at once. <span class="ptag">practice</span></label></li>
+              <li><label><input type="checkbox" data-g="excel"> Clear one column’s filter, or clear all filters.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> SUM still includes hidden rows. SUBTOTAL ignores rows hidden by a filter.</label></li>
+            </ul>
+          </div>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">Freeze panes</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="excel"> View → Freeze Panes → Freeze Top Row keeps the header visible. <span class="ptag">practice</span></label></li>
+              <li><label><input type="checkbox" data-g="excel"> Freeze First Column when names or IDs should stay on screen.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Unfreeze before you freeze a different place. Only one freeze is active.</label></li>
+            </ul>
+          </div>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">Excel tables and duplicates</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="excel"> Insert → Table (Ctrl+T). Header names must be unique and must sit in one row.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> A table grows when you add a row, and formulas fill down by themselves.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Turn the totals row on, change the table style, resize it, or convert it back to a normal range.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Data → Remove Duplicates. Tick only the columns that define a duplicate (often the ID). <span class="ptag">practice</span></label></li>
+            </ul>
+          </div>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">Conditional formatting</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="excel"> Highlight Cell Rules: greater than, less than, between, equal to, and text that contains.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Highlight duplicate values, and highlight dates (yesterday, last 7 days, this month).</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Top/Bottom rules: top 10, bottom 10%, above average.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Data bars, color scales, and icon sets show size without a chart.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Manage Rules to edit, reorder, or delete a rule. A rule applies only to the range you selected.</label></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="module" id="x7">
+          <h3><span class="step">7</span> Charts</h3>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">Column and bar charts</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="excel"> Column chart: categories along the bottom. Bar chart: names along the side (better for long labels).</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Clustered compares items side by side. Stacked puts parts of one total on top of each other.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Do not include a total row in the same chart as the parts. The total dwarfs everything else.</label></li>
+            </ul>
+          </div>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">Line and pie charts</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="excel"> A line chart is for time: days, months, years, in order.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> A pie chart is for a few parts of one whole. Skip it when there are many slices.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Insert → Recommended Charts is a starting point. Change the type if the question is not answered.</label></li>
+            </ul>
+          </div>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">Titles, colors, legend, and axes</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="excel"> Add a chart title that states the point, plus axis titles when the units are not obvious.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Turn the legend on or off. Add data labels when the reader should not have to guess the value.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Change colors so the important series stands out.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Switch Row/Column if Excel plotted the data the wrong way around.</label></li>
+            </ul>
+          </div>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">Move, resize, and keep the chart in sync</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="excel"> Drag the chart to move it. Drag a corner handle to resize it.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Keep it on the sheet, or move it to its own chart sheet.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> If the source is a normal range, check the chart still covers new rows. A Table expands the chart for you.</label></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="module" id="x8">
+          <h3><span class="step">8</span> PivotTable</h3>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">What a PivotTable needs</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="excel"> It summarizes many rows (sums, counts, averages) without a formula on each row.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> The source needs one header row, no blank rows in the list, and no merged cells.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Insert → PivotTable. Building it from an Excel Table means new rows are included on refresh.</label></li>
+            </ul>
+          </div>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">Rows, columns, values, and filters</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="excel"> Drag fields into Rows, Columns, Values, and Filters.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Rows down the side, columns across the top. Example: Category in rows, Year in columns. <span class="ptag">practice</span></label></li>
+              <li><label><input type="checkbox" data-g="excel"> Rearrange by dragging a field to another box. Sort the finished pivot.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> The Filters box (or a slicer) limits the pivot without deleting fields.</label></li>
+            </ul>
+          </div>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">Sum, count, average, and % of total</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="excel"> Value Field Settings: Sum, Count, Average, Min, Max. Excel often picks Count when the column is text or has blanks.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Set the number format inside the pivot (currency, percent), not only by painting the cells. <span class="ptag">practice</span></label></li>
+              <li><label><input type="checkbox" data-g="excel"> Show Values As → % of Grand Total when you need a share, not a raw sum.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> You can put two summaries on the same pivot, such as Average of Salary and Count of people. <span class="ptag">practice</span></label></li>
+            </ul>
+          </div>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">Refresh, drill, group, PivotChart, slicer</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="excel"> Right-click the pivot → Refresh after the source data changes. A pivot does not update by itself.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Double-click a number in the pivot to see the rows behind that number.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Group a date field into months or quarters.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> A PivotChart is a chart tied to the pivot. A slicer is a clickable filter button for one field.</label></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="module" id="x9">
+          <h3><span class="step">9</span> Data Validation &amp; Printing</h3>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">Dropdowns and validation rules</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="excel"> Data → Data Validation → List makes a dropdown. The list can be typed, or it can be a range.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Whole number, decimal, and date rules (for example a date that cannot be in the future).</label></li>
+              <li><label><input type="checkbox" data-g="excel"> An input message tells the person what to type. An error alert can Stop, Warn, or only inform.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Validation does not clean values that were already in the cells. Check those separately.</label></li>
+            </ul>
+          </div>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">Page setup and print area</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="excel"> Page Layout: orientation (portrait or landscape), margins, and paper size.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Set a Print Area so extra columns are not printed.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Print Titles → Rows to repeat at top, so the header prints on every page.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Page Break Preview shows where the pages split. Drag a break to move it.</label></li>
+            </ul>
+          </div>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">Headers, footers, and fit-to-page</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="excel"> Header/footer can show the file name, the date, and the page number.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Fit to 1 page wide (and as many pages tall as needed) is usually safer than shrinking everything onto one page.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Print preview before you print. Turn on print gridlines only when they help.</label></li>
+              <li><label><input type="checkbox" data-g="excel"> Save the cleaned file as .xlsx before you hand it to Power BI. <span class="ptag">practice</span></label></li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="card pbi" id="pbi">
+      <div class="head" onclick="toggle('pbi-body')">
+        <span class="dot"></span>
+        <h2>📊 Power BI — Interactive Dashboards &amp; Reports</h2>
+        <span class="sub">click to expand ▾</span>
+      </div>
+      <div class="modules" id="pbi-body">
+
+        <div class="module" id="p1">
+          <h3><span class="step">1</span> What is Power BI?</h3>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">Desktop, Service, report, dashboard</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="pbi"> Power BI Desktop is where you build the file. The file extension is .pbix.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Power BI Service is the website where you publish, share, and schedule a refresh.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> A report has one or more pages of visuals. A dashboard is a one-page pin board made in the Service.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Desktop is a Windows app. On a Mac or Linux PC, use a Windows machine or a Windows virtual machine.</label></li>
+            </ul>
+          </div>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">Report, Data, and Model views</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="pbi"> Report view: the canvas where visuals live.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Data view: the tables after they have been loaded. Use it to spot a wrong type.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Model view: the tables and the lines (relationships) between them.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Three panes you use constantly: Fields, Visualizations, and Filters.</label></li>
+            </ul>
+          </div>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">Install and save</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="pbi"> Install the free Power BI Desktop and sign in.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> File → Save. You can reopen the same .pbix and continue.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> The ribbon changes depending on whether you are in Report, Data, or Model view.</label></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="module" id="p2">
+          <h3><span class="step">2</span> Getting Data (Connect)</h3>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">Excel and CSV</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="pbi"> Get data → Excel. Tick the sheet or the table, then look at the preview. <span class="ptag">practice</span></label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Get data → Text/CSV. Set the delimiter (comma) and check that columns split correctly. <span class="ptag">practice</span></label></li>
+              <li><label><input type="checkbox" data-g="pbi"> A cleaned .xlsx is more reliable than a raw CSV when dates must stay dates.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Load only the columns and tables the report needs. Extra tables clutter the Fields pane.</label></li>
+            </ul>
+          </div>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">Folder and database</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="pbi"> Get data → Folder combines files that share the same columns (one file per month, for example).</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> A database connection uses the same idea: pick tables, then Load or Transform. You do not need a database for this course.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> After the first load, new files in that folder are picked up by Refresh only if the combine steps are in place.</label></li>
+            </ul>
+          </div>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">Load vs Transform</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="pbi"> Load brings the data in as the preview shows it.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Transform Data opens Power Query first, so you can fix types and columns before anything is loaded.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> You can come back later with Home → Transform data. Choosing Load first is not permanent.</label></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="module" id="p3">
+          <h3><span class="step">3</span> Power Query — Clean &amp; Shape Data</h3>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">Columns: keep, rename, reorder</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="pbi"> Rename a column by double-clicking its header. Names should match what the report will say.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Remove columns you will not use. Choose Columns keeps a named set and drops the rest.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Drag headers to reorder them.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Use First Row as Headers when the real names are sitting in row 1 and the columns are called Column1, Column2.</label></li>
+            </ul>
+          </div>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">Data types</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="pbi"> Set each column: Text, Whole Number, Decimal Number, Date, or Date/Time. <span class="ptag">practice</span></label></li>
+              <li><label><input type="checkbox" data-g="pbi"> A date left as text will not sort in calendar order and will not support time intelligence.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> The icon on the left of the header is the type. Click it to change the type.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> After a type change, scroll and check a few values. A failed conversion becomes an error.</label></li>
+            </ul>
+          </div>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">Rows: filter, blanks, errors, duplicates</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="pbi"> Filter a column to drop test rows, old years, or blanks.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Remove Errors on a column that failed a type change. Read the error before you remove the row.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Replace Values to fix “N/A”, blank-looking text, or two spellings of the same place.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Remove Duplicates. Know which columns define “the same row” before you run it.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Transform → Format → Trim and Clean to remove extra spaces and hidden characters.</label></li>
+            </ul>
+          </div>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">Split, merge, fill, and new columns</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="pbi"> Split Column by delimiter (comma, space, dash) or by a number of characters.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Merge Columns joins them back together with a separator.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Fill Down copies the last value into the blanks under it. Typical of exported reports.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Add Column → Custom Column for a calculation, or Column From Examples when you can show the result you want.</label></li>
+            </ul>
+          </div>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">Applied Steps, Close &amp; Apply, Refresh</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="pbi"> Every click becomes a step in Applied Steps, in order. <span class="ptag">practice</span></label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Rename a step so you can read the list later. Delete a step to undo that action.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Click an earlier step to see the data as it was then. Fixing an early step can break a later one.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Close &amp; Apply runs the steps and loads the result into the model. <span class="ptag">practice</span></label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Home → Refresh re-runs the same steps when the Excel or CSV file has new rows.</label></li>
+            </ul>
+          </div>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">Append, merge, and unpivot</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="pbi"> Append stacks tables that share column names (January under February).</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Merge joins two tables side by side on a key, the way VLOOKUP does. Expand the new column and keep only the fields you need.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Left outer merge keeps every row from the first table. Inner merge keeps only rows that match.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Unpivot turns wide month columns (Jan, Feb, Mar) into two columns: Month and Value.</label></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="module" id="p4">
+          <h3><span class="step">4</span> Data Modeling (Relationships)</h3>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">What a relationship is</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="pbi"> A relationship links a key on one table to the same key on another table.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> The usual shape is one-to-many: one product row, many sales rows.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Both columns must be the same type. Text “1” does not match the number 1.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> The “one” side should have unique keys. Duplicates on that side are why a relationship fails.</label></li>
+            </ul>
+          </div>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">Create and check the line</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="pbi"> In Model view, drag the key on the “one” table to the key on the “many” table. <span class="ptag">practice</span></label></li>
+              <li><label><input type="checkbox" data-g="pbi"> The line shows 1 on one end and * on the other. Click the line to read cardinality and filter direction.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Single-direction filter (from the “one” side to the “many” side) is the setting to keep while you are learning.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Many-to-many means the keys are not clean yet. Fix the keys before you build measures on that line.</label></li>
+            </ul>
+          </div>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">Star schema: facts and dimensions</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="pbi"> The fact table holds the events and the numbers: one row per order line, one row per employee.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Dimension tables describe those rows: date, product, customer, department.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Slicers and row labels should come from dimensions. Measures should sum columns on the fact.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> One flat table is enough to start. Splitting a star schema is the next step, not the first. <span class="ptag">practice</span></label></li>
+            </ul>
+          </div>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">A date table</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="pbi"> A date table has one row per day, with no gaps, from the first date you care about to the last.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Create it with CALENDAR, then add Year, Month number, Month name, and Quarter. <span class="ptag">practice</span></label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Mark as date table, and relate Calendar[Date] to the fact date (OrderDate or HireDate).</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Sort the month name by the month number, or the chart will run Apr, Aug, Dec, Feb…</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Create a hierarchy (Year → Quarter → Month) so drill-down has somewhere to go.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Without this table and this relationship, year-over-year measures come back blank. <span class="ptag">practice</span></label></li>
+            </ul>
+          </div>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">Hide columns you do not want on the report</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="pbi"> Hide keys, duplicate date columns, and helper columns from report view. <span class="ptag">practice</span></label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Hiding does not delete them. Measures and relationships can still use them.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> In Fields, hidden columns disappear for report building, which stops you dragging the wrong Year.</label></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="module" id="p5">
+          <h3><span class="step">5</span> DAX — The Formula Language</h3>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">Measure vs calculated column</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="pbi"> A calculated column stores a result on every row (a bucket, a flag, a month name).</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> A measure calculates when a visual asks: total sales, a rate, a count of orders. <span class="ptag">practice</span></label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Rates and totals belong in measures. A rate stored as a column gives a wrong total.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Write measures from the Home ribbon or by right-clicking the table → New measure.</label></li>
+            </ul>
+          </div>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">SUM, AVERAGE, COUNT, DISTINCTCOUNT, DIVIDE</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="pbi"> SUM and AVERAGE take a numeric column. <span class="ptag">practice</span></label></li>
+              <li><label><input type="checkbox" data-g="pbi"> COUNTROWS counts rows in a table. DISTINCTCOUNT counts unique IDs, such as OrderID or EmployeeID. <span class="ptag">practice</span></label></li>
+              <li><label><input type="checkbox" data-g="pbi"> DIVIDE(a, b) is the safe division. A plain / turns a zero denominator into an error.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Do not average a percent column. Divide the summed parts: DIVIDE(SUM of profit, SUM of sales). <span class="ptag">practice</span></label></li>
+            </ul>
+          </div>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">CALCULATE and filter context</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="pbi"> Filter context is whatever the visual is currently showing: the year on the axis, the slicer, the bar you clicked.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> CALCULATE(measure, condition) changes that filter for one number only. <span class="ptag">practice</span></label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Example: count rows where Attrition = "Yes", or where LossFlag = "LOSS".</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Text filters need quotes. A Yes/No column is text, not a Boolean, unless you made it one.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Row context is “the current row.” It shows up in calculated columns. Measures usually feel filter context instead.</label></li>
+            </ul>
+          </div>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">Percent of total and time intelligence</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="pbi"> Margin % = DIVIDE([Total Profit], [Total Sales]). Format the measure as a percent. <span class="ptag">practice</span></label></li>
+              <li><label><input type="checkbox" data-g="pbi"> % of total divides the measure by CALCULATE(measure, ALL(the column you want to ignore)).</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> SAMEPERIODLASTYEAR needs the date table relationship. It compares this period with the same period last year. <span class="ptag">practice</span></label></li>
+              <li><label><input type="checkbox" data-g="pbi"> A running total keeps every date up to the last date in the current filter. <span class="ptag">practice</span></label></li>
+              <li><label><input type="checkbox" data-g="pbi"> VAR name = … RETURN … lets you name an intermediate result so the measure stays readable.</label></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="module" id="p6">
+          <h3><span class="step">6</span> Visualizations</h3>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">Bar, column, line, pie, and the field wells</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="pbi"> Pick the chart from the question: compare (bar/column), trend (line), or a few parts of a whole (pie).</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Drag fields into the wells: Axis (or X/Y), Legend, Values, Tooltips. The well names change with the visual.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> A Top N filter on a bar keeps the 10 largest and hides the rest. <span class="ptag">practice</span></label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Scatter (one dot per category), treemap (size shows the number), and a column chart of bands (a histogram) are the extras the practice guides use. <span class="ptag">practice</span></label></li>
+            </ul>
+          </div>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">Cards and KPI tiles</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="pbi"> A card shows one measure, large: total sales, headcount, attrition rate. <span class="ptag">practice</span></label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Put the unit in the measure format (currency or percent), not only in the title.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> A KPI visual adds a target and shows whether you are above or below it.</label></li>
+            </ul>
+          </div>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">Slicers</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="pbi"> A slicer is a visual that filters the page: Year, Region, Category, Department. <span class="ptag">practice</span></label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Style it as a list or a dropdown. A date slicer can be a range.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Multi-select is on by default. Check that clicking a second item adds to the filter instead of replacing it, if that is what you want.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Clear the slicer (eraser icon) to return to all values.</label></li>
+            </ul>
+          </div>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">Maps, tables, and matrix</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="pbi"> A map needs a place column Power BI recognizes (country, city, region). <span class="ptag">practice</span></label></li>
+              <li><label><input type="checkbox" data-g="pbi"> A table is a flat list, good for a detail or a “who to call” export. <span class="ptag">practice</span></label></li>
+              <li><label><input type="checkbox" data-g="pbi"> A matrix has rows and columns, like a pivot: Department down the side, OverTime across the top. <span class="ptag">practice</span></label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Conditional formatting and data bars on a table or matrix highlight high and low values. <span class="ptag">practice</span></label></li>
+            </ul>
+          </div>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">Titles, colors, and themes</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="pbi"> Title the visual with the insight (“Profit by category”), not only the field name.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Turn data labels on when the exact number matters. Turn them off when they collide.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> View → Themes applies one color set to the whole report.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Format the measure (Home → Measure tools) so every visual that uses it shows the same decimals.</label></li>
+            </ul>
+          </div>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">Filters, interactions, drill</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="pbi"> The Filters pane has three levels: this visual, this page, all pages.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Clicking a bar filters or highlights the other visuals on the page. That is cross-filter / cross-highlight. <span class="ptag">practice</span></label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Format → Edit interactions. Each other visual can Filter, Highlight, or None.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Drill down walks a hierarchy (year → quarter → month) on the same visual.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Drill through jumps to another page filtered to the point you right-clicked (one region, one employee). <span class="ptag">practice</span></label></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="module" id="p7">
+          <h3><span class="step">7</span> Reports, Dashboards &amp; Sharing</h3>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">A clean report page</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="pbi"> One page should answer one question. Put the title and a short subtitle at the top.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Use more than one page (overview, then detail) instead of crowding one canvas.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Align and distribute visuals. Turn on the grid. Match widths of cards.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Name each page. Page names are what people see in the Service.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> View → Bookmarks saves the current filters and which page you are on, so a button can jump back to that view.</label></li>
+            </ul>
+          </div>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">What-if parameter</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="pbi"> Modeling → New parameter → Numeric creates a slicer the reader can drag. <span class="ptag">practice</span></label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Set the minimum, maximum, and step (for example a discount cap from 0 to 0.8 by 0.05).</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> A measure reads the parameter value and recalculates, so the cards change as the slider moves.</label></li>
+            </ul>
+          </div>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">Publish to the Service</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="pbi"> Save the .pbix first. Publish sends a copy to a workspace in the Power BI service.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Most sharing needs a work or school account. A personal Microsoft account is limited.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> After you change the Desktop file, publish again (or replace) so the online copy updates.</label></li>
+            </ul>
+          </div>
+
+          <div class="topic">
+            <div class="topic-h"><span class="topic-name">Dashboards, share, export, refresh</span><span class="count"></span></div>
+            <ul class="subs">
+              <li><label><input type="checkbox" data-g="pbi"> In the Service, pin a visual to a dashboard. The dashboard is the summary; the report is the full story.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Share the report with people, or send a link, according to the workspace permissions.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Export the report to PDF or PowerPoint when someone needs a static copy.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> Refresh pulls new rows through the Power Query steps. If the source file moved, the refresh fails until the path is fixed.</label></li>
+              <li><label><input type="checkbox" data-g="pbi"> View → Mobile layout lets you rearrange the same page for a phone. Optional, but check it before you call the report finished.</label></li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="note" id="tips">
+      <b>Trainer's Tips</b>
+      <ul style="margin:8px 0 0;">
+        <li><b>Tick the small checks, not a whole topic at once.</b> The bold line is only a heading. The counter on it is the real progress.</li>
+        <li><b>Learn Excel first, then Power BI.</b> Power BI reads the same kind of table. Cell references, filters, and pivots are the foundation.</li>
+        <li><b>Practice on the files in this repo.</b> Open the <a href="datasets/index.html">datasets folder</a>, do Phase A in Excel, then Phase B in Power BI. Items marked <span class="ptag">practice</span> are the ones those guides use.</li>
+        <li><b>In Power BI, keep the order:</b> Get data → clean in Power Query → model (including a date table) → measures → visuals.</li>
+        <li><b>Three mistakes that show up in the guides:</b> dates left as text, a rate written as a column instead of a measure, and averaging a percent instead of dividing the sums.</li>
+        <li><b>Do not memorize every function.</b> Learn what each family is for (lookup, conditional sum, date parts). You can look up the exact arguments.</li>
+      </ul>
+    </section>
+
+    <section class="note" id="order">
+      <b>Suggested Learning Order</b>
+      <p style="margin:8px 0 0;">
+        Excel 1 → 2 → 3 → 4, then 5, 6, and 7, then 8 (PivotTable) and 9.
+        Then Power BI 1 → 2 → 3, then 4 (do the date table before you trust any time measure), then 5 and 6, then 7.
+        Use Hide done to see only the small points still open. Search when you come back to one skill.
+      </p>
+    </section>
+
+  </main>
+</div>
+
+<footer>
+  Small points added from Microsoft Learn
+  (<a href="https://learn.microsoft.com/en-us/power-bi/fundamentals/desktop-getting-started">Get started with Power BI Desktop</a>,
+  <a href="https://learn.microsoft.com/en-us/training/paths/dashboard-in-a-day/">Dashboard in a Day</a>,
+  <a href="https://learn.microsoft.com/en-us/power-bi/transform-model/desktop-quickstart-learn-dax-basics">DAX basics</a>),
+  the <a href="https://www.w3schools.com/excel/excel_syllabus.php">W3Schools Excel syllabus</a>
+  (formatting, conditional formatting, tables, SUMIFS, XLOOKUP),
+  and the retail and HR practice guides in this folder.
+  Progress is stored only in this browser. Older ticks from the short outline are not reused, because each old line is now many small checks.
+</footer>
+
+<script>
+  function toggle(id){
+    var el=document.getElementById(id);
+    el.style.display = (el.style.display==='none') ? 'block' : 'none';
+  }
+  function expandAll(){
+    document.getElementById('calc-body').style.display='block';
+    document.getElementById('pbi-body').style.display='block';
+  }
+  function collapseAll(){
+    document.getElementById('calc-body').style.display='none';
+    document.getElementById('pbi-body').style.display='none';
+  }
+
+  var KEY='trainer_index_progress_v2';
+  var hideDone=false;
+
+  function save(){
+    var boxes=document.querySelectorAll('input[type=checkbox]');
+    var state=[];
+    boxes.forEach(function(b){state.push(b.checked?1:0);});
+    try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}
+    updateText();
+  }
+  function load(){
+    try{
+      var s=JSON.parse(localStorage.getItem(KEY)||'[]');
+      var boxes=document.querySelectorAll('input[type=checkbox]');
+      boxes.forEach(function(b,i){ if(s[i]!==undefined) b.checked=!!s[i]; });
+    }catch(e){}
+    updateText();
+  }
+  function updateText(){
+    var boxes=document.querySelectorAll('input[type=checkbox]');
+    var done=0;
+    boxes.forEach(function(b){if(b.checked)done++;});
+    document.getElementById('progressText').textContent=done+' / '+boxes.length+' small points done';
+    document.querySelectorAll('.topic').forEach(function(topic){
+      var sub=topic.querySelectorAll('input[type=checkbox]');
+      var n=0;
+      sub.forEach(function(b){if(b.checked)n++;});
+      var c=topic.querySelector('.count');
+      if(c) c.textContent=n+' / '+sub.length;
+      topic.classList.toggle('complete', sub.length>0 && n===sub.length);
+    });
+  }
+  function clearProgress(){
+    if(confirm('Reset all checkmarks?')){
+      document.querySelectorAll('input[type=checkbox]').forEach(function(b){b.checked=false;});
+      save();
+    }
+  }
+  function toggleHide(){
+    hideDone=!hideDone;
+    document.body.classList.toggle('hide-done', hideDone);
+    var btn=document.getElementById('hideBtn');
+    btn.setAttribute('aria-pressed', hideDone?'true':'false');
+    btn.textContent=hideDone?'Show done':'Hide done';
+  }
+  function filterTopics(){
+    var q=(document.getElementById('findBox').value||'').trim().toLowerCase();
+    if(q){
+      expandAll();
+    }
+    document.querySelectorAll('.topic').forEach(function(topic){
+      var show=!q || topic.textContent.toLowerCase().indexOf(q)!==-1;
+      topic.classList.toggle('is-hidden', !show);
+    });
+    document.querySelectorAll('.module').forEach(function(mod){
+      var any=false;
+      mod.querySelectorAll('.topic').forEach(function(t){
+        if(!t.classList.contains('is-hidden')) any=true;
+      });
+      mod.classList.toggle('is-hidden', !any);
+    });
+  }
+
+  document.querySelectorAll('input[type=checkbox]').forEach(function(b){
+    b.addEventListener('change', save);
+  });
+  load();
+</script>
+
+</body>
+</html>

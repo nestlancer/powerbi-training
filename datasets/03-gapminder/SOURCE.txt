@@ -1,0 +1,1 @@
+Gapminder data via the Plotly datasets repository (MIT). Credit Gapminder Foundation.

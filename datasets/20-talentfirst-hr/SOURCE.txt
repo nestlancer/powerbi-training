@@ -1,0 +1,1 @@
+Generated HR case study used by Guide 2. Figures in guide.html were computed from data/hr_workforce.csv.

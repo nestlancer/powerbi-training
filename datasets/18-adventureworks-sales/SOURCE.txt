@@ -1,0 +1,1 @@
+Microsoft AdventureWorks sample workbook. https://github.com/microsoft/powerbi-desktop-samples

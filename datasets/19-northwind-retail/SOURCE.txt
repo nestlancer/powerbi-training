@@ -1,0 +1,1 @@
+Generated retail case study used by Guide 1. Figures in guide.html were computed from data/retail_sales_2021_2024.csv.

@@ -1,0 +1,1 @@
+Monthly 2019 sales files from Keith Galli's public Pandas practice repository. https://github.com/KeithGalli/Pandas-Data-Science-Tasks

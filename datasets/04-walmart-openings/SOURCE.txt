@@ -1,0 +1,1 @@
+Walmart store-openings teaching file via the Plotly datasets repository.

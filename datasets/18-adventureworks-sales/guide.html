@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Practice · AdventureWorks sales</title>
+<style>
+  :root{--calc:#1d6f42;--calc-soft:#e7f3ec;--pbi:#caa400;--pbi-soft:#fff8e0;--ink:#1f2430;--muted:#5b6472;--line:#e3e7ee;--bg:#f6f8fb;--accent:#0b3d63;}
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.6;}
+  header{background:linear-gradient(120deg,#1d6f42,#0b3d63);color:#fff;padding:28px 26px;}
+  header h1{margin:0 0 6px;font-size:24px;}
+  header p{margin:0;max-width:860px;font-size:14.5px;}
+  header a{color:#fff;}
+  .wrap{max-width:1080px;margin:22px auto 70px;padding:0 22px;}
+  .facts{background:#fff;border:1px solid var(--line);border-left:5px solid var(--calc);border-radius:12px;padding:16px 20px;margin-bottom:22px;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;}
+  .stat{background:var(--calc-soft);border-radius:9px;padding:10px 12px;}
+  .stat b{display:block;font-size:18px;color:var(--calc);}
+  .stat span{font-size:12px;color:var(--muted);}
+  section{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 24px;margin-bottom:20px;}
+  h2.t{font-size:20px;margin:0 0 12px;border-bottom:2px solid var(--calc);padding-bottom:6px;}
+  h3{font-size:16px;margin:18px 0 8px;color:var(--accent);}
+  code{background:#eef2f7;padding:1px 6px;border-radius:5px;font-size:13px;font-family:"SF Mono",Consolas,monospace;}
+  pre{background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:10px;overflow:auto;font-size:13px;font-family:"SF Mono",Consolas,monospace;line-height:1.5;}
+  table{border-collapse:collapse;width:100%;margin:10px 0;font-size:13.5px;}
+  th,td{border:1px solid var(--line);padding:7px 10px;text-align:left;}
+  th{background:#f1f5f9;}
+  .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;color:#fff;}
+  .g{background:#27ae60;} .y{background:#e0a800;} .r{background:#c0392b;}
+  .req{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px dashed var(--line);}
+  .req:last-child{border-bottom:none;}
+  .step{background:var(--calc-soft);border-radius:8px;padding:12px 14px;margin:10px 0;}
+  .step b{color:var(--calc);}
+  .pbi-box{background:var(--pbi-soft);border-radius:8px;padding:12px 14px;margin:10px 0;}
+  .pbi-box b{color:#8a6a00;}
+  .note{background:#fffaf0;border-left:4px solid #e0a800;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
+  .chk li{margin:4px 0;}
+  .toc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:20px;font-size:14px;}
+  .toc a{color:var(--accent);text-decoration:none;}
+  footer{text-align:center;color:var(--muted);font-size:12px;padding:10px 20px 28px;}
+  footer a{color:#3d4a5c;}
+</style>
+</head>
+<body>
+<header>
+  <h1>18 · AdventureWorks sales</h1>
+  <p>The full AdventureWorks sales model: fact sales plus product, customer, reseller, territory, and date. Figures below were computed from the file in this folder. <a href="../index.html">All practice sets</a></p>
+</header>
+<div class="wrap">
+  <div class="toc"><b>Jump to:</b>
+    <a href="#profile">Profile</a> ·
+    <a href="#brief">Brief</a> ·
+    <a href="#req">Requirements</a> ·
+    <a href="#calc">Excel</a> ·
+    <a href="#pbi">Power BI</a> ·
+    <a href="#sign">Sign-off</a> ·
+    <a href="#stretch">Stretch</a>
+  </div>
+  <section id="profile">
+    <h2 class="t">1. Verified profile</h2>
+    <div class="facts"><div class="grid"><div class="stat"><b>121,253</b><span>Rows</span></div><div class="stat"><b>$109.81M</b><span>Total Sales Amount</span></div></div></div>
+    <p>File: <code>AdventureWorks-Sales.xlsx</code>. Fact table for the steps: <code>Sales_data</code>, renamed to <code>Sales</code> in Power BI.</p>
+    <h3>Tables in this set</h3><ul><li><code>Sales Order_data</code> — 121,253 rows. Columns: Channel, SalesOrderLineKey, Sales Order, Sales Order Line</li><li><code>Sales Territory_data</code> — 11 rows. Columns: SalesTerritoryKey, Region, Country, Group</li><li><code>Sales_data</code> — 121,253 rows. Columns: SalesOrderLineKey, ResellerKey, CustomerKey, ProductKey, OrderDateKey, DueDateKey, ShipDateKey, SalesTerritoryKey, Order Quantity, Unit Price, Extended Amount, Unit Price Discount Pct</li><li><code>Reseller_data</code> — 702 rows. Columns: ResellerKey, Reseller ID, Business Type, Reseller, City, State-Province, Country-Region, Postal Code</li><li><code>Date_data</code> — 1,461 rows. Columns: DateKey, Date, Fiscal Year, Fiscal Quarter, Month, Full Date, MonthKey</li><li><code>Product_data</code> — 397 rows. Columns: ProductKey, SKU, Product, Standard Cost, Color, List Price, Model, Subcategory, Category</li><li><code>Customer_data</code> — 18,485 rows. Columns: CustomerKey, Customer ID, Customer, City, State-Province, Country-Region, Postal Code</li></ul>
+    
+    <div class="note">Sales_data is one row per order line. Sales Amount is the measure. Category lives on Product. Year lives on Date. OrderDateKey joins to DateKey — the names are not the same, so Power BI will not auto-detect that one.</div>
+  </section>
+  <section id="brief">
+    <h2 class="t">2. The client brief</h2>
+    <p><b>Who:</b> AdventureWorks Cycles.</p>
+    <p><b>The ask:</b> <i>Sales and margin by category, by territory, and by year. The product name is not on the sales sheet. Go and get it through the relationship.</i></p>
+  </section>
+  <section id="req">
+    <h2 class="t">3. Requirements</h2>
+    <div class="req"><span class="tag g">Beginner</span><div>KPI strip — row count, Sales Amount.</div></div><div class="req"><span class="tag y">Inter.</span><div>Relationships between the tables before you build visuals.</div></div><div class="req"><span class="tag r">Advan.</span><div>Slicers that cross-filter every visual on the page.</div></div>
+  </section>
+  <section id="calc">
+    <h2 class="t">4. Phase A — Microsoft Excel</h2>
+    <p>Goal: open the file cleanly, add only the helper columns you need, and prove one total with a PivotTable before you touch Power BI.</p>
+    
+    <h3>Step 1 — Open it the right way</h3>
+    <div class="step"><b>Open</b> <code>AdventureWorks-Sales.xlsx</code>. For the Excel pivot, start on <code>Sales_data</code>. You can VLOOKUP ProductKey against the Product sheet if you want category before you leave Excel.<br><b>Formats:</b> <code>Extended Amount</code> → Number (2 decimals); <code>Sales Amount</code> → Number (2 decimals); <code>Total Product Cost</code> → Number (2 decimals); <code>Unit Price</code> → Number (2 decimals). Then <b>View → Freeze Panes → Freeze Top Row</b>.</div>
+    <h3>Step 2 — Look for dirt</h3>
+    <div class="step"><ul><li>OrderDateKey is an integer key (such as 20190701), not a date. The real date is on Date_data.</li><li>Sales Amount is already extended. Do not also multiply Unit Price by Order Quantity unless you are checking the file.</li><li>Unit Price Discount Pct is a rate. Do not sum it.</li></ul></div>
+    
+        <h3>Step 3 — No extra formula required</h3>
+        <div class="step">The columns you need are already on the sheet. Use the pivot in the next step to prove the totals before you leave Excel.</div>
+    <h3>Step 4 — Pivot check</h3>
+    <div class="step">Select the data → <b>Insert → PivotTable</b>. Rows = <code>SalesOrderLineKey</code>.
+    Values = <b>Sum of Sales Amount</b>.
+    The grand total must be <b>$109.81M</b>. If it is not, the filter or the number format is wrong — fix that before Power BI.
+    </div>
+    <h3>Step 5 — Save</h3>
+    <div class="step"><b>Save As</b> <code>18-adventureworks-sales-clean.xlsx</code>. Power BI should read this file, not a half-filtered view you forgot to clear.</div>
+  </section>
+  <section id="pbi">
+    <h2 class="t">5. Phase B — Power BI</h2>
+    <h3>Step 1 — Get data</h3>
+    <div class="pbi-box"><b>Get data → Excel</b> and load Sales_data, Product_data, Customer_data, Reseller_data, Date_data, and Sales Territory_data.</div>
+    <h3>Step 2 — Power Query</h3>
+    <div class="pbi-box">Rename the main query to <code>Sales</code>. Set the types from Step 1. Watch <b>Applied Steps</b>. Then <b>Close &amp; Apply</b>.
+    </div>
+    <h3>Step 3 — Model</h3>
+    <div class="pbi-box"><ul><li><code>Sales Order_data[SalesOrderLineKey]</code> → <code>Sales[SalesOrderLineKey]</code> (one-to-many)</li><li><code>Sales Territory_data[SalesTerritoryKey]</code> → <code>Sales[SalesTerritoryKey]</code> (one-to-many)</li><li><code>Reseller_data[ResellerKey]</code> → <code>Sales[ResellerKey]</code> (one-to-many)</li><li><code>Product_data[ProductKey]</code> → <code>Sales[ProductKey]</code> (one-to-many)</li><li><code>Customer_data[CustomerKey]</code> → <code>Sales[CustomerKey]</code> (one-to-many)</li><li><code>Date_data[DateKey]</code> → <code>Sales[OrderDateKey]</code> (one-to-many)</li></ul>
+    <p>Hide key columns you do not want on the report. A hidden column can still be used by a relationship.</p></div>
+    <h3>Step 4 — Measures</h3>
+    <p>Write these as <b>measures</b>, not calculated columns. Replace the placeholder filter with a real value from the column.</p>
+    <pre>SalesAmount = SUM(&#x27;Sales&#x27;[Sales Amount])
+Row Count = COUNTROWS(&#x27;Sales&#x27;)
+ExtendedAmount = SUM(&#x27;Sales&#x27;[Extended Amount])
+Margin % = DIVIDE([SalesAmount], [ExtendedAmount])</pre>
+    <h3>Step 5 — Visuals</h3>
+    <div class="pbi-box">
+      <ul>
+        <li>Cards for the measures in Step 4.</li>
+        
+        
+        <li>A slicer for each small category (any low-cardinality column).</li>
+        <li>Click a bar and confirm the other visuals filter. Use <b>Format → Edit interactions</b> if one visual should stay still.</li>
+      </ul>
+    </div>
+  </section>
+  <section id="sign">
+    <h2 class="t">6. Sign-off</h2>
+    <ul class="chk"><li>☐ Row count is <b>121,253</b> after the cleaning steps above.</li><li>☐ Total Sales Amount is <b>$109.81M</b>.</li><li>☐ Slicers filter every visual, and you can clear them back to the totals above.</li><li>☐ Every relationship in the model view is one-to-many, from the lookup table to the fact table.</li></ul>
+  </section>
+  <section id="stretch">
+    <h2 class="t">7. Stretch</h2>
+    <ul>
+      <li>Margin = DIVIDE(SUM(Sales[Sales Amount]) - SUM(Sales[Total Product Cost]), SUM(Sales[Sales Amount])), by Category.</li>
+      <li>Add a drill-through page that keeps the slicer filters and shows the underlying rows.</li>
+      <li>Sort a month-name column by the month number so the axis is not alphabetical.</li>
+    </ul>
+  </section>
+  <section id="mist">
+    <h2 class="t">8. Mistakes that hide the answer</h2>
+    <ul>
+      <li>Dragging Category onto the canvas before the Product relationship exists.</li><li>Relating the date table on OrderDateKey without noticing the column on the date table is called DateKey.</li>
+      <li>Summing an ID column, or averaging a rate that was already a percent.</li>
+      <li>Leaving dates as text, then wondering why the axis sorts wrong.</li>
+    </ul>
+  </section>
+</div>
+<footer>Microsoft AdventureWorks sample workbook. https://github.com/microsoft/powerbi-desktop-samples</footer>
+</body>
+</html>

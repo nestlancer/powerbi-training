@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Practice · Support tickets and customers</title>
+<style>
+  :root{--calc:#1d6f42;--calc-soft:#e7f3ec;--pbi:#caa400;--pbi-soft:#fff8e0;--ink:#1f2430;--muted:#5b6472;--line:#e3e7ee;--bg:#f6f8fb;--accent:#0b3d63;}
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.6;}
+  header{background:linear-gradient(120deg,#1d6f42,#0b3d63);color:#fff;padding:28px 26px;}
+  header h1{margin:0 0 6px;font-size:24px;}
+  header p{margin:0;max-width:860px;font-size:14.5px;}
+  header a{color:#fff;}
+  .wrap{max-width:1080px;margin:22px auto 70px;padding:0 22px;}
+  .facts{background:#fff;border:1px solid var(--line);border-left:5px solid var(--calc);border-radius:12px;padding:16px 20px;margin-bottom:22px;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;}
+  .stat{background:var(--calc-soft);border-radius:9px;padding:10px 12px;}
+  .stat b{display:block;font-size:18px;color:var(--calc);}
+  .stat span{font-size:12px;color:var(--muted);}
+  section{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 24px;margin-bottom:20px;}
+  h2.t{font-size:20px;margin:0 0 12px;border-bottom:2px solid var(--calc);padding-bottom:6px;}
+  h3{font-size:16px;margin:18px 0 8px;color:var(--accent);}
+  code{background:#eef2f7;padding:1px 6px;border-radius:5px;font-size:13px;font-family:"SF Mono",Consolas,monospace;}
+  pre{background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:10px;overflow:auto;font-size:13px;font-family:"SF Mono",Consolas,monospace;line-height:1.5;}
+  table{border-collapse:collapse;width:100%;margin:10px 0;font-size:13.5px;}
+  th,td{border:1px solid var(--line);padding:7px 10px;text-align:left;}
+  th{background:#f1f5f9;}
+  .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;color:#fff;}
+  .g{background:#27ae60;} .y{background:#e0a800;} .r{background:#c0392b;}
+  .req{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px dashed var(--line);}
+  .req:last-child{border-bottom:none;}
+  .step{background:var(--calc-soft);border-radius:8px;padding:12px 14px;margin:10px 0;}
+  .step b{color:var(--calc);}
+  .pbi-box{background:var(--pbi-soft);border-radius:8px;padding:12px 14px;margin:10px 0;}
+  .pbi-box b{color:#8a6a00;}
+  .note{background:#fffaf0;border-left:4px solid #e0a800;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
+  .chk li{margin:4px 0;}
+  .toc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:20px;font-size:14px;}
+  .toc a{color:var(--accent);text-decoration:none;}
+  footer{text-align:center;color:var(--muted);font-size:12px;padding:10px 20px 28px;}
+  footer a{color:#3d4a5c;}
+</style>
+</head>
+<body>
+<header>
+  <h1>17 · Support tickets and customers</h1>
+  <p>A multi-table Microsoft sample: customers, tickets, devices, and small lookup tables. Figures below were computed from the file in this folder. <a href="../index.html">All practice sets</a></p>
+</header>
+<div class="wrap">
+  <div class="toc"><b>Jump to:</b>
+    <a href="#profile">Profile</a> ·
+    <a href="#brief">Brief</a> ·
+    <a href="#req">Requirements</a> ·
+    <a href="#calc">Excel</a> ·
+    <a href="#pbi">Power BI</a> ·
+    <a href="#sign">Sign-off</a> ·
+    <a href="#stretch">Stretch</a>
+  </div>
+  <section id="profile">
+    <h2 class="t">1. Verified profile</h2>
+    <div class="facts"><div class="grid"><div class="stat"><b>126,644</b><span>Rows</span></div><div class="stat"><b>3.67</b><span>Average Duration</span></div><div class="stat"><b>2018-05-01 → 2018-12-01</b><span>Dates</span></div><div class="stat"><b>1</b><span>Top Escalated</span></div></div></div>
+    <p>File: <code>customer-feedback.xlsx</code>. Fact table for the steps: <code>Support Tickets</code>, renamed to <code>Tickets</code> in Power BI.</p>
+    <h3>Tables in this set</h3><ul><li><code>Customer Table</code> — 45,218 rows. Columns: Customer ID, Tenure, Geography ID, Completed tutorial, Subscription ID, Role, Company ID, Rating, Theme, Original Score</li><li><code>Support Tickets</code> — 126,644 rows. Columns: Support Ticket ID, Customer ID, Date Created, Date Completed, Escalated, Duration</li><li><code>Device</code> — 69,057 rows. Columns: ID, Customer ID, device</li><li><code>Company</code> — 3 rows. Columns: Company ID, Company Size</li><li><code>Subscription</code> — 3 rows. Columns: Subscription ID, Subscription Type</li><li><code>Geography</code> — 10 rows. Columns: Geography ID, Continent, Country-Region</li><li><code>Role</code> — 3 rows. Columns: Role ID, Role in Org</li></ul>
+    
+        <h3>Biggest groups (check your pivot against this)</h3>
+        <table><tr><th>Escalated</th><th>Duration</th></tr><tr><td>1</td><td>4.10</td></tr><tr><td>0</td><td>3.61</td></tr></table>
+    <div class="note">Support Tickets is the fact. Country sits on Geography, reached through Customer. If you drag Country onto a ticket chart before the relationships exist, the chart is wrong or blank.</div>
+  </section>
+  <section id="brief">
+    <h2 class="t">2. The client brief</h2>
+    <p><b>Who:</b> A software company's support director.</p>
+    <p><b>The ask:</b> <i>How many tickets do we close, how long do they take, and which countries and subscription types generate them? The ticket file does not contain the country — the customer file does.</i></p>
+  </section>
+  <section id="req">
+    <h2 class="t">3. Requirements</h2>
+    <div class="req"><span class="tag g">Beginner</span><div>KPI strip — row count, Duration.</div></div><div class="req"><span class="tag g">Beginner</span><div>Bar chart of <b>Escalated</b>.</div></div><div class="req"><span class="tag g">Beginner</span><div>Trend by <b>Date Created</b>.</div></div><div class="req"><span class="tag y">Inter.</span><div>Break the same number down by <b>Duration</b>.</div></div><div class="req"><span class="tag y">Inter.</span><div>Relationships between the tables before you build visuals.</div></div><div class="req"><span class="tag r">Advan.</span><div>A rate using <b>Escalated</b> (two values). Use DIVIDE, not an average of a rate column.</div></div><div class="req"><span class="tag r">Advan.</span><div>Slicers that cross-filter every visual on the page.</div></div>
+  </section>
+  <section id="calc">
+    <h2 class="t">4. Phase A — Microsoft Excel</h2>
+    <p>Goal: open the file cleanly, add only the helper columns you need, and prove one total with a PivotTable before you touch Power BI.</p>
+    
+    <h3>Step 1 — Open it the right way</h3>
+    <div class="step"><b>Open</b> <code>customer-feedback.xlsx</code> and look at each sheet. Excel practice starts on <b>Support Tickets</b>. Power BI loads every sheet.<br><b>Formats:</b> <code>Date Created</code> → Date; <code>Escalated</code> → Number; <code>Duration</code> → Number. Then <b>View → Freeze Panes → Freeze Top Row</b>.</div>
+    <h3>Step 2 — Look for dirt</h3>
+    <div class="step"><ul><li>Date Created and Date Completed are dates. Duration is already on the ticket — check that it matches the two dates before you trust it.</li><li>Escalated is a flag. Decide whether it is true/false or text before you write CALCULATE.</li><li>Company and Subscription are tiny lookups. They exist so you practice relationships, not because they are large.</li></ul></div>
+    
+        <h3>Step 3 — Helper columns</h3>
+        <div class="step">Put these in the first empty columns and fill down (double-click the fill handle).<br>
+        <b>Year</b> &nbsp; <code>=YEAR(C2)</code><br>
+<b>MonthNum</b> &nbsp; <code>=MONTH(C2)</code><br>
+<b>MonthName</b> &nbsp; <code>=TEXT(C2,&quot;MMM&quot;)</code>
+        <br><i>Excel on this machine uses a comma between arguments. If your Excel uses semicolons, swap them.</i></div>
+    <h3>Step 4 — Pivot check</h3>
+    <div class="step">Select the data → <b>Insert → PivotTable</b>. Rows = <code>Escalated</code>. Group the date by years and put years in Columns.
+    Values = <b>Average of Duration</b>.
+    The grand total must be <b>3.67</b>. If it is not, the filter or the number format is wrong — fix that before Power BI.
+    </div>
+    <h3>Step 5 — Save</h3>
+    <div class="step"><b>Save As</b> <code>17-customer-feedback-clean.xlsx</code>. Power BI should read this file, not a half-filtered view you forgot to clear.</div>
+  </section>
+  <section id="pbi">
+    <h2 class="t">5. Phase B — Power BI</h2>
+    <h3>Step 1 — Get data</h3>
+    <div class="pbi-box"><b>Get data → Excel</b> and tick every sheet except an empty one. Rename Support Tickets to Tickets.</div>
+    <h3>Step 2 — Power Query</h3>
+    <div class="pbi-box">Rename the main query to <code>Tickets</code>. Set the types from Step 1. Watch <b>Applied Steps</b>. Then <b>Close &amp; Apply</b>.
+    </div>
+    <h3>Step 3 — Model</h3>
+    <div class="pbi-box"><ul><li><code>Customer Table[Customer ID]</code> → <code>Tickets[Customer ID]</code> (one-to-many)</li><li><code>Customer Table[Customer ID]</code> → <code>Device[Customer ID]</code> (one-to-many)</li><li><code>Geography[Geography ID]</code> → <code>Customer Table[Geography ID]</code> (one-to-many)</li></ul>
+    <p>Hide key columns you do not want on the report. A hidden column can still be used by a relationship.</p></div>
+    <h3>Step 4 — Measures</h3>
+    <p>Write these as <b>measures</b>, not calculated columns. Replace the placeholder filter with a real value from the column.</p>
+    <pre>Duration = AVERAGE(&#x27;Tickets&#x27;[Duration])
+Row Count = COUNTROWS(&#x27;Tickets&#x27;)
+Escalated = SUM(&#x27;Tickets&#x27;[Escalated])
+Filtered rows = CALCULATE([Row Count], &#x27;Tickets&#x27;[Escalated] = &lt;one of the two values&gt;)</pre>
+    <h3>Step 5 — Visuals</h3>
+    <div class="pbi-box">
+      <ul>
+        <li>Cards for the measures in Step 4.</li>
+        <li>Bar chart: axis <code>Escalated</code>, value the main measure.</li>
+        <li>Line chart: axis <code>Date Created</code>.</li>
+        <li>A slicer for each small category (Escalated, Duration).</li>
+        <li>Click a bar and confirm the other visuals filter. Use <b>Format → Edit interactions</b> if one visual should stay still.</li>
+      </ul>
+    </div>
+  </section>
+  <section id="sign">
+    <h2 class="t">6. Sign-off</h2>
+    <ul class="chk"><li>☐ Row count is <b>126,644</b> after the cleaning steps above.</li><li>☐ Average Duration is <b>3.67</b>.</li><li>☐ The leading Escalated is <b>1</b> at <b>4.10</b>.</li><li>☐ The date axis runs from <b>2018-05-01</b> to <b>2018-12-01</b>.</li><li>☐ Slicers filter every visual, and you can clear them back to the totals above.</li><li>☐ Every relationship in the model view is one-to-many, from the lookup table to the fact table.</li></ul>
+  </section>
+  <section id="stretch">
+    <h2 class="t">7. Stretch</h2>
+    <ul>
+      <li>Average duration by country, which only works after Tickets → Customer → Geography.</li>
+      <li>Add a drill-through page that keeps the slicer filters and shows the underlying rows.</li>
+      <li>Sort a month-name column by the month number so the axis is not alphabetical.</li>
+    </ul>
+  </section>
+  <section id="mist">
+    <h2 class="t">8. Mistakes that hide the answer</h2>
+    <ul>
+      <li>A many-to-many link from Tickets to Device on Customer ID. Both sides repeat. Link each of them to Customer instead.</li><li>Putting Country on the ticket table by hand with a VLOOKUP you then forget to refresh.</li>
+      <li>Summing an ID column, or averaging a rate that was already a percent.</li>
+      <li>Leaving dates as text, then wondering why the axis sorts wrong.</li>
+    </ul>
+  </section>
+</div>
+<footer>Microsoft Power BI Desktop monthly sample, customerfeedback.xlsx. https://github.com/microsoft/powerbi-desktop-samples</footer>
+</body>
+</html>

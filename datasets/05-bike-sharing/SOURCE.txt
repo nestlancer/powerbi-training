@@ -1,0 +1,1 @@
+UCI Bike Sharing Dataset. Fanaee-T and Gama, 2013. https://archive.ics.uci.edu/dataset/275/bike+sharing+dataset

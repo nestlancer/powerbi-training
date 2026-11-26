@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Practice Guide 2 · TalentFirst HR — Workforce &amp; Attrition (Analysis-Based)</title>
+<style>
+  :root{
+    --calc:#1d6f42; --calc-soft:#e7f3ec;
+    --pbi:#caa400; --pbi-soft:#fff8e0;
+    --ink:#1f2430; --muted:#5b6472; --line:#e3e7ee; --bg:#f6f8fb; --accent:#0b3d63;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink);background:var(--bg);line-height:1.6;}
+  header{background:linear-gradient(120deg,#0b3d63,#7a1f4b);color:#fff;padding:30px 26px;}
+  header h1{margin:0 0 6px;font-size:24px;}
+  header p{margin:0;opacity:.92;max-width:820px;font-size:14.5px;}
+  .wrap{max-width:1080px;margin:22px auto 70px;padding:0 22px;}
+  .facts{background:#fff;border:1px solid var(--line);border-left:5px solid #7a1f4b;
+    border-radius:12px;padding:16px 20px;margin-bottom:22px;}
+  .facts h2{margin:0 0 10px;font-size:16px;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;}
+  .stat{background:#fbeef4;border-radius:9px;padding:10px 12px;}
+  .stat b{display:block;font-size:18px;color:#7a1f4b;}
+  .stat span{font-size:12px;color:var(--muted);}
+  .warn{background:#fdeaea;} .warn b{color:#c0392b;}
+  section{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 24px;margin-bottom:20px;}
+  h2.t{font-size:20px;margin:0 0 12px;border-bottom:2px solid #7a1f4b;padding-bottom:6px;}
+  h3{font-size:16px;margin:18px 0 8px;color:var(--accent);}
+  code{background:#eef2f7;padding:1px 6px;border-radius:5px;font-size:13px;font-family:"SF Mono",Consolas,monospace;}
+  pre{background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:10px;overflow:auto;font-size:13px;
+    font-family:"SF Mono",Consolas,monospace;line-height:1.5;}
+  table{border-collapse:collapse;width:100%;margin:10px 0;font-size:13.5px;}
+  th,td{border:1px solid var(--line);padding:7px 10px;text-align:left;}
+  th{background:#f1f5f9;}
+  .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;color:#fff;}
+  .g{background:#27ae60;} .y{background:#e0a800;} .r{background:#c0392b;}
+  .req{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px dashed var(--line);}
+  .req:last-child{border-bottom:none;}
+  .step{background:var(--calc-soft);border-radius:8px;padding:12px 14px;margin:10px 0;}
+  .step b{color:var(--calc);}
+  .pbi-box{background:var(--pbi-soft);border-radius:8px;padding:12px 14px;margin:10px 0;}
+  .pbi-box b{color:var(--pbi);}
+  .note{background:#fffaf0;border-left:4px solid #e0a800;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
+  .chk{font-size:14px;} .chk li{margin:4px 0;}
+  .toc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:20px;font-size:14px;}
+  .toc a{color:var(--accent);text-decoration:none;} .toc a:hover{text-decoration:underline;}
+  footer{text-align:center;color:var(--muted);font-size:12px;padding:20px;}
+  @media(max-width:640px){.wrap{padding:0 12px;}}
+</style>
+</head>
+<body>
+<header>
+  <h1>📘 Practice Guide 2 — TalentFirst HR</h1>
+  <p>Workforce &amp; Attrition Dashboard · <b>Analysis-based &amp; verified</b> against the actual 220,000-row dataset.
+  Every figure below was computed from <code>data/hr_workforce.csv</code>. Beginner → Advanced. Train offline. <a href="../index.html" style="color:#fff">All practice sets</a></p>
+</header>
+
+<div class="wrap">
+
+  <div class="toc">
+    <b>Jump to:</b>
+    <a href="#profile">1. Verified Data Profile</a> ·
+    <a href="#brief">2. Client Brief</a> ·
+    <a href="#req">3. Requirements</a> ·
+    <a href="#calc">4. Phase A — Microsoft Excel</a> ·
+    <a href="#pbi">5. Phase B — Power BI</a> ·
+    <a href="#sign">6. Sign-off</a> ·
+    <a href="#stretch">7. Stretch</a> ·
+    <a href="#mist">8. Mistakes</a>
+  </div>
+
+  <!-- 1. PROFILE -->
+  <section id="profile">
+    <h2 class="t">1. Verified Data Profile (computed from the file)</h2>
+    <div class="facts">
+      <div class="grid">
+        <div class="stat"><b>220,000</b><span>employee records</span></div>
+        <div class="stat"><b>21.1%</b><span>overall attrition (46,474 left)</span></div>
+        <div class="stat warn"><b>33.7%</b><span>attrition if OverTime = Yes</span></div>
+        <div class="stat"><b>17.6%</b><span>attrition if OverTime = No</span></div>
+        <div class="stat"><b>$104,371</b><span>avg salary (median $94,061)</span></div>
+        <div class="stat warn"><b>5,848</b><span>"HIGH risk" staff (OT + low satisfaction)</span></div>
+      </div>
+    </div>
+
+    <div class="note">🔎 <b>Trainer insight:</b> OverTime nearly <b>doubles</b> attrition (33.7% vs 17.6%). The youngest
+    (&lt;25) leave at <b>25.6%</b> and newest hires (0–2 yrs) at <b>23.0%</b>. Pay is NOT the main driver (attrition is
+    ~21% across all salary bands) — <b>workload and early-tenure experience</b> are. That's the story for HR.</div>
+
+    <h3>Attrition Rate by Department</h3>
+    <table>
+      <tr><th>Dept</th><th>Headcount</th><th>Left</th><th>Rate</th></tr>
+      <tr><td>R&amp;D</td><td>27,628</td><td>5,917</td><td>21.4%</td></tr>
+      <tr><td>Finance</td><td>27,286</td><td>5,839</td><td>21.4%</td></tr>
+      <tr><td>HR</td><td>27,436</td><td>5,840</td><td>21.3%</td></tr>
+      <tr><td>Legal</td><td>27,516</td><td>5,822</td><td>21.2%</td></tr>
+      <tr><td>Marketing</td><td>27,600</td><td>5,837</td><td>21.1%</td></tr>
+      <tr><td>Sales</td><td>27,427</td><td>5,738</td><td>20.9%</td></tr>
+      <tr><td>IT</td><td>27,382</td><td>5,655</td><td>20.7%</td></tr>
+      <tr><td>Operations</td><td>27,725</td><td>5,826</td><td>21.0%</td></tr>
+    </table>
+    <p style="font-size:13px;color:var(--muted)">Attrition is evenly spread (~21%) — no single department is "the problem". The lever is OverTime + early tenure, not department.</p>
+
+    <h3>Attrition by Tenure &amp; Age (the real drivers)</h3>
+    <table>
+      <tr><th>Bucket</th><th>0–2 yrs</th><th>3–5 yrs</th><th>6–10 yrs</th><th>11+ yrs</th></tr>
+      <tr><td>Attrition rate</td><td style="color:#c0392b"><b>23.0%</b></td><td>21.2%</td><td>20.2%</td><td>20.4%</td></tr>
+      <tr><th>Age</th><th>&lt;25</th><th>25–34</th><th>35–44</th><th>45–54 / 55+</th></tr>
+      <tr><td>Attrition rate</td><td style="color:#c0392b"><b>25.6%</b></td><td>20.2%</td><td>20.2%</td><td>20.5%</td></tr>
+    </table>
+
+    <h3>Salary (avg by department) &amp; Distribution</h3>
+    <table>
+      <tr><th>Dept</th><th>Legal</th><th>IT</th><th>Finance</th><th>R&amp;D</th><th>Marketing</th><th>HR</th><th>Sales</th><th>Operations</th></tr>
+      <tr><td>Avg salary</td><td>$127,020</td><td>$120,245</td><td>$117,402</td><td>$115,683</td><td>$93,286</td><td>$91,048</td><td>$86,027</td><td>$84,484</td></tr>
+    </table>
+    <p style="font-size:13px;color:var(--muted)">Salary range: <b>$36,053 – $310,477</b>; average $104,371; median $94,061 (right-skewed toward senior roles).
+    Attrition is ~21% in every salary band, confirming pay is not the differentiator.</p>
+
+    <h3>Workforce Composition</h3>
+    <p style="font-size:13.5px">
+      • <b>Gender:</b> Male 73,496 · Non-binary 73,369 · Female 73,135 (balanced).<br>
+      • <b>Education:</b> Bachelor 121,293 · Master 61,246 · High School 22,064 · PhD 15,397.<br>
+      • <b>Offices:</b> 10 global (Hyderabad, Bengaluru, Mumbai, Delhi, Austin, London, Berlin, Singapore, Tokyo, Sydney).<br>
+      • <b>Engagement:</b> avg Job Satisfaction 2.72/4 · Work-Life Balance 2.83/4 · avg Training 60 hrs · avg Tenure 10.3 yrs · avg Age 39.
+    </p>
+  </section>
+
+  <!-- 2. BRIEF -->
+  <section id="brief">
+    <h2 class="t">2. The Client Brief (real-style)</h2>
+    <p><b>Who:</b> TalentFirst HR — 220,000 employee records across 8 departments and 10 global offices.</p>
+    <p><b>The ask:</b> <i>"Attrition is creeping up and leadership wants answers. Which departments lose the most people?
+    Is it pay, overwork, or lack of promotion? I need a dashboard my HR business partners can filter by office, gender
+    and education — and I need to <b>see</b> the salary gap and the risk groups, not just a number."</i></p>
+    <p>You receive <code>hr_workforce.csv</code> (220,000 rows). Translate the vague ask into the requirements in §3.</p>
+  </section>
+
+  <!-- 3. REQUIREMENTS -->
+  <section id="req">
+    <h2 class="t">3. Client Requirements (with difficulty)</h2>
+    <div class="req"><span class="tag g">Beginner</span><div><b>KPI strip</b> — Headcount, Attrition Count, <b>Attrition Rate %</b>, Average Salary.</div></div>
+    <div class="req"><span class="tag g">Beginner</span><div><b>Headcount by Department</b> — bar chart.</div></div>
+    <div class="req"><span class="tag g">Beginner</span><div><b>Attrition Rate by Department</b> — bar, sorted desc.</div></div>
+    <div class="req"><span class="tag y">Inter.</span><div><b>Attrition by Tenure bucket</b> (0–2 / 3–5 / 6–10 / 11+) — new hires worst?</div></div>
+    <div class="req"><span class="tag y">Inter.</span><div><b>Salary distribution</b> — histogram by SalaryBand.</div></div>
+    <div class="req"><span class="tag y">Inter.</span><div><b>Attrition by OverTime</b> — Yes vs No (expect 33.7% vs 17.6%).</div></div>
+    <div class="req"><span class="tag y">Inter.</span><div><b>Demographic slicers:</b> Office, Gender, Education, Marital Status.</div></div>
+    <div class="req"><span class="tag r">Advan.</span><div><b>Attrition drivers matrix:</b> Department × (OverTime / JobSatisfaction / WorkLifeBalance) with Rate %.</div></div>
+    <div class="req"><span class="tag r">Advan.</span><div><b>Age / Tenure distribution</b> (bins) vs attrition.</div></div>
+    <div class="req"><span class="tag r">Advan.</span><div><b>"Risk list"</b>: flag OverTime=Yes AND JobSatisfaction=1 (the 5,848), export for HR.</div></div>
+    <div class="req"><span class="tag r">Advan.</span><div><b>What-if:</b> salary-raise simulator — "if we raise salary by X%, show new avg pay by dept."</div></div>
+  </section>
+
+  <!-- 4. CALC -->
+  <section id="calc">
+    <h2 class="t">4. Phase A — Organize &amp; Clean in Microsoft Excel</h2>
+    <p>Goal: profile the workforce, build tenure/age/salary <b>bins</b>, compute risk flags, validate with a Pivot, then export a clean <code>.xlsx</code>.</p>
+
+    <h3>Step 1 — Open correctly</h3>
+    <div class="step">
+      <b>Open the file:</b> <code>data/hr_workforce.csv</code>, in the folder next to this guide (Excel auto-splits columns by comma).
+      For full control of types use <b>Data ▸ Get Data ▸ From Text/CSV</b> → choose the file → set Delimiter = Comma → <b>Load</b>.<br>
+      <b>Set formats:</b> <code>HireDate, TerminationDate</code> → <b>Home ▸ Number ▸ Date</b>;
+      <code>AnnualSalary, MonthlyIncome</code> → <b>Number</b>; <code>Attrition, OverTime, Gender</code> → Text; scores/ages → Whole Number.
+      Then <b>View ▸ Freeze Panes ▸ Freeze Top Row</b>.
+    </div>
+
+    <h3>Step 2 — Profile &amp; find dirt</h3>
+    <div class="step">
+      File is clean, but on a real client file: <b>Data ▸ Filter</b> → check <code>Attrition="Yes"</code> has a TerminationDate,
+      and <code>AnnualSalary &lt; 30000</code> or blanks. Use <b>Data ▸ Data Analysis ▸ Descriptive Statistics</b> on AnnualSalary
+      to see the skew (min $36,053, max $310,477, median $94,061).
+    </div>
+
+    <h3>Step 3 — Add helper columns (X–AB, after TerminationDate in W)</h3>
+    <div class="step">
+      <b>X TenureBucket</b> &nbsp; <code>=IF(L2&lt;=2,"0-2",IF(L2&lt;=5,"3-5",IF(L2&lt;=10,"6-10","11+")))</code><br>
+      <b>Y AgeBucket</b> &nbsp; <code>=IF(F2&lt;25,"&lt;25",IF(F2&lt;=34,"25-34",IF(F2&lt;=44,"35-44",IF(F2&lt;=54,"45-54","55+"))))</code><br>
+      <b>Z SalaryBand</b> &nbsp; <code>=IF(O2&lt;50000,"&lt;50K",IF(O2&lt;80000,"50-80K",IF(O2&lt;120000,"80-120K","120K+")))</code><br>
+      <b>AA RiskFlag</b> &nbsp; <code>=IF(AND(S2="Yes",Q2=1),"HIGH","OK")</code><br>
+      <b>AB IsAttrited</b> &nbsp; <code>=IF(V2="Yes",1,0)</code><br>
+      <i>(Excel uses <code>,</code> as the argument separator, as shown. If your regional setting uses <code>;</code>, swap commas for semicolons.)</i> Fill down.
+    </div>
+
+    <h3>Step 4 — Validate with a PivotTable</h3>
+    <div class="step">
+      Select data → <b>Insert ▸ PivotTable</b>. Rows = <code>Department</code>,
+      Values = <code>Average of AnnualSalary</code> and <code>Count of IsAttrited</code>.
+      Confirm Legal ~$127K, Operations ~$84K, and attrition ≈ 21% per dept (matches §1).
+    </div>
+
+    <h3>Step 5 — Format &amp; export</h3>
+    <div class="step">
+      AnnualSalary/MonthlyIncome → <code>#,##0</code>; rates → <code>0.0%</code>.
+      <b>Save As</b> <code>hr_workforce_clean.xlsx</code> — keep this as your working copy;
+      Power BI reads the typed Excel file most reliably (better than the raw CSV).
+    </div>
+  </section>
+
+  <!-- 5. POWER BI -->
+  <section id="pbi">
+    <h2 class="t">5. Phase B — Build the Dashboard in Power BI</h2>
+
+    <h3>Step 1 — Get Data</h3>
+    <div class="pbi-box"><b>Get Data ▸ Excel</b> → <code>hr_workforce_clean.xlsx</code> → Load. (Or <b>Text/CSV</b> → comma → Transform → Load.)</div>
+
+    <h3>Step 2 — Power Query</h3>
+    <div class="pbi-box">
+      <b>Transform Data</b>: HireDate/TerminationDate = <b>Date</b>; AnnualSalary = <b>Whole Number</b>;
+      Attrition/OverTime/Gender = <b>Text</b>; scores = <b>Whole Number</b>. Fix any mis-typed column, watch <b>Applied Steps</b>.
+      <b>Close &amp; Apply.</b>
+    </div>
+
+    <h3>Step 3 — Data Modeling</h3>
+    <div class="pbi-box">
+      Single flat table here — fine for learning. Build a small Date table for hire trends:<br>
+      <code>HireCalendar = CALENDAR(DATE(2000,1,1), DATE(2024,12,31))</code><br>
+      Relationship: <code>HireCalendar[Date] → hr_workforce[HireDate]</code>.<br>
+      <i>Next level: split DimEmployee + FactAttrition + DimDepartment into a star schema.</i>
+    </div>
+
+    <h3>Step 4 — DAX Measures</h3>
+    <pre>Headcount        = DISTINCTCOUNT(hr_workforce[EmployeeID])
+Attrition Count  = CALCULATE(COUNTROWS(hr_workforce), hr_workforce[Attrition]="Yes")
+Attrition Rate % = DIVIDE([Attrition Count], [Headcount])   -- ≈ 21.1%
+Avg Salary       = AVERAGE(hr_workforce[AnnualSalary])
+Avg Tenure       = AVERAGE(hr_workforce[YearsAtCompany])
+Avg Satisfaction = AVERAGE(hr_workforce[JobSatisfaction])
+
+OverTime Attrition % = CALCULATE([Attrition Rate %], hr_workforce[OverTime]="Yes")   -- 33.7%
+NoOT Attrition %     = CALCULATE([Attrition Rate %], hr_workforce[OverTime]="No")     -- 17.6%
+
+High Risk Count  = CALCULATE(COUNTROWS(hr_workforce),
+                    hr_workforce[OverTime]="Yes", hr_workforce[JobSatisfaction]=1)   -- 5,848</pre>
+
+    <h3>Step 5 — Visuals (map each to a requirement)</h3>
+    <table>
+      <tr><th>Req</th><th>Visual</th><th>Fields</th></tr>
+      <tr><td>KPIs</td><td>Card ×4</td><td>Headcount, Attrition Count, Attrition Rate %, Avg Salary</td></tr>
+      <tr><td>Headcount</td><td>Bar</td><td>Axis Department, Value Headcount</td></tr>
+      <tr><td>Attr by Dept</td><td>Bar (sorted desc)</td><td>Axis Department, Value Attrition Rate %</td></tr>
+      <tr><td>Tenure</td><td>Bar/Column</td><td>Axis TenureBucket, Value Attrition Rate %</td></tr>
+      <tr><td>Salary dist</td><td>Histogram (Column)</td><td>Axis SalaryBand, Value Headcount</td></tr>
+      <tr><td>OverTime</td><td>Card / Bar</td><td>OverTime Attrition % vs NoOT Attrition %</td></tr>
+      <tr><td>Slicers</td><td>Slicer ×4</td><td>OfficeLocation, Gender, Education, MaritalStatus</td></tr>
+      <tr><td>Drivers</td><td>Matrix</td><td>Rows Department, Columns OverTime, Values Attrition Rate %</td></tr>
+      <tr><td>Age/Tenure</td><td>Bar</td><td>Axis AgeBucket / TenureBucket, Value Attrition Rate %</td></tr>
+      <tr><td>Risk list</td><td>Table (filter RiskFlag=HIGH)</td><td>EmployeeID, Department, Office → Export CSV for HR</td></tr>
+    </table>
+
+    <h3>Step 6 — What-if &amp; polish (advanced)</h3>
+    <div class="pbi-box">
+      <b>Modeling ▸ New Parameter ▸ Numeric</b> → <code>Salary Raise %</code> (0 to 0.20, step 0.01). Measure:<br>
+      <code>Adj Avg Salary = [Avg Salary] * (1 + [Salary Raise % Value])</code><br>
+      Add a card/slicer so HR drags the raise and watches avg pay by department. Use conditional formatting to flag
+      departments above the overall attrition average, and add a drill-through "Employee Detail" page.
+    </div>
+  </section>
+
+  <!-- 6. SIGN-OFF -->
+  <section id="sign">
+    <h2 class="t">6. Client Sign-off Checklist</h2>
+    <ul class="chk">
+      <li>☐ KPIs show Headcount <b>220,000</b>, Attrition Rate <b>21.1%</b> (46,474 left), Avg Salary <b>$104,371</b>.</li>
+      <li>☐ Department headcount + attrition-rate bars present and cross-filter.</li>
+      <li>☐ Tenure bucket chart shows <b>0–2 yrs highest at 23.0%</b>.</li>
+      <li>☐ OverTime comparison shows <b>33.7% vs 17.6%</b> (the headline insight).</li>
+      <li>☐ Salary histogram (SalaryBand) and demographic slicers work.</li>
+      <li>☐ Drivers matrix (Dept × OverTime) built.</li>
+      <li>☐ High-risk employee list (5,848) exported for HR follow-up.</li>
+      <li>☐ Salary-raise what-if simulator works.</li>
+    </ul>
+  </section>
+
+  <!-- 7. STRETCH -->
+  <section id="stretch">
+    <h2 class="t">7. Stretch (after sign-off)</h2>
+    <ul>
+      <li>Build a proper <b>star schema</b>: split dimensions (Employee, Department, Date) from a fact table.</li>
+      <li>Add <b>cohort retention</b>: of people hired in 2018, what % remain each year.</li>
+      <li>Use <b>Power Query</b> to unpivot satisfaction/balance scores into one "Score Type vs Attrition" visual.</li>
+    </ul>
+  </section>
+
+  <!-- 8. MISTAKES -->
+  <section id="mist">
+    <h2 class="t">8. Trainer's Common Mistakes</h2>
+    <ul>
+      <li>Averaging <code>Attrition Rate %</code> across departments → wrong. Use <code>DIVIDE(SUM attrited, SUM headcount)</code> as a measure.</li>
+      <li>Storing Attrition Rate % as a <b>column</b> → totals break; always a measure with DIVIDE.</li>
+      <li>Salary histogram with too many tiny bins → use the <b>SalaryBand</b> helper for clean buckets.</li>
+      <li>Forgetting <code>OverTime</code> is text "Yes"/"No" → filter with quotes inside CALCULATE.</li>
+    </ul>
+  </section>
+
+</div>
+<footer>Analysis-verified training guide · built from hr_workforce.csv (220,000 rows) · open offline, no internet needed.</footer>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Practice · Online retail invoices</title>
+<style>
+  :root{--calc:#1d6f42;--calc-soft:#e7f3ec;--pbi:#caa400;--pbi-soft:#fff8e0;--ink:#1f2430;--muted:#5b6472;--line:#e3e7ee;--bg:#f6f8fb;--accent:#0b3d63;}
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.6;}
+  header{background:linear-gradient(120deg,#1d6f42,#0b3d63);color:#fff;padding:28px 26px;}
+  header h1{margin:0 0 6px;font-size:24px;}
+  header p{margin:0;max-width:860px;font-size:14.5px;}
+  header a{color:#fff;}
+  .wrap{max-width:1080px;margin:22px auto 70px;padding:0 22px;}
+  .facts{background:#fff;border:1px solid var(--line);border-left:5px solid var(--calc);border-radius:12px;padding:16px 20px;margin-bottom:22px;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;}
+  .stat{background:var(--calc-soft);border-radius:9px;padding:10px 12px;}
+  .stat b{display:block;font-size:18px;color:var(--calc);}
+  .stat span{font-size:12px;color:var(--muted);}
+  section{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 24px;margin-bottom:20px;}
+  h2.t{font-size:20px;margin:0 0 12px;border-bottom:2px solid var(--calc);padding-bottom:6px;}
+  h3{font-size:16px;margin:18px 0 8px;color:var(--accent);}
+  code{background:#eef2f7;padding:1px 6px;border-radius:5px;font-size:13px;font-family:"SF Mono",Consolas,monospace;}
+  pre{background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:10px;overflow:auto;font-size:13px;font-family:"SF Mono",Consolas,monospace;line-height:1.5;}
+  table{border-collapse:collapse;width:100%;margin:10px 0;font-size:13.5px;}
+  th,td{border:1px solid var(--line);padding:7px 10px;text-align:left;}
+  th{background:#f1f5f9;}
+  .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;color:#fff;}
+  .g{background:#27ae60;} .y{background:#e0a800;} .r{background:#c0392b;}
+  .req{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px dashed var(--line);}
+  .req:last-child{border-bottom:none;}
+  .step{background:var(--calc-soft);border-radius:8px;padding:12px 14px;margin:10px 0;}
+  .step b{color:var(--calc);}
+  .pbi-box{background:var(--pbi-soft);border-radius:8px;padding:12px 14px;margin:10px 0;}
+  .pbi-box b{color:#8a6a00;}
+  .note{background:#fffaf0;border-left:4px solid #e0a800;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
+  .chk li{margin:4px 0;}
+  .toc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:20px;font-size:14px;}
+  .toc a{color:var(--accent);text-decoration:none;}
+  footer{text-align:center;color:var(--muted);font-size:12px;padding:10px 20px 28px;}
+  footer a{color:#3d4a5c;}
+</style>
+</head>
+<body>
+<header>
+  <h1>14 · Online retail invoices</h1>
+  <p>UK online gift wholesaler. One row is one invoice line. About 540,000 lines — Excel will feel slow; that is part of the lesson. Figures below were computed from the file in this folder. <a href="../index.html">All practice sets</a></p>
+</header>
+<div class="wrap">
+  <div class="toc"><b>Jump to:</b>
+    <a href="#profile">Profile</a> ·
+    <a href="#brief">Brief</a> ·
+    <a href="#req">Requirements</a> ·
+    <a href="#calc">Excel</a> ·
+    <a href="#pbi">Power BI</a> ·
+    <a href="#sign">Sign-off</a> ·
+    <a href="#stretch">Stretch</a>
+  </div>
+  <section id="profile">
+    <h2 class="t">1. Verified profile</h2>
+    <div class="facts"><div class="grid"><div class="stat"><b>541,909</b><span>Rows</span></div><div class="stat"><b>$9.75M</b><span>Total LineSales</span></div><div class="stat"><b>2010-12-01 → 2011-12-09</b><span>Dates</span></div><div class="stat"><b>United Kingdom</b><span>Top Country</span></div></div></div>
+    <p>File: <code>Online Retail.xlsx</code>. Fact table for the steps: <code>Online Retail</code>, renamed to <code>Invoices</code> in Power BI.</p>
+    
+    
+        <h3>Biggest groups (check your pivot against this)</h3>
+        <table><tr><th>Country</th><th>LineSales</th></tr><tr><td>United Kingdom</td><td>$8.19M</td></tr><tr><td>Netherlands</td><td>$284,662</td></tr><tr><td>EIRE</td><td>$263,277</td></tr><tr><td>Germany</td><td>$221,698</td></tr><tr><td>France</td><td>$197,404</td></tr><tr><td>Australia</td><td>$137,077</td></tr></table>
+    <div class="note">There is no revenue column. Revenue is Quantity times UnitPrice. Cancellations are negative, so a plain sum is already a net. CustomerID is blank on a large share of rows — those are still real invoices.</div>
+  </section>
+  <section id="brief">
+    <h2 class="t">2. The client brief</h2>
+    <p><b>Who:</b> The owner of a gift wholesaler.</p>
+    <p><b>The ask:</b> <i>Which countries and which products make the revenue, and how much of the file is cancellations? Cancellations use an invoice number that starts with C and a negative quantity.</i></p>
+  </section>
+  <section id="req">
+    <h2 class="t">3. Requirements</h2>
+    <div class="req"><span class="tag g">Beginner</span><div>KPI strip — row count, LineSales.</div></div><div class="req"><span class="tag g">Beginner</span><div>Bar chart of <b>Country</b>.</div></div><div class="req"><span class="tag g">Beginner</span><div>Trend by <b>InvoiceDate</b>.</div></div><div class="req"><span class="tag y">Inter.</span><div>Top 10 <b>Country</b>.</div></div><div class="req"><span class="tag r">Advan.</span><div>Slicers that cross-filter every visual on the page.</div></div>
+  </section>
+  <section id="calc">
+    <h2 class="t">4. Phase A — Microsoft Excel</h2>
+    <p>Goal: open the file cleanly, add only the helper columns you need, and prove one total with a PivotTable before you touch Power BI.</p>
+    
+    <h3>Step 1 — Open it the right way</h3>
+    <div class="step"><b>Open</b> <code>Online Retail.xlsx</code>. If Excel is slow, do the pivot on a Table and do not scroll every row. Power BI is the better place for the full file.<br><b>Formats:</b> <code>InvoiceDate</code> → Date; <code>UnitPrice</code> → Number (2 decimals); <code>StockCode</code> → Number; <code>Quantity</code> → Number. Then <b>View → Freeze Panes → Freeze Top Row</b>.</div>
+    <h3>Step 2 — Look for dirt</h3>
+    <div class="step"><ul><li>Do not delete blank CustomerID rows.</li><li>Invoice numbers that start with C are cancellations. Quantity is negative on those rows.</li><li>UnitPrice can be zero. A helper LineSales = Quantity * UnitPrice is the revenue column.</li></ul></div>
+    
+        <h3>Step 3 — Helper columns</h3>
+        <div class="step">Put these in the first empty columns and fill down (double-click the fill handle).<br>
+        <b>LineSales</b> &nbsp; <code>=D2*F2</code><br>
+<b>Year</b> &nbsp; <code>=YEAR(E2)</code><br>
+<b>MonthNum</b> &nbsp; <code>=MONTH(E2)</code><br>
+<b>MonthName</b> &nbsp; <code>=TEXT(E2,&quot;MMM&quot;)</code>
+        <br><i>Excel on this machine uses a comma between arguments. If your Excel uses semicolons, swap them.</i></div>
+    <h3>Step 4 — Pivot check</h3>
+    <div class="step">Select the data → <b>Insert → PivotTable</b>. Rows = <code>Country</code>. Group the date by years and put years in Columns.
+    Values = <b>Sum of LineSales</b>.
+    The grand total must be <b>$9.75M</b>. If it is not, the filter or the number format is wrong — fix that before Power BI.
+    </div>
+    <h3>Step 5 — Save</h3>
+    <div class="step"><b>Save As</b> <code>14-online-retail-clean.xlsx</code>. Power BI should read this file, not a half-filtered view you forgot to clear.</div>
+  </section>
+  <section id="pbi">
+    <h2 class="t">5. Phase B — Power BI</h2>
+    <h3>Step 1 — Get data</h3>
+    <div class="pbi-box"><b>Get data → Excel</b> → the Online Retail sheet. InvoiceNo stays text so the leading C is kept.</div>
+    <h3>Step 2 — Power Query</h3>
+    <div class="pbi-box">Rename the main query to <code>Invoices</code>. Set the types from Step 1. Watch <b>Applied Steps</b>. Then <b>Close &amp; Apply</b>.
+    </div>
+    <h3>Step 3 — Model</h3>
+    <div class="pbi-box"><p>One table. A star schema is not required for this set.</p>
+    <p>Hide key columns you do not want on the report. A hidden column can still be used by a relationship.</p></div>
+    <h3>Step 4 — Measures</h3>
+    <p>Write these as <b>measures</b>, not calculated columns. Replace the placeholder filter with a real value from the column.</p>
+    <pre>Line Sales = SUMX(&#x27;Invoices&#x27;, &#x27;Invoices&#x27;[Quantity] * &#x27;Invoices&#x27;[UnitPrice])
+Row Count = COUNTROWS(&#x27;Invoices&#x27;)
+UnitPrice = SUM(&#x27;Invoices&#x27;[UnitPrice])</pre>
+    <h3>Step 5 — Visuals</h3>
+    <div class="pbi-box">
+      <ul>
+        <li>Cards for the measures in Step 4.</li>
+        <li>Bar chart: axis <code>Country</code>, value the main measure.</li>
+        <li>Line chart: axis <code>InvoiceDate</code>.</li>
+        <li>A slicer for each small category (Country).</li>
+        <li>Click a bar and confirm the other visuals filter. Use <b>Format → Edit interactions</b> if one visual should stay still.</li>
+      </ul>
+    </div>
+  </section>
+  <section id="sign">
+    <h2 class="t">6. Sign-off</h2>
+    <ul class="chk"><li>☐ Row count is <b>541,909</b> after the cleaning steps above.</li><li>☐ Total LineSales is <b>$9.75M</b>.</li><li>☐ The leading Country is <b>United Kingdom</b> at <b>$8.19M</b>.</li><li>☐ The date axis runs from <b>2010-12-01</b> to <b>2011-12-09</b>.</li><li>☐ Slicers filter every visual, and you can clear them back to the totals above.</li></ul>
+  </section>
+  <section id="stretch">
+    <h2 class="t">7. Stretch</h2>
+    <ul>
+      <li>A ReturnFlag column, LEFT(InvoiceNo, 1) = "C", and a card for net LineSales versus the return lines only.</li>
+      <li>Add a drill-through page that keeps the slicer filters and shows the underlying rows.</li>
+      <li>Sort a month-name column by the month number so the axis is not alphabetical.</li>
+    </ul>
+  </section>
+  <section id="mist">
+    <h2 class="t">8. Mistakes that hide the answer</h2>
+    <ul>
+      <li>Setting InvoiceNo to a whole number and losing the letter C.</li><li>Dropping blank customers and then wondering why the total moved.</li>
+      <li>Summing an ID column, or averaging a rate that was already a percent.</li>
+      <li>Leaving dates as text, then wondering why the axis sorts wrong.</li>
+    </ul>
+  </section>
+</div>
+<footer>UCI Online Retail. Daqing Chen, 2015. https://archive.ics.uci.edu/dataset/352/online+retail</footer>
+</body>
+</html>
