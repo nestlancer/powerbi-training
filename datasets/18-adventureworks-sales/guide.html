@@ -3,144 +3,336 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Practice · AdventureWorks sales</title>
+<title>18 · AdventureWorks Enterprise Star Schema — Beginner to Advanced Excel &amp; Power BI Guide</title>
 <style>
-  :root{--calc:#1d6f42;--calc-soft:#e7f3ec;--pbi:#caa400;--pbi-soft:#fff8e0;--ink:#1f2430;--muted:#5b6472;--line:#e3e7ee;--bg:#f6f8fb;--accent:#0b3d63;}
+  :root{
+    --calc:#1d6f42; --calc-soft:#e7f3ec;
+    --pbi:#b78900; --pbi-soft:#fff8e0;
+    --ink:#1f2430; --muted:#5b6472; --line:#e3e7ee; --bg:#f6f8fb;
+    --accent:#0b3d63; --danger:#c0392b; --danger-soft:#fdeaea;
+  }
   *{box-sizing:border-box;}
-  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.6;}
-  header{background:linear-gradient(120deg,#1d6f42,#0b3d63);color:#fff;padding:28px 26px;}
-  header h1{margin:0 0 6px;font-size:24px;}
-  header p{margin:0;max-width:860px;font-size:14.5px;}
-  header a{color:#fff;}
-  .wrap{max-width:1080px;margin:22px auto 70px;padding:0 22px;}
-  .facts{background:#fff;border:1px solid var(--line);border-left:5px solid var(--calc);border-radius:12px;padding:16px 20px;margin-bottom:22px;}
-  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.62;}
+  header{background:linear-gradient(125deg,#1d6f42 0%,#0f5132 48%,#0b3d63 100%);color:#fff;padding:32px 26px 28px;}
+  header .kicker{font-size:12px;text-transform:uppercase;letter-spacing:.8px;opacity:.88;font-weight:700;margin-bottom:6px;}
+  header h1{margin:0 0 8px;font-size:26px;letter-spacing:.2px;}
+  header p{margin:0;max-width:880px;font-size:14.8px;opacity:.95;}
+  header a{color:#fff;text-decoration:underline;}
+  .top-nav{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;align-items:center;}
+  .pill{display:inline-block;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.32);padding:4px 12px;border-radius:20px;font-size:12.5px;text-decoration:none;color:#fff;}
+  .wrap{max-width:1120px;margin:20px auto 70px;padding:0 22px;}
+  .prog-bar{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 18px;margin-bottom:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;position:sticky;top:10px;z-index:20;box-shadow:0 2px 8px rgba(15,23,42,.05);}
+  .prog-track{flex:1;min-width:180px;height:10px;background:#eef2f7;border-radius:99px;overflow:hidden;}
+  .prog-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--calc),#caa400);transition:width .25s;}
+  .prog-text{font-size:13px;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums;}
+  .btn-sm{border:1px solid var(--line);background:#fff;color:var(--ink);padding:5px 11px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;}
+  .btn-sm:hover{background:#f1f5f9;}
+  .toc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:20px;font-size:13.5px;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;}
+  .toc a{color:var(--accent);text-decoration:none;font-weight:600;}
+  .toc a:hover{text-decoration:underline;}
+  section{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px 26px;margin-bottom:20px;box-shadow:0 1px 2px rgba(20,30,50,.03);}
+  h2.t{font-size:20px;margin:0 0 14px;border-bottom:2px solid var(--calc);padding-bottom:8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  h2.t.pbi-h{border-bottom-color:#caa400;}
+  h3{font-size:16px;margin:20px 0 8px;color:var(--accent);}
+  h4{font-size:14.5px;margin:14px 0 6px;color:var(--ink);}
+  p{margin:8px 0;}
+  .facts{background:#fff;border:1px solid var(--line);border-left:5px solid var(--calc);border-radius:12px;padding:16px 18px;margin-bottom:18px;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:10px;}
   .stat{background:var(--calc-soft);border-radius:9px;padding:10px 12px;}
   .stat b{display:block;font-size:18px;color:var(--calc);}
   .stat span{font-size:12px;color:var(--muted);}
-  section{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 24px;margin-bottom:20px;}
-  h2.t{font-size:20px;margin:0 0 12px;border-bottom:2px solid var(--calc);padding-bottom:6px;}
-  h3{font-size:16px;margin:18px 0 8px;color:var(--accent);}
-  code{background:#eef2f7;padding:1px 6px;border-radius:5px;font-size:13px;font-family:"SF Mono",Consolas,monospace;}
-  pre{background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:10px;overflow:auto;font-size:13px;font-family:"SF Mono",Consolas,monospace;line-height:1.5;}
-  table{border-collapse:collapse;width:100%;margin:10px 0;font-size:13.5px;}
-  th,td{border:1px solid var(--line);padding:7px 10px;text-align:left;}
-  th{background:#f1f5f9;}
-  .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;color:#fff;}
-  .g{background:#27ae60;} .y{background:#e0a800;} .r{background:#c0392b;}
-  .req{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px dashed var(--line);}
+  .stat.warn{background:var(--danger-soft);}
+  .stat.warn b{color:var(--danger);}
+  code{background:#eef2f7;padding:2px 6px;border-radius:5px;font-size:12.8px;font-family:"SF Mono",Consolas,monospace;color:#0f172a;}
+  pre{background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:10px;overflow:auto;font-size:13px;font-family:"SF Mono",Consolas,monospace;line-height:1.55;margin:10px 0;}
+  table{border-collapse:collapse;width:100%;margin:12px 0;font-size:13.3px;}
+  th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top;}
+  th{background:#f1f5f9;font-weight:700;}
+  .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;color:#fff;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap;}
+  .g{background:#1d6f42;} .y{background:#d99000;} .r{background:#c0392b;} .b{background:#0b3d63;}
+  .req{display:flex;gap:12px;align-items:flex-start;padding:9px 0;border-bottom:1px dashed var(--line);}
   .req:last-child{border-bottom:none;}
-  .step{background:var(--calc-soft);border-radius:8px;padding:12px 14px;margin:10px 0;}
+  .step{background:var(--calc-soft);border-radius:10px;border:1px solid #cde4d6;padding:14px 16px;margin:12px 0;}
   .step b{color:var(--calc);}
-  .pbi-box{background:var(--pbi-soft);border-radius:8px;padding:12px 14px;margin:10px 0;}
-  .pbi-box b{color:#8a6a00;}
+  .pbi-box{background:var(--pbi-soft);border:1px solid #f2df9d;border-radius:10px;padding:14px 16px;margin:12px 0;}
+  .pbi-box b{color:#7c5d00;}
+  .chart-card{border:1px solid var(--line);border-left:5px solid #caa400;border-radius:10px;padding:14px 16px;margin:14px 0;background:#fcfdff;}
+  .chart-card h4{margin:0 0 8px;font-size:15.5px;color:var(--accent);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .wells{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin:10px 0;}
+  .well{background:#f4f6fa;border:1px solid var(--line);border-radius:7px;padding:7px 10px;font-size:12.8px;}
+  .well strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-bottom:2px;}
   .note{background:#fffaf0;border-left:4px solid #e0a800;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
-  .chk li{margin:4px 0;}
-  .toc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:20px;font-size:14px;}
-  .toc a{color:var(--accent);text-decoration:none;}
-  footer{text-align:center;color:var(--muted);font-size:12px;padding:10px 20px 28px;}
+  .warn-box{background:var(--danger-soft);border-left:4px solid var(--danger);border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
+  .wireframe{display:grid;grid-template-columns:repeat(12,1fr);gap:8px;background:#eef2f7;padding:14px;border-radius:12px;margin:12px 0;font-size:12px;}
+  .wf-box{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:10px;text-align:center;font-weight:600;color:var(--accent);}
+  .wf-box small{display:block;font-weight:400;color:var(--muted);margin-top:3px;font-size:11px;}
+  ul.task-list{list-style:none;padding:0;margin:10px 0;}
+  ul.task-list li{padding:5px 0;}
+  ul.task-list label{display:flex;gap:9px;align-items:flex-start;cursor:pointer;font-size:13.8px;}
+  ul.task-list input{margin-top:4px;width:16px;height:16px;flex:none;accent-color:var(--calc);}
+  footer{text-align:center;color:var(--muted);font-size:12.5px;padding:10px 20px 28px;}
   footer a{color:#3d4a5c;}
+  @media(max-width:740px){
+    .wrap{padding:0 12px;}
+    section{padding:16px 16px;}
+    .wireframe{grid-template-columns:1fr 1fr;}
+    .wf-box{grid-column:span 2 !important;}
+  }
 </style>
 </head>
 <body>
+
 <header>
-  <h1>18 · AdventureWorks sales</h1>
-  <p>The full AdventureWorks sales model: fact sales plus product, customer, reseller, territory, and date. Figures below were computed from the file in this folder. <a href="../index.html">All practice sets</a></p>
-</header>
-<div class="wrap">
-  <div class="toc"><b>Jump to:</b>
-    <a href="#profile">Profile</a> ·
-    <a href="#brief">Brief</a> ·
-    <a href="#req">Requirements</a> ·
-    <a href="#calc">Excel</a> ·
-    <a href="#pbi">Power BI</a> ·
-    <a href="#sign">Sign-off</a> ·
-    <a href="#stretch">Stretch</a>
+  <div class="kicker">Practice Set 18 of 20 · PL-300 Certification 7-Table Star Schema, Fiscal YTD &amp; KPI Visuals</div>
+  <h1>18 · AdventureWorks Enterprise Sales — 7-Table Kimball Star Schema &amp; Fiscal Time Intelligence</h1>
+  <p>Build the exact <b>7-table Enterprise Data Warehouse Star Schema</b> tested on Microsoft's PL-300 Power BI Data Analyst exam (<code>121,253</code> fact lines, <code>$109.81M</code> Sales)! Wire 6 dimensions around <code>Sales</code>, unlock <b>June-30 Fiscal YTD (<code>TOTALYTD</code>)</b>, build Power BI's native <b>KPI Visual</b>, and expose why <b>Resellers drive 73.3% of Revenue ($80.45M) yet only 3.75% of Profit ($470K)!</b></p>
+  <div class="top-nav">
+    <a class="pill" href="../index.html">← All 20 Practice Sets</a>
+    <a class="pill" href="../../index.html">← Main Excel &amp; Power BI Outline</a>
+    <span class="pill">Skills Taught: 7-Table Star Schema · Role-Playing DateKey · Fiscal YTD ("6/30") · Built-In KPI Visual</span>
   </div>
+</header>
+
+<div class="wrap">
+
+  <div class="prog-bar">
+    <span class="prog-text" id="progText">0 / 0 steps completed</span>
+    <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+    <button class="btn-sm" type="button" onclick="resetChecks()">Reset checklist</button>
+  </div>
+
+  <div class="toc">
+    <b>Step-by-Step Map:</b>
+    <a href="#profile">1. 7-Table Warehouse Audit</a> ·
+    <a href="#brief">2. Client Brief</a> ·
+    <a href="#req">3. Requirements</a> ·
+    <a href="#excel">4. Phase A: Excel Power Pivot</a> ·
+    <a href="#pbi">5. Phase B: Power BI 7-Table Star &amp; Fiscal DAX</a> ·
+    <a href="#sign">6. Sign-Off</a> ·
+    <a href="#stretch">7. Stretch</a> ·
+    <a href="#mistakes">8. Common Mistakes</a>
+  </div>
+
+  <!-- 1. PROFILE -->
   <section id="profile">
-    <h2 class="t">1. Verified profile</h2>
-    <div class="facts"><div class="grid"><div class="stat"><b>121,253</b><span>Rows</span></div><div class="stat"><b>$109.81M</b><span>Total Sales Amount</span></div></div></div>
-    <p>File: <code>AdventureWorks-Sales.xlsx</code>. Fact table for the steps: <code>Sales_data</code>, renamed to <code>Sales</code> in Power BI.</p>
-    <h3>Tables in this set</h3><ul><li><code>Sales Order_data</code> — 121,253 rows. Columns: Channel, SalesOrderLineKey, Sales Order, Sales Order Line</li><li><code>Sales Territory_data</code> — 11 rows. Columns: SalesTerritoryKey, Region, Country, Group</li><li><code>Sales_data</code> — 121,253 rows. Columns: SalesOrderLineKey, ResellerKey, CustomerKey, ProductKey, OrderDateKey, DueDateKey, ShipDateKey, SalesTerritoryKey, Order Quantity, Unit Price, Extended Amount, Unit Price Discount Pct</li><li><code>Reseller_data</code> — 702 rows. Columns: ResellerKey, Reseller ID, Business Type, Reseller, City, State-Province, Country-Region, Postal Code</li><li><code>Date_data</code> — 1,461 rows. Columns: DateKey, Date, Fiscal Year, Fiscal Quarter, Month, Full Date, MonthKey</li><li><code>Product_data</code> — 397 rows. Columns: ProductKey, SKU, Product, Standard Cost, Color, List Price, Model, Subcategory, Category</li><li><code>Customer_data</code> — 18,485 rows. Columns: CustomerKey, Customer ID, Customer, City, State-Province, Country-Region, Postal Code</li></ul>
-    
-    <div class="note">Sales_data is one row per order line. Sales Amount is the measure. Category lives on Product. Year lives on Date. OrderDateKey joins to DateKey — the names are not the same, so Power BI will not auto-detect that one.</div>
+    <h2 class="t">1. Verified 7-Table Data Warehouse Audit (<code>AdventureWorks-Sales.xlsx</code>)</h2>
+    <div class="facts">
+      <div class="grid">
+        <div class="stat"><b>121,253</b><span>Sales Fact Rows (FY2018–FY2020)</span></div>
+        <div class="stat"><b>$109,809,274</b><span>Total Sales ($97.26M Cost)</span></div>
+        <div class="stat"><b>$12,551,366</b><span>Gross Profit (11.43% Margin)</span></div>
+        <div class="stat warn"><b>0.58% Margin!</b><span>Reseller B2B ($80.45M → $470K GP!)</span></div>
+        <div class="stat"><b>41.15% Margin!</b><span>Internet B2C ($29.36M → $12.08M GP!)</span></div>
+        <div class="stat"><b>$94.62M</b><span>Bikes Category (86.2% of Sales)</span></div>
+      </div>
+    </div>
+
+    <div class="note">
+      <b>Why Do <code>Customer_data</code> and <code>Reseller_data</code> Both Start With Key <code>-1 = [Not Applicable]</code>?</b><br>
+      In a Kimball Enterprise Data Warehouse, every fact row MUST have a valid Foreign Key (never <code>null</code>!). When a sale is B2B Wholesale (<code>Reseller</code>), its <code>CustomerKey = -1</code>; when a sale is Direct-to-Consumer (<code>Internet</code>), its <code>ResellerKey = -1</code>! Never delete the <code>-1</code> row in Power Query — it preserves 100% referential integrity across all 121,253 rows!
+    </div>
+
+    <h3>All 7 Warehouse Sheets &amp; Surrogate Join Keys</h3>
+    <table>
+      <tr><th>Sheet (Rename To)</th><th>Rows</th><th>Primary Key</th><th>Connects to <code>Sales</code> Foreign Key</th></tr>
+      <tr><td><code>Sales_data</code> → <b>Sales</b></td><td><b>121,253</b></td><td>Fact Table</td><td>Hide all <code>*Key</code> columns in Report view!</td></tr>
+      <tr><td><code>Date_data</code> → <b>Date</b></td><td>1,461</td><td><code>DateKey</code> (<code>20170701</code>)</td><td><code>OrderDateKey</code> (<b>Active</b>) + <code>ShipDateKey</code> &amp; <code>DueDateKey</code> (<b>Inactive</b>)</td></tr>
+      <tr><td><code>Product_data</code> → <b>Product</b></td><td>397</td><td><code>ProductKey</code></td><td><code>Sales[ProductKey]</code> (Hierarchy: <code>Category → Subcategory → Model → Product</code>)</td></tr>
+      <tr><td><code>Customer_data</code> → <b>Customer</b></td><td>18,485</td><td><code>CustomerKey</code> (incl. <code>-1</code>)</td><td><code>Sales[CustomerKey]</code></td></tr>
+      <tr><td><code>Reseller_data</code> → <b>Reseller</b></td><td>702</td><td><code>ResellerKey</code> (incl. <code>-1</code>)</td><td><code>Sales[ResellerKey]</code></td></tr>
+      <tr><td><code>Sales Territory_data</code> → <b>Territory</b></td><td>11</td><td><code>SalesTerritoryKey</code></td><td><code>Sales[SalesTerritoryKey]</code> (<code>Group → Country → Region</code>)</td></tr>
+      <tr><td><code>Sales Order_data</code> → <b>Sales Order</b></td><td>121,253</td><td><code>SalesOrderLineKey</code></td><td><code>Sales[SalesOrderLineKey]</code> (1:1 or 1:* — holds <code>Channel</code>: Reseller vs Internet!)</td></tr>
+    </table>
   </section>
+
+  <!-- 2. BRIEF -->
   <section id="brief">
-    <h2 class="t">2. The client brief</h2>
-    <p><b>Who:</b> AdventureWorks Cycles.</p>
-    <p><b>The ask:</b> <i>Sales and margin by category, by territory, and by year. The product name is not on the sales sheet. Go and get it through the relationship.</i></p>
+    <h2 class="t">2. Real-World Client Brief</h2>
+    <p><b>Client:</b> CFO &amp; VP of Global Sales, AdventureWorks Cycles.</p>
+    <p><b>The Ask:</b> <i>"Top-line revenue more than doubled from FY2018 ($23.86M) to FY2020 ($51.88M), yet overall Gross Margin sits at just 11.43%! Wire up our 7-table warehouse on a July-to-June Fiscal Calendar, compare Ordered vs. Shipped revenue, and show the Board why our $80.45M Reseller channel barely breaks even while our $29.36M Internet store generates 96% of company profit!"</i></p>
   </section>
+
+  <!-- 3. REQUIREMENTS -->
   <section id="req">
-    <h2 class="t">3. Requirements</h2>
-    <div class="req"><span class="tag g">Beginner</span><div>KPI strip — row count, Sales Amount.</div></div><div class="req"><span class="tag y">Inter.</span><div>Relationships between the tables before you build visuals.</div></div><div class="req"><span class="tag r">Advan.</span><div>Slicers that cross-filter every visual on the page.</div></div>
+    <h2 class="t">3. Project Requirements (Beginner → Advanced)</h2>
+    <div class="req"><span class="tag g">Beginner</span><div><b>Import All 7 Sheets, Strip <code>_data</code> Suffixes &amp; Hide Surrogate Keys:</b> Keep Model view clean and user-friendly.</div></div>
+    <div class="req"><span class="tag y">Inter.</span><div><b>Wire 6 Star-Schema Dimensions + 2 Inactive Role-Playing Date Joins:</b> Active <code>OrderDateKey</code> + Inactive <code>ShipDateKey</code> &amp; <code>DueDateKey</code>; sort <code>Date[Month]</code> by <code>Date[MonthKey]</code>!</div></div>
+    <div class="req"><span class="tag r">Advan.</span><div><b>June-30 Fiscal Time Intelligence + Power BI KPI Visual:</b> Write <code>TOTALYTD([Total Sales], 'Date'[Date], "6/30")</code>, Prior-Year Sales, YoY %, and configure Power BI's native <b>KPI visual</b>!</div></div>
+    <div class="req"><span class="tag y">Inter.</span><div><b>B2B Reseller vs. B2C Internet Margin Diagnosis + 4-Level Product Hierarchy Matrix.</b></div></div>
   </section>
-  <section id="calc">
-    <h2 class="t">4. Phase A — Microsoft Excel</h2>
-    <p>Goal: open the file cleanly, add only the helper columns you need, and prove one total with a PivotTable before you touch Power BI.</p>
-    
-    <h3>Step 1 — Open it the right way</h3>
-    <div class="step"><b>Open</b> <code>AdventureWorks-Sales.xlsx</code>. For the Excel pivot, start on <code>Sales_data</code>. You can VLOOKUP ProductKey against the Product sheet if you want category before you leave Excel.<br><b>Formats:</b> <code>Extended Amount</code> → Number (2 decimals); <code>Sales Amount</code> → Number (2 decimals); <code>Total Product Cost</code> → Number (2 decimals); <code>Unit Price</code> → Number (2 decimals). Then <b>View → Freeze Panes → Freeze Top Row</b>.</div>
-    <h3>Step 2 — Look for dirt</h3>
-    <div class="step"><ul><li>OrderDateKey is an integer key (such as 20190701), not a date. The real date is on Date_data.</li><li>Sales Amount is already extended. Do not also multiply Unit Price by Order Quantity unless you are checking the file.</li><li>Unit Price Discount Pct is a rate. Do not sum it.</li></ul></div>
-    
-        <h3>Step 3 — No extra formula required</h3>
-        <div class="step">The columns you need are already on the sheet. Use the pivot in the next step to prove the totals before you leave Excel.</div>
-    <h3>Step 4 — Pivot check</h3>
-    <div class="step">Select the data → <b>Insert → PivotTable</b>. Rows = <code>SalesOrderLineKey</code>.
-    Values = <b>Sum of Sales Amount</b>.
-    The grand total must be <b>$109.81M</b>. If it is not, the filter or the number format is wrong — fix that before Power BI.
+
+  <!-- 4. EXCEL -->
+  <section id="excel">
+    <h2 class="t">4. Phase A — Step-by-Step in Microsoft Excel (Data Model / Power Pivot)</h2>
+
+    <h3>Step A1 — Verify Fiscal Year &amp; Channel Totals</h3>
+    <div class="step">
+      Open <code>datasets/18-adventureworks-sales/data/AdventureWorks-Sales.xlsx</code>. In <code>Sales_data</code>, verify column sums:<br>
+      • <code>=SUM(Sales_data!O2:O121254)</code> → <b>$109,809,274.20</b> (<code>Sales Amount</code>)<br>
+      • <code>=SUM(Sales_data!N2:N121254)</code> → <b>$97,257,907.95</b> (<code>Total Product Cost</code>)<br>
+      • Subtract → <b>$12,551,366.25 Gross Profit (11.43%)</b>! You can also load all 7 sheets into Excel's <b>Power Pivot Data Model</b> to practice building the exact same Star Schema inside Excel!
     </div>
-    <h3>Step 5 — Save</h3>
-    <div class="step"><b>Save As</b> <code>18-adventureworks-sales-clean.xlsx</code>. Power BI should read this file, not a half-filtered view you forgot to clear.</div>
+
+    <ul class="task-list">
+      <li><label><input type="checkbox"> Verified $109,809,274.20 Sales, $97,257,907.95 Cost, and $12,551,366.25 Gross Profit (11.43%) in Excel.</label></li>
+    </ul>
   </section>
+
+  <!-- 5. POWER BI -->
   <section id="pbi">
-    <h2 class="t">5. Phase B — Power BI</h2>
-    <h3>Step 1 — Get data</h3>
-    <div class="pbi-box"><b>Get data → Excel</b> and load Sales_data, Product_data, Customer_data, Reseller_data, Date_data, and Sales Territory_data.</div>
-    <h3>Step 2 — Power Query</h3>
-    <div class="pbi-box">Rename the main query to <code>Sales</code>. Set the types from Step 1. Watch <b>Applied Steps</b>. Then <b>Close &amp; Apply</b>.
-    </div>
-    <h3>Step 3 — Model</h3>
-    <div class="pbi-box"><ul><li><code>Sales Order_data[SalesOrderLineKey]</code> → <code>Sales[SalesOrderLineKey]</code> (one-to-many)</li><li><code>Sales Territory_data[SalesTerritoryKey]</code> → <code>Sales[SalesTerritoryKey]</code> (one-to-many)</li><li><code>Reseller_data[ResellerKey]</code> → <code>Sales[ResellerKey]</code> (one-to-many)</li><li><code>Product_data[ProductKey]</code> → <code>Sales[ProductKey]</code> (one-to-many)</li><li><code>Customer_data[CustomerKey]</code> → <code>Sales[CustomerKey]</code> (one-to-many)</li><li><code>Date_data[DateKey]</code> → <code>Sales[OrderDateKey]</code> (one-to-many)</li></ul>
-    <p>Hide key columns you do not want on the report. A hidden column can still be used by a relationship.</p></div>
-    <h3>Step 4 — Measures</h3>
-    <p>Write these as <b>measures</b>, not calculated columns. Replace the placeholder filter with a real value from the column.</p>
-    <pre>SalesAmount = SUM(&#x27;Sales&#x27;[Sales Amount])
-Row Count = COUNTROWS(&#x27;Sales&#x27;)
-ExtendedAmount = SUM(&#x27;Sales&#x27;[Extended Amount])
-Margin % = DIVIDE([SalesAmount], [ExtendedAmount])</pre>
-    <h3>Step 5 — Visuals</h3>
+    <h2 class="t pbi-h">5. Phase B — Complete Power BI 7-Table Star Schema &amp; Fiscal DAX</h2>
+
+    <h3>Stage 1 &amp; 2 — Load &amp; Polish the 7 Warehouse Tables</h3>
     <div class="pbi-box">
-      <ul>
-        <li>Cards for the measures in Step 4.</li>
-        
-        
-        <li>A slicer for each small category (any low-cardinality column).</li>
-        <li>Click a bar and confirm the other visuals filter. Use <b>Format → Edit interactions</b> if one visual should stay still.</li>
-      </ul>
+      <ol style="margin:0;padding-left:20px;">
+        <li>Click <b>Home → Excel workbook</b> → select <code>data/AdventureWorks-Sales.xlsx</code> → check all 7 sheets → <b>Transform Data</b>.</li>
+        <li>Rename each query to remove <code>_data</code>: <code>Sales</code>, <code>Date</code>, <code>Product</code>, <code>Customer</code>, <code>Reseller</code>, <code>Territory</code>, and <code>Sales Order</code>.</li>
+        <li>Verify <code>Date[Date]</code> is Data Type = <b>Date</b>, all <code>*Key</code> columns are <b>Whole Number</b>, and <code>Sales Amount</code> / <code>Total Product Cost</code> are <b>Fixed decimal number ($)</b>. Click <b>Home → Close &amp; Apply</b>.</li>
+      </ol>
+    </div>
+
+    <h3>Stage 3 — Wire the 7-Table Star Schema + Mark Date Table</h3>
+    <div class="pbi-box">
+      1. In <b>Model view</b>, verify (or drag) 1-to-Many single-direction relationships from <code>Product[ProductKey]</code>, <code>Customer[CustomerKey]</code>, <code>Reseller[ResellerKey]</code>, <code>Territory[SalesTerritoryKey]</code>, and <code>Sales Order[SalesOrderLineKey]</code> (ensure <code>Sales Order</code> filters <code>Sales</code>!) into <code>Sales</code>.<br>
+      2. Drag <code>Date[DateKey]</code> → <code>Sales[OrderDateKey]</code> (<b>Active</b>), then drag <code>Date[DateKey]</code> → <code>Sales[ShipDateKey]</code> (<b>Inactive</b>) and <code>Sales[DueDateKey]</code> (<b>Inactive</b>).<br>
+      3. Right-click <code>Date</code> → <b>Mark as date table</b> → choose column <code>Date[Date]</code>! And select <code>Date[Month]</code> → <b>Sort by column → <code>MonthKey</code></b>!<br>
+      4. Create a formal Hierarchy on <code>Product</code>: right-click <code>Category</code> → <b>Create hierarchy</b> → add <code>Subcategory</code>, <code>Model</code>, and <code>Product</code>!
+    </div>
+
+    <h3>Stage 4 — Enterprise Financial &amp; Fiscal Time Intelligence DAX</h3>
+<pre>Total Sales = SUM ( 'Sales'[Sales Amount] )
+// Check: $109,809,274.20
+
+Total Cost = SUM ( 'Sales'[Total Product Cost] )
+// Check: $97,257,907.95
+
+Gross Profit = [Total Sales] - [Total Cost]
+// Check: $12,551,366.25
+
+Gross Margin % = DIVIDE ( [Gross Profit], [Total Sales] )
+// Check: 11.43% (Internet = 41.15% vs Reseller = 0.58%!)
+
+// Role-Playing Date Measure (Shipped Revenue vs Ordered Revenue!)
+Shipped Sales =
+CALCULATE (
+    [Total Sales],
+    USERELATIONSHIP ( 'Date'[DateKey], 'Sales'[ShipDateKey] )
+)
+
+// Fiscal Year-to-Date (AdventureWorks Fiscal Year ends June 30!)
+Sales Fiscal YTD =
+TOTALYTD ( [Total Sales], 'Date'[Date], "6/30" )
+
+Sales PY =
+CALCULATE ( [Total Sales], SAMEPERIODLASTYEAR ( 'Date'[Date] ) )
+
+Sales YoY % =
+DIVIDE ( [Total Sales] - [Sales PY], [Sales PY] )
+
+Target Sales (110% of PY) = [Sales PY] * 1.10</pre>
+
+    <h3>Stage 5 — Power BI Charts Journey: Build the 5-Visual Executive Star-Schema Suite</h3>
+
+    <div class="wireframe">
+      <div class="wf-box" style="grid-column:span 12;">Header + Slicers: Date[Fiscal Year] (FY2018 · FY2019 · FY2020) · Sales Order[Channel] · Territory[Group]</div>
+      <div class="wf-box" style="grid-column:span 4;">Visual 1A: Built-In KPI Visual<small>Total Sales vs Target (110% PY) Over Month Trend!</small></div>
+      <div class="wf-box" style="grid-column:span 4;">Card: Gross Profit &amp; Margin %<small>$12.55M (11.43%)</small></div>
+      <div class="wf-box" style="grid-column:span 4;">Card: Shipped Sales<small>Powered by USERELATIONSHIP</small></div>
+      <div class="wf-box" style="grid-column:span 6;">Visual 2: Channel Profit Paradox Combo<small>Reseller: $80.45M Sales / 0.58% Margin vs Internet: $29.36M / 41.15%!</small></div>
+      <div class="wf-box" style="grid-column:span 6;">Visual 3: Ordered vs Shipped Monthly Line<small>Compare Active OrderDate vs Inactive ShipDate!</small></div>
+      <div class="wf-box" style="grid-column:span 7;">Visual 4: 4-Level Product Hierarchy Matrix<small>Category → Subcategory → Model (Sales, GP, Margin % Bars)</small></div>
+      <div class="wf-box" style="grid-column:span 5;">Visual 5: Sales Territory Group &amp; Country Bar<small>North America · Europe · Pacific</small></div>
+    </div>
+
+    <div class="chart-card">
+      <h4><span class="tag r">Visual 1A</span> Executive Goal Tracking — Native Power BI KPI Visual (First Time in This Course!)</h4>
+      <p><b>Where to find it:</b> Click the <b>KPI</b> icon (green up-arrow + red exclamation icon next to Gauge/Card in Visualizations)!</p>
+      <div class="wells">
+        <div class="well"><strong>Value</strong><code>[Total Sales]</code></div>
+        <div class="well"><strong>Trend axis</strong><code>Date[Month]</code> (sorted by <code>MonthKey</code>!)</div>
+        <div class="well"><strong>Target</strong><code>[Target Sales (110% of PY)]</code></div>
+      </div>
+      <p>Select <code>FY2020</code> in your Fiscal Year slicer: the KPI card renders a crisp background area sparkline across the 12 fiscal months plus green/red % variance against Target!</p>
+    </div>
+
+    <div class="chart-card">
+      <h4><span class="tag y">Visual 2, 3 &amp; 4</span> Channel Margin Paradox Combo + Ordered-vs-Shipped Line + Hierarchy Matrix</h4>
+      <p>1. <b>Line and clustered column chart:</b> X-axis = <code>Sales Order[Channel]</code>, Columns = <code>[Total Sales]</code> and <code>[Gross Profit]</code>, Line = <code>[Gross Margin %]</code> — exposes the <b>0.58% Reseller margin</b> vs. <b>41.15% Internet margin</b>!<br>
+      2. <b>Matrix:</b> Rows = <code>Product Hierarchy</code> (`Category → Subcategory → Model`), Values = `[Total Sales]`, `[Gross Profit]`, `[Gross Margin %]` (`Bikes = $94.62M / 11.11%`, `Accessories = $1.27M / 49.88%`!).</p>
+    </div>
+
+    <ul class="task-list">
+      <li><label><input type="checkbox"> Wired all 7 tables into a clean Star Schema, marked <code>Date</code> table, and sorted <code>Month</code> by <code>MonthKey</code>.</label></li>
+      <li><label><input type="checkbox"> Built Fiscal YTD (<code>"6/30"</code>), Native KPI Visual, Channel Paradox Combo, and 4-Level Product Matrix.</label></li>
+    </ul>
+  </section>
+
+  <!-- 6. SIGN-OFF -->
+  <section id="sign">
+    <h2 class="t">6. Client Sign-Off Checklist</h2>
+    <ul class="task-list">
+      <li><label><input type="checkbox"> Total Sales = <b>$109,809,274.20</b>; Total Cost = <b>$97,257,907.95</b>; Gross Profit = <b>$12,551,366.25 (11.43%)</b>.</label></li>
+      <li><label><input type="checkbox"> Fiscal Years match: <b>FY2018 = $23,860,891.17</b>, <b>FY2019 = $34,070,108.50</b>, <b>FY2020 = $51,878,274.54</b>.</label></li>
+      <li><label><input type="checkbox"> Channel split matches: <b>Reseller = $80.45M (0.58% margin)</b> vs. <b>Internet = $29.36M (41.15% margin)</b>.</label></li>
+    </ul>
+  </section>
+
+  <!-- 7. STRETCH -->
+  <section id="stretch">
+    <h2 class="t">7. Stretch Challenges</h2>
+    <ul>
+      <li><b>Row-Level Security (RLS) Territory Roles:</b> Click <b>Modeling → Manage roles</b> → create <code>NorthAmericaManager</code> with filter <code>'Territory'[Group] = "North America"</code> → test via <b>View as</b>! (A guaranteed PL-300 exam skill!)</li>
+    </ul>
+  </section>
+
+  <!-- 8. MISTAKES -->
+  <section id="mistakes">
+    <h2 class="t">8. Trainer's Troubleshooting: Common Beginner Mistakes</h2>
+    <div class="warn-box">
+      <b>Mistake 1 — Deleting the <code>-1 ([Not Applicable])</code> rows in Customer or Reseller:</b> Breaks referential integrity and causes blank slices in your visuals!
+    </div>
+    <div class="warn-box">
+      <b>Mistake 2 — Omitting <code>"6/30"</code> in <code>TOTALYTD</code>:</b> Defaults to Dec 31 calendar year-end instead of AdventureWorks' June 30 fiscal year-end!
     </div>
   </section>
-  <section id="sign">
-    <h2 class="t">6. Sign-off</h2>
-    <ul class="chk"><li>☐ Row count is <b>121,253</b> after the cleaning steps above.</li><li>☐ Total Sales Amount is <b>$109.81M</b>.</li><li>☐ Slicers filter every visual, and you can clear them back to the totals above.</li><li>☐ Every relationship in the model view is one-to-many, from the lookup table to the fact table.</li></ul>
-  </section>
-  <section id="stretch">
-    <h2 class="t">7. Stretch</h2>
-    <ul>
-      <li>Margin = DIVIDE(SUM(Sales[Sales Amount]) - SUM(Sales[Total Product Cost]), SUM(Sales[Sales Amount])), by Category.</li>
-      <li>Add a drill-through page that keeps the slicer filters and shows the underlying rows.</li>
-      <li>Sort a month-name column by the month number so the axis is not alphabetical.</li>
-    </ul>
-  </section>
-  <section id="mist">
-    <h2 class="t">8. Mistakes that hide the answer</h2>
-    <ul>
-      <li>Dragging Category onto the canvas before the Product relationship exists.</li><li>Relating the date table on OrderDateKey without noticing the column on the date table is called DateKey.</li>
-      <li>Summing an ID column, or averaging a rate that was already a percent.</li>
-      <li>Leaving dates as text, then wondering why the axis sorts wrong.</li>
-    </ul>
-  </section>
+
 </div>
-<footer>Microsoft AdventureWorks sample workbook. https://github.com/microsoft/powerbi-desktop-samples</footer>
+
+<footer>
+  Source: Microsoft AdventureWorks DW2020 Sample (MIT License) · Manually verified against all 7 sheets of <code>data/AdventureWorks-Sales.xlsx</code> · Works 100% offline.
+</footer>
+
+<script>
+(function(){
+  var KEY = 'pbi_guide_18_v2';
+  var boxes = document.querySelectorAll('input[type=checkbox]');
+  function update(){
+    var done = 0;
+    boxes.forEach(function(b){ if(b.checked) done++; });
+    var pct = boxes.length ? Math.round((done / boxes.length) * 100) : 0;
+    document.getElementById('progText').textContent = done + ' / ' + boxes.length + ' steps completed (' + pct + '%)';
+    document.getElementById('progFill').style.width = pct + '%';
+  }
+  function save(){
+    var state = [];
+    boxes.forEach(function(b){ state.push(b.checked ? 1 : 0); });
+    try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){}
+    update();
+  }
+  try{
+    var s = JSON.parse(localStorage.getItem(KEY) || '[]');
+    boxes.forEach(function(b, i){ if(s[i] !== undefined) b.checked = !!s[i]; });
+  }catch(e){}
+  boxes.forEach(function(b){ b.addEventListener('change', save); });
+  window.resetChecks = function(){
+    if(confirm('Reset all checkmarks for Practice Set 18?')){
+      boxes.forEach(function(b){ b.checked = false; });
+      save();
+    }
+  };
+  update();
+})();
+</script>
 </body>
 </html>

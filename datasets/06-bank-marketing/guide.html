@@ -3,149 +3,406 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Practice · Bank marketing</title>
+<title>06 · Bank Marketing Campaign — Beginner to Advanced Excel &amp; Power BI Guide</title>
 <style>
-  :root{--calc:#1d6f42;--calc-soft:#e7f3ec;--pbi:#caa400;--pbi-soft:#fff8e0;--ink:#1f2430;--muted:#5b6472;--line:#e3e7ee;--bg:#f6f8fb;--accent:#0b3d63;}
+  :root{
+    --calc:#1d6f42; --calc-soft:#e7f3ec;
+    --pbi:#b78900; --pbi-soft:#fff8e0;
+    --ink:#1f2430; --muted:#5b6472; --line:#e3e7ee; --bg:#f6f8fb;
+    --accent:#0b3d63; --danger:#c0392b; --danger-soft:#fdeaea;
+  }
   *{box-sizing:border-box;}
-  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.6;}
-  header{background:linear-gradient(120deg,#1d6f42,#0b3d63);color:#fff;padding:28px 26px;}
-  header h1{margin:0 0 6px;font-size:24px;}
-  header p{margin:0;max-width:860px;font-size:14.5px;}
-  header a{color:#fff;}
-  .wrap{max-width:1080px;margin:22px auto 70px;padding:0 22px;}
-  .facts{background:#fff;border:1px solid var(--line);border-left:5px solid var(--calc);border-radius:12px;padding:16px 20px;margin-bottom:22px;}
-  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.62;}
+  header{background:linear-gradient(125deg,#1d6f42 0%,#0f5132 48%,#0b3d63 100%);color:#fff;padding:32px 26px 28px;}
+  header .kicker{font-size:12px;text-transform:uppercase;letter-spacing:.8px;opacity:.88;font-weight:700;margin-bottom:6px;}
+  header h1{margin:0 0 8px;font-size:26px;letter-spacing:.2px;}
+  header p{margin:0;max-width:880px;font-size:14.8px;opacity:.95;}
+  header a{color:#fff;text-decoration:underline;}
+  .top-nav{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;align-items:center;}
+  .pill{display:inline-block;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.32);padding:4px 12px;border-radius:20px;font-size:12.5px;text-decoration:none;color:#fff;}
+  .wrap{max-width:1120px;margin:20px auto 70px;padding:0 22px;}
+  .prog-bar{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 18px;margin-bottom:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;position:sticky;top:10px;z-index:20;box-shadow:0 2px 8px rgba(15,23,42,.05);}
+  .prog-track{flex:1;min-width:180px;height:10px;background:#eef2f7;border-radius:99px;overflow:hidden;}
+  .prog-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--calc),#caa400);transition:width .25s;}
+  .prog-text{font-size:13px;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums;}
+  .btn-sm{border:1px solid var(--line);background:#fff;color:var(--ink);padding:5px 11px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;}
+  .btn-sm:hover{background:#f1f5f9;}
+  .toc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:20px;font-size:13.5px;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;}
+  .toc a{color:var(--accent);text-decoration:none;font-weight:600;}
+  .toc a:hover{text-decoration:underline;}
+  section{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px 26px;margin-bottom:20px;box-shadow:0 1px 2px rgba(20,30,50,.03);}
+  h2.t{font-size:20px;margin:0 0 14px;border-bottom:2px solid var(--calc);padding-bottom:8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  h2.t.pbi-h{border-bottom-color:#caa400;}
+  h3{font-size:16px;margin:20px 0 8px;color:var(--accent);}
+  h4{font-size:14.5px;margin:14px 0 6px;color:var(--ink);}
+  p{margin:8px 0;}
+  .facts{background:#fff;border:1px solid var(--line);border-left:5px solid var(--calc);border-radius:12px;padding:16px 18px;margin-bottom:18px;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:10px;}
   .stat{background:var(--calc-soft);border-radius:9px;padding:10px 12px;}
   .stat b{display:block;font-size:18px;color:var(--calc);}
   .stat span{font-size:12px;color:var(--muted);}
-  section{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 24px;margin-bottom:20px;}
-  h2.t{font-size:20px;margin:0 0 12px;border-bottom:2px solid var(--calc);padding-bottom:6px;}
-  h3{font-size:16px;margin:18px 0 8px;color:var(--accent);}
-  code{background:#eef2f7;padding:1px 6px;border-radius:5px;font-size:13px;font-family:"SF Mono",Consolas,monospace;}
-  pre{background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:10px;overflow:auto;font-size:13px;font-family:"SF Mono",Consolas,monospace;line-height:1.5;}
-  table{border-collapse:collapse;width:100%;margin:10px 0;font-size:13.5px;}
-  th,td{border:1px solid var(--line);padding:7px 10px;text-align:left;}
-  th{background:#f1f5f9;}
-  .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;color:#fff;}
-  .g{background:#27ae60;} .y{background:#e0a800;} .r{background:#c0392b;}
-  .req{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px dashed var(--line);}
+  .stat.warn{background:var(--danger-soft);}
+  .stat.warn b{color:var(--danger);}
+  code{background:#eef2f7;padding:2px 6px;border-radius:5px;font-size:12.8px;font-family:"SF Mono",Consolas,monospace;color:#0f172a;}
+  pre{background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:10px;overflow:auto;font-size:13px;font-family:"SF Mono",Consolas,monospace;line-height:1.55;margin:10px 0;}
+  table{border-collapse:collapse;width:100%;margin:12px 0;font-size:13.3px;}
+  th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top;}
+  th{background:#f1f5f9;font-weight:700;}
+  .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;color:#fff;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap;}
+  .g{background:#1d6f42;} .y{background:#d99000;} .r{background:#c0392b;} .b{background:#0b3d63;}
+  .req{display:flex;gap:12px;align-items:flex-start;padding:9px 0;border-bottom:1px dashed var(--line);}
   .req:last-child{border-bottom:none;}
-  .step{background:var(--calc-soft);border-radius:8px;padding:12px 14px;margin:10px 0;}
+  .step{background:var(--calc-soft);border:1px solid #cde4d6;border-radius:10px;padding:14px 16px;margin:12px 0;}
   .step b{color:var(--calc);}
-  .pbi-box{background:var(--pbi-soft);border-radius:8px;padding:12px 14px;margin:10px 0;}
-  .pbi-box b{color:#8a6a00;}
+  .pbi-box{background:var(--pbi-soft);border:1px solid #f2df9d;border-radius:10px;padding:14px 16px;margin:12px 0;}
+  .pbi-box b{color:#7c5d00;}
+  .chart-card{border:1px solid var(--line);border-left:5px solid #caa400;border-radius:10px;padding:14px 16px;margin:14px 0;background:#fcfdff;}
+  .chart-card h4{margin:0 0 8px;font-size:15.5px;color:var(--accent);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .wells{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin:10px 0;}
+  .well{background:#f4f6fa;border:1px solid var(--line);border-radius:7px;padding:7px 10px;font-size:12.8px;}
+  .well strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-bottom:2px;}
   .note{background:#fffaf0;border-left:4px solid #e0a800;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
-  .chk li{margin:4px 0;}
-  .toc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:20px;font-size:14px;}
-  .toc a{color:var(--accent);text-decoration:none;}
-  footer{text-align:center;color:var(--muted);font-size:12px;padding:10px 20px 28px;}
+  .warn-box{background:var(--danger-soft);border-left:4px solid var(--danger);border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
+  .wireframe{display:grid;grid-template-columns:repeat(12,1fr);gap:8px;background:#eef2f7;padding:14px;border-radius:12px;margin:12px 0;font-size:12px;}
+  .wf-box{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:10px;text-align:center;font-weight:600;color:var(--accent);}
+  .wf-box small{display:block;font-weight:400;color:var(--muted);margin-top:3px;font-size:11px;}
+  ul.task-list{list-style:none;padding:0;margin:10px 0;}
+  ul.task-list li{padding:5px 0;}
+  ul.task-list label{display:flex;gap:9px;align-items:flex-start;cursor:pointer;font-size:13.8px;}
+  ul.task-list input{margin-top:4px;width:16px;height:16px;flex:none;accent-color:var(--calc);}
+  footer{text-align:center;color:var(--muted);font-size:12.5px;padding:10px 20px 28px;}
   footer a{color:#3d4a5c;}
+  @media(max-width:740px){
+    .wrap{padding:0 12px;}
+    section{padding:16px 16px;}
+    .wireframe{grid-template-columns:1fr 1fr;}
+    .wf-box{grid-column:span 2 !important;}
+  }
 </style>
 </head>
 <body>
+
 <header>
-  <h1>06 · Bank marketing</h1>
-  <p>Phone-campaign contacts. The outcome column y is whether the client subscribed. Figures below were computed from the file in this folder. <a href="../index.html">All practice sets</a></p>
-</header>
-<div class="wrap">
-  <div class="toc"><b>Jump to:</b>
-    <a href="#profile">Profile</a> ·
-    <a href="#brief">Brief</a> ·
-    <a href="#req">Requirements</a> ·
-    <a href="#calc">Excel</a> ·
-    <a href="#pbi">Power BI</a> ·
-    <a href="#sign">Sign-off</a> ·
-    <a href="#stretch">Stretch</a>
+  <div class="kicker">Practice Set 06 of 20 · CRM, Telemarketing &amp; Conversion Funnel Analytics</div>
+  <h1>06 · Bank Marketing — Semicolon CSVs, Conversion Funnels &amp; Target Gauges</h1>
+  <p>Analyze 45,211 outbound retail-bank phone calls pitching term deposits (5,289 yes = 11.70% conversion). Learn how to handle European semicolon-delimited CSVs, build a real 4-stage Power BI <b>Funnel Chart</b> and a <b>Target Gauge</b>, and expose why the call center is dialing the wrong customer segments too many times!</p>
+  <div class="top-nav">
+    <a class="pill" href="../index.html">← All 20 Practice Sets</a>
+    <a class="pill" href="../../index.html">← Main Excel &amp; Power BI Outline</a>
+    <span class="pill">Charts Taught: Funnel Chart · Target Gauge · Volume-vs-Rate Combo · Call Fatigue Column · Targeting Matrix</span>
   </div>
+</header>
+
+<div class="wrap">
+
+  <div class="prog-bar">
+    <span class="prog-text" id="progText">0 / 0 steps completed</span>
+    <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+    <button class="btn-sm" type="button" onclick="resetChecks()">Reset checklist</button>
+  </div>
+
+  <div class="toc">
+    <b>Step-by-Step Map:</b>
+    <a href="#profile">1. Data Profile &amp; Columns</a> ·
+    <a href="#brief">2. Client Brief</a> ·
+    <a href="#req">3. Requirements</a> ·
+    <a href="#excel">4. Phase A: Excel Step-by-Step</a> ·
+    <a href="#pbi">5. Phase B: Power BI &amp; Charts Journey</a> ·
+    <a href="#sign">6. Sign-Off</a> ·
+    <a href="#stretch">7. Stretch</a> ·
+    <a href="#mistakes">8. Common Mistakes</a>
+  </div>
+
+  <!-- 1. PROFILE -->
   <section id="profile">
-    <h2 class="t">1. Verified profile</h2>
-    <div class="facts"><div class="grid"><div class="stat"><b>45,211</b><span>Rows</span></div><div class="stat"><b>11.7%</b><span>Average Subscribed</span></div><div class="stat"><b>student</b><span>Top job</span></div></div></div>
-    <p>File: <code>bank-full.csv</code>. Fact table for the steps: <code>Calls</code>, renamed to <code>Calls</code> in Power BI.</p>
-    
-    
-        <h3>Biggest groups (check your pivot against this)</h3>
-        <table><tr><th>job</th><th>Subscribed</th></tr><tr><td>student</td><td>28.7%</td></tr><tr><td>retired</td><td>22.8%</td></tr><tr><td>unemployed</td><td>15.5%</td></tr><tr><td>management</td><td>13.8%</td></tr><tr><td>admin.</td><td>12.2%</td></tr><tr><td>self-employed</td><td>11.8%</td></tr></table>
-    <div class="note">y is yes or no. The rate is subscribers divided by calls, as a measure. A calculated column of 1 and 0 will show the wrong total if you then average it across groups of different sizes. Use DIVIDE.</div>
+    <h2 class="t">1. Verified Data Profile &amp; CRM Insights</h2>
+    <div class="facts">
+      <div class="grid">
+        <div class="stat"><b>45,211</b><span>Outbound campaign calls</span></div>
+        <div class="stat"><b>5,289 (11.70%)</b><span>Subscribed term deposit (y="yes")</span></div>
+        <div class="stat"><b>64.73%</b><span>Rate if poutcome="success" (1,511)</span></div>
+        <div class="stat"><b>28.68% / 22.79%</b><span>Student / Retired conversion</span></div>
+        <div class="stat"><b>€1,362.27</b><span>Average yearly account balance</span></div>
+        <div class="stat warn"><b>5.81% Rate</b><span>Fatigue when dialed 6+ times!</span></div>
+      </div>
+    </div>
+
+    <div class="note">
+      <b>What Your Dashboard Will Reveal to the Marketing Director:</b><br>
+      1. <b>Massive Misallocation of Agent Effort:</b> Agents dialed <b>blue-collar</b> workers more than any other group (<code>9,732</code> calls), yet they convert at the <b>lowest rate (7.27%)</b>! Meanwhile <b>students (28.68%)</b> and <b>retirees (22.79%)</b> received only <code>3,202</code> calls combined.<br>
+      2. <b>Warm Re-Targeting Goldmine:</b> Past subscribers (<code>poutcome = "success"</code>) convert at <b>64.73%</b> (7× higher than cold leads at 9.16%).<br>
+      3. <b>Call Fatigue Kills ROI:</b> Conversion drops from <b>14.60%</b> on Call #1 → <b>11.20%</b> on Call #2 → <b>8.63%</b> on Calls 4–5 → <b>5.81%</b> on 6+ calls!<br>
+      4. <b>Debt Drag:</b> Clients <i>without</i> a housing mortgage convert at <b>16.70%</b> vs <b>7.70%</b> for mortgage holders.
+    </div>
+
+    <h3>Raw CSV Column Map (<code>data/bank-full.csv</code> — Semicolon <code>;</code> Separated!)</h3>
+    <table>
+      <tr><th>Excel Col</th><th>Header</th><th>Type</th><th>Meaning &amp; Special Sentinel Rules</th></tr>
+      <tr><td><code>A</code>–<code>D</code></td><td><code>age</code>, <code>job</code>, <code>marital</code>, <code>education</code></td><td>Int / Text</td><td>Client demographics (<code>job</code> has 12 values; note <code>admin.</code> ends with a period).</td></tr>
+      <tr><td><code>E</code>, <code>G</code>, <code>H</code></td><td><code>default</code>, <code>housing</code>, <code>loan</code></td><td>Text (yes/no)</td><td>Credit in default, housing mortgage, personal loan.</td></tr>
+      <tr><td><code>F</code></td><td><code>balance</code></td><td>Whole Number (€)</td><td>Average yearly balance in euros (can be negative for overdrawn accounts! Avg = <code>€1,362.27</code>).</td></tr>
+      <tr><td><code>I</code>, <code>J</code>, <code>K</code></td><td><code>contact</code>, <code>day</code>, <code>month</code></td><td>Text / Int / Text</td><td>Last contact channel &amp; calendar month (<code>jan..dec</code>, lowercase text).</td></tr>
+      <tr><td><code>L</code></td><td><code>duration</code></td><td>Whole Number (s)</td><td>Call length in seconds (Avg = <code>258.2s</code>). Note: known only <i>after</i> the call ends, great for Funnel engagement analysis!</td></tr>
+      <tr><td><code>M</code></td><td><code>campaign</code></td><td>Whole Number</td><td>Number of calls made to this client during THIS campaign (<code>1</code> to <code>63</code>!).</td></tr>
+      <tr><td><code>N</code>, <code>O</code>, <code>P</code></td><td><code>pdays</code>, <code>previous</code>, <code>poutcome</code></td><td>Int / Int / Text</td><td><b>Sentinel Trap:</b> <code>pdays = -1</code> means <b>never contacted in a prior campaign</b> (36,959 rows) — do NOT average <code>-1</code> as "-1 days"!</td></tr>
+      <tr><td><code>Q</code></td><td><code>y</code></td><td>Text (yes/no)</td><td>Target outcome: <code>"yes"</code> (5,289 subscribed) or <code>"no"</code> (39,922 declined).</td></tr>
+    </table>
+
+    <h3>Verification Table: Top &amp; Bottom Jobs by Conversion Rate</h3>
+    <table>
+      <tr><th>Job Segment</th><th>Total Calls</th><th>Subscribed (y="yes")</th><th>Conversion Rate %</th></tr>
+      <tr><td>student</td><td>938</td><td>269</td><td><b>28.68% (#1 Rate)</b></td></tr>
+      <tr><td>retired</td><td>2,264</td><td>516</td><td><b>22.79% (#2 Rate)</b></td></tr>
+      <tr><td>unemployed</td><td>1,303</td><td>202</td><td>15.50%</td></tr>
+      <tr><td>management</td><td>9,458</td><td><b>1,301</b></td><td>13.76% (#1 Volume of Yes)</td></tr>
+      <tr><td>admin.</td><td>5,171</td><td>631</td><td>12.20%</td></tr>
+      <tr><td>technician</td><td>7,597</td><td>840</td><td>11.06%</td></tr>
+      <tr><td>services</td><td>4,154</td><td>369</td><td>8.88%</td></tr>
+      <tr><td>entrepreneur</td><td>1,487</td><td>123</td><td>8.27%</td></tr>
+      <tr><td>blue-collar</td><td><b>9,732 (#1 Dialed!)</b></td><td>708</td><td style="color:#c0392b"><b>7.27% (Lowest!)</b></td></tr>
+    </table>
   </section>
+
+  <!-- 2. BRIEF -->
   <section id="brief">
-    <h2 class="t">2. The client brief</h2>
-    <p><b>Who:</b> A retail-bank campaign manager.</p>
-    <p><b>The ask:</b> <i>We call thousands of clients. I need the subscription rate by job, education, and housing loan — not a wall of 45,000 rows.</i></p>
+    <h2 class="t">2. Real-World Client Brief</h2>
+    <p><b>Client:</b> Head of Retail Deposit Campaigns at a European bank (15.0% campaign conversion target).</p>
+    <p><b>The Ask:</b> <i>"Our call center dialed 45,000 people and missed our 15% conversion target, landing at 11.7%. Show me a conversion funnel from total dials to engaged calls to closed subscriptions, a target gauge, which professions and prior-campaign segments we should prioritize next quarter, and at how many repeat dials our agents are wasting payroll."</i></p>
   </section>
+
+  <!-- 3. REQUIREMENTS -->
   <section id="req">
-    <h2 class="t">3. Requirements</h2>
-    <div class="req"><span class="tag g">Beginner</span><div>KPI strip — row count, Subscribed.</div></div><div class="req"><span class="tag g">Beginner</span><div>Bar chart of <b>job</b>.</div></div><div class="req"><span class="tag y">Inter.</span><div>Break the same number down by <b>housing</b>.</div></div><div class="req"><span class="tag r">Advan.</span><div>A rate using <b>default</b> (two values). Use DIVIDE, not an average of a rate column.</div></div><div class="req"><span class="tag r">Advan.</span><div>Slicers that cross-filter every visual on the page.</div></div>
+    <h2 class="t">3. Project Requirements (Beginner → Advanced)</h2>
+    <div class="req"><span class="tag g">Beginner</span><div><b>Import semicolon CSV cleanly:</b> Split all 17 columns using <code>Delimiter = Semicolon</code> and build binary <code>Subscribed</code> + <code>CallBucket</code> helper columns in Excel.</div></div>
+    <div class="req"><span class="tag g">Beginner</span><div><b>KPI Strip + Target Gauge Visual:</b> Show Total Calls (<code>45,211</code>), Subscriptions (<code>5,289</code>), Avg Balance (<code>€1,362</code>), and a <b>Gauge</b> plotting <code>11.7%</code> Conversion Rate against the <code>15.0%</code> Bank Target!</div></div>
+    <div class="req"><span class="tag y">Inter.</span><div><b>Effort vs. Conversion Combo Chart by Job:</b> Plot <code>Total Calls</code> as Columns and <code>Conversion Rate %</code> as a secondary-axis Line to expose the Blue-Collar vs Student/Retired mismatch.</div></div>
+    <div class="req"><span class="tag y">Inter.</span><div><b>Call Fatigue Bar/Column Chart:</b> Group <code>campaign</code> into <code>1 call</code>, <code>2 calls</code>, <code>3 calls</code>, <code>4–5 calls</code>, and <code>6+ calls</code> to prove diminishing returns.</div></div>
+    <div class="req"><span class="tag r">Advan.</span><div><b>4-Stage Outbound Call Funnel Chart:</b> Build a DAX Funnel table &amp; <code>SWITCH()</code> measure tracking <code>Dialed (45,211) → Engaged ≥1m (40,552) → Deep Pitch ≥3m (22,674) → Subscribed (5,289)</code>.</div></div>
+    <div class="req"><span class="tag r">Advan.</span><div><b>Lead-Targeting Matrix (Education × Housing Loan + Prior Outcome Slicer):</b> Highlight segments beating the 15% target in green!</div></div>
   </section>
-  <section id="calc">
-    <h2 class="t">4. Phase A — Microsoft Excel</h2>
-    <p>Goal: open the file cleanly, add only the helper columns you need, and prove one total with a PivotTable before you touch Power BI.</p>
-    
-    <h3>Step 1 — Open it the right way</h3>
-    <div class="step"><b>Data → From Text/CSV</b> → <code>bank-full.csv</code>. Set the delimiter to <b>semicolon</b>. A double-click will not split the columns.<br><b>Formats:</b> <code>balance</code> → Number (2 decimals); <code>pdays</code> → Number; <code>campaign</code> → Number; <code>previous</code> → Number. Then <b>View → Freeze Panes → Freeze Top Row</b>.</div>
-    <h3>Step 2 — Look for dirt</h3>
-    <div class="step"><ul><li>This is the full file (about 45,000 calls), not the smaller bank.csv sample.</li><li>duration is how long the call lasted. It leaks the outcome — a model can cheat with it. For a dashboard it is fine to show, but say so.</li><li>pdays = -1 means the client was not contacted before. It is not a missing number.</li></ul></div>
-    
-        <h3>Step 3 — Helper columns</h3>
-        <div class="step">Put these in the first empty columns and fill down (double-click the fill handle).<br>
-        <b>Subscribed</b> &nbsp; <code>=IF(Q2=&quot;yes&quot;,1,0)</code>
-        <br><i>Excel on this machine uses a comma between arguments. If your Excel uses semicolons, swap them.</i></div>
-    <h3>Step 4 — Pivot check</h3>
-    <div class="step">Select the data → <b>Insert → PivotTable</b>. Rows = <code>job</code>.
-    Values = <b>Average of Subscribed</b>.
-    The grand total must be <b>11.7%</b>. Format the value as Percentage. If it is not, the filter or the number format is wrong — fix that before Power BI.
+
+  <!-- 4. EXCEL -->
+  <section id="excel">
+    <h2 class="t">4. Phase A — Step-by-Step in Microsoft Excel</h2>
+
+    <h3>Step A1 — Open Semicolon CSV Without Scrambling Columns!</h3>
+    <div class="step">
+      <ol style="margin:0;padding-left:20px;">
+        <li><b>Do NOT double-click <code>bank-full.csv</code> in File Explorer!</b> Because European CSVs use <code>;</code> instead of <code>,</code>, double-clicking dumps every row into Column A!</li>
+        <li>Instead, open Excel → <b>Data → From Text/CSV</b> → select <code>datasets/06-bank-marketing/data/bank-full.csv</code> → in the preview dropdown change <b>Delimiter</b> to <b>Semicolon</b> → verify 17 crisp columns (<code>age</code> through <code>y</code>) → click <b>Load</b>.</li>
+      </ol>
     </div>
-    <h3>Step 5 — Save</h3>
-    <div class="step"><b>Save As</b> <code>06-bank-marketing-clean.xlsx</code>. Power BI should read this file, not a half-filtered view you forgot to clear.</div>
+
+    <h3>Step A2 — Add Helper Columns R &amp; S</h3>
+    <div class="step">
+      <ol style="margin:0;padding-left:20px;">
+        <li><b>Column R — <code>Subscribed</code> (0/1 Flag for Pivot Checks):</b> In <code>R1</code> type <code>Subscribed</code>, and in <code>R2</code> type:<br>
+        <code>=IF(Q2="yes", 1, 0)</code></li>
+        <li><b>Column S — <code>CallBucket</code> (Dial Fatigue Grouping):</b> In <code>S1</code> type <code>CallBucket</code>, and in <code>S2</code> type:<br>
+        <code>=IF(M2=1,"1. 1 call",IF(M2=2,"2. 2 calls",IF(M2=3,"3. 3 calls",IF(M2&lt;=5,"4. 4-5 calls","5. 6+ calls"))))</code></li>
+      </ol>
+    </div>
+
+    <h3>Step A3 — PivotTable Verification</h3>
+    <div class="step">
+      Insert a PivotTable: Rows = <code>job</code>, Values = <code>Count of y</code> (Calls), <code>Sum of Subscribed</code> (Yes count), and <code>Average of Subscribed</code> (formatted as <code>0.0%</code>). Sort by <code>Average of Subscribed</code> descending: verify <b>student = 28.7%</b>, <b>retired = 22.8%</b>, <b>blue-collar = 7.3%</b>, and Grand Total = <b>45,211 calls / 5,289 yes / 11.7%</b>! Save as <code>06-bank-marketing-clean.xlsx</code>.
+    </div>
+
+    <ul class="task-list">
+      <li><label><input type="checkbox"> Imported <code>bank-full.csv</code> with Semicolon delimiter (17 columns, 45,211 rows).</label></li>
+      <li><label><input type="checkbox"> Verified job conversion rates and 11.7% overall subscription rate in Excel PivotTable.</label></li>
+    </ul>
   </section>
+
+  <!-- 5. POWER BI -->
   <section id="pbi">
-    <h2 class="t">5. Phase B — Power BI</h2>
-    <h3>Step 1 — Get data</h3>
-    <div class="pbi-box"><b>Get data → Text/CSV</b> → delimiter <b>Semicolon</b>.</div>
-    <h3>Step 2 — Power Query</h3>
-    <div class="pbi-box">Rename the main query to <code>Calls</code>. Set the types from Step 1. Watch <b>Applied Steps</b>. Then <b>Close &amp; Apply</b>.
-    </div>
-    <h3>Step 3 — Model</h3>
-    <div class="pbi-box"><p>One table. A star schema is not required for this set.</p>
-    <p>Hide key columns you do not want on the report. A hidden column can still be used by a relationship.</p></div>
-    <h3>Step 4 — Measures</h3>
-    <p>Write these as <b>measures</b>, not calculated columns. Replace the placeholder filter with a real value from the column.</p>
-    <pre>Subscription Rate =
-DIVIDE(
-    CALCULATE(COUNTROWS(&#x27;Calls&#x27;), &#x27;Calls&#x27;[y] = &quot;yes&quot;),
-    [Row Count])
-Row Count = COUNTROWS(&#x27;Calls&#x27;)</pre>
-    <h3>Step 5 — Visuals</h3>
+    <h2 class="t pbi-h">5. Phase B — Complete Power BI &amp; Charts Journey</h2>
+
+    <h3>Stage 1 &amp; 2 — Load Semicolon CSV &amp; Add Call Buckets in Power Query</h3>
     <div class="pbi-box">
-      <ul>
-        <li>Cards for the measures in Step 4.</li>
-        <li>Bar chart: axis <code>job</code>, value the main measure.</li>
-        
-        <li>A slicer for each small category (default, housing, loan).</li>
-        <li>Click a bar and confirm the other visuals filter. Use <b>Format → Edit interactions</b> if one visual should stay still.</li>
-      </ul>
+      <ol style="margin:0;padding-left:20px;">
+        <li>Click <b>Home → Text/CSV</b> → select <code>data/bank-full.csv</code> → verify <b>Delimiter = Semicolon</b> → click <b>Transform Data</b>. Rename query to <code>Calls</code>.</li>
+        <li>Check types: <code>age</code>, <code>balance</code>, <code>day</code>, <code>duration</code>, <code>campaign</code>, <code>pdays</code>, <code>previous</code> = <b>123 (Whole Number)</b>; all others = <b>ABC (Text)</b>.</li>
+        <li>Click <b>Add Column → Conditional Column</b> → Name: <code>CallBucket</code>:
+          <code>campaign = 1 → 1. 1 call</code> · <code>= 2 → 2. 2 calls</code> · <code>= 3 → 3. 3 calls</code> · <code>&lt;= 5 → 4. 4-5 calls</code> · Else → <code>5. 6+ calls</code>.</li>
+        <li>Add a Month Sort column (<code>MonthNum</code>: <code>jan=1 … dec=12</code>) if you also chart seasonal calls. Click <b>Home → Close &amp; Apply</b>.</li>
+      </ol>
+    </div>
+
+    <h3>Stage 3 — Model View: Create the 4-Row Funnel Stage Table</h3>
+    <p>How do professional Power BI developers build a multi-metric <b>Funnel Chart</b> when stages come from row conditions on one table? With a tiny 4-row disconnected helper table!</p>
+    <div class="pbi-box">
+      Click <b>Data view → New table</b> and paste:
+<pre>FunnelStages =
+DATATABLE (
+    "StageOrder", INTEGER,
+    "StageName", STRING,
+    {
+        { 1, "1. Total Calls Dialed" },
+        { 2, "2. Engaged (>= 1 Min)" },
+        { 3, "3. Deep Pitch (>= 3 Min)" },
+        { 4, "4. Subscribed Deposit" }
+    }
+)</pre>
+      Select <code>FunnelStages[StageName]</code> → <b>Column tools → Sort by column → StageOrder</b>. Leave <code>FunnelStages</code> <b>unrelated</b> in Model view (your DAX measure connects it dynamically!).
+    </div>
+
+    <h3>Stage 4 — DAX Measures (Beginner → Advanced)</h3>
+<pre>Total Calls = COUNTROWS ( 'Calls' )
+// Format: #,0 -> Check: 45,211
+
+Subscribed Clients = CALCULATE ( [Total Calls], 'Calls'[y] = "yes" )
+// Format: #,0 -> Check: 5,289
+
+Conversion Rate % = DIVIDE ( [Subscribed Clients], [Total Calls], 0 )
+// Format: 0.00% -> Check: 11.70%
+
+Target Rate % = 0.15
+// Format: 0.0% -> 15.0% management target for the Gauge visual!
+
+Avg Balance EUR = AVERAGE ( 'Calls'[balance] )
+// Format: €#,0 -> Check: €1,362
+
+Avg Call Minutes = DIVIDE ( AVERAGE ( 'Calls'[duration] ), 60 )
+// Format: 0.0 -> Check: 4.3 mins
+
+// --- ADVANCED FUNNEL SWITCH MEASURE ---
+Funnel Volume =
+SWITCH (
+    SELECTEDVALUE ( 'FunnelStages'[StageOrder] ),
+    1, [Total Calls],
+    2, CALCULATE ( [Total Calls], 'Calls'[duration] &gt;= 60 ),
+    3, CALCULATE ( [Total Calls], 'Calls'[duration] &gt;= 180 ),
+    4, [Subscribed Clients]
+)
+// Respects every slicer (Job, Housing, Prior Outcome)! Unfiltered check: 45,211 -> 40,552 -> 22,674 -> 5,289</pre>
+
+    <h3>Stage 5 — Power BI Charts Journey: Build the 6-Visual CRM Campaign Dashboard</h3>
+
+    <div class="wireframe">
+      <div class="wf-box" style="grid-column:span 12;">Header + Slicers: poutcome (Tile) · housing (Tile) · loan (Tile) · education (Dropdown)</div>
+      <div class="wf-box" style="grid-column:span 3;">Card: Total Calls<small>45,211</small></div>
+      <div class="wf-box" style="grid-column:span 3;">Card: Subscribed<small>5,289</small></div>
+      <div class="wf-box" style="grid-column:span 3;">Card: Avg Balance<small>€1,362</small></div>
+      <div class="wf-box" style="grid-column:span 3;">Visual 1B: Target Gauge<small>11.7% vs 15.0% Goal</small></div>
+      <div class="wf-box" style="grid-column:span 5;">Visual 2: Outbound Call Funnel<small>45.2K → 40.6K → 22.7K → 5.3K</small></div>
+      <div class="wf-box" style="grid-column:span 7;">Visual 3: Job Effort vs Conversion Combo<small>Columns = Calls Dialed · Line = Conversion Rate %</small></div>
+      <div class="wf-box" style="grid-column:span 5;">Visual 4: Call Fatigue Column Chart<small>14.6% (1 Call) Down to 5.8% (6+ Calls)</small></div>
+      <div class="wf-box" style="grid-column:span 7;">Visual 5: Lead-Scoring Matrix<small>Education × Housing Loan Colored Against 15% Target</small></div>
+    </div>
+
+    <div class="chart-card">
+      <h4><span class="tag g">Visual 1B</span> Campaign Goal Tracker — Gauge Visual</h4>
+      <div class="wells">
+        <div class="well"><strong>Value</strong><code>[Conversion Rate %]</code> (11.70%)</div>
+        <div class="well"><strong>Target value</strong><code>[Target Rate %]</code> (15.0%)</div>
+        <div class="well"><strong>Maximum value</strong>Create <code>Gauge Max = 0.30</code> (or set Max = 0.30 in Format)</div>
+      </div>
+      <p>Click the semicircle <b>Gauge</b> icon! Now test an executive scenario: click <code>success</code> on your <code>poutcome</code> slicer — watch the Gauge needle shoot past the 15% target line to <b>64.7%</b>!</p>
+    </div>
+
+    <div class="chart-card">
+      <h4><span class="tag r">Visual 2</span> Outbound Telemarketing Funnel — Funnel Chart</h4>
+      <div class="wells">
+        <div class="well"><strong>Category</strong><code>FunnelStages[StageName]</code></div>
+        <div class="well"><strong>Values</strong><code>[Funnel Volume]</code></div>
+      </div>
+      <p>Click <b>Funnel</b> (inverted pyramid bars icon). In <b>Format visual → Conversion rate</b>, keep conversion labels ON (`100%` at top, `11.7%` at bottom). Hover any stage to see both step-to-step retention (`55.9%` of 1-min calls reach 3 mins; `23.3%` of 3-min calls subscribe!).</p>
+    </div>
+
+    <div class="chart-card">
+      <h4><span class="tag y">Visual 3</span> Agent Effort vs. Conversion Rate by Job — Combo Chart</h4>
+      <div class="wells">
+        <div class="well"><strong>X-axis</strong><code>Calls[job]</code></div>
+        <div class="well"><strong>Column y-axis</strong><code>[Total Calls]</code></div>
+        <div class="well"><strong>Line y-axis</strong><code>[Conversion Rate %]</code></div>
+      </div>
+      <p>Sort descending by <code>[Conversion Rate %]</code>: on the far left, tiny columns for <code>student</code> and <code>retired</code> tower above a 22–29% conversion line; on the far right, a giant <code>blue-collar</code> column sits under a 7.3% conversion line — instant proof of where to reallocate phone agents!</p>
+    </div>
+
+    <div class="chart-card">
+      <h4><span class="tag y">Visual 4 &amp; 5</span> Call Fatigue Column Chart + Lead-Scoring Matrix</h4>
+      <p>1. <b>Clustered column chart:</b> X-axis = <code>Calls[CallBucket]</code>, Y-axis = <code>[Conversion Rate %]</code>, Tooltips = <code>[Total Calls]</code>. Shows steady decay from <code>14.6% → 11.2% → 11.2% → 8.6% → 5.8%</code>.<br>
+      2. <b>Matrix:</b> Rows = <code>Calls[education]</code>, Columns = <code>Calls[housing]</code>, Values = <code>[Conversion Rate %]</code> &amp; <code>[Subscribed Clients]</code>, with Rule-based Conditional Formatting turning cells <code>&gt;= 0.15</code> bright green!</p>
+    </div>
+
+    <ul class="task-list">
+      <li><label><input type="checkbox"> Loaded semicolon CSV, created <code>FunnelStages</code> table, and built <code>SWITCH</code> Funnel measure.</label></li>
+      <li><label><input type="checkbox"> Built Target Gauge, 4-Stage Funnel, Effort-vs-Rate Combo Chart, Fatigue Chart, and Lead Matrix.</label></li>
+    </ul>
+  </section>
+
+  <!-- 6. SIGN-OFF -->
+  <section id="sign">
+    <h2 class="t">6. Client Sign-Off Checklist</h2>
+    <ul class="task-list">
+      <li><label><input type="checkbox"> Total Calls = <b>45,211</b>, Subscribed Clients = <b>5,289</b>, Conversion Rate = <b>11.70%</b>.</label></li>
+      <li><label><input type="checkbox"> Funnel stages read <b>45,211 → 40,552 → 22,674 → 5,289</b> when unfiltered, and dynamically update with slicers.</label></li>
+      <li><label><input type="checkbox"> Job ranking shows <b>student (28.7%)</b> and <b>retired (22.8%)</b> highest, <b>blue-collar (7.3%)</b> lowest despite 9,732 calls.</label></li>
+      <li><label><input type="checkbox"> Filtering <code>poutcome = success</code> shows <b>64.7%</b> conversion across <b>1,511</b> warm contacts.</label></li>
+    </ul>
+  </section>
+
+  <!-- 7. STRETCH -->
+  <section id="stretch">
+    <h2 class="t">7. Stretch Challenges</h2>
+    <ul>
+      <li><b>Contact-Prior-Days Measure Excluding <code>-1</code>:</b> Write <code>Avg Days Since Prior Contact = CALCULATE(AVERAGE('Calls'[pdays]), 'Calls'[pdays] &gt;= 0)</code> so the 36,959 never-contacted leads (<code>-1</code>) don't corrupt the average!</li>
+      <li><b>What-If Reallocation Calculator:</b> Calculate how many extra deposits the bank would win if 5,000 calls were shifted from 6+-dial blue-collar leads (5.8%) to 1st-dial retirees/tertiary-educated non-mortgage clients!</li>
+    </ul>
+  </section>
+
+  <!-- 8. MISTAKES -->
+  <section id="mistakes">
+    <h2 class="t">8. Trainer's Troubleshooting: Common Beginner Mistakes</h2>
+    <div class="warn-box">
+      <b>Mistake 1 — Everything lands in Column1:</b> You left the CSV delimiter on Comma instead of Semicolon. Edit the <code>Source</code> step in Power Query (gear icon) and choose <b>Semicolon</b>.
+    </div>
+    <div class="warn-box">
+      <b>Mistake 2 — Averaging <code>pdays</code> raw (including <code>-1</code>):</b> Always check data dictionaries for negative sentinel codes (<code>-1</code>, <code>-99</code>, <code>-200</code>) before averaging!
+    </div>
+    <div class="warn-box">
+      <b>Mistake 3 — Averaging a 0/1 helper column across job groups:</b> Never average job-level percentages; always compute <code>DIVIDE([Subscribed Clients], [Total Calls])</code>!
     </div>
   </section>
-  <section id="sign">
-    <h2 class="t">6. Sign-off</h2>
-    <ul class="chk"><li>☐ Row count is <b>45,211</b> after the cleaning steps above.</li><li>☐ Average Subscribed is <b>11.7%</b>.</li><li>☐ The leading job is <b>student</b> at <b>28.7%</b>.</li><li>☐ Slicers filter every visual, and you can clear them back to the totals above.</li></ul>
-  </section>
-  <section id="stretch">
-    <h2 class="t">7. Stretch</h2>
-    <ul>
-      <li>Subscription rate = DIVIDE(CALCULATE(COUNTROWS(Calls), Calls[y]="yes"), [Row Count]).</li>
-      <li>Add a drill-through page that keeps the slicer filters and shows the underlying rows.</li>
-      <li>Sort a month-name column by the month number so the axis is not alphabetical.</li>
-    </ul>
-  </section>
-  <section id="mist">
-    <h2 class="t">8. Mistakes that hide the answer</h2>
-    <ul>
-      <li>Averaging a yes/no column that you stored as text.</li><li>Treating pdays = -1 as &#x27;contacted 1 day ago&#x27;.</li>
-      <li>Summing an ID column, or averaging a rate that was already a percent.</li>
-      <li>Leaving dates as text, then wondering why the axis sorts wrong.</li>
-    </ul>
-  </section>
+
 </div>
-<footer>UCI Bank Marketing. Moro, Cortez, and Rita, 2014. https://archive.ics.uci.edu/dataset/222/bank+marketing</footer>
+
+<footer>
+  Source: UCI Bank Marketing Dataset (Moro, Cortez &amp; Rita, 2014) · Manually verified against <code>data/bank-full.csv</code> (45,211 rows) · Works 100% offline.
+</footer>
+
+<script>
+(function(){
+  var KEY = 'pbi_guide_06_v2';
+  var boxes = document.querySelectorAll('input[type=checkbox]');
+  function update(){
+    var done = 0;
+    boxes.forEach(function(b){ if(b.checked) done++; });
+    var pct = boxes.length ? Math.round((done / boxes.length) * 100) : 0;
+    document.getElementById('progText').textContent = done + ' / ' + boxes.length + ' steps completed (' + pct + '%)';
+    document.getElementById('progFill').style.width = pct + '%';
+  }
+  function save(){
+    var state = [];
+    boxes.forEach(function(b){ state.push(b.checked ? 1 : 0); });
+    try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){}
+    update();
+  }
+  try{
+    var s = JSON.parse(localStorage.getItem(KEY) || '[]');
+    boxes.forEach(function(b, i){ if(s[i] !== undefined) b.checked = !!s[i]; });
+  }catch(e){}
+  boxes.forEach(function(b){ b.addEventListener('change', save); });
+  window.resetChecks = function(){
+    if(confirm('Reset all checkmarks for Practice Set 06?')){
+      boxes.forEach(function(b){ b.checked = false; });
+      save();
+    }
+  };
+  update();
+})();
+</script>
 </body>
 </html>

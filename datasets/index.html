@@ -3,258 +3,431 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Practice sets · Excel and Power BI</title>
+<title>20 Real-World Practice Sets · Beginner to Advanced Excel &amp; Power BI Hub</title>
 <style>
-  :root{--ink:#1f2430;--muted:#5b6472;--line:#e3e7ee;--bg:#f6f8fb;--green:#1d6f42;}
+  :root{
+    --ink:#1f2430; --muted:#5b6472; --line:#e3e7ee; --bg:#f6f8fb;
+    --green:#1d6f42; --green-soft:#e7f3ec;
+    --gold:#b78900; --gold-soft:#fff8e0;
+    --navy:#0b3d63; --red:#c0392b;
+  }
   *{box-sizing:border-box;}
-  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.55;}
-  header{background:linear-gradient(120deg,#1d6f42,#0b3d63 70%);color:#fff;padding:32px 26px;}
-  header h1{margin:0 0 6px;font-size:26px;}
-  header p{margin:0;max-width:860px;font-size:14.5px;}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.58;}
+  header{background:linear-gradient(125deg,#1d6f42 0%,#0f5132 48%,#0b3d63 100%);color:#fff;padding:34px 26px 28px;}
+  header .kicker{font-size:12px;text-transform:uppercase;letter-spacing:.8px;opacity:.9;font-weight:700;margin-bottom:6px;}
+  header h1{margin:0 0 8px;font-size:28px;}
+  header p{margin:0;max-width:900px;font-size:15px;opacity:.95;}
   header a{color:#fff;}
-  .wrap{max-width:1100px;margin:22px auto 60px;padding:0 22px;}
-  .intro{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin-bottom:18px;font-size:14px;}
+  .top-nav{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;}
+  .pill-link{display:inline-block;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.32);padding:5px 13px;border-radius:20px;font-size:13px;text-decoration:none;color:#fff;font-weight:600;}
+  .wrap{max-width:1160px;margin:22px auto 70px;padding:0 22px;}
+  .intro{background:#fff;border:1px solid var(--line);border-left:5px solid var(--green);border-radius:12px;padding:16px 20px;margin-bottom:18px;font-size:14px;}
+  .roadmap{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin-bottom:18px;}
+  .roadmap h2{margin:0 0 10px;font-size:17px;color:var(--navy);}
+  .rm-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;font-size:12.8px;}
+  .rm-box{background:#f8fafc;border:1px solid var(--line);border-radius:9px;padding:10px 12px;}
+  .rm-box b{display:block;color:var(--green);margin-bottom:3px;font-size:13.3px;}
+  .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-bottom:18px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 16px;}
+  .filters{display:flex;gap:7px;flex-wrap:wrap;}
+  .fbtn{border:1px solid var(--line);background:#f8fafc;color:var(--ink);padding:6px 12px;border-radius:20px;font-size:12.5px;font-weight:600;cursor:pointer;}
+  .fbtn.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+  .search{border:1px solid var(--line);padding:7px 12px;border-radius:8px;font-size:13.5px;min-width:240px;}
   .cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
-  .card{background:#fff;border:1px solid var(--line);border-top:6px solid var(--green);border-radius:14px;padding:16px 18px;text-decoration:none;color:inherit;display:flex;flex-direction:column;}
-  .card h2{margin:0 0 4px;font-size:18px;}
-  .who{font-size:13px;color:var(--muted);margin-bottom:10px;}
-  .mini{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
+  .card{background:#fff;border:1px solid var(--line);border-top:6px solid var(--green);border-radius:14px;padding:16px 18px;text-decoration:none;color:inherit;display:flex;flex-direction:column;transition:transform .12s,box-shadow .12s;}
+  .card:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(15,23,42,.08);}
+  .card[data-tier="t2"]{border-top-color:#d99000;}
+  .card[data-tier="t3"]{border-top-color:#0b3d63;}
+  .card[data-tier="t4"]{border-top-color:#c0392b;}
+  .card-top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:5px;}
+  .tier-badge{font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;text-transform:uppercase;letter-spacing:.3px;color:#fff;}
+  .tb-1{background:#1d6f42;} .tb-2{background:#d99000;} .tb-3{background:#0b3d63;} .tb-4{background:#c0392b;}
+  .prog-chip{font-size:11.5px;font-weight:700;color:var(--muted);background:#f1f5f9;padding:2px 8px;border-radius:12px;}
+  .prog-chip.done{background:var(--green-soft);color:var(--green);}
+  .card h2{margin:2px 0 5px;font-size:18px;color:var(--ink);}
+  .who{font-size:13.2px;color:var(--muted);margin-bottom:10px;}
+  .mini{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
   .mini div{background:#f3f6fa;border-radius:8px;padding:8px 10px;font-size:12px;color:var(--muted);}
-  .mini b{display:block;font-size:15px;color:var(--ink);}
-  .btn{margin-top:auto;background:var(--ink);color:#fff;text-align:center;padding:10px 12px;border-radius:8px;font-weight:700;font-size:14px;}
-  footer{text-align:center;color:var(--muted);font-size:12px;padding:10px 16px 28px;}
-  @media(max-width:800px){.cards{grid-template-columns:1fr;}}
+  .mini b{display:block;font-size:14.8px;color:var(--ink);}
+  .chips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px;}
+  .chip{font-size:11.3px;background:var(--gold-soft);border:1px solid #f0dd99;color:#6e5200;padding:2px 8px;border-radius:6px;font-weight:600;}
+  .btn{margin-top:auto;background:var(--ink);color:#fff;text-align:center;padding:10px 12px;border-radius:8px;font-weight:700;font-size:13.8px;}
+  footer{text-align:center;color:var(--muted);font-size:12.5px;padding:14px 16px 32px;}
+  @media(max-width:820px){
+    .cards{grid-template-columns:1fr;}
+    .search{width:100%;}
+  }
 </style>
 </head>
 <body>
+
 <header>
-  <h1>Practice sets · Excel then Power BI</h1>
-  <p>Every practice file is in this folder. Each numbered folder is one dataset and one guide. The totals in the guide were computed from that folder's file. Start at 01 (a few hundred rows). 19 and 20 are the long case studies, about 220,000 rows each.</p>
+  <div class="kicker">Hands-On Portfolio Lab · 20 Manually Verified Datasets (173 Rows → 541,909 Rows)</div>
+  <h1>Practice Sets · Step-by-Step From Excel to Power BI Charts</h1>
+  <p>Every folder contains real raw data plus a complete click-by-click beginner-to-advanced guide: Data Profile &amp; Dirty-Data Traps → Excel Verification → Power Query Cleaning → Star Schema &amp; DAX → Full Power BI Charts Wireframe &amp; Sign-Off Checklist.</p>
+  <div class="top-nav">
+    <a class="pill-link" href="../index.html">← Back to Main Excel &amp; Power BI Course Outline</a>
+    <span class="pill-link" id="overallProg">Course Progress: 0 / 20 guides started</span>
+  </div>
 </header>
+
 <div class="wrap">
-  <div class="intro"><b>How to use a set:</b> open <code>guide.html</code> → Phase A in Excel → Phase B in Power BI → tick the sign-off only when your total matches the guide. Sets 01–18 are public tables you can open directly. Sets 19 and 20 are the long generated case studies (about 220,000 rows each).</div>
-  <div class="cards">
-        <a class="card" href="01-financial-sample/guide.html">
-          <h2>01 · Financial sample</h2>
-          <div class="who">A small Microsoft finance workbook: country, segment, product, sales, and profit.</div>
-          <div class="mini">
-            <div><b>$16.89M</b>total Profit</div>
-            <div><b>France</b>leading group</div>
-            <div><b>700</b>rows in the check total</div>
-            <div><b>1</b>table</div>
-          </div>
-          <span class="btn">Open practice guide →</span>
-        </a>
-        <a class="card" href="02-college-majors/guide.html">
-          <h2>02 · College majors and pay</h2>
-          <div class="who">Recent US college graduates by major: employment, earnings, and the share of women.</div>
-          <div class="mini">
-            <div><b>$40,151</b>average Median</div>
-            <div><b>Engineering</b>leading group</div>
-            <div><b>173</b>rows in the check total</div>
-            <div><b>1</b>table</div>
-          </div>
-          <span class="btn">Open practice guide →</span>
-        </a>
-        <a class="card" href="03-gapminder/guide.html">
-          <h2>03 · Gapminder: life expectancy and income</h2>
-          <div class="who">Country-year rows for population, life expectancy, and GDP per person.</div>
-          <div class="mini">
-            <div><b>67</b>average lifeExp</div>
-            <div><b>Oceania</b>leading group</div>
-            <div><b>142</b>rows in the check total</div>
-            <div><b>1</b>table</div>
-          </div>
-          <span class="btn">Open practice guide →</span>
-        </a>
-        <a class="card" href="04-walmart-openings/guide.html">
-          <h2>04 · Walmart store openings</h2>
-          <div class="who">Where and when Walmart stores opened, including supercenter conversions.</div>
-          <div class="mini">
-            <div><b>1,557</b>total conversion</div>
-            <div><b>TX</b>leading group</div>
-            <div><b>2,992</b>rows in the check total</div>
-            <div><b>1</b>table</div>
-          </div>
-          <span class="btn">Open practice guide →</span>
-        </a>
-        <a class="card" href="05-bike-sharing/guide.html">
-          <h2>05 · Bike sharing</h2>
-          <div class="who">Daily and hourly rentals, with weather. Use the daily file in Excel and the hourly file in Power BI.</div>
-          <div class="mini">
-            <div><b>3,292,679</b>total cnt</div>
-            <div><b>3</b>leading group</div>
-            <div><b>731</b>rows in the check total</div>
-            <div><b>1</b>table</div>
-          </div>
-          <span class="btn">Open practice guide →</span>
-        </a>
-        <a class="card" href="06-bank-marketing/guide.html">
-          <h2>06 · Bank marketing</h2>
-          <div class="who">Phone-campaign contacts. The outcome column y is whether the client subscribed.</div>
-          <div class="mini">
-            <div><b>11.7%</b>average Subscribed</div>
-            <div><b>student</b>leading group</div>
-            <div><b>45,211</b>rows in the check total</div>
-            <div><b>1</b>table</div>
-          </div>
-          <span class="btn">Open practice guide →</span>
-        </a>
-        <a class="card" href="07-credit-clients/guide.html">
-          <h2>07 · Credit-card clients</h2>
-          <div class="who">30,000 card clients and whether they defaulted next month.</div>
-          <div class="mini">
-            <div><b>22.1%</b>average default payment next month</div>
-            <div><b>3</b>leading group</div>
-            <div><b>30,000</b>rows in the check total</div>
-            <div><b>1</b>table</div>
-          </div>
-          <span class="btn">Open practice guide →</span>
-        </a>
-        <a class="card" href="08-chicago-payroll/guide.html">
-          <h2>08 · Chicago payroll</h2>
-          <div class="who">City of Chicago employee payroll: department, job, annual salary, and hourly rate.</div>
-          <div class="mini">
-            <div><b>$2.88B</b>total Annual Salary</div>
-            <div><b>CHICAGO POLICE DEPARTM</b>leading group</div>
-            <div><b>32,226</b>rows in the check total</div>
-            <div><b>1</b>table</div>
-          </div>
-          <span class="btn">Open practice guide →</span>
-        </a>
-        <a class="card" href="09-world-population/guide.html">
-          <h2>09 · World population</h2>
-          <div class="who">Population by country and year from the World Bank open data.</div>
-          <div class="mini">
-            <div><b>8,117,484,624</b>total Population</div>
-            <div><b>India</b>leading group</div>
-            <div><b>217</b>rows in the check total</div>
-            <div><b>1</b>table</div>
-          </div>
-          <span class="btn">Open practice guide →</span>
-        </a>
-        <a class="card" href="10-air-quality/guide.html">
-          <h2>10 · Air quality sensors</h2>
-          <div class="who">Hourly sensor readings from an Italian city, with a reference analyzer and several metal-oxide sensors.</div>
-          <div class="mini">
-            <div><b>2.15</b>average CO(GT)</div>
-            <div><b>19:00:00</b>leading group</div>
-            <div><b>9,357</b>rows in the check total</div>
-            <div><b>1</b>table</div>
-          </div>
-          <span class="btn">Open practice guide →</span>
-        </a>
-        <a class="card" href="11-netflix-titles/guide.html">
-          <h2>11 · Netflix catalog</h2>
-          <div class="who">Movies and TV shows in a Netflix catalog snapshot: type, country, year, and rating.</div>
-          <div class="mini">
-            <div><b>—</b>row count</div>
-            <div><b>TV-MA</b>leading group</div>
-            <div><b>7,787</b>rows in the check total</div>
-            <div><b>1</b>table</div>
-          </div>
-          <span class="btn">Open practice guide →</span>
-        </a>
-        <a class="card" href="12-openflights/guide.html">
-          <h2>12 · OpenFlights routes</h2>
-          <div class="who">World airline routes plus an airport lookup. Two files, one relationship.</div>
-          <div class="mini">
-            <div><b>—</b>row count</div>
-            <div><b>United States</b>leading group</div>
-            <div><b>67,663</b>rows in the check total</div>
-            <div><b>2</b>tables</div>
-          </div>
-          <span class="btn">Open practice guide →</span>
-        </a>
-        <a class="card" href="13-monthly-sales/guide.html">
-          <h2>13 · Twelve months of product sales</h2>
-          <div class="who">One CSV per month for 2019. The Excel practice is a single month. The Power BI practice is the folder.</div>
-          <div class="mini">
-            <div><b>$34.49M</b>total LineSales</div>
-            <div><b>Macbook Pro Laptop</b>leading group</div>
-            <div><b>185,950</b>rows in the check total</div>
-            <div><b>1</b>table</div>
-          </div>
-          <span class="btn">Open practice guide →</span>
-        </a>
-        <a class="card" href="14-online-retail/guide.html">
-          <h2>14 · Online retail invoices</h2>
-          <div class="who">UK online gift wholesaler. One row is one invoice line. About 540,000 lines — Excel will feel slow; that is part of the lesson.</div>
-          <div class="mini">
-            <div><b>$9.75M</b>total LineSales</div>
-            <div><b>United Kingdom</b>leading group</div>
-            <div><b>541,909</b>rows in the check total</div>
-            <div><b>1</b>table</div>
-          </div>
-          <span class="btn">Open practice guide →</span>
-        </a>
-        <a class="card" href="15-hotel-bookings/guide.html">
-          <h2>15 · Hotel bookings</h2>
-          <div class="who">City and resort hotel reservations, including cancellations, lead time, and daily rate.</div>
-          <div class="mini">
-            <div><b>$26.00M</b>total Revenue</div>
-            <div><b>City Hotel</b>leading group</div>
-            <div><b>119,390</b>rows in the check total</div>
-            <div><b>1</b>table</div>
-          </div>
-          <span class="btn">Open practice guide →</span>
-        </a>
-        <a class="card" href="16-co2-emissions/guide.html">
-          <h2>16 · CO₂ emissions</h2>
-          <div class="who">Our World in Data country-year CO₂ series. The file also contains regional totals. Those must be filtered out or every chart double-counts.</div>
-          <div class="mini">
-            <div><b>37,748</b>total co2</div>
-            <div><b>China</b>leading group</div>
-            <div><b>223</b>rows in the check total</div>
-            <div><b>1</b>table</div>
-          </div>
-          <span class="btn">Open practice guide →</span>
-        </a>
-        <a class="card" href="17-customer-feedback/guide.html">
-          <h2>17 · Support tickets and customers</h2>
-          <div class="who">A multi-table Microsoft sample: customers, tickets, devices, and small lookup tables.</div>
-          <div class="mini">
-            <div><b>3.67</b>average Duration</div>
-            <div><b>1</b>leading group</div>
-            <div><b>126,644</b>rows in the check total</div>
-            <div><b>7</b>tables</div>
-          </div>
-          <span class="btn">Open practice guide →</span>
-        </a>
-        <a class="card" href="18-adventureworks-sales/guide.html">
-          <h2>18 · AdventureWorks sales</h2>
-          <div class="who">The full AdventureWorks sales model: fact sales plus product, customer, reseller, territory, and date.</div>
-          <div class="mini">
-            <div><b>$109.81M</b>total Sales Amount</div>
-            <div><b>—</b>leading group</div>
-            <div><b>121,253</b>rows in the check total</div>
-            <div><b>7</b>tables</div>
-          </div>
-          <span class="btn">Open practice guide →</span>
-        </a>
-        <a class="card" href="19-northwind-retail/guide.html">
-          <h2>19 · Northwind retail</h2>
-          <div class="who">Long retail case study: 220,000 order lines, 2021–2024. Sales, profit, discount, and time.</div>
-          <div class="mini">
-            <div><b>$704.3M</b>total sales</div>
-            <div><b>$18.7M</b>total profit</div>
-            <div><b>220,000</b>order lines</div>
-            <div><b>1</b>table</div>
-          </div>
-          <span class="btn">Open practice guide →</span>
-        </a>
-        <a class="card" href="20-talentfirst-hr/guide.html">
-          <h2>20 · TalentFirst HR</h2>
-          <div class="who">Long workforce case study: 220,000 employees. Attrition, salary, and overtime risk.</div>
-          <div class="mini">
-            <div><b>21.1%</b>attrition rate</div>
-            <div><b>$104K</b>average salary</div>
-            <div><b>220,000</b>employees</div>
-            <div><b>1</b>table</div>
-          </div>
-          <span class="btn">Open practice guide →</span>
-        </a></div>
+
+  <div class="intro">
+    <b>How to study each practice set:</b> Start at <b>01 · Financial Sample</b> and progress in order. In every guide: (1) check the verified numbers first, (2) complete <b>Phase A in Excel</b> so you trust the math, (3) build <b>Phase B in Power BI Desktop</b> following the exact Visual Wells &amp; DAX formulas, and (4) tick off the Sign-Off Checklist (saved automatically in your browser!).
+  </div>
+
+  <div class="roadmap">
+    <h2>Complete Power BI Chart &amp; Developer Skill Coverage Across Sets 01–20</h2>
+    <div class="rm-grid">
+      <div class="rm-box"><b>Tier 1 · Beginner Foundations (01–05)</b>KPI Cards · Clustered/Stacked Bars · Line Trends · Waterfall · Scatter &amp; Animated Play Axis · US Choropleth Filled Map · Dual-Axis Combo · DAX <code>DIVIDE</code> &amp; <code>CALCULATE</code></div>
+      <div class="rm-box"><b>Tier 2 · Dirty Data &amp; Funnels (06–11)</b>Semicolon CSVs · Double `.xls` Headers · `-200` IoT Sentinels · Funnel · Gauge · AI Decomposition Tree · Treemap · Ribbon Chart · Analytics Constant/Trend Lines · 100% Stacked Bar · Genre Bridge Table</div>
+      <div class="rm-box"><b>Tier 3 · Multi-Table, Folder &amp; Scale (12–18)</b>2-Table &amp; 7-Table Kimball Star Schemas · Active/Inactive `USERELATIONSHIP` · Folder Combine (12 CSVs) · 542k ERP Credit Notes &amp; 80/20 Pareto · Small Multiples · Unpivot · Key Influencers AI · Fiscal YTD (`"6/30"`) · Native KPI Visual</div>
+      <div class="rm-box"><b>Tier 4 · 220k Enterprise Capstones (19–20)</b>3-Page Executive Apps · Field Parameters (Dynamic Metric Switcher) · What-If Sliders (Discount Cap &amp; Turnover Cost) · Custom Tooltip Pages · Drill-Through · Bookmarks · Row-Level Security (RLS)</div>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <div class="filters">
+      <button class="fbtn active" type="button" onclick="filterCards('all', this)">All 20 Sets</button>
+      <button class="fbtn" type="button" onclick="filterCards('t1', this)">Tier 1 · Beginner (01–05)</button>
+      <button class="fbtn" type="button" onclick="filterCards('t2', this)">Tier 2 · Cleaning &amp; Funnels (06–11)</button>
+      <button class="fbtn" type="button" onclick="filterCards('t3', this)">Tier 3 · Star Schema &amp; Scale (12–18)</button>
+      <button class="fbtn" type="button" onclick="filterCards('t4', this)">Tier 4 · 220k Capstones (19–20)</button>
+    </div>
+    <input class="search" id="searchBox" type="search" placeholder="Search chart, DAX, or topic (e.g. Waterfall, Pareto)..." oninput="applySearch()">
+  </div>
+
+  <div class="cards" id="cardGrid">
+
+    <a class="card" data-tier="t1" data-key="pbi_guide_01_v2" href="01-financial-sample/guide.html">
+      <div class="card-top"><span class="tier-badge tb-1">Tier 1 · Beginner</span><span class="prog-chip">Not started</span></div>
+      <h2>01 · Financial Sample (CFO Profitability)</h2>
+      <div class="who">Microsoft's classic 700-row finance workbook: countries, segments, discount bands, net sales, and profit.</div>
+      <div class="mini">
+        <div><b>$118.73M / $16.89M</b>Net Sales / Total Profit</div>
+        <div><b>Enterprise (-$614.5K)</b>Loss-making segment</div>
+        <div><b>700 rows</b>Excel Table <code>financials</code></div>
+        <div><b>14.23%</b>Net Profit Margin</div>
+      </div>
+      <div class="chips"><span class="chip">KPI Cards</span><span class="chip">Monthly Line</span><span class="chip">Profit Waterfall</span><span class="chip">Matrix Bars</span><span class="chip">SUM / DIVIDE</span></div>
+      <span class="btn">Open Step-by-Step Guide →</span>
+    </a>
+
+    <a class="card" data-tier="t1" data-key="pbi_guide_02_v2" href="02-college-majors/guide.html">
+      <div class="card-top"><span class="tier-badge tb-1">Tier 1 · Beginner</span><span class="prog-chip">Not started</span></div>
+      <h2>02 · US College Majors &amp; Earnings</h2>
+      <div class="who">173 US degree majors across 16 categories: median pay, P25–P75 spread, gender share, and weighted unemployment.</div>
+      <div class="mini">
+        <div><b>6.77M Grads</b>Across 173 majors</div>
+        <div><b>Engineering ($57.4K)</b>#1 Earning category</div>
+        <div><b>7.19% (Weighted)</b>True Unemployment Rate</div>
+        <div><b>57.52% Women</b>Weighted Gender Share</div>
+      </div>
+      <div class="chips"><span class="chip">Quadrant Scatter</span><span class="chip">Top-N Bar</span><span class="chip">P25/Median/P75 Line</span><span class="chip">Weighted DAX</span></div>
+      <span class="btn">Open Step-by-Step Guide →</span>
+    </a>
+
+    <a class="card" data-tier="t1" data-key="pbi_guide_03_v2" href="03-gapminder/guide.html">
+      <div class="card-top"><span class="tier-badge tb-1">Tier 1 · Beginner</span><span class="prog-chip">Not started</span></div>
+      <h2>03 · Gapminder World Health &amp; Wealth</h2>
+      <div class="who">Hans Rosling's 142 countries × 12 five-year waves (1952–2007): life expectancy, population, and GDP per capita.</div>
+      <div class="mini">
+        <div><b>1,704 rows</b>142 countries × 12 waves</div>
+        <div><b>6.25B (2007)</b>Snapshot Population</div>
+        <div><b>68.92 yrs</b>2007 Pop-Weighted LifeExp</div>
+        <div><b>$58.11T</b>2007 Total World GDP</div>
+      </div>
+      <div class="chips"><span class="chip">Log-Scale Bubble</span><span class="chip">Play Axis Animation</span><span class="chip">Snapshot MAX(Year)</span><span class="chip">Edit Interactions</span></div>
+      <span class="btn">Open Step-by-Step Guide →</span>
+    </a>
+
+    <a class="card" data-tier="t1" data-key="pbi_guide_04_v2" href="04-walmart-openings/guide.html">
+      <div class="card-top"><span class="tier-badge tb-1">Tier 1 · Beginner</span><span class="prog-chip">Not started</span></div>
+      <h2>04 · Walmart US Store Expansion (1962–2006)</h2>
+      <div class="who">45 years of US retail rollout &amp; Supercenter conversions, featuring a classic 2-digit year 1960s date bug!</div>
+      <div class="mini">
+        <div><b>2,992 Stores</b>Across 41 US states</div>
+        <div><b>Texas (315)</b>#1 Expansion state</div>
+        <div><b>1,946 Supercenters</b>1,557 converted + 389 new</div>
+        <div><b>1990 (178 stores)</b>Peak opening year</div>
+      </div>
+      <div class="chips"><span class="chip">US Filled Map</span><span class="chip">Running Total Area</span><span class="chip">Donut</span><span class="chip">#date(Y,M,D) Fix</span></div>
+      <span class="btn">Open Step-by-Step Guide →</span>
+    </a>
+
+    <a class="card" data-tier="t1" data-key="pbi_guide_05_v2" href="05-bike-sharing/guide.html">
+      <div class="card-top"><span class="tier-badge tb-1">Tier 1 · Beginner</span><span class="prog-chip">Not started</span></div>
+      <h2>05 · Capital Bikeshare Operations &amp; Weather</h2>
+      <div class="who">731 daily rows (Excel) + 17,379 hourly rows (Power BI) with normalized UCI weather &amp; commuter rush-hour curves.</div>
+      <div class="mini">
+        <div><b>3,292,679 Rides</b>81.2% Registered · 18.8% Casual</div>
+        <div><b>+64.9% YoY</b>2012 vs 2011 Surge</div>
+        <div><b>17:00 (525/hr)</b>Evening Commute Peak</div>
+        <div><b>Fall (1.06M)</b>#1 Season (Code 3)</div>
+      </div>
+      <div class="chips"><span class="chip">Calendar Table</span><span class="chip">24-Hr Rush Line</span><span class="chip">Rides vs Temp Combo</span><span class="chip">Day × Hour Heatmap</span></div>
+      <span class="btn">Open Step-by-Step Guide →</span>
+    </a>
+
+    <a class="card" data-tier="t2" data-key="pbi_guide_06_v2" href="06-bank-marketing/guide.html">
+      <div class="card-top"><span class="tier-badge tb-2">Tier 2 · Cleaning &amp; Funnels</span><span class="prog-chip">Not started</span></div>
+      <h2>06 · Bank Telemarketing Conversion Funnel</h2>
+      <div class="who">45,211 semicolon-delimited outbound campaign calls: targeting ROI, call-fatigue drop-off, and conversion stages.</div>
+      <div class="mini">
+        <div><b>45,211 Calls</b>Semicolon (<code>;</code>) CSV</div>
+        <div><b>11.70% (5,289)</b>Term-Deposit Conversion</div>
+        <div><b>64.73% Conv!</b>Prior Campaign Winners</div>
+        <div><b>Students (28.7%)</b>vs Blue-Collar (7.3%)</div>
+      </div>
+      <div class="chips"><span class="chip">Funnel Chart</span><span class="chip">Target Gauge</span><span class="chip">Volume vs Rate Combo</span><span class="chip">DATATABLE + SWITCH</span></div>
+      <span class="btn">Open Step-by-Step Guide →</span>
+    </a>
+
+    <a class="card" data-tier="t2" data-key="pbi_guide_07_v2" href="07-credit-clients/guide.html">
+      <div class="card-top"><span class="tier-badge tb-2">Tier 2 · Cleaning &amp; Funnels</span><span class="prog-chip">Not started</span></div>
+      <h2>07 · Credit-Card Default &amp; Risk Analytics</h2>
+      <div class="who">30,000 cardholders in legacy <code>.xls</code> with a double header row, undocumented category codes, and delinquency flags.</div>
+      <div class="mini">
+        <div><b>30,000 Clients</b>Legacy <code>.xls</code> (Double Header)</div>
+        <div><b>22.12% (6,636)</b>Portfolio Default Rate</div>
+        <div><b>69.55% Default!</b>When <code>PAY_0 &gt;= 2</code> Months Late</div>
+        <div><b>30.58%</b>Credit Utilization Ratio</div>
+      </div>
+      <div class="chips"><span class="chip">AI Decomposition Tree</span><span class="chip">Risk Gauge</span><span class="chip">Limit-Band Combo</span><span class="chip">Traffic-Light Matrix</span></div>
+      <span class="btn">Open Step-by-Step Guide →</span>
+    </a>
+
+    <a class="card" data-tier="t2" data-key="pbi_guide_08_v2" href="08-chicago-payroll/guide.html">
+      <div class="card-top"><span class="tier-badge tb-2">Tier 2 · Cleaning &amp; Funnels</span><span class="prog-chip">Not started</span></div>
+      <h2>08 · City of Chicago Municipal Payroll</h2>
+      <div class="who">32,226 city workers across 39 departments mixing Salaried and Hourly staff with mutually-exclusive structural nulls.</div>
+      <div class="mini">
+        <div><b>$3.59B Combined</b>$2.88B Salaried + $710M Hourly</div>
+        <div><b>Police ($1.44B)</b>#1 Dept (12,265 staff)</div>
+        <div><b>32,226 Workers</b>77.2% Salaried · 22.8% Hourly</div>
+        <div><b>$115,916 / $48.06</b>Avg Salary / Avg Hourly</div>
+      </div>
+      <div class="chips"><span class="chip">Drillable Treemap</span><span class="chip">Stacked Bar</span><span class="chip">Workforce Donut</span><span class="chip">SUMX Hourly Calc</span></div>
+      <span class="btn">Open Step-by-Step Guide →</span>
+    </a>
+
+    <a class="card" data-tier="t2" data-key="pbi_guide_09_v2" href="09-world-population/guide.html">
+      <div class="card-top"><span class="tier-badge tb-2">Tier 2 · Cleaning &amp; Funnels</span><span class="prog-chip">Not started</span></div>
+      <h2>09 · World Population &amp; Rank Shifts (1960–2025)</h2>
+      <div class="who">Strip 47 World Bank regional/income rollups in one formula and visualize India overtaking China at #1!</div>
+      <div class="mini">
+        <div><b>8.12B (2024)</b>8.19B in 2025 (217 nations)</div>
+        <div><b>India (1.45B)</b>Overtook China in 2021!</div>
+        <div><b>47 Rollups Stripped</b><code>WLD, HIC, IDA...</code> removed</div>
+        <div><b>14,310 Clean Rows</b>66-year history preserved</div>
+      </div>
+      <div class="chips"><span class="chip">Ribbon Chart</span><span class="chip">World Filled Map</span><span class="chip">List.Contains Filter</span><span class="chip">YoY Shrinking Nations</span></div>
+      <span class="btn">Open Step-by-Step Guide →</span>
+    </a>
+
+    <a class="card" data-tier="t2" data-key="pbi_guide_10_v2" href="10-air-quality/guide.html">
+      <div class="card-top"><span class="tier-badge tb-2">Tier 2 · Cleaning &amp; Funnels</span><span class="prog-chip">Not started</span></div>
+      <h2>10 · Urban Air Quality IoT Telemetry</h2>
+      <div class="who">9,357 hourly environmental readings plagued by <code>-200</code> offline sentinel codes, 114 blank rows, and a 90%-dead sensor.</div>
+      <div class="mini">
+        <div><b>2.15 mg/m³ CO</b>Clean avg (raw = -34.21!)</div>
+        <div><b>19:00 (3.73 mg/m³)</b>Evening rush-hour peak</div>
+        <div><b>388 Hours</b>EU NO2 Limit Breaches (&gt;200)</div>
+        <div><b>9,357 Clean Rows</b>114 trailing blanks stripped</div>
+      </div>
+      <div class="chips"><span class="chip">Analytics Constant Line</span><span class="chip">Scatter Trend Line</span><span class="chip">Multi-Col -200→null</span><span class="chip">Sensor Uptime %</span></div>
+      <span class="btn">Open Step-by-Step Guide →</span>
+    </a>
+
+    <a class="card" data-tier="t2" data-key="pbi_guide_11_v2" href="11-netflix-titles/guide.html">
+      <div class="card-top"><span class="tier-badge tb-2">Tier 2 · Cleaning &amp; Funnels</span><span class="prog-chip">Not started</span></div>
+      <h2>11 · Netflix Streaming Catalog Strategy</h2>
+      <div class="who">7,787 Movies &amp; TV Shows: trim 88 leading-space dates, split mixed durations, and explode multi-genre strings into rows!</div>
+      <div class="mini">
+        <div><b>7,787 Titles</b>69.1% Movies · 30.9% TV</div>
+        <div><b>99.3m / 1.78 Seas.</b>Avg Movie / Avg TV length</div>
+        <div><b>India (92.4% Film)</b>vs S. Korea (78.4% TV!)</div>
+        <div><b>TV-MA (36.8%)</b>#1 Maturity rating (2,863)</div>
+      </div>
+      <div class="chips"><span class="chip">100% Stacked Bar</span><span class="chip">Stacked Area</span><span class="chip">Split into Rows Bridge</span><span class="chip">DISTINCTCOUNT</span></div>
+      <span class="btn">Open Step-by-Step Guide →</span>
+    </a>
+
+    <a class="card" data-tier="t3" data-key="pbi_guide_12_v2" href="12-openflights/guide.html">
+      <div class="card-top"><span class="tier-badge tb-3">Tier 3 · Star Schema &amp; Scale</span><span class="prog-chip">Not started</span></div>
+      <h2>12 · OpenFlights Global Airline Network</h2>
+      <div class="who">Two-table relational model (67,663 routes + 7,698 airports) teaching Active + Inactive Role-Playing joins!</div>
+      <div class="mini">
+        <div><b>67,663 Routes</b>Joined to 7,698 Airports</div>
+        <div><b>ATL (915 / 911)</b>#1 Hub Outbound / Inbound</div>
+        <div><b>21.57% Codeshare</b>Ryanair FR #1 (2,484)</div>
+        <div><b>2 Tables (1:*)</b>Active + Inactive Join</div>
+      </div>
+      <div class="chips"><span class="chip">USERELATIONSHIP</span><span class="chip">GPS Lat/Lon Map</span><span class="chip">MySQL \N→null</span><span class="chip">Hub Symmetry Bar</span></div>
+      <span class="btn">Open Step-by-Step Guide →</span>
+    </a>
+
+    <a class="card" data-tier="t3" data-key="pbi_guide_13_v2" href="13-monthly-sales/guide.html">
+      <div class="card-top"><span class="tier-badge tb-3">Tier 3 · Star Schema &amp; Scale</span><span class="prog-chip">Not started</span></div>
+      <h2>13 · 12-Month Electronics Folder Combine</h2>
+      <div class="who">Stack 12 monthly CSVs automatically via Folder Combine, strip 900 blank/header rows, and separate the two Portlands!</div>
+      <div class="mini">
+        <div><b>$34,492,036</b>Across 185,950 clean lines</div>
+        <div><b>$193.30 AOV</b>178,437 distinct orders</div>
+        <div><b>Macbook ($8.04M)</b>vs AAA Batteries (31K units)</div>
+        <div><b>12 CSVs Combined</b>900 junk rows stripped</div>
+      </div>
+      <div class="chips"><span class="chip">Get Data → Folder</span><span class="chip">Hourly Ad Curve</span><span class="chip">Rev vs Units Combo</span><span class="chip">Address Parsing</span></div>
+      <span class="btn">Open Step-by-Step Guide →</span>
+    </a>
+
+    <a class="card" data-tier="t3" data-key="pbi_guide_14_v2" href="14-online-retail/guide.html">
+      <div class="card-top"><span class="tier-badge tb-3">Tier 3 · Star Schema &amp; Scale</span><span class="prog-chip">Not started</span></div>
+      <h2>14 · UK Wholesale Retail Ledger (542k Rows)</h2>
+      <div class="who">541,909 ERP invoice lines: reconcile Gross Sales vs. <code>C</code>-prefixed Credit Notes vs. Net Revenue, and build an 80/20 Pareto!</div>
+      <div class="mini">
+        <div><b>£9,747,748 Net</b>£10.67M Gross - £897K Ret.</div>
+        <div><b>541,909 Lines</b>4,372 Wholesale + Guest</div>
+        <div><b>84.0% UK (£8.19M)</b>NL · Ireland (<code>EIRE</code>) · DE</div>
+        <div><b>8.41% Return Rate</b>9,288 Credit-Note lines</div>
+      </div>
+      <div class="chips"><span class="chip">80/20 Pareto Combo</span><span class="chip">Gross-to-Net Waterfall</span><span class="chip">Export Map</span><span class="chip">542k SUMX</span></div>
+      <span class="btn">Open Step-by-Step Guide →</span>
+    </a>
+
+    <a class="card" data-tier="t3" data-key="pbi_guide_15_v2" href="15-hotel-bookings/guide.html">
+      <div class="card-top"><span class="tier-badge tb-3">Tier 3 · Star Schema &amp; Scale</span><span class="prog-chip">Not started</span></div>
+      <h2>15 · Hotel Bookings &amp; Revenue Leakage</h2>
+      <div class="who">119,390 City &amp; Resort reservations: reconstruct split arrival dates, quantify €16.73M lost to cancellations, and use Small Multiples!</div>
+      <div class="mini">
+        <div><b>€26.00M Realized</b>vs €16.73M Lost to Cancels!</div>
+        <div><b>37.04% Cancelled</b>City 41.7% · Resort 27.8%</div>
+        <div><b>119,390 Bookings</b>Avg ADR €101.83</div>
+        <div><b>57.0% Canc Rate!</b>At 181+ day lead times</div>
+      </div>
+      <div class="chips"><span class="chip">Small Multiples</span><span class="chip">Lead-Time Risk Combo</span><span class="chip">Date Reconstruction</span><span class="chip">Channel Leakage</span></div>
+      <span class="btn">Open Step-by-Step Guide →</span>
+    </a>
+
+    <a class="card" data-tier="t3" data-key="pbi_guide_16_v2" href="16-co2-emissions/guide.html">
+      <div class="card-top"><span class="tier-badge tb-3">Tier 3 · Star Schema &amp; Scale</span><span class="prog-chip">Not started</span></div>
+      <h2>16 · Global CO₂ &amp; ESG Climate Analytics</h2>
+      <div class="who">Prune OWID's 79 columns to 13, isolate 220 ISO-3 nations, and Unpivot 5 fossil-fuel columns into a tidy Fuel Stacked Area!</div>
+      <div class="mini">
+        <div><b>37,748 Mt (2025)</b>Across 220 ISO-3 nations</div>
+        <div><b>China (12,417 Mt)</b>#1 Annual Emitter (2025)</div>
+        <div><b>USA (439,343 Mt)</b>#1 Cumulative (1750–2025)</div>
+        <div><b>56,269 × 79 Cols</b>Pruned &amp; Unpivoted</div>
+      </div>
+      <div class="chips"><span class="chip">Unpivot Columns</span><span class="chip">Choose Columns (79→13)</span><span class="chip">Fuel Stacked Area</span><span class="chip">Ribbon Chart</span></div>
+      <span class="btn">Open Step-by-Step Guide →</span>
+    </a>
+
+    <a class="card" data-tier="t3" data-key="pbi_guide_17_v2" href="17-customer-feedback/guide.html">
+      <div class="card-top"><span class="tier-badge tb-3">Tier 3 · Star Schema &amp; Scale</span><span class="prog-chip">Not started</span></div>
+      <h2>17 · SaaS Support &amp; CSAT (7-Sheet Model)</h2>
+      <div class="who">Flatten 4 Snowflake lookups into Customers, avoid the Device ↔ Tickets Many-to-Many Chasm Trap, and run Key Influencers AI!</div>
+      <div class="mini">
+        <div><b>45,218 Customers</b>7.42/10 CSAT (11.7% Low)</div>
+        <div><b>126,644 Tickets</b>12.04% Escalated · 3.67d Avg</div>
+        <div><b>2.17× Low CSAT!</b>When Tutorial = <code>no</code></div>
+        <div><b>7 Sheets → 3 Star</b>Zero M:M Chasm Traps</div>
+      </div>
+      <div class="chips"><span class="chip">Key Influencers AI</span><span class="chip">Snowflake Merge</span><span class="chip">SLA Breach Gauge</span><span class="chip">Disable Load</span></div>
+      <span class="btn">Open Step-by-Step Guide →</span>
+    </a>
+
+    <a class="card" data-tier="t3" data-key="pbi_guide_18_v2" href="18-adventureworks-sales/guide.html">
+      <div class="card-top"><span class="tier-badge tb-3">Tier 3 · Star Schema &amp; Scale</span><span class="prog-chip">Not started</span></div>
+      <h2>18 · AdventureWorks Enterprise Star Schema</h2>
+      <div class="who">PL-300 exam 7-table Kimball warehouse: Fiscal YTD (<code>"6/30"</code>), Ordered vs. Shipped <code>DateKey</code>s, and the 0.58% Reseller Margin shock!</div>
+      <div class="mini">
+        <div><b>$109.81M Sales</b>$12.55M Gross Profit (11.4%)</div>
+        <div><b>Internet: 41.15%</b>vs Reseller: 0.58% Margin!</div>
+        <div><b>121,253 Fact Rows</b>7-Table Kimball Warehouse</div>
+        <div><b>FY2018 → FY2020</b>$23.9M → $34.1M → $51.9M</div>
+      </div>
+      <div class="chips"><span class="chip">7-Table Star Schema</span><span class="chip">Native KPI Visual</span><span class="chip">Fiscal YTD ("6/30")</span><span class="chip">4-Level Hierarchy</span></div>
+      <span class="btn">Open Step-by-Step Guide →</span>
+    </a>
+
+    <a class="card" data-tier="t4" data-key="pbi_guide_19_v2" href="19-northwind-retail/guide.html">
+      <div class="card-top"><span class="tier-badge tb-4">Tier 4 · 220k Capstone</span><span class="prog-chip">Not started</span></div>
+      <h2>19 · Northwind Global Retail Capstone (3-Page App)</h2>
+      <div class="who">220,000 orders ($704.31M Sales, 2.66% Margin): fix the -$13.26M Furniture bleed &amp; -$37.73M 36%+ Discount Cliff in a 3-page Board App!</div>
+      <div class="mini">
+        <div><b>$704.31M / $18.71M</b>Sales / Profit (2.66% Margin)</div>
+        <div><b>Furniture (-$13.3M)</b>vs Tech (+$31.7M Profit)</div>
+        <div><b>-$37.73M Bleed!</b>On 36%+ Discounted Orders</div>
+        <div><b>220,000 Orders</b>39,829 Global Customers</div>
+      </div>
+      <div class="chips"><span class="chip">Field Parameters</span><span class="chip">What-If Discount Cap</span><span class="chip">Drill-Through Page</span><span class="chip">Report Tooltip Page</span></div>
+      <span class="btn">Open Capstone Guide →</span>
+    </a>
+
+    <a class="card" data-tier="t4" data-key="pbi_guide_20_v2" href="20-talentfirst-hr/guide.html">
+      <div class="card-top"><span class="tier-badge tb-4">Tier 4 · 220k Capstone</span><span class="prog-chip">Not started</span></div>
+      <h2>20 · TalentFirst Global HR Capstone (3-Page CHRO App)</h2>
+      <div class="who">220,000 employees across 10 hubs: OverTime burnout (33.71% vs 17.58% attrition), DEI pay equity, $2.41B turnover cost, and 281 Flight-Risk alerts!</div>
+      <div class="mini">
+        <div><b>220,000 Staff</b>173,526 Active · 21.12% Attr.</div>
+        <div><b>33.71% vs 17.58%</b>OverTime Yes vs No Attrition</div>
+        <div><b>281 Red Alerts!</b>Imminent Active Flight Risks</div>
+        <div><b>$2.41B Exposure</b>At 50% Salary Turnover Cost</div>
+      </div>
+      <div class="chips"><span class="chip">Burnout Heatmap</span><span class="chip">What-If Turnover Cost</span><span class="chip">DEI Pay Equity</span><span class="chip">Row-Level Security</span></div>
+      <span class="btn">Open Capstone Guide →</span>
+    </a>
+
+  </div>
 </div>
-<footer>Practice files stay in this folder. Open any guide offline.</footer>
+
+<footer>
+  All 20 datasets &amp; guides live locally in <code>datasets/</code> and run 100% offline · Manually verified against raw data files.
+</footer>
+
+<script>
+(function(){
+  var currentTier = 'all';
+  var cards = document.querySelectorAll('.card');
+  var started = 0, completed = 0;
+
+  cards.forEach(function(card){
+    var key = card.getAttribute('data-key');
+    var chip = card.querySelector('.prog-chip');
+    try{
+      var arr = JSON.parse(localStorage.getItem(key) || '[]');
+      if(arr.length){
+        var done = arr.reduce(function(a,b){ return a + (b ? 1 : 0); }, 0);
+        if(done > 0){
+          started++;
+          var pct = Math.round((done / arr.length) * 100);
+          chip.textContent = done + '/' + arr.length + ' (' + pct + '%)';
+          if(done === arr.length){ chip.classList.add('done'); completed++; }
+        }
+      }
+    }catch(e){}
+  });
+
+  document.getElementById('overallProg').textContent =
+    'Progress: ' + completed + ' / 20 completed (' + started + ' started)';
+
+  window.filterCards = function(tier, btn){
+    currentTier = tier;
+    document.querySelectorAll('.fbtn').forEach(function(b){ b.classList.remove('active'); });
+    btn.classList.add('active');
+    applySearch();
+  };
+
+  window.applySearch = function(){
+    var q = (document.getElementById('searchBox').value || '').toLowerCase().trim();
+    cards.forEach(function(c){
+      var matchTier = (currentTier === 'all') || (c.getAttribute('data-tier') === currentTier);
+      var matchText = !q || (c.textContent.toLowerCase().indexOf(q) !== -1);
+      c.style.display = (matchTier && matchText) ? 'flex' : 'none';
+    });
+  };
+})();
+</script>
 </body>
 </html>

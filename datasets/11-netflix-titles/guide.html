@@ -3,148 +3,358 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Practice · Netflix catalog</title>
+<title>11 · Netflix Content Catalog — Beginner to Advanced Excel &amp; Power BI Guide</title>
 <style>
-  :root{--calc:#1d6f42;--calc-soft:#e7f3ec;--pbi:#caa400;--pbi-soft:#fff8e0;--ink:#1f2430;--muted:#5b6472;--line:#e3e7ee;--bg:#f6f8fb;--accent:#0b3d63;}
+  :root{
+    --calc:#1d6f42; --calc-soft:#e7f3ec;
+    --pbi:#b78900; --pbi-soft:#fff8e0;
+    --ink:#1f2430; --muted:#5b6472; --line:#e3e7ee; --bg:#f6f8fb;
+    --accent:#0b3d63; --danger:#c0392b; --danger-soft:#fdeaea;
+  }
   *{box-sizing:border-box;}
-  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.6;}
-  header{background:linear-gradient(120deg,#1d6f42,#0b3d63);color:#fff;padding:28px 26px;}
-  header h1{margin:0 0 6px;font-size:24px;}
-  header p{margin:0;max-width:860px;font-size:14.5px;}
-  header a{color:#fff;}
-  .wrap{max-width:1080px;margin:22px auto 70px;padding:0 22px;}
-  .facts{background:#fff;border:1px solid var(--line);border-left:5px solid var(--calc);border-radius:12px;padding:16px 20px;margin-bottom:22px;}
-  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.62;}
+  header{background:linear-gradient(125deg,#1d6f42 0%,#0f5132 48%,#0b3d63 100%);color:#fff;padding:32px 26px 28px;}
+  header .kicker{font-size:12px;text-transform:uppercase;letter-spacing:.8px;opacity:.88;font-weight:700;margin-bottom:6px;}
+  header h1{margin:0 0 8px;font-size:26px;letter-spacing:.2px;}
+  header p{margin:0;max-width:880px;font-size:14.8px;opacity:.95;}
+  header a{color:#fff;text-decoration:underline;}
+  .top-nav{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;align-items:center;}
+  .pill{display:inline-block;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.32);padding:4px 12px;border-radius:20px;font-size:12.5px;text-decoration:none;color:#fff;}
+  .wrap{max-width:1120px;margin:20px auto 70px;padding:0 22px;}
+  .prog-bar{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 18px;margin-bottom:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;position:sticky;top:10px;z-index:20;box-shadow:0 2px 8px rgba(15,23,42,.05);}
+  .prog-track{flex:1;min-width:180px;height:10px;background:#eef2f7;border-radius:99px;overflow:hidden;}
+  .prog-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--calc),#caa400);transition:width .25s;}
+  .prog-text{font-size:13px;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums;}
+  .btn-sm{border:1px solid var(--line);background:#fff;color:var(--ink);padding:5px 11px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;}
+  .btn-sm:hover{background:#f1f5f9;}
+  .toc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:20px;font-size:13.5px;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;}
+  .toc a{color:var(--accent);text-decoration:none;font-weight:600;}
+  .toc a:hover{text-decoration:underline;}
+  section{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px 26px;margin-bottom:20px;box-shadow:0 1px 2px rgba(20,30,50,.03);}
+  h2.t{font-size:20px;margin:0 0 14px;border-bottom:2px solid var(--calc);padding-bottom:8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  h2.t.pbi-h{border-bottom-color:#caa400;}
+  h3{font-size:16px;margin:20px 0 8px;color:var(--accent);}
+  h4{font-size:14.5px;margin:14px 0 6px;color:var(--ink);}
+  p{margin:8px 0;}
+  .facts{background:#fff;border:1px solid var(--line);border-left:5px solid var(--calc);border-radius:12px;padding:16px 18px;margin-bottom:18px;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:10px;}
   .stat{background:var(--calc-soft);border-radius:9px;padding:10px 12px;}
   .stat b{display:block;font-size:18px;color:var(--calc);}
   .stat span{font-size:12px;color:var(--muted);}
-  section{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 24px;margin-bottom:20px;}
-  h2.t{font-size:20px;margin:0 0 12px;border-bottom:2px solid var(--calc);padding-bottom:6px;}
-  h3{font-size:16px;margin:18px 0 8px;color:var(--accent);}
-  code{background:#eef2f7;padding:1px 6px;border-radius:5px;font-size:13px;font-family:"SF Mono",Consolas,monospace;}
-  pre{background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:10px;overflow:auto;font-size:13px;font-family:"SF Mono",Consolas,monospace;line-height:1.5;}
-  table{border-collapse:collapse;width:100%;margin:10px 0;font-size:13.5px;}
-  th,td{border:1px solid var(--line);padding:7px 10px;text-align:left;}
-  th{background:#f1f5f9;}
-  .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;color:#fff;}
-  .g{background:#27ae60;} .y{background:#e0a800;} .r{background:#c0392b;}
-  .req{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px dashed var(--line);}
+  .stat.warn{background:var(--danger-soft);}
+  .stat.warn b{color:var(--danger);}
+  code{background:#eef2f7;padding:2px 6px;border-radius:5px;font-size:12.8px;font-family:"SF Mono",Consolas,monospace;color:#0f172a;}
+  pre{background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:10px;overflow:auto;font-size:13px;font-family:"SF Mono",Consolas,monospace;line-height:1.55;margin:10px 0;}
+  table{border-collapse:collapse;width:100%;margin:12px 0;font-size:13.3px;}
+  th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top;}
+  th{background:#f1f5f9;font-weight:700;}
+  .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;color:#fff;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap;}
+  .g{background:#1d6f42;} .y{background:#d99000;} .r{background:#c0392b;} .b{background:#0b3d63;}
+  .req{display:flex;gap:12px;align-items:flex-start;padding:9px 0;border-bottom:1px dashed var(--line);}
   .req:last-child{border-bottom:none;}
-  .step{background:var(--calc-soft);border-radius:8px;padding:12px 14px;margin:10px 0;}
+  .step{background:var(--calc-soft);border-radius:10px;border:1px solid #cde4d6;padding:14px 16px;margin:12px 0;}
   .step b{color:var(--calc);}
-  .pbi-box{background:var(--pbi-soft);border-radius:8px;padding:12px 14px;margin:10px 0;}
-  .pbi-box b{color:#8a6a00;}
+  .pbi-box{background:var(--pbi-soft);border:1px solid #f2df9d;border-radius:10px;padding:14px 16px;margin:12px 0;}
+  .pbi-box b{color:#7c5d00;}
+  .chart-card{border:1px solid var(--line);border-left:5px solid #caa400;border-radius:10px;padding:14px 16px;margin:14px 0;background:#fcfdff;}
+  .chart-card h4{margin:0 0 8px;font-size:15.5px;color:var(--accent);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .wells{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin:10px 0;}
+  .well{background:#f4f6fa;border:1px solid var(--line);border-radius:7px;padding:7px 10px;font-size:12.8px;}
+  .well strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-bottom:2px;}
   .note{background:#fffaf0;border-left:4px solid #e0a800;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
-  .chk li{margin:4px 0;}
-  .toc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:20px;font-size:14px;}
-  .toc a{color:var(--accent);text-decoration:none;}
-  footer{text-align:center;color:var(--muted);font-size:12px;padding:10px 20px 28px;}
+  .warn-box{background:var(--danger-soft);border-left:4px solid var(--danger);border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
+  .wireframe{display:grid;grid-template-columns:repeat(12,1fr);gap:8px;background:#eef2f7;padding:14px;border-radius:12px;margin:12px 0;font-size:12px;}
+  .wf-box{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:10px;text-align:center;font-weight:600;color:var(--accent);}
+  .wf-box small{display:block;font-weight:400;color:var(--muted);margin-top:3px;font-size:11px;}
+  ul.task-list{list-style:none;padding:0;margin:10px 0;}
+  ul.task-list li{padding:5px 0;}
+  ul.task-list label{display:flex;gap:9px;align-items:flex-start;cursor:pointer;font-size:13.8px;}
+  ul.task-list input{margin-top:4px;width:16px;height:16px;flex:none;accent-color:var(--calc);}
+  footer{text-align:center;color:var(--muted);font-size:12.5px;padding:10px 20px 28px;}
   footer a{color:#3d4a5c;}
+  @media(max-width:740px){
+    .wrap{padding:0 12px;}
+    section{padding:16px 16px;}
+    .wireframe{grid-template-columns:1fr 1fr;}
+    .wf-box{grid-column:span 2 !important;}
+  }
 </style>
 </head>
 <body>
+
 <header>
-  <h1>11 · Netflix catalog</h1>
-  <p>Movies and TV shows in a Netflix catalog snapshot: type, country, year, and rating. Figures below were computed from the file in this folder. <a href="../index.html">All practice sets</a></p>
-</header>
-<div class="wrap">
-  <div class="toc"><b>Jump to:</b>
-    <a href="#profile">Profile</a> ·
-    <a href="#brief">Brief</a> ·
-    <a href="#req">Requirements</a> ·
-    <a href="#calc">Excel</a> ·
-    <a href="#pbi">Power BI</a> ·
-    <a href="#sign">Sign-off</a> ·
-    <a href="#stretch">Stretch</a>
+  <div class="kicker">Practice Set 11 of 20 · Media Catalog Analytics, Text Parsing &amp; Multi-Value Bridge Tables</div>
+  <h1>11 · Netflix Content Catalog — Text Parsing, Exploded Genres &amp; 100% Stacked Bars</h1>
+  <p>Analyze 7,787 Movies and TV Shows with zero dollar columns — pure count-and-metadata BI! Trim 88 sneaky leading spaces in <code>date_added</code>, split mixed <code>duration</code> strings (<code>99.3 min</code> vs. <code>1.78 Seasons</code>), explode comma-separated <code>listed_in</code> genres into a clean 1-to-Many bridge table, and uncover why India is 92.4% Movies while South Korea is 78.4% K-Dramas!</p>
+  <div class="top-nav">
+    <a class="pill" href="../index.html">← All 20 Practice Sets</a>
+    <a class="pill" href="../../index.html">← Main Excel &amp; Power BI Outline</a>
+    <span class="pill">Charts Taught: 100% Stacked Bar · Stacked Area · Donut · Exploded Genre Bar · Maturity Rating Matrix</span>
   </div>
+</header>
+
+<div class="wrap">
+
+  <div class="prog-bar">
+    <span class="prog-text" id="progText">0 / 0 steps completed</span>
+    <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+    <button class="btn-sm" type="button" onclick="resetChecks()">Reset checklist</button>
+  </div>
+
+  <div class="toc">
+    <b>Step-by-Step Map:</b>
+    <a href="#profile">1. Data Profile &amp; 3 Text Traps</a> ·
+    <a href="#brief">2. Client Brief</a> ·
+    <a href="#req">3. Requirements</a> ·
+    <a href="#excel">4. Phase A: Excel Step-by-Step</a> ·
+    <a href="#pbi">5. Phase B: Power BI &amp; Charts Journey</a> ·
+    <a href="#sign">6. Sign-Off</a> ·
+    <a href="#stretch">7. Stretch</a> ·
+    <a href="#mistakes">8. Common Mistakes</a>
+  </div>
+
+  <!-- 1. PROFILE -->
   <section id="profile">
-    <h2 class="t">1. Verified profile</h2>
-    <div class="facts"><div class="grid"><div class="stat"><b>7,787</b><span>Rows</span></div><div class="stat"><b>2008-01-01 → 2021-01-16</b><span>Dates</span></div><div class="stat"><b>TV-MA</b><span>Top rating</span></div></div></div>
-    <p>File: <code>netflix_titles.csv</code>. Fact table for the steps: <code>Titles</code>, renamed to <code>Titles</code> in Power BI.</p>
-    
-    
-        <h3>Biggest groups (check your pivot against this)</h3>
-        <table><tr><th>rating</th><th>Rows</th></tr><tr><td>TV-MA</td><td>2,863</td></tr><tr><td>TV-14</td><td>1,931</td></tr><tr><td>TV-PG</td><td>806</td></tr><tr><td>R</td><td>665</td></tr><tr><td>PG-13</td><td>386</td></tr><tr><td>TV-Y</td><td>280</td></tr></table>
-    <div class="note">There is no 'hours watched' column. Every total is a count of titles. date_added is when it entered this catalog, release_year is when it was made. They answer different questions.</div>
+    <h2 class="t">1. Verified Data Profile &amp; Three Classic Text-Cleaning Traps</h2>
+    <div class="facts">
+      <div class="grid">
+        <div class="stat"><b>7,787</b><span>Total Catalog Titles</span></div>
+        <div class="stat"><b>5,377 (69.1%)</b><span>Movies (Avg 99.3 min)</span></div>
+        <div class="stat"><b>2,410 (30.9%)</b><span>TV Shows (Avg 1.78 Seasons)</span></div>
+        <div class="stat"><b>2019 (2,153)</b><span>Peak Catalog Additions Year</span></div>
+        <div class="stat"><b>TV-MA (36.8%)</b><span>#1 Maturity Rating (2,863)</span></div>
+        <div class="stat warn"><b>88 Leading Spaces!</b><span>In <code>date_added</code> strings!</span></div>
+      </div>
+    </div>
+
+    <div class="note">
+      <b>Three Real-World Dirty-Text Traps in <code>netflix_titles.csv</code>:</b><br>
+      1. <b>88 Leading Spaces in <code>date_added</code>:</b> Rows like <code>" August 14, 2020"</code> begin with a space! Always run <b>Transform → Format → Trim</b> BEFORE parsing as a Date (<code>English - United States</code> locale).<br>
+      2. <b>Mixed Units in <code>duration</code>:</b> Column J stores both <code>"90 min"</code> (for Movies) and <code>"4 Seasons"</code> (for TV Shows). Split by space into <code>DurationNum</code> + <code>DurationUnit</code> and filter by <code>type</code> before averaging!<br>
+      3. <b>Comma-Separated Multi-Value Genres (<code>listed_in</code>):</b> A single title has up to 3 genres (e.g., <code>"International Movies, Dramas, Comedies"</code>). Splitting into rows inside a 2-column <code>TitleGenres</code> bridge table lets you rank true individual genres (<code>International Movies = 2,437</code>, <code>Dramas = 2,106</code>)!
+    </div>
+
+    <h3>Column Dictionary (<code>netflix_titles.csv</code>, Columns A–L)</h3>
+    <table>
+      <tr><th>Col</th><th>Column</th><th>Blanks</th><th>Notes &amp; Verified Benchmarks</th></tr>
+      <tr><td>A–C</td><td><code>show_id</code>, <code>type</code>, <code>title</code></td><td>0</td><td>Unique ID (<code>s1..s7787</code>), <code>Movie</code> (5,377) vs <code>TV Show</code> (2,410)</td></tr>
+      <tr><td>D–F</td><td><code>director</code>, <code>cast</code>, <code>country</code></td><td>2,389 / 718 / 507</td><td>Replace blank <code>country</code> (6.5%) with <code>"Unknown"</code>; extract <code>PrimaryCountry</code> before first comma</td></tr>
+      <tr><td>G–H</td><td><code>date_added</code>, <code>release_year</code></td><td>10 / 0</td><td>Trim 88 leading spaces in <code>date_added</code>; peak additions: <code>2019 = 2,153</code>, <code>2020 = 2,009</code></td></tr>
+      <tr><td>I–J</td><td><code>rating</code>, <code>duration</code></td><td>7 / 0</td><td><code>TV-MA = 2,863</code>, <code>TV-14 = 1,931</code>; 66.7% of TV Shows (1,608) have only <code>1 Season</code>!</td></tr>
+      <tr><td>K–L</td><td><code>listed_in</code>, <code>description</code></td><td>0</td><td>Multi-genre string + synopsis text (enable Report Search slicer on <code>title</code>!)</td></tr>
+    </table>
   </section>
+
+  <!-- 2. BRIEF -->
   <section id="brief">
-    <h2 class="t">2. The client brief</h2>
-    <p><b>Who:</b> A content planner.</p>
-    <p><b>The ask:</b> <i>How much of the catalog is movies versus TV, which countries we list, and how the release years are spread. This is a catalog, not a viewing-hours file.</i></p>
+    <h2 class="t">2. Real-World Client Brief</h2>
+    <p><b>Client:</b> VP of Global Content Acquisition &amp; Licensing Strategy.</p>
+    <p><b>The Ask:</b> <i>"We want a competitive intelligence view of Netflix's 7,787-title library: how fast did Movies vs. TV Shows expand from 2015–2020, how do top producing countries differ in Movie-vs-Series strategy (e.g., India vs. South Korea &amp; Japan), what is the true genre ranking once multi-genre strings are unpacked, and how heavily does the library skew Mature (<code>TV-MA</code> / <code>R</code>)?"</i></p>
   </section>
+
+  <!-- 3. REQUIREMENTS -->
   <section id="req">
-    <h2 class="t">3. Requirements</h2>
-    <div class="req"><span class="tag g">Beginner</span><div>KPI strip — row count.</div></div><div class="req"><span class="tag g">Beginner</span><div>Bar chart of <b>rating</b>.</div></div><div class="req"><span class="tag g">Beginner</span><div>Trend by <b>date_added</b>.</div></div><div class="req"><span class="tag y">Inter.</span><div>Top 10 <b>rating</b>.</div></div><div class="req"><span class="tag y">Inter.</span><div>Break the same number down by <b>rating</b>.</div></div><div class="req"><span class="tag r">Advan.</span><div>A rate using <b>type</b> (two values). Use DIVIDE, not an average of a rate column.</div></div><div class="req"><span class="tag r">Advan.</span><div>Slicers that cross-filter every visual on the page.</div></div>
+    <h2 class="t">3. Project Requirements (Beginner → Advanced)</h2>
+    <div class="req"><span class="tag g">Beginner</span><div><b>Trim &amp; Parse <code>date_added</code> + Split <code>duration</code> + Extract <code>PrimaryCountry</code>:</b> Clean all text traps cleanly in Excel and Power Query.</div></div>
+    <div class="req"><span class="tag g">Beginner</span><div><b>4-Card Catalog KPI Strip:</b> Total Titles (<code>7,787</code>), Movie Share % (<code>69.1%</code>), Avg Movie Runtime (<code>99.3 min</code>), and 1-Season TV Cancellation/Miniseries Rate (<code>66.7%</code>).</div></div>
+    <div class="req"><span class="tag y">Inter.</span><div><b>Catalog Growth Stacked Area Chart + Country Strategy 100% Stacked Bar Chart:</b> Contrast India (<code>92.4%</code> Movies) against South Korea (<code>78.4%</code> TV Shows) and Japan (<code>68.4%</code> TV Shows)!</div></div>
+    <div class="req"><span class="tag r">Advan.</span><div><b>Power Query Genre Bridge Table (<code>Split into Rows</code>):</b> Reference <code>Titles</code> to build <code>TitleGenres(show_id, Genre)</code>, join <code>1 → *</code>, and rank top genres cleanly using <code>DISTINCTCOUNT(Titles[show_id])</code>.</div></div>
   </section>
-  <section id="calc">
-    <h2 class="t">4. Phase A — Microsoft Excel</h2>
-    <p>Goal: open the file cleanly, add only the helper columns you need, and prove one total with a PivotTable before you touch Power BI.</p>
-    
-    <h3>Step 1 — Open it the right way</h3>
-    <div class="step"><b>Data → From Text/CSV</b> → <code>netflix_titles.csv</code>. date_added should become a date. duration is text ('90 min', '2 Seasons') — do not set it to a number.<br><b>Formats:</b> <code>date_added</code> → Date. Then <b>View → Freeze Panes → Freeze Top Row</b>.</div>
-    <h3>Step 2 — Look for dirt</h3>
-    <div class="step"><ul><li>country can list several countries in one cell. A simple count will credit the whole string, not each country. Splitting is a stretch task.</li><li>director and cast are blank on many TV shows.</li><li>type has two values: Movie and TV Show.</li></ul></div>
-    
-        <h3>Step 3 — Helper columns</h3>
-        <div class="step">Put these in the first empty columns and fill down (double-click the fill handle).<br>
-        <b>Year</b> &nbsp; <code>=YEAR(G2)</code><br>
-<b>MonthNum</b> &nbsp; <code>=MONTH(G2)</code><br>
-<b>MonthName</b> &nbsp; <code>=TEXT(G2,&quot;MMM&quot;)</code>
-        <br><i>Excel on this machine uses a comma between arguments. If your Excel uses semicolons, swap them.</i></div>
-    <h3>Step 4 — Pivot check</h3>
-    <div class="step">Select the data → <b>Insert → PivotTable</b>. Rows = <code>rating</code>. Put <code>release_year</code> in Columns.
-    Values = <b>Sum of a Count of any text column</b>.
-    The grand total must be <b>7,787 rows</b>. If it is not, the filter or the number format is wrong — fix that before Power BI.
+
+  <!-- 4. EXCEL -->
+  <section id="excel">
+    <h2 class="t">4. Phase A — Step-by-Step in Microsoft Excel</h2>
+
+    <h3>Step A1 — Import UTF-8 CSV &amp; Add Clean Helper Columns</h3>
+    <div class="step">
+      Open Excel → <b>Data → From Text/CSV</b> → select <code>datasets/11-netflix-titles/data/netflix_titles.csv</code> → File Origin: <b>65001: Unicode (UTF-8)</b> (so international titles like <code>João Miguel</code> render cleanly!) → <b>Load</b>. Add helper columns:
+<pre>// Col M (YearAdded) — trims leading space and extracts 4-digit year:
+=IF(G2="","", VALUE(RIGHT(TRIM(G2), 4)))
+
+// Col N (PrimaryCountry) — text before first comma, or "Unknown":
+=IF(F2="","Unknown", IFERROR(LEFT(F2, FIND(",",F2)-1), F2))
+
+// Col O (DurationNum) — integer before first space:
+=VALUE(LEFT(J2, FIND(" ", J2)-1))</pre>
     </div>
-    <h3>Step 5 — Save</h3>
-    <div class="step"><b>Save As</b> <code>11-netflix-titles-clean.xlsx</code>. Power BI should read this file, not a half-filtered view you forgot to clear.</div>
-  </section>
-  <section id="pbi">
-    <h2 class="t">5. Phase B — Power BI</h2>
-    <h3>Step 1 — Get data</h3>
-    <div class="pbi-box"><b>Get data → Text/CSV</b>. Split duration into a number and a unit only if you need to compare movie length. Leave it as text until then.</div>
-    <h3>Step 2 — Power Query</h3>
-    <div class="pbi-box">Rename the main query to <code>Titles</code>. Set the types from Step 1. Watch <b>Applied Steps</b>. Then <b>Close &amp; Apply</b>.
-    </div>
-    <h3>Step 3 — Model</h3>
-    <div class="pbi-box"><p>One table. A star schema is not required for this set.</p>
-    <p>Hide key columns you do not want on the report. A hidden column can still be used by a relationship.</p></div>
-    <h3>Step 4 — Measures</h3>
-    <p>Write these as <b>measures</b>, not calculated columns. Replace the placeholder filter with a real value from the column.</p>
-    <pre>Row Count = COUNTROWS(&#x27;Titles&#x27;)
-Filtered rows = CALCULATE([Row Count], &#x27;Titles&#x27;[type] = &lt;one of the two values&gt;)</pre>
-    <h3>Step 5 — Visuals</h3>
-    <div class="pbi-box">
+
+    <h3>Step A2 — Verify Key Catalog Stats in Excel</h3>
+    <div class="step">
       <ul>
-        <li>Cards for the measures in Step 4.</li>
-        <li>Bar chart: axis <code>rating</code>, value the main measure.</li>
-        <li>Line chart: axis <code>date_added</code>.</li>
-        <li>A slicer for each small category (type, rating).</li>
-        <li>Click a bar and confirm the other visuals filter. Use <b>Format → Edit interactions</b> if one visual should stay still.</li>
+        <li><code>=COUNTIF(B2:B7788,"Movie")</code> → <b>5,377</b> (<code>69.05%</code>) | <code>TV Show</code> → <b>2,410</b> (<code>30.95%</code>)</li>
+        <li><code>=AVERAGEIF(B2:B7788,"Movie",O2:O7788)</code> → <b>99.3 minutes</b></li>
+        <li><code>=AVERAGEIF(B2:B7788,"TV Show",O2:O7788)</code> → <b>1.78 seasons</b></li>
       </ul>
+      Save as <code>11-netflix-clean.xlsx</code>.
+    </div>
+
+    <ul class="task-list">
+      <li><label><input type="checkbox"> Imported UTF-8 CSV in Excel and verified 5,377 Movies (99.3 min avg) and 2,410 TV Shows (1.78 seasons avg).</label></li>
+    </ul>
+  </section>
+
+  <!-- 5. POWER BI -->
+  <section id="pbi">
+    <h2 class="t pbi-h">5. Phase B — Complete Power BI &amp; Charts Journey</h2>
+
+    <h3>Stage 1 &amp; 2 — Clean <code>Titles</code> + Build <code>TitleGenres</code> Bridge Table in Power Query</h3>
+    <div class="pbi-box">
+      <ol style="margin:0;padding-left:20px;">
+        <li>Click <b>Home → Text/CSV</b> → select <code>data/netflix_titles.csv</code> (UTF-8) → <b>Transform Data</b>. Rename query to <code>Titles</code>.</li>
+        <li><b>Fix <code>date_added</code>:</b> Select <code>date_added</code> → <b>Transform → Format → Trim</b> → right-click header → <b>Change Type → Using Locale</b> → Data Type: <b>Date</b>, Locale: <b>English (United States)</b>. Then click <b>Add Column → Date → Year → Year</b> (name: <code>YearAdded</code>).</li>
+        <li><b>Extract <code>PrimaryCountry</code>:</b> Replace blank/empty values in <code>country</code> with <code>Unknown</code> → click <b>Add Column → Extract → Text Before Delimiter</b> → Delimiter: <code>,</code> → rename to <code>PrimaryCountry</code>.</li>
+        <li><b>Split <code>duration</code>:</b> Select <code>duration</code> → <b>Transform → Split Column → By Delimiter</b> → Space (Left-most delimiter) → rename to <code>DurationNum</code> (<b>Whole Number</b>) and <code>DurationUnit</code>.</li>
+        <li><b>Build the Exploded Genre Bridge Table (Pro BI Technique!):</b>
+          <ul>
+            <li>In the left <b>Queries</b> pane, right-click <code>Titles</code> → click <b>Reference</b> → rename the new query to <code>TitleGenres</code>.</li>
+            <li>Hold <code>Ctrl</code> and click <code>show_id</code> and <code>listed_in</code> → right-click → <b>Remove Other Columns</b>.</li>
+            <li>Select <code>listed_in</code> → <b>Transform → Split Column → By Delimiter</b> → Delimiter: <b>Comma</b> → expand <b>Advanced options</b> → choose <b>Rows</b> (NOT Columns!) → click <b>OK</b>!</li>
+            <li>Click <b>Transform → Format → Trim</b> on <code>listed_in</code> and rename it to <code>Genre</code>.</li>
+          </ul>
+        </li>
+        <li>Click <b>Home → Close &amp; Apply</b>.</li>
+      </ol>
+    </div>
+
+    <h3>Stage 3 — Connect <code>Titles (1) → (*) TitleGenres</code> in Model View</h3>
+    <div class="pbi-box">
+      Open <b>Model view</b>: confirm <code>Titles[show_id]</code> (<b>1</b>) connects to <code>TitleGenres[show_id]</code> (<b>*</b>), Single cross-filter direction (or Both if you want clicking a Genre bar to filter Country/Trend charts — since <code>Titles</code> is the only fact table here, setting Cross-filter direction = <b>Both</b> on this 2-table model lets clicking <code>Dramas</code> slice every visual on the page!).
+    </div>
+
+    <h3>Stage 4 — DAX Measures</h3>
+<pre>Total Titles = DISTINCTCOUNT ( 'Titles'[show_id] )
+// Check: 7,787 (safe even when sliced by TitleGenres!)
+
+Movie Count = CALCULATE ( [Total Titles], 'Titles'[type] = "Movie" )
+// Check: 5,377
+
+TV Show Count = CALCULATE ( [Total Titles], 'Titles'[type] = "TV Show" )
+// Check: 2,410
+
+Movie Share % = DIVIDE ( [Movie Count], [Total Titles] )
+// Check: 69.1%
+
+Avg Movie Runtime (min) =
+CALCULATE ( AVERAGE ( 'Titles'[DurationNum] ), 'Titles'[type] = "Movie" )
+// Check: 99.3
+
+One-Season TV Rate % =
+VAR OneS = CALCULATE ( [TV Show Count], 'Titles'[DurationNum] = 1 )
+RETURN DIVIDE ( OneS, [TV Show Count] )
+// Check: 66.7% (1,608 of 2,410 TV Shows!)</pre>
+
+    <h3>Stage 5 — Power BI Charts Journey: Build the 5-Visual Streaming Strategy Suite</h3>
+
+    <div class="wireframe">
+      <div class="wf-box" style="grid-column:span 12;">Header + Slicers: Type (All / Movie / TV Show) · Maturity Rating · Title Search Box</div>
+      <div class="wf-box" style="grid-column:span 3;">Card: Total Library<small>7,787 Titles</small></div>
+      <div class="wf-box" style="grid-column:span 3;">Card: Movie Share %<small>69.1% (5,377)</small></div>
+      <div class="wf-box" style="grid-column:span 3;">Card: Avg Movie Length<small>99.3 min</small></div>
+      <div class="wf-box" style="grid-column:span 3;">Card: 1-Season Series %<small>66.7% of TV Shows</small></div>
+      <div class="wf-box" style="grid-column:span 7;">Visual 2: Annual Additions Stacked Area (2013–2020)<small>Movies + TV Shows Surge Peaking at 2,153 in 2019</small></div>
+      <div class="wf-box" style="grid-column:span 5;">Visual 3: Country Content Mix — 100% Stacked Bar<small>India 92.4% Movies vs South Korea 78.4% TV Shows!</small></div>
+      <div class="wf-box" style="grid-column:span 6;">Visual 4: Top 12 Individual Genres Bar (Bridge Table)<small>International Movies 2,437 · Dramas 2,106 · Comedies 1,471</small></div>
+      <div class="wf-box" style="grid-column:span 6;">Visual 5: Maturity Rating × Type Matrix<small>TV-MA (2,863) &amp; TV-14 (1,931) Dominate</small></div>
+    </div>
+
+    <div class="chart-card">
+      <h4><span class="tag y">Visual 2</span> Streaming Expansion Wave — Stacked Area Chart (First Time in This Course!)</h4>
+      <div class="wells">
+        <div class="well"><strong>X-axis</strong><code>Titles[YearAdded]</code> (filter visual to <code>2013..2020</code>; 2021 only has Jan partial data)</div>
+        <div class="well"><strong>Y-axis</strong><code>[Total Titles]</code></div>
+        <div class="well"><strong>Legend</strong><code>Titles[type]</code> (Netflix Red <code>#E50914</code> for Movies, Dark Slate for TV Shows!)</div>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <h4><span class="tag r">Visual 3</span> Country Licensing Mix — 100% Stacked Bar Chart (First Time in This Course!)</h4>
+      <p><b>Why 100% Stacked Bar?</b> Because the US has <code>2,883</code> titles while South Korea has <code>194</code> — on a regular bar chart South Korea looks tiny, but on a <b>100% Stacked bar chart</b> every country spans 0%–100% so strategic format differences jump off the screen!</p>
+      <div class="wells">
+        <div class="well"><strong>Y-axis</strong><code>Titles[PrimaryCountry]</code> (Visual filter: Top 10 by <code>[Total Titles]</code>, excluding <code>Unknown</code>)</div>
+        <div class="well"><strong>X-axis</strong><code>[Total Titles]</code></div>
+        <div class="well"><strong>Legend</strong><code>Titles[type]</code></div>
+      </div>
+      <p><b>Instant Insight:</b> <b>India</b> is <b>92.4% Movies</b> (Bollywood film licensing), whereas <b>South Korea</b> is <b>78.4% TV Shows</b> (K-Dramas) and <b>Japan</b> is <b>68.4% TV Shows</b> (Anime series)!</p>
+    </div>
+
+    <div class="chart-card">
+      <h4><span class="tag y">Visual 4 &amp; 5</span> Exploded Genre Bar Chart + Maturity Rating Matrix</h4>
+      <p>1. <b>Clustered bar chart:</b> Y-axis = <code>TitleGenres[Genre]</code> (Top 12), X-axis = <code>[Total Titles]</code>. Verify #1 <code>International Movies = 2,437</code>, #2 <code>Dramas = 2,106</code>, #3 <code>Comedies = 1,471</code>!<br>
+      2. <b>Matrix:</b> Rows = <code>Titles[rating]</code>, Columns = <code>Titles[type]</code>, Values = <code>[Total Titles]</code>.</p>
+    </div>
+
+    <ul class="task-list">
+      <li><label><input type="checkbox"> Built <code>TitleGenres</code> bridge table via <code>Split into Rows</code> and verified Top Genres without double-counting 7,787 total titles.</label></li>
+      <li><label><input type="checkbox"> Built Stacked Area Chart and 100% Stacked Bar Chart revealing India (92.4% Movies) vs South Korea (78.4% TV).</label></li>
+    </ul>
+  </section>
+
+  <!-- 6. SIGN-OFF -->
+  <section id="sign">
+    <h2 class="t">6. Client Sign-Off Checklist</h2>
+    <ul class="task-list">
+      <li><label><input type="checkbox"> Total Titles = <b>7,787</b> (Movies = <b>5,377</b> / <code>69.1%</code>; TV Shows = <b>2,410</b> / <code>30.9%</code>).</label></li>
+      <li><label><input type="checkbox"> Avg Movie Runtime = <b>99.3 min</b>; 1-Season TV Rate = <b>66.7%</b> (1,608 of 2,410).</label></li>
+      <li><label><input type="checkbox"> All 88 leading-space dates in <code>date_added</code> parsed cleanly with zero errors (2019 additions = <b>2,153</b>).</label></li>
+    </ul>
+  </section>
+
+  <!-- 7. STRETCH -->
+  <section id="stretch">
+    <h2 class="t">7. Stretch Challenges</h2>
+    <ul>
+      <li><b>Catalog Freshness Lag:</b> Compute <code>Acquisition Lag (Yrs) = [YearAdded] - [release_year]</code> and compare average lag for Netflix-era Originals (<code>0 yrs</code>) vs. licensed back-catalog classics!</li>
+    </ul>
+  </section>
+
+  <!-- 8. MISTAKES -->
+  <section id="mistakes">
+    <h2 class="t">8. Trainer's Troubleshooting: Common Beginner Mistakes</h2>
+    <div class="warn-box">
+      <b>Mistake 1 — Splitting <code>listed_in</code> into Columns instead of Rows:</b> Splitting into <code>Genre.1, Genre.2, Genre.3</code> makes it impossible to build a single clean Genre Bar Chart! Always split into <b>Rows</b> inside a separate Bridge Table.
+    </div>
+    <div class="warn-box">
+      <b>Mistake 2 — Counting rows of <code>TitleGenres</code> for Total Titles:</b> That returns ~17,071 genre tags instead of <code>7,787</code> titles! Always use <code>DISTINCTCOUNT('Titles'[show_id])</code>.
     </div>
   </section>
-  <section id="sign">
-    <h2 class="t">6. Sign-off</h2>
-    <ul class="chk"><li>☐ Row count is <b>7,787</b> after the cleaning steps above.</li><li>☐ The leading rating is <b>TV-MA</b> at <b>2,863</b>.</li><li>☐ The date axis runs from <b>2008-01-01</b> to <b>2021-01-16</b>.</li><li>☐ Slicers filter every visual, and you can clear them back to the totals above.</li></ul>
-  </section>
-  <section id="stretch">
-    <h2 class="t">7. Stretch</h2>
-    <ul>
-      <li>Split the country column on commas and count titles per country. Expect more title-country rows than titles.</li>
-      <li>Add a drill-through page that keeps the slicer filters and shows the underlying rows.</li>
-      <li>Sort a month-name column by the month number so the axis is not alphabetical.</li>
-    </ul>
-  </section>
-  <section id="mist">
-    <h2 class="t">8. Mistakes that hide the answer</h2>
-    <ul>
-      <li>Treating duration as a number while it still contains the word &#x27;min&#x27;.</li><li>Using release_year and date_added as if they were the same event.</li>
-      <li>Summing an ID column, or averaging a rate that was already a percent.</li>
-      <li>Leaving dates as text, then wondering why the axis sorts wrong.</li>
-    </ul>
-  </section>
+
 </div>
-<footer>TidyTuesday 2021-04-20, Netflix Movies and TV Shows catalog. https://github.com/rfordatascience/tidytuesday</footer>
+
+<footer>
+  Source: Flixable / Kaggle Public Domain Snapshot · Manually verified against <code>data/netflix_titles.csv</code> · Works 100% offline.
+</footer>
+
+<script>
+(function(){
+  var KEY = 'pbi_guide_11_v2';
+  var boxes = document.querySelectorAll('input[type=checkbox]');
+  function update(){
+    var done = 0;
+    boxes.forEach(function(b){ if(b.checked) done++; });
+    var pct = boxes.length ? Math.round((done / boxes.length) * 100) : 0;
+    document.getElementById('progText').textContent = done + ' / ' + boxes.length + ' steps completed (' + pct + '%)';
+    document.getElementById('progFill').style.width = pct + '%';
+  }
+  function save(){
+    var state = [];
+    boxes.forEach(function(b){ state.push(b.checked ? 1 : 0); });
+    try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){}
+    update();
+  }
+  try{
+    var s = JSON.parse(localStorage.getItem(KEY) || '[]');
+    boxes.forEach(function(b, i){ if(s[i] !== undefined) b.checked = !!s[i]; });
+  }catch(e){}
+  boxes.forEach(function(b){ b.addEventListener('change', save); });
+  window.resetChecks = function(){
+    if(confirm('Reset all checkmarks for Practice Set 11?')){
+      boxes.forEach(function(b){ b.checked = false; });
+      save();
+    }
+  };
+  update();
+})();
+</script>
 </body>
 </html>

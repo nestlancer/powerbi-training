@@ -3,144 +3,359 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Practice · OpenFlights routes</title>
+<title>12 · OpenFlights Airline Network — Beginner to Advanced Excel &amp; Power BI Guide</title>
 <style>
-  :root{--calc:#1d6f42;--calc-soft:#e7f3ec;--pbi:#caa400;--pbi-soft:#fff8e0;--ink:#1f2430;--muted:#5b6472;--line:#e3e7ee;--bg:#f6f8fb;--accent:#0b3d63;}
+  :root{
+    --calc:#1d6f42; --calc-soft:#e7f3ec;
+    --pbi:#b78900; --pbi-soft:#fff8e0;
+    --ink:#1f2430; --muted:#5b6472; --line:#e3e7ee; --bg:#f6f8fb;
+    --accent:#0b3d63; --danger:#c0392b; --danger-soft:#fdeaea;
+  }
   *{box-sizing:border-box;}
-  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.6;}
-  header{background:linear-gradient(120deg,#1d6f42,#0b3d63);color:#fff;padding:28px 26px;}
-  header h1{margin:0 0 6px;font-size:24px;}
-  header p{margin:0;max-width:860px;font-size:14.5px;}
-  header a{color:#fff;}
-  .wrap{max-width:1080px;margin:22px auto 70px;padding:0 22px;}
-  .facts{background:#fff;border:1px solid var(--line);border-left:5px solid var(--calc);border-radius:12px;padding:16px 20px;margin-bottom:22px;}
-  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.62;}
+  header{background:linear-gradient(125deg,#1d6f42 0%,#0f5132 48%,#0b3d63 100%);color:#fff;padding:32px 26px 28px;}
+  header .kicker{font-size:12px;text-transform:uppercase;letter-spacing:.8px;opacity:.88;font-weight:700;margin-bottom:6px;}
+  header h1{margin:0 0 8px;font-size:26px;letter-spacing:.2px;}
+  header p{margin:0;max-width:880px;font-size:14.8px;opacity:.95;}
+  header a{color:#fff;text-decoration:underline;}
+  .top-nav{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;align-items:center;}
+  .pill{display:inline-block;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.32);padding:4px 12px;border-radius:20px;font-size:12.5px;text-decoration:none;color:#fff;}
+  .wrap{max-width:1120px;margin:20px auto 70px;padding:0 22px;}
+  .prog-bar{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 18px;margin-bottom:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;position:sticky;top:10px;z-index:20;box-shadow:0 2px 8px rgba(15,23,42,.05);}
+  .prog-track{flex:1;min-width:180px;height:10px;background:#eef2f7;border-radius:99px;overflow:hidden;}
+  .prog-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--calc),#caa400);transition:width .25s;}
+  .prog-text{font-size:13px;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums;}
+  .btn-sm{border:1px solid var(--line);background:#fff;color:var(--ink);padding:5px 11px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;}
+  .btn-sm:hover{background:#f1f5f9;}
+  .toc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:20px;font-size:13.5px;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;}
+  .toc a{color:var(--accent);text-decoration:none;font-weight:600;}
+  .toc a:hover{text-decoration:underline;}
+  section{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px 26px;margin-bottom:20px;box-shadow:0 1px 2px rgba(20,30,50,.03);}
+  h2.t{font-size:20px;margin:0 0 14px;border-bottom:2px solid var(--calc);padding-bottom:8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  h2.t.pbi-h{border-bottom-color:#caa400;}
+  h3{font-size:16px;margin:20px 0 8px;color:var(--accent);}
+  h4{font-size:14.5px;margin:14px 0 6px;color:var(--ink);}
+  p{margin:8px 0;}
+  .facts{background:#fff;border:1px solid var(--line);border-left:5px solid var(--calc);border-radius:12px;padding:16px 18px;margin-bottom:18px;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:10px;}
   .stat{background:var(--calc-soft);border-radius:9px;padding:10px 12px;}
   .stat b{display:block;font-size:18px;color:var(--calc);}
   .stat span{font-size:12px;color:var(--muted);}
-  section{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 24px;margin-bottom:20px;}
-  h2.t{font-size:20px;margin:0 0 12px;border-bottom:2px solid var(--calc);padding-bottom:6px;}
-  h3{font-size:16px;margin:18px 0 8px;color:var(--accent);}
-  code{background:#eef2f7;padding:1px 6px;border-radius:5px;font-size:13px;font-family:"SF Mono",Consolas,monospace;}
-  pre{background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:10px;overflow:auto;font-size:13px;font-family:"SF Mono",Consolas,monospace;line-height:1.5;}
-  table{border-collapse:collapse;width:100%;margin:10px 0;font-size:13.5px;}
-  th,td{border:1px solid var(--line);padding:7px 10px;text-align:left;}
-  th{background:#f1f5f9;}
-  .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;color:#fff;}
-  .g{background:#27ae60;} .y{background:#e0a800;} .r{background:#c0392b;}
-  .req{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px dashed var(--line);}
+  .stat.warn{background:var(--danger-soft);}
+  .stat.warn b{color:var(--danger);}
+  code{background:#eef2f7;padding:2px 6px;border-radius:5px;font-size:12.8px;font-family:"SF Mono",Consolas,monospace;color:#0f172a;}
+  pre{background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:10px;overflow:auto;font-size:13px;font-family:"SF Mono",Consolas,monospace;line-height:1.55;margin:10px 0;}
+  table{border-collapse:collapse;width:100%;margin:12px 0;font-size:13.3px;}
+  th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top;}
+  th{background:#f1f5f9;font-weight:700;}
+  .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;color:#fff;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap;}
+  .g{background:#1d6f42;} .y{background:#d99000;} .r{background:#c0392b;} .b{background:#0b3d63;}
+  .req{display:flex;gap:12px;align-items:flex-start;padding:9px 0;border-bottom:1px dashed var(--line);}
   .req:last-child{border-bottom:none;}
-  .step{background:var(--calc-soft);border-radius:8px;padding:12px 14px;margin:10px 0;}
+  .step{background:var(--calc-soft);border-radius:10px;border:1px solid #cde4d6;padding:14px 16px;margin:12px 0;}
   .step b{color:var(--calc);}
-  .pbi-box{background:var(--pbi-soft);border-radius:8px;padding:12px 14px;margin:10px 0;}
-  .pbi-box b{color:#8a6a00;}
+  .pbi-box{background:var(--pbi-soft);border:1px solid #f2df9d;border-radius:10px;padding:14px 16px;margin:12px 0;}
+  .pbi-box b{color:#7c5d00;}
+  .chart-card{border:1px solid var(--line);border-left:5px solid #caa400;border-radius:10px;padding:14px 16px;margin:14px 0;background:#fcfdff;}
+  .chart-card h4{margin:0 0 8px;font-size:15.5px;color:var(--accent);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .wells{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin:10px 0;}
+  .well{background:#f4f6fa;border:1px solid var(--line);border-radius:7px;padding:7px 10px;font-size:12.8px;}
+  .well strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-bottom:2px;}
   .note{background:#fffaf0;border-left:4px solid #e0a800;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
-  .chk li{margin:4px 0;}
-  .toc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:20px;font-size:14px;}
-  .toc a{color:var(--accent);text-decoration:none;}
-  footer{text-align:center;color:var(--muted);font-size:12px;padding:10px 20px 28px;}
+  .warn-box{background:var(--danger-soft);border-left:4px solid var(--danger);border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
+  .wireframe{display:grid;grid-template-columns:repeat(12,1fr);gap:8px;background:#eef2f7;padding:14px;border-radius:12px;margin:12px 0;font-size:12px;}
+  .wf-box{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:10px;text-align:center;font-weight:600;color:var(--accent);}
+  .wf-box small{display:block;font-weight:400;color:var(--muted);margin-top:3px;font-size:11px;}
+  ul.task-list{list-style:none;padding:0;margin:10px 0;}
+  ul.task-list li{padding:5px 0;}
+  ul.task-list label{display:flex;gap:9px;align-items:flex-start;cursor:pointer;font-size:13.8px;}
+  ul.task-list input{margin-top:4px;width:16px;height:16px;flex:none;accent-color:var(--calc);}
+  footer{text-align:center;color:var(--muted);font-size:12.5px;padding:10px 20px 28px;}
   footer a{color:#3d4a5c;}
+  @media(max-width:740px){
+    .wrap{padding:0 12px;}
+    section{padding:16px 16px;}
+    .wireframe{grid-template-columns:1fr 1fr;}
+    .wf-box{grid-column:span 2 !important;}
+  }
 </style>
 </head>
 <body>
+
 <header>
-  <h1>12 · OpenFlights routes</h1>
-  <p>World airline routes plus an airport lookup. Two files, one relationship. Figures below were computed from the file in this folder. <a href="../index.html">All practice sets</a></p>
-</header>
-<div class="wrap">
-  <div class="toc"><b>Jump to:</b>
-    <a href="#profile">Profile</a> ·
-    <a href="#brief">Brief</a> ·
-    <a href="#req">Requirements</a> ·
-    <a href="#calc">Excel</a> ·
-    <a href="#pbi">Power BI</a> ·
-    <a href="#sign">Sign-off</a> ·
-    <a href="#stretch">Stretch</a>
+  <div class="kicker">Practice Set 12 of 20 · Two-Table Star Modeling &amp; Role-Playing Relationships (USERELATIONSHIP)</div>
+  <h1>12 · OpenFlights Global Network — 2-Table Joins, <code>USERELATIONSHIP</code> &amp; Lat/Lon Maps</h1>
+  <p>Welcome to your first multi-table relational model! Connect <code>routes.csv</code> (67,663 flight routes) to <code>airports.csv</code> (7,698 airports), strip MySQL <code>\N</code> null codes, master <b>Active vs. Inactive Relationships + <code>USERELATIONSHIP()</code></b> to compare Outbound vs. Inbound routes from a single Airport dimension, and plot global mega-hubs with exact GPS Latitude/Longitude!</p>
+  <div class="top-nav">
+    <a class="pill" href="../index.html">← All 20 Practice Sets</a>
+    <a class="pill" href="../../index.html">← Main Excel &amp; Power BI Outline</a>
+    <span class="pill">Skills Taught: 1:* Star Schema · Active + Inactive Join · USERELATIONSHIP() · GPS Lat/Lon Bubble Map</span>
   </div>
+</header>
+
+<div class="wrap">
+
+  <div class="prog-bar">
+    <span class="prog-text" id="progText">0 / 0 steps completed</span>
+    <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+    <button class="btn-sm" type="button" onclick="resetChecks()">Reset checklist</button>
+  </div>
+
+  <div class="toc">
+    <b>Step-by-Step Map:</b>
+    <a href="#profile">1. Two-Table Profile &amp; Primary Key Choice</a> ·
+    <a href="#brief">2. Client Brief</a> ·
+    <a href="#req">3. Requirements</a> ·
+    <a href="#excel">4. Phase A: Excel VLOOKUP/XLOOKUP</a> ·
+    <a href="#pbi">5. Phase B: Power BI 2-Table Model &amp; Charts</a> ·
+    <a href="#sign">6. Sign-Off</a> ·
+    <a href="#stretch">7. Stretch</a> ·
+    <a href="#mistakes">8. Common Mistakes</a>
+  </div>
+
+  <!-- 1. PROFILE -->
   <section id="profile">
-    <h2 class="t">1. Verified profile</h2>
-    <div class="facts"><div class="grid"><div class="stat"><b>67,663</b><span>Rows</span></div><div class="stat"><b>United States</b><span>Top country (from Airports)</span></div></div></div>
-    <p>Files: <code>routes.csv</code>, <code>airports.csv</code>. Fact table for the steps: <code>Routes</code>, renamed to <code>Routes</code> in Power BI.</p>
-    <h3>Tables in this set</h3><ul><li><code>Routes</code> — 67,663 rows. Columns: airline, airline_id, source_airport, source_airport_id, dest_airport, dest_airport_id, codeshare, stops, equipment</li><li><code>Airports</code> — 7,698 rows. Columns: airport_id, name, city, country, iata, icao, latitude, longitude, altitude, timezone, dst, tz_database</li></ul>
-    
-        <h3>Biggest groups (check your pivot against this)</h3>
-        <table><tr><th>country (from Airports)</th><th>Rows</th></tr><tr><td>United States</td><td>13,100</td></tr><tr><td>China</td><td>8,160</td></tr><tr><td>United Kingdom</td><td>2,663</td></tr><tr><td>Spain</td><td>2,531</td></tr><tr><td>Germany</td><td>2,352</td></tr><tr><td>France</td><td>1,930</td></tr></table>
-    <div class="note">There is no passenger count. The measure is a count of routes. Country lives on the airport file, so the country bar only works after you relate source_airport to iata.</div>
+    <h2 class="t">1. Verified Two-Table Profile &amp; Choosing the Right Join Key</h2>
+    <div class="facts">
+      <div class="grid">
+        <div class="stat"><b>67,663</b><span>Airline Routes (Fact Table)</span></div>
+        <div class="stat"><b>7,698</b><span>Unique Airports (Dimension)</span></div>
+        <div class="stat"><b>ATL (915 / 911)</b><span>#1 Hub (Outbound / Inbound)</span></div>
+        <div class="stat"><b>21.57%</b><span>Codeshare Routes (14,597)</span></div>
+        <div class="stat"><b>51.98%</b><span>International Route Share</span></div>
+        <div class="stat warn"><b><code>\N</code> Strings!</b><span>MySQL null sentinel in both CSVs!</span></div>
+      </div>
+    </div>
+
+    <div class="note">
+      <b>Crucial Modeling Lesson — Join on <code>airport_id</code>, NOT <code>iata</code>!</b><br>
+      In <code>airports.csv</code>, 1,626 small airfields have <code>\N</code> instead of a 3-letter <code>iata</code> code — so joining on <code>iata</code> triggers a duplicate-key error! By contrast, <b><code>airport_id</code> (1..7,698) is 100% unique with zero blanks</b>. Once you replace <code>\N</code> with <code>null</code> in <code>routes[source_airport_id]</code> and <code>routes[dest_airport_id]</code>, both columns convert cleanly to Whole Numbers and join <code>1 → *</code> to <code>Airports[airport_id]</code>!
+    </div>
+
+    <h3>Top 8 Global Mega-Hubs Verification Table</h3>
+    <table>
+      <tr><th>Rank</th><th>IATA</th><th>Airport Name</th><th>Country</th><th>Outbound Routes</th><th>Inbound Routes</th></tr>
+      <tr><td>1</td><td><b>ATL</b></td><td>Hartsfield-Jackson Atlanta Intl</td><td>United States</td><td><b>915</b></td><td><b>911</b></td></tr>
+      <tr><td>2</td><td><b>ORD</b></td><td>Chicago O'Hare Intl</td><td>United States</td><td><b>558</b></td><td><b>550</b></td></tr>
+      <tr><td>3</td><td><b>PEK</b></td><td>Beijing Capital Intl</td><td>China</td><td><b>535</b></td><td><b>534</b></td></tr>
+      <tr><td>4</td><td><b>LHR</b></td><td>London Heathrow</td><td>United Kingdom</td><td><b>527</b></td><td><b>524</b></td></tr>
+      <tr><td>5</td><td><b>CDG</b></td><td>Charles de Gaulle</td><td>France</td><td><b>524</b></td><td><b>517</b></td></tr>
+      <tr><td>6</td><td><b>FRA</b></td><td>Frankfurt am Main</td><td>Germany</td><td>497</td><td>493</td></tr>
+      <tr><td>7</td><td><b>LAX</b></td><td>Los Angeles Intl</td><td>United States</td><td>492</td><td>498</td></tr>
+      <tr><td>8</td><td><b>DFW</b></td><td>Dallas/Fort Worth Intl</td><td>United States</td><td>469</td><td>467</td></tr>
+    </table>
   </section>
+
+  <!-- 2. BRIEF -->
   <section id="brief">
-    <h2 class="t">2. The client brief</h2>
-    <p><b>Who:</b> A network planner at a small airline.</p>
-    <p><b>The ask:</b> <i>Which airports and countries originate the most routes, and which airlines show up most often? A route is one row, not one passenger.</i></p>
+    <h2 class="t">2. Real-World Client Brief</h2>
+    <p><b>Client:</b> Aviation Alliance Network Planning Team.</p>
+    <p><b>The Ask:</b> <i>"Connect our 67,663 routes to the 7,698-airport directory without duplicating rows. Show us global hub connectivity on a GPS map, compare Outbound vs. Inbound route symmetry per airport, rank top carriers split by Direct Operating vs. Codeshare alliances, and flag Domestic vs. International route share."</i></p>
   </section>
+
+  <!-- 3. REQUIREMENTS -->
   <section id="req">
-    <h2 class="t">3. Requirements</h2>
-    <div class="req"><span class="tag g">Beginner</span><div>KPI strip — row count.</div></div><div class="req"><span class="tag g">Beginner</span><div>Bar chart of <b>country (from Airports)</b>.</div></div><div class="req"><span class="tag y">Inter.</span><div>Relationships between the tables before you build visuals.</div></div><div class="req"><span class="tag r">Advan.</span><div>A rate using <b>stops</b> (two values). Use DIVIDE, not an average of a rate column.</div></div><div class="req"><span class="tag r">Advan.</span><div>Slicers that cross-filter every visual on the page.</div></div>
+    <h2 class="t">3. Project Requirements (Beginner → Advanced)</h2>
+    <div class="req"><span class="tag g">Beginner</span><div><b>Import Both CSVs + Replace <code>\N</code> with <code>null</code>:</b> Clean MySQL null markers across <code>Routes</code> and <code>Airports</code>.</div></div>
+    <div class="req"><span class="tag y">Inter.</span><div><b>Build a 2-Table Star Model (1 Active + 1 Inactive Relationship):</b> Connect <code>Airports[airport_id]</code> actively to <code>Routes[source_airport_id]</code> and inactively to <code>Routes[dest_airport_id]</code>!</div></div>
+    <div class="req"><span class="tag r">Advan.</span><div><b>Write <code>USERELATIONSHIP()</code> DAX:</b> Compute <code>[Inbound Routes]</code> and <code>[Net Route Imbalance]</code> side-by-side with <code>[Outbound Routes]</code>!</div></div>
+    <div class="req"><span class="tag y">Inter.</span><div><b>GPS Latitude/Longitude Hub Bubble Map + Top Airlines Codeshare Stacked Bar + Hub Symmetry Table.</b></div></div>
   </section>
-  <section id="calc">
-    <h2 class="t">4. Phase A — Microsoft Excel</h2>
-    <p>Goal: open the file cleanly, add only the helper columns you need, and prove one total with a PivotTable before you touch Power BI.</p>
-    
-    <h3>Step 1 — Open it the right way</h3>
-    <div class="step">The folder contains <code>routes.csv</code> and <code>airports.csv</code> with headers added for Excel. In Excel, start with <code>routes.csv</code>.<br><b>Formats:</b> <code>stops</code> → Number. Then <b>View → Freeze Panes → Freeze Top Row</b>.</div>
-    <h3>Step 2 — Look for dirt</h3>
-    <div class="step"><ul><li>Some airports have a blank iata code. They will not match a route. That is expected.</li><li>codeshare is Y or blank.</li><li>stops is almost always 0. It is a weak chart.</li></ul></div>
-    
-        <h3>Step 3 — No extra formula required</h3>
-        <div class="step">The columns you need are already on the sheet. Use the pivot in the next step to prove the totals before you leave Excel.</div>
-    <h3>Step 4 — Pivot check</h3>
-    <div class="step">Select the data → <b>Insert → PivotTable</b>. Rows = <code>country (from Airports)</code>.
-    Values = <b>Sum of a Count of any text column</b>.
-    The grand total must be <b>67,663 rows</b>. If it is not, the filter or the number format is wrong — fix that before Power BI.
+
+  <!-- 4. EXCEL -->
+  <section id="excel">
+    <h2 class="t">4. Phase A — Step-by-Step in Microsoft Excel (XLOOKUP Across 2 Sheets)</h2>
+
+    <h3>Step A1 — Load <code>Routes</code> &amp; <code>Airports</code> into Two Tabs</h3>
+    <div class="step">
+      In Excel, use <b>Data → From Text/CSV</b> (UTF-8) to load <code>airports.csv</code> onto sheet <code>Airports</code> and <code>routes.csv</code> onto sheet <code>Routes</code>.
     </div>
-    <h3>Step 5 — Save</h3>
-    <div class="step"><b>Save As</b> <code>12-openflights-clean.xlsx</code>. Power BI should read this file, not a half-filtered view you forgot to clear.</div>
+
+    <h3>Step A2 — Enrich <code>Routes</code> Using <code>XLOOKUP</code> on <code>airport_id</code></h3>
+    <div class="step">
+      In <code>Routes</code>, add helper columns <code>J</code> (<code>SourceCountry</code>) and <code>K</code> (<code>DestCountry</code>) + <code>L</code> (<code>RouteScope</code>):
+<pre>// J2 (SourceCountry — looks up source_airport_id D2 in Airports!A:A -&gt; returns Country D:D):
+=XLOOKUP(VALUE(D2), Airports!$A$2:$A$7699, Airports!$D$2:$D$7699, "Unmatched")
+
+// K2 (DestCountry — looks up dest_airport_id F2):
+=XLOOKUP(VALUE(F2), Airports!$A$2:$A$7699, Airports!$D$2:$D$7699, "Unmatched")
+
+// L2 (RouteScope — International vs Domestic):
+=IF(OR(J2="Unmatched",K2="Unmatched"), "Unmatched", IF(J2=K2, "Domestic", "International"))</pre>
+      Verify with a PivotTable on <code>RouteScope</code>: <b>34,710 International (51.98%)</b> vs. <b>32,061 Domestic (48.02%)</b> across the 66,771 doubly-matched routes! Save as <code>12-openflights-clean.xlsx</code>.
+    </div>
+
+    <ul class="task-list">
+      <li><label><input type="checkbox"> Built two-sheet Excel workbook with <code>XLOOKUP</code> and verified 51.98% International vs 48.02% Domestic routes.</label></li>
+    </ul>
   </section>
+
+  <!-- 5. POWER BI -->
   <section id="pbi">
-    <h2 class="t">5. Phase B — Power BI</h2>
-    <h3>Step 1 — Get data</h3>
-    <div class="pbi-box"><b>Get data → Text/CSV</b> twice, once for each file. Rename the queries to Routes and Airports.</div>
-    <h3>Step 2 — Power Query</h3>
-    <div class="pbi-box">Rename the main query to <code>Routes</code>. Set the types from Step 1. Watch <b>Applied Steps</b>. Then <b>Close &amp; Apply</b>.
-    </div>
-    <h3>Step 3 — Model</h3>
-    <div class="pbi-box"><ul><li><code>Airports[iata]</code> → <code>Routes[source_airport]</code> (one-to-many)</li></ul>
-    <p>Hide key columns you do not want on the report. A hidden column can still be used by a relationship.</p></div>
-    <h3>Step 4 — Measures</h3>
-    <p>Write these as <b>measures</b>, not calculated columns. Replace the placeholder filter with a real value from the column.</p>
-    <pre>Routes = COUNTROWS(&#x27;Routes&#x27;)
-Airports = COUNTROWS(&#x27;Airports&#x27;)</pre>
-    <h3>Step 5 — Visuals</h3>
+    <h2 class="t pbi-h">5. Phase B — Complete Power BI 2-Table Modeling &amp; Charts Journey</h2>
+
+    <h3>Stage 1 &amp; 2 — Clean <code>Airports</code> &amp; <code>Routes</code> in Power Query</h3>
     <div class="pbi-box">
-      <ul>
-        <li>Cards for the measures in Step 4.</li>
-        <li>Bar chart: axis <code>country (from Airports)</code>, value the main measure.</li>
-        
-        <li>A slicer for each small category (stops).</li>
-        <li>Click a bar and confirm the other visuals filter. Use <b>Format → Edit interactions</b> if one visual should stay still.</li>
-      </ul>
+      <ol style="margin:0;padding-left:20px;">
+        <li>Import <code>data/airports.csv</code> (UTF-8) → <b>Transform Data</b> → rename query to <code>Airports</code>. Select all columns (<code>Ctrl + A</code>) → <b>Replace Values</b> → Find: <code>\N</code> → Replace with: <code>null</code>. Set <code>airport_id</code> = <b>Whole Number</b>, and <code>latitude</code>, <code>longitude</code>, <code>altitude</code> = <b>Decimal Number</b>. Add Custom Column <code>HubLabel</code>: <code>if [iata] = null then [name] else [iata] &amp; " — " &amp; [city]</code>.</li>
+        <li>Click <b>New Source → Text/CSV</b> → select <code>data/routes.csv</code> → rename query to <code>Routes</code>. Select all columns → <b>Replace Values</b> <code>\N → null</code>. Set <code>source_airport_id</code>, <code>dest_airport_id</code>, and <code>stops</code> = <b>Whole Number</b>.</li>
+        <li>In <code>Routes</code>, replace blank <code>""</code> in <code>codeshare</code> with <code>"Operated"</code> and <code>"Y"</code> with <code>"Codeshare"</code> so legends read clearly!</li>
+        <li>Click <b>Home → Close &amp; Apply</b>.</li>
+      </ol>
+    </div>
+
+    <h3>Stage 3 — Build Active + Inactive Relationships in Model View (Interview Gold!)</h3>
+    <div class="pbi-box">
+      Click <b>Model view</b> on the left rail:<br>
+      1. Drag <code>Airports[airport_id]</code> onto <code>Routes[source_airport_id]</code> → verify <b>One to many (1:*)</b>, <b>Active = Checked</b> (solid line!).<br>
+      2. Now drag <code>Airports[airport_id]</code> onto <code>Routes[dest_airport_id]</code>! Because Power BI only allows ONE active path between two tables at a time, Power BI automatically creates this second line as an <b>Inactive relationship (dashed line!)</b> — which is <i>exactly</i> what we want!<br>
+      3. Set Data Categories on <code>Airports</code>: <code>latitude</code> = <b>Latitude</b>, <code>longitude</code> = <b>Longitude</b>, <code>country</code> = <b>Country</b>.
+    </div>
+<pre>             Active (Solid Line: Origin)
+Airports[airport_id] (1) ─────────────────► (*) Routes[source_airport_id]
+Airports[airport_id] (1) - - - - - - - - -► (*) Routes[dest_airport_id]
+             Inactive (Dashed Line: Destination — activated via USERELATIONSHIP!)</pre>
+
+    <h3>Stage 4 — Role-Playing DAX Measures</h3>
+<pre>Outbound Routes = COUNTROWS ( 'Routes' )
+// Overall: 67,663 | When sliced by Airports[iata]="ATL": 915!
+
+Inbound Routes =
+CALCULATE (
+    COUNTROWS ( 'Routes' ),
+    USERELATIONSHIP ( 'Airports'[airport_id], 'Routes'[dest_airport_id] )
+)
+// When sliced by Airports[iata]="ATL": 911! | "LAX": 498!
+
+Net Route Imbalance = [Outbound Routes] - [Inbound Routes]
+
+Codeshare Share % =
+DIVIDE (
+    CALCULATE ( [Outbound Routes], 'Routes'[codeshare] = "Codeshare" ),
+    [Outbound Routes]
+)
+// Check overall: 21.57% (14,597 of 67,663)
+
+Non-Stop Share % =
+DIVIDE (
+    CALCULATE ( [Outbound Routes], 'Routes'[stops] = 0 ),
+    [Outbound Routes]
+)
+// Check overall: 99.98% (67,652 of 67,663)
+
+Connected Hubs = DISTINCTCOUNT ( 'Routes'[source_airport_id] )</pre>
+
+    <h3>Stage 5 — Power BI Charts Journey: Build the 5-Visual Aviation Network Suite</h3>
+
+    <div class="wireframe">
+      <div class="wf-box" style="grid-column:span 12;">Header + Slicers: Airports[country] · Routes[codeshare] (All / Operated / Codeshare) · Airline Code</div>
+      <div class="wf-box" style="grid-column:span 3;">Card: Total Routes<small>67,663</small></div>
+      <div class="wf-box" style="grid-column:span 3;">Card: Codeshare %<small>21.6% (14,597)</small></div>
+      <div class="wf-box" style="grid-column:span 3;">Card: Non-Stop %<small>99.98%</small></div>
+      <div class="wf-box" style="grid-column:span 3;">Card: Active Origin Airports<small>3,321 of 7,698</small></div>
+      <div class="wf-box" style="grid-column:span 7;">Visual 2: Global Mega-Hubs GPS Bubble Map<small>Lat/Lon Exact Pins · Bubble Size = Outbound Routes</small></div>
+      <div class="wf-box" style="grid-column:span 5;">Visual 3: Top 12 Hubs Outbound vs Inbound Bar<small>ATL (915/911) · ORD (558/550) · PEK (535/534)</small></div>
+      <div class="wf-box" style="grid-column:span 6;">Visual 4: Top 12 Airlines Operated vs Codeshare Column<small>FR 2,484 · AA 2,354 · UA 2,180 · DL 1,981</small></div>
+      <div class="wf-box" style="grid-column:span 6;">Visual 5: Airport Symmetry &amp; Imbalance Table<small>HubLabel · Country · Outbound · Inbound · Imbalance</small></div>
+    </div>
+
+    <div class="chart-card">
+      <h4><span class="tag y">Visual 2</span> Global Mega-Hubs GPS Map — Bubble Map with Exact Latitude &amp; Longitude</h4>
+      <div class="wells">
+        <div class="well"><strong>Latitude</strong><code>Airports[latitude]</code> (set to Don't summarize / Average)</div>
+        <div class="well"><strong>Longitude</strong><code>Airports[longitude]</code> (set to Don't summarize / Average)</div>
+        <div class="well"><strong>Bubble size</strong><code>[Outbound Routes]</code> (filter visual to <code>[Outbound Routes] &gt;= 20</code> so major hubs shine crisply!)</div>
+        <div class="well"><strong>Tooltips</strong><code>Airports[HubLabel]</code>, <code>[Inbound Routes]</code>, <code>[Codeshare Share %]</code></div>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <h4><span class="tag r">Visual 3</span> Hub Symmetry Check — Clustered Bar Chart Powered by <code>USERELATIONSHIP</code></h4>
+      <div class="wells">
+        <div class="well"><strong>Y-axis</strong><code>Airports[HubLabel]</code> (Top 12 by <code>[Outbound Routes]</code>)</div>
+        <div class="well"><strong>X-axis</strong><code>[Outbound Routes]</code> AND <code>[Inbound Routes]</code></div>
+      </div>
+      <p><b>Verify Your Model Live:</b> Hover over <code>ATL — Atlanta</code>: Outbound = <b>915</b>, Inbound = <b>911</b>! Hover over <code>LAX — Los Angeles</code>: Outbound = <b>492</b>, Inbound = <b>498</b>! That proves both your active and inactive relationships are working simultaneously!</p>
+    </div>
+
+    <div class="chart-card">
+      <h4><span class="tag y">Visual 4 &amp; 5</span> Top Airlines Stacked Column + Hub Imbalance Table</h4>
+      <p>1. <b>Stacked column chart:</b> X-axis = <code>Routes[airline]</code> (Top 12), Y-axis = <code>[Outbound Routes]</code>, Legend = <code>Routes[codeshare]</code>. Notice how Ryanair (<code>FR = 2,484</code>) is ~100% Operated (ultra-low-cost point-to-point!) while legacy alliance carriers rely heavily on Codeshares!<br>
+      2. <b>Table:</b> <code>Airports[HubLabel]</code>, <code>Airports[country]</code>, <code>[Outbound Routes]</code>, <code>[Inbound Routes]</code>, and <code>[Net Route Imbalance]</code>.</p>
+    </div>
+
+    <ul class="task-list">
+      <li><label><input type="checkbox"> Built 1 Active + 1 Inactive relationship between <code>Airports[airport_id]</code> and <code>Routes</code>.</label></li>
+      <li><label><input type="checkbox"> Verified <code>USERELATIONSHIP</code> returns ATL = 915 Outbound / 911 Inbound and built GPS Lat/Lon Bubble Map.</label></li>
+    </ul>
+  </section>
+
+  <!-- 6. SIGN-OFF -->
+  <section id="sign">
+    <h2 class="t">6. Client Sign-Off Checklist</h2>
+    <ul class="task-list">
+      <li><label><input type="checkbox"> Total Routes = <b>67,663</b>; Unique Airports = <b>7,698</b>; Codeshare Share = <b>21.57%</b> (14,597).</label></li>
+      <li><label><input type="checkbox"> Top 5 Outbound Hubs match: <b>ATL (915)</b>, <b>ORD (558)</b>, <b>PEK (535)</b>, <b>LHR (527)</b>, <b>CDG (524)</b>.</label></li>
+      <li><label><input type="checkbox"> Top Airline is <b>FR (Ryanair, 2,484 routes)</b> followed by <b>AA (2,354)</b> and <b>UA (2,180)</b>.</label></li>
+    </ul>
+  </section>
+
+  <!-- 7. STRETCH -->
+  <section id="stretch">
+    <h2 class="t">7. Stretch Challenges</h2>
+    <ul>
+      <li><b>Domestic vs. International Route Column in DAX:</b> Use <code>RELATED('Airports'[country])</code> for Origin Country and <code>LOOKUPVALUE('Airports'[country], 'Airports'[airport_id], 'Routes'[dest_airport_id])</code> for Destination Country to slice Domestic vs. International routes right inside Power BI!</li>
+    </ul>
+  </section>
+
+  <!-- 8. MISTAKES -->
+  <section id="mistakes">
+    <h2 class="t">8. Trainer's Troubleshooting: Common Beginner Mistakes</h2>
+    <div class="warn-box">
+      <b>Mistake 1 — Joining on <code>iata</code> instead of <code>airport_id</code>:</b> <code>airports[iata]</code> has 1,626 <code>\N</code> blanks, causing Many-to-Many join headaches! Always join on integer surrogate keys (<code>airport_id</code>) when available.
+    </div>
+    <div class="warn-box">
+      <b>Mistake 2 — Duplicating the <code>Airports</code> table instead of using <code>USERELATIONSHIP</code>:</b> Beginners often copy <code>Airports</code> into <code>OriginAirports</code> and <code>DestAirports</code>, but then a single Airport Slicer can't show both Outbound and Inbound together! <code>USERELATIONSHIP</code> solves that cleanly on one table.
     </div>
   </section>
-  <section id="sign">
-    <h2 class="t">6. Sign-off</h2>
-    <ul class="chk"><li>☐ Row count is <b>67,663</b> after the cleaning steps above.</li><li>☐ The leading country (from Airports) is <b>United States</b> at <b>13,100</b>.</li><li>☐ Slicers filter every visual, and you can clear them back to the totals above.</li><li>☐ Every relationship in the model view is one-to-many, from the lookup table to the fact table.</li></ul>
-  </section>
-  <section id="stretch">
-    <h2 class="t">7. Stretch</h2>
-    <ul>
-      <li>A second relationship is not required for the destination airport. Duplicate Airports as a second query if you want destination country too.</li>
-      <li>Add a drill-through page that keeps the slicer filters and shows the underlying rows.</li>
-      <li>Sort a month-name column by the month number so the axis is not alphabetical.</li>
-    </ul>
-  </section>
-  <section id="mist">
-    <h2 class="t">8. Mistakes that hide the answer</h2>
-    <ul>
-      <li>A many-to-many relationship because iata was not unique. Drop duplicate iata codes on Airports first, or filter out blank iata.</li><li>Summing latitude.</li>
-      <li>Summing an ID column, or averaging a rate that was already a percent.</li>
-      <li>Leaving dates as text, then wondering why the axis sorts wrong.</li>
-    </ul>
-  </section>
+
 </div>
-<footer>OpenFlights, ODbL. https://openflights.org/data.html — attribute OpenFlights.</footer>
+
+<footer>
+  Source: OpenFlights.org Open Database · Manually verified against <code>data/routes.csv</code> &amp; <code>data/airports.csv</code> · Works 100% offline.
+</footer>
+
+<script>
+(function(){
+  var KEY = 'pbi_guide_12_v2';
+  var boxes = document.querySelectorAll('input[type=checkbox]');
+  function update(){
+    var done = 0;
+    boxes.forEach(function(b){ if(b.checked) done++; });
+    var pct = boxes.length ? Math.round((done / boxes.length) * 100) : 0;
+    document.getElementById('progText').textContent = done + ' / ' + boxes.length + ' steps completed (' + pct + '%)';
+    document.getElementById('progFill').style.width = pct + '%';
+  }
+  function save(){
+    var state = [];
+    boxes.forEach(function(b){ state.push(b.checked ? 1 : 0); });
+    try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){}
+    update();
+  }
+  try{
+    var s = JSON.parse(localStorage.getItem(KEY) || '[]');
+    boxes.forEach(function(b, i){ if(s[i] !== undefined) b.checked = !!s[i]; });
+  }catch(e){}
+  boxes.forEach(function(b){ b.addEventListener('change', save); });
+  window.resetChecks = function(){
+    if(confirm('Reset all checkmarks for Practice Set 12?')){
+      boxes.forEach(function(b){ b.checked = false; });
+      save();
+    }
+  };
+  update();
+})();
+</script>
 </body>
 </html>

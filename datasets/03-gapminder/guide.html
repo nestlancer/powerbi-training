@@ -3,145 +3,429 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Practice · Gapminder: life expectancy and income</title>
+<title>03 · Gapminder Global Development — Beginner to Advanced Excel &amp; Power BI Guide</title>
 <style>
-  :root{--calc:#1d6f42;--calc-soft:#e7f3ec;--pbi:#caa400;--pbi-soft:#fff8e0;--ink:#1f2430;--muted:#5b6472;--line:#e3e7ee;--bg:#f6f8fb;--accent:#0b3d63;}
+  :root{
+    --calc:#1d6f42; --calc-soft:#e7f3ec;
+    --pbi:#b78900; --pbi-soft:#fff8e0;
+    --ink:#1f2430; --muted:#5b6472; --line:#e3e7ee; --bg:#f6f8fb;
+    --accent:#0b3d63; --danger:#c0392b; --danger-soft:#fdeaea;
+  }
   *{box-sizing:border-box;}
-  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.6;}
-  header{background:linear-gradient(120deg,#1d6f42,#0b3d63);color:#fff;padding:28px 26px;}
-  header h1{margin:0 0 6px;font-size:24px;}
-  header p{margin:0;max-width:860px;font-size:14.5px;}
-  header a{color:#fff;}
-  .wrap{max-width:1080px;margin:22px auto 70px;padding:0 22px;}
-  .facts{background:#fff;border:1px solid var(--line);border-left:5px solid var(--calc);border-radius:12px;padding:16px 20px;margin-bottom:22px;}
-  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.62;}
+  header{background:linear-gradient(125deg,#1d6f42 0%,#0f5132 48%,#0b3d63 100%);color:#fff;padding:32px 26px 28px;}
+  header .kicker{font-size:12px;text-transform:uppercase;letter-spacing:.8px;opacity:.88;font-weight:700;margin-bottom:6px;}
+  header h1{margin:0 0 8px;font-size:26px;letter-spacing:.2px;}
+  header p{margin:0;max-width:880px;font-size:14.8px;opacity:.95;}
+  header a{color:#fff;text-decoration:underline;}
+  .top-nav{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;align-items:center;}
+  .pill{display:inline-block;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.32);padding:4px 12px;border-radius:20px;font-size:12.5px;text-decoration:none;color:#fff;}
+  .wrap{max-width:1120px;margin:20px auto 70px;padding:0 22px;}
+  .prog-bar{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 18px;margin-bottom:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;position:sticky;top:10px;z-index:20;box-shadow:0 2px 8px rgba(15,23,42,.05);}
+  .prog-track{flex:1;min-width:180px;height:10px;background:#eef2f7;border-radius:99px;overflow:hidden;}
+  .prog-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--calc),#caa400);transition:width .25s;}
+  .prog-text{font-size:13px;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums;}
+  .btn-sm{border:1px solid var(--line);background:#fff;color:var(--ink);padding:5px 11px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;}
+  .btn-sm:hover{background:#f1f5f9;}
+  .toc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:20px;font-size:13.5px;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;}
+  .toc a{color:var(--accent);text-decoration:none;font-weight:600;}
+  .toc a:hover{text-decoration:underline;}
+  section{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px 26px;margin-bottom:20px;box-shadow:0 1px 2px rgba(20,30,50,.03);}
+  h2.t{font-size:20px;margin:0 0 14px;border-bottom:2px solid var(--calc);padding-bottom:8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  h2.t.pbi-h{border-bottom-color:#caa400;}
+  h3{font-size:16px;margin:20px 0 8px;color:var(--accent);}
+  h4{font-size:14.5px;margin:14px 0 6px;color:var(--ink);}
+  p{margin:8px 0;}
+  .facts{background:#fff;border:1px solid var(--line);border-left:5px solid var(--calc);border-radius:12px;padding:16px 18px;margin-bottom:18px;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:10px;}
   .stat{background:var(--calc-soft);border-radius:9px;padding:10px 12px;}
   .stat b{display:block;font-size:18px;color:var(--calc);}
   .stat span{font-size:12px;color:var(--muted);}
-  section{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 24px;margin-bottom:20px;}
-  h2.t{font-size:20px;margin:0 0 12px;border-bottom:2px solid var(--calc);padding-bottom:6px;}
-  h3{font-size:16px;margin:18px 0 8px;color:var(--accent);}
-  code{background:#eef2f7;padding:1px 6px;border-radius:5px;font-size:13px;font-family:"SF Mono",Consolas,monospace;}
-  pre{background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:10px;overflow:auto;font-size:13px;font-family:"SF Mono",Consolas,monospace;line-height:1.5;}
-  table{border-collapse:collapse;width:100%;margin:10px 0;font-size:13.5px;}
-  th,td{border:1px solid var(--line);padding:7px 10px;text-align:left;}
-  th{background:#f1f5f9;}
-  .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;color:#fff;}
-  .g{background:#27ae60;} .y{background:#e0a800;} .r{background:#c0392b;}
-  .req{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px dashed var(--line);}
+  .stat.warn{background:var(--danger-soft);}
+  .stat.warn b{color:var(--danger);}
+  code{background:#eef2f7;padding:2px 6px;border-radius:5px;font-size:12.8px;font-family:"SF Mono",Consolas,monospace;color:#0f172a;}
+  pre{background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:10px;overflow:auto;font-size:13px;font-family:"SF Mono",Consolas,monospace;line-height:1.55;margin:10px 0;}
+  table{border-collapse:collapse;width:100%;margin:12px 0;font-size:13.3px;}
+  th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top;}
+  th{background:#f1f5f9;font-weight:700;}
+  .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;color:#fff;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap;}
+  .g{background:#1d6f42;} .y{background:#d99000;} .r{background:#c0392b;} .b{background:#0b3d63;}
+  .req{display:flex;gap:12px;align-items:flex-start;padding:9px 0;border-bottom:1px dashed var(--line);}
   .req:last-child{border-bottom:none;}
-  .step{background:var(--calc-soft);border-radius:8px;padding:12px 14px;margin:10px 0;}
+  .step{background:var(--calc-soft);border:1px solid #cde4d6;border-radius:10px;padding:14px 16px;margin:12px 0;}
   .step b{color:var(--calc);}
-  .pbi-box{background:var(--pbi-soft);border-radius:8px;padding:12px 14px;margin:10px 0;}
-  .pbi-box b{color:#8a6a00;}
+  .pbi-box{background:var(--pbi-soft);border:1px solid #f2df9d;border-radius:10px;padding:14px 16px;margin:12px 0;}
+  .pbi-box b{color:#7c5d00;}
+  .chart-card{border:1px solid var(--line);border-left:5px solid #caa400;border-radius:10px;padding:14px 16px;margin:14px 0;background:#fcfdff;}
+  .chart-card h4{margin:0 0 8px;font-size:15.5px;color:var(--accent);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .wells{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin:10px 0;}
+  .well{background:#f4f6fa;border:1px solid var(--line);border-radius:7px;padding:7px 10px;font-size:12.8px;}
+  .well strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-bottom:2px;}
   .note{background:#fffaf0;border-left:4px solid #e0a800;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
-  .chk li{margin:4px 0;}
-  .toc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:20px;font-size:14px;}
-  .toc a{color:var(--accent);text-decoration:none;}
-  footer{text-align:center;color:var(--muted);font-size:12px;padding:10px 20px 28px;}
+  .warn-box{background:var(--danger-soft);border-left:4px solid var(--danger);border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
+  .wireframe{display:grid;grid-template-columns:repeat(12,1fr);gap:8px;background:#eef2f7;padding:14px;border-radius:12px;margin:12px 0;font-size:12px;}
+  .wf-box{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:10px;text-align:center;font-weight:600;color:var(--accent);}
+  .wf-box small{display:block;font-weight:400;color:var(--muted);margin-top:3px;font-size:11px;}
+  ul.task-list{list-style:none;padding:0;margin:10px 0;}
+  ul.task-list li{padding:5px 0;}
+  ul.task-list label{display:flex;gap:9px;align-items:flex-start;cursor:pointer;font-size:13.8px;}
+  ul.task-list input{margin-top:4px;width:16px;height:16px;flex:none;accent-color:var(--calc);}
+  footer{text-align:center;color:var(--muted);font-size:12.5px;padding:10px 20px 28px;}
   footer a{color:#3d4a5c;}
+  @media(max-width:740px){
+    .wrap{padding:0 12px;}
+    section{padding:16px 16px;}
+    .wireframe{grid-template-columns:1fr 1fr;}
+    .wf-box{grid-column:span 2 !important;}
+  }
 </style>
 </head>
 <body>
+
 <header>
-  <h1>03 · Gapminder: life expectancy and income</h1>
-  <p>Country-year rows for population, life expectancy, and GDP per person. Figures below were computed from the file in this folder. <a href="../index.html">All practice sets</a></p>
-</header>
-<div class="wrap">
-  <div class="toc"><b>Jump to:</b>
-    <a href="#profile">Profile</a> ·
-    <a href="#brief">Brief</a> ·
-    <a href="#req">Requirements</a> ·
-    <a href="#calc">Excel</a> ·
-    <a href="#pbi">Power BI</a> ·
-    <a href="#sign">Sign-off</a> ·
-    <a href="#stretch">Stretch</a>
+  <div class="kicker">Practice Set 03 of 20 · Global Macroeconomics &amp; Panel Time-Series Analytics</div>
+  <h1>03 · Gapminder — Animated Play-Axis Bubble Chart &amp; Semi-Additive DAX</h1>
+  <p>Build Hans Rosling's world-famous health-and-wealth dashboard! Master 1,704 country-year rows (142 countries × 12 survey waves from 1952 to 2007) without double-counting population across years, using Logarithmic Animated Scatter Charts, Small Multiples, and Stacked Area trends.</p>
+  <div class="top-nav">
+    <a class="pill" href="../index.html">← All 20 Practice Sets</a>
+    <a class="pill" href="../../index.html">← Main Excel &amp; Power BI Outline</a>
+    <span class="pill">Charts Taught: Animated Play-Axis Bubble · Log Scale · Small Multiples Line · Stacked Area · Top-10 Bar</span>
   </div>
+</header>
+
+<div class="wrap">
+
+  <div class="prog-bar">
+    <span class="prog-text" id="progText">0 / 0 steps completed</span>
+    <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+    <button class="btn-sm" type="button" onclick="resetChecks()">Reset checklist</button>
+  </div>
+
+  <div class="toc">
+    <b>Step-by-Step Map:</b>
+    <a href="#profile">1. Data Profile &amp; Columns</a> ·
+    <a href="#brief">2. Client Brief</a> ·
+    <a href="#req">3. Requirements</a> ·
+    <a href="#excel">4. Phase A: Excel Step-by-Step</a> ·
+    <a href="#pbi">5. Phase B: Power BI &amp; Charts Journey</a> ·
+    <a href="#sign">6. Sign-Off</a> ·
+    <a href="#stretch">7. Stretch</a> ·
+    <a href="#mistakes">8. Common Mistakes</a>
+  </div>
+
+  <!-- 1. PROFILE -->
   <section id="profile">
-    <h2 class="t">1. Verified profile</h2>
-    <div class="facts"><div class="grid"><div class="stat"><b>142</b><span>Rows</span></div><div class="stat"><b>67 years</b><span>Average lifeExp</span></div><div class="stat"><b>1952–2007 in the file. Totals below are 2007 only.</b><span>Scope</span></div><div class="stat"><b>Oceania</b><span>Top continent</span></div></div></div>
-    <p>File: <code>gapminder.csv</code>. Fact table for the steps: <code>Gapminder</code>, renamed to <code>Gapminder</code> in Power BI.</p>
-    
-    
-        <h3>Biggest groups (check your pivot against this)</h3>
-        <table><tr><th>continent</th><th>lifeExp (years)</th></tr><tr><td>Oceania</td><td>80.7</td></tr><tr><td>Europe</td><td>77.6</td></tr><tr><td>Americas</td><td>73.6</td></tr><tr><td>Asia</td><td>70.7</td></tr><tr><td>Africa</td><td>54.8</td></tr></table>
-    <div class="note">Each row is a country in one year. Summing gdpPercap across countries is meaningless. Average it, or plot it. Population is the column you may sum.</div>
+    <h2 class="t">1. Verified Data Profile &amp; Panel Grain Rules</h2>
+    <div class="facts">
+      <div class="grid">
+        <div class="stat"><b>1,704</b><span>Total rows (142 countries × 12 yrs)</span></div>
+        <div class="stat"><b>1952 → 2007</b><span>Every 5 years (12 waves)</span></div>
+        <div class="stat"><b>6.25B</b><span>2007 Population (6,251,013,179)</span></div>
+        <div class="stat"><b>67.01 yrs</b><span>2007 Avg Life Exp (68.92 weighted)</span></div>
+        <div class="stat"><b>$58.11T</b><span>2007 Total GDP (pop × gdpPercap)</span></div>
+        <div class="stat"><b>Japan (82.6)</b><span>#1 Country Life Expectancy in 2007</span></div>
+      </div>
+    </div>
+
+    <div class="note">
+      <b>Crucial Analyst Lesson — Panel Data &amp; Semi-Additive Measures:</b><br>
+      Each row is <b>one country in one survey year</b> (1952, 1957, …, 2007).<br>
+      • <b>Trap 1:</b> If you write <code>SUM(pop)</code> without filtering to a single year, Power BI sums the same countries 12 times and claims Earth has 50 billion people!<br>
+      • <b>Trap 2:</b> Do NOT delete 1952–2002 in Power Query! Keep all <b>1,704 rows</b> in the model so your Line Charts and Animated Play Axis work, and write a smart DAX measure using <code>MAX('Gapminder'[year])</code> so KPI Cards automatically show the latest selected year (<b>2007</b> by default!).<br>
+      • <b>Trap 3:</b> Never sum <code>gdpPercap</code> across countries — multiply <code>pop × gdpPercap</code> to get Total National GDP!
+    </div>
+
+    <h3>Raw CSV Column Map (<code>data/gapminder.csv</code>, Columns A–F)</h3>
+    <table>
+      <tr><th>Excel Col</th><th>Header</th><th>Type</th><th>Meaning &amp; Aggregation Rule</th></tr>
+      <tr><td><code>A</code></td><td><code>country</code></td><td>Text</td><td>142 countries/territories, each appearing in all 12 survey years (balanced panel).</td></tr>
+      <tr><td><code>B</code></td><td><code>year</code></td><td>Whole Number</td><td>Survey year (<code>1952, 1957, ..., 2007</code>). Keep as Whole Number (not Date!) so the Scatter Play Axis steps cleanly by 5-year waves.</td></tr>
+      <tr><td><code>C</code></td><td><code>pop</code></td><td>Whole Number</td><td>National population. Sum across countries <b>within ONE year</b>, never across years!</td></tr>
+      <tr><td><code>D</code></td><td><code>continent</code></td><td>Text</td><td>5 regions: Africa (52 countries), Asia (33), Europe (30), Americas (25), Oceania (2).</td></tr>
+      <tr><td><code>E</code></td><td><code>lifeExp</code></td><td>Decimal</td><td>Life expectancy at birth in years. Average across countries (or weight by <code>pop</code>) — never sum!</td></tr>
+      <tr><td><code>F</code></td><td><code>gdpPercap</code></td><td>Decimal ($)</td><td>Inflation-adjusted GDP per person (PPP dollars). Average or weight by <code>pop</code> — never sum!</td></tr>
+    </table>
+
+    <h3>2007 Benchmark Verification Table (142 Countries)</h3>
+    <table>
+      <tr><th>Continent</th><th>Countries</th><th>2007 Population</th><th>Simple Avg LifeExp</th><th>Pop-Weighted LifeExp</th><th>Simple Avg GDP/Capita</th></tr>
+      <tr><td>Oceania</td><td>2</td><td>24,549,947</td><td><b>80.72 yrs</b></td><td>81.06 yrs</td><td><b>$29,810</b></td></tr>
+      <tr><td>Europe</td><td>30</td><td>586,098,529</td><td>77.65 yrs</td><td>77.89 yrs</td><td>$25,054</td></tr>
+      <tr><td>Americas</td><td>25</td><td>898,871,184</td><td>73.61 yrs</td><td>75.36 yrs</td><td>$11,003</td></tr>
+      <tr><td>Asia</td><td>33</td><td><b>3,811,953,827</b></td><td>70.73 yrs</td><td>69.44 yrs</td><td>$12,473</td></tr>
+      <tr><td>Africa</td><td>52</td><td>929,539,692</td><td style="color:#c0392b"><b>54.81 yrs</b></td><td>54.56 yrs</td><td>$3,089</td></tr>
+      <tr><td><b>All 2007</b></td><td><b>142</b></td><td><b>6,251,013,179</b></td><td><b>67.01 yrs</b></td><td><b>68.92 yrs</b></td><td><b>$11,680 ($9,296 wtd)</b></td></tr>
+    </table>
   </section>
+
+  <!-- 2. BRIEF -->
   <section id="brief">
-    <h2 class="t">2. The client brief</h2>
-    <p><b>Who:</b> A foundation that briefs non-specialists on global development.</p>
-    <p><b>The ask:</b> <i>I need one view of life expectancy against income, over decades, and I need to slice it by continent. Do not add GDP per person across countries — that number is already 'per person'.</i></p>
+    <h2 class="t">2. Real-World Client Brief</h2>
+    <p><b>Client:</b> Global Policy &amp; Economics Foundation preparing an interactive board briefing.</p>
+    <p><b>The Ask:</b> <i>"Non-economists think the world hasn't improved since the 1950s. Build us a single interactive report where board members can hit Play to watch 142 countries move toward longer lives and higher incomes from 1952 to 2007, compare continents side-by-side without spaghetti lines, and inspect any single year's population and GDP without accidental double-counting."</i></p>
   </section>
+
+  <!-- 3. REQUIREMENTS -->
   <section id="req">
-    <h2 class="t">3. Requirements</h2>
-    <div class="req"><span class="tag g">Beginner</span><div>KPI strip — row count, lifeExp.</div></div><div class="req"><span class="tag g">Beginner</span><div>Bar chart of <b>continent</b>.</div></div><div class="req"><span class="tag g">Beginner</span><div>Trend by <b>year</b>.</div></div><div class="req"><span class="tag y">Inter.</span><div>Top 10 <b>country</b>.</div></div><div class="req"><span class="tag r">Advan.</span><div>Slicers that cross-filter every visual on the page.</div></div>
+    <h2 class="t">3. Project Requirements (Beginner → Advanced)</h2>
+    <div class="req"><span class="tag g">Beginner</span><div><b>Excel validation &amp; Total GDP calculation:</b> Compute <code>TotalGDP = pop × gdpPercap</code> in Excel and use a PivotTable filtered to <code>2007</code> to verify all 5 continent averages.</div></div>
+    <div class="req"><span class="tag g">Beginner</span><div><b>Single-Year Snapshot KPI Strip (4 Cards):</b> Automatically show the latest selected year's <b>Countries</b> (<code>142</code>), <b>Population</b> (<code>6.25B</code>), <b>Avg Life Expectancy</b> (<code>67.0 yrs</code>), and <b>World GDP</b> (<code>$58.11T</code>).</div></div>
+    <div class="req"><span class="tag y">Inter.</span><div><b>Population Growth by Continent (Stacked Area Chart):</b> Plot world population rising from <code>2.41B</code> (1952) to <code>6.25B</code> (2007) split by continent.</div></div>
+    <div class="req"><span class="tag y">Inter.</span><div><b>Continent Trajectories Without Spaghetti (Small Multiples Line Chart):</b> Use Power BI's <b>Small multiples</b> well to give each continent its own clean mini trend chart from 1952 to 2007.</div></div>
+    <div class="req"><span class="tag r">Advan.</span><div><b>Hans Rosling Animated Bubble Chart (Play Axis + Logarithmic X-Axis):</b> Plot <code>GDP per Capita</code> (Log X) vs. <code>Life Expectancy</code> (Y), sized by <code>Population</code>, colored by <code>continent</code>, animated across 1952–2007 with the built-in <b>Play axis</b>!</div></div>
+    <div class="req"><span class="tag r">Advan.</span><div><b>Population-Weighted vs. Simple Average DAX:</b> Compare unweighted Life Expectancy (<code>67.01 yrs</code>) against Population-Weighted Life Expectancy (<code>68.92 yrs</code>).</div></div>
   </section>
-  <section id="calc">
-    <h2 class="t">4. Phase A — Microsoft Excel</h2>
-    <p>Goal: open the file cleanly, add only the helper columns you need, and prove one total with a PivotTable before you touch Power BI.</p>
-    
-    <h3>Step 1 — Open it the right way</h3>
-    <div class="step"><b>Data → From Text/CSV</b> → <code>gapminder.csv</code> → comma → Load.<br><b>Formats:</b> <code>pop</code> → Number; <code>gdpPercap</code> → Number; <code>lifeExp</code> → Number. Then <b>View → Freeze Panes → Freeze Top Row</b>.</div>
-    <h3>Step 2 — Look for dirt</h3>
-    <div class="step"><ul><li>Confirm one row is one country-year, not one person.</li><li>lifeExp and gdpPercap should be averaged, not summed.</li><li>Population (pop) is the additive measure.</li></ul></div>
-    
-        <h3>Step 3 — No extra formula required</h3>
-        <div class="step">The columns you need are already on the sheet. Use the pivot in the next step to prove the totals before you leave Excel.</div>
-    <h3>Step 4 — Pivot check</h3>
-    <div class="step">Select the data → <b>Insert → PivotTable</b>. Rows = <code>continent</code>. Put <code>year</code> in Columns.
-    Values = <b>Average of lifeExp</b>.
-    The grand total must be <b>67 years</b>. If it is not, the filter or the number format is wrong — fix that before Power BI.
+
+  <!-- 4. EXCEL -->
+  <section id="excel">
+    <h2 class="t">4. Phase A — Step-by-Step in Microsoft Excel</h2>
+
+    <h3>Step A1 — Import &amp; Format</h3>
+    <div class="step">
+      <ol style="margin:0;padding-left:20px;">
+        <li>Open Excel → <b>Data → From Text/CSV</b> → choose <code>datasets/03-gapminder/data/gapminder.csv</code> → Delimiter = <b>Comma</b> → click <b>Load</b>.</li>
+        <li>Confirm <code>1,704</code> data rows loaded (row 1 header + rows 2 to 1705).</li>
+        <li>Format column <code>C</code> (<code>pop</code>) as <code>#,##0</code>, column <code>E</code> (<code>lifeExp</code>) as <code>0.0</code>, and column <code>F</code> (<code>gdpPercap</code>) as Currency <code>$#,##0</code>.</li>
+      </ol>
     </div>
-    <h3>Step 5 — Save</h3>
-    <div class="step"><b>Save As</b> <code>03-gapminder-clean.xlsx</code>. Power BI should read this file, not a half-filtered view you forgot to clear.</div>
+
+    <h3>Step A2 — Add Helper Column G (<code>TotalGDP</code>)</h3>
+    <div class="step">
+      In cell <code>G1</code> type <code>TotalGDP</code>. In cell <code>G2</code> type:<br>
+      <code>=C2*F2</code><br>
+      Format column <code>G</code> as Currency <code>$#,##0</code>. Because <code>pop</code> is people and <code>gdpPercap</code> is dollars per person, multiplying them gives true additive national economic output!
+    </div>
+
+    <h3>Step A3 — Prove 1952 vs. 2007 in an Excel PivotTable</h3>
+    <div class="step">
+      <ol style="margin:0;padding-left:20px;">
+        <li>Click inside the table → <b>Insert → PivotTable → New Worksheet → OK</b>.</li>
+        <li>Drag <code>year</code> into <b>Filters</b> (top-left box of PivotTable Fields!). Click the <code>year</code> filter dropdown on cell <code>B1</code> → select <code>2007</code> → click <b>OK</b>.</li>
+        <li>Drag <code>continent</code> into <b>Rows</b>.</li>
+        <li>Drag <code>lifeExp</code> into <b>Values</b> → change Value Field Settings from Sum to <b>Average</b> (1 decimal).</li>
+        <li>Drag <code>pop</code> into <b>Values</b> (<b>Sum of pop</b>) and <code>TotalGDP</code> into <b>Values</b> (<b>Sum of TotalGDP</b>).</li>
+        <li>Verify against Section 1: Oceania = <b>80.7 yrs</b>, Europe = <b>77.6 yrs</b>, Africa = <b>54.8 yrs</b>, Overall 2007 Average = <b>67.0 yrs</b>, Total Pop = <b>6,251,013,179</b>, Total GDP = <b>$58.11 Trillion</b>!</li>
+        <li>Clear any filter on the raw data tab (leave all 1,704 rows intact!) and <b>Save As</b> <code>03-gapminder-clean.xlsx</code>.</li>
+      </ol>
+    </div>
+
+    <ul class="task-list">
+      <li><label><input type="checkbox"> Loaded all 1,704 rows in Excel and added <code>TotalGDP = pop * gdpPercap</code>.</label></li>
+      <li><label><input type="checkbox"> Used PivotTable <code>year = 2007</code> filter to verify 67.0 yrs LifeExp and 6.25B Population.</label></li>
+    </ul>
   </section>
+
+  <!-- 5. POWER BI -->
   <section id="pbi">
-    <h2 class="t">5. Phase B — Power BI</h2>
-    <h3>Step 1 — Get data</h3>
-    <div class="pbi-box"><b>Get data → Text/CSV</b>. Year is a number, not a date.</div>
-    <h3>Step 2 — Power Query</h3>
-    <div class="pbi-box">Rename the main query to <code>Gapminder</code>. Set the types from Step 1. Watch <b>Applied Steps</b>. Then <b>Close &amp; Apply</b>.
-     Filter <code>year</code> to <b>2007</b> before you compare a card to the sign-off. Average lifeExp and gdpPercap. Sum pop.</div>
-    <h3>Step 3 — Model</h3>
-    <div class="pbi-box"><p>One table. A star schema is not required for this set.</p>
-    <p>Hide key columns you do not want on the report. A hidden column can still be used by a relationship.</p></div>
-    <h3>Step 4 — Measures</h3>
-    <p>Write these as <b>measures</b>, not calculated columns. Replace the placeholder filter with a real value from the column.</p>
-    <pre>lifeExp = AVERAGE(&#x27;Gapminder&#x27;[lifeExp])
-Row Count = COUNTROWS(&#x27;Gapminder&#x27;)
-pop = SUM(&#x27;Gapminder&#x27;[pop])</pre>
-    <h3>Step 5 — Visuals</h3>
+    <h2 class="t pbi-h">5. Phase B — Complete Power BI &amp; Charts Journey</h2>
+
+    <h3>Stage 1 &amp; 2 — Load All 1,704 Rows in Power Query (Do NOT Filter Out History!)</h3>
     <div class="pbi-box">
-      <ul>
-        <li>Cards for the measures in Step 4.</li>
-        <li>Bar chart: axis <code>continent</code>, value the main measure.</li>
-        <li>Line chart: axis <code>year</code>.</li>
-        <li>A slicer for each small category (continent).</li>
-        <li>Click a bar and confirm the other visuals filter. Use <b>Format → Edit interactions</b> if one visual should stay still.</li>
-      </ul>
+      <ol style="margin:0;padding-left:20px;">
+        <li>In Power BI Desktop, click <b>Home → Text/CSV</b> → select <code>data/gapminder.csv</code> → click <b>Transform Data</b>.</li>
+        <li>Rename the query to <code>Gapminder</code>.</li>
+        <li>Set types: <code>country</code> &amp; <code>continent</code> = <b>ABC (Text)</b>; <code>year</code> &amp; <code>pop</code> = <b>123 (Whole Number)</b>; <code>lifeExp</code> &amp; <code>gdpPercap</code> = <b>1.2 (Decimal Number)</b>.</li>
+        <li><b>Important:</b> Keep all 12 years (1,704 rows)! Click <b>Home → Close &amp; Apply</b>.</li>
+      </ol>
+    </div>
+
+    <h3>Stage 3 — Model Setup</h3>
+    <div class="pbi-box">
+      <ol style="margin:0;padding-left:20px;">
+        <li>Select <code>Gapminder[year]</code> → <b>Column tools → Summarization → Don't summarize</b> (otherwise Power BI tries to sum 1952 + 1957 + …!).</li>
+        <li>Select <code>Gapminder[country]</code> → <b>Column tools → Data category → Country</b>.</li>
+      </ol>
+    </div>
+
+    <h3>Stage 4 — Semi-Additive &amp; Weighted DAX Measures</h3>
+    <p>Here is the pro BI technique for panel datasets: <code>VAR LatestYr = MAX('Gapminder'[year])</code> automatically evaluates to <code>2007</code> when all years are selected, to <code>1952</code> if the user clicks <code>1952</code> in a slicer, AND evaluates each individual year on a Line Chart axis!</p>
+<pre>// --- HELPER &amp; SNAPSHOT-SAFE MEASURES ---
+Selected Year = MAX ( 'Gapminder'[year] )
+
+Countries Count = DISTINCTCOUNT ( 'Gapminder'[country] )
+// Check: 142
+
+Snapshot Population =
+VAR Yr = MAX ( 'Gapminder'[year] )
+RETURN
+    CALCULATE ( SUM ( 'Gapminder'[pop] ), 'Gapminder'[year] = Yr )
+// Format: #,0 -> Shows 6,251,013,179 (6.25B) with no slicer, AND works on every year of a Line Chart!
+
+Avg Life Expectancy =
+VAR Yr = MAX ( 'Gapminder'[year] )
+RETURN
+    CALCULATE ( AVERAGE ( 'Gapminder'[lifeExp] ), 'Gapminder'[year] = Yr )
+// Format: 0.0 -> Check (2007): 67.0 (67.01 yrs)
+
+Pop Weighted Life Expectancy =
+VAR Yr = MAX ( 'Gapminder'[year] )
+RETURN
+    CALCULATE (
+        DIVIDE (
+            SUMX ( 'Gapminder', 'Gapminder'[lifeExp] * 'Gapminder'[pop] ),
+            SUM ( 'Gapminder'[pop] )
+        ),
+        'Gapminder'[year] = Yr
+    )
+// Format: 0.0 -> Check (2007): 68.9 yrs (because populous Asia is above Africa's average)
+
+Avg GDP per Capita =
+VAR Yr = MAX ( 'Gapminder'[year] )
+RETURN
+    CALCULATE ( AVERAGE ( 'Gapminder'[gdpPercap] ), 'Gapminder'[year] = Yr )
+// Format: $#,0 -> Check (2007): $11,680
+
+Snapshot World GDP =
+VAR Yr = MAX ( 'Gapminder'[year] )
+RETURN
+    CALCULATE (
+        SUMX ( 'Gapminder', 'Gapminder'[pop] * 'Gapminder'[gdpPercap] ),
+        'Gapminder'[year] = Yr
+    )
+// Format: $#,0 -> Check (2007): $58.11T ($58,109,334,713,905)</pre>
+
+    <h3>Stage 5 — Power BI Charts Journey: Build the 5-Visual Global Development Canvas</h3>
+
+    <div class="wireframe">
+      <div class="wf-box" style="grid-column:span 12;">Header + Slicers: Continent (Tile Buttons) · Year (Single/Multi Select)</div>
+      <div class="wf-box" style="grid-column:span 3;">Card: Population (Snapshot)<small>6.25B (2007)</small></div>
+      <div class="wf-box" style="grid-column:span 3;">Card: Avg Life Expectancy<small>67.0 yrs (68.9 wtd)</small></div>
+      <div class="wf-box" style="grid-column:span 3;">Card: World Total GDP<small>$58.11T</small></div>
+      <div class="wf-box" style="grid-column:span 3;">Card: Countries Tracked<small>142</small></div>
+      <div class="wf-box" style="grid-column:span 7;">Visual 2: Animated Play-Axis Bubble Chart<small>Log GDP/Capita (X) vs LifeExp (Y), Size = Pop, Play = Year</small></div>
+      <div class="wf-box" style="grid-column:span 5;">Visual 3: Small Multiples Line Chart<small>Life Expectancy 1952–2007 Split into 5 Continent Panels</small></div>
+      <div class="wf-box" style="grid-column:span 7;">Visual 4: Stacked Area Chart<small>World Population Expansion by Continent (2.41B → 6.25B)</small></div>
+      <div class="wf-box" style="grid-column:span 5;">Visual 5: Top 10 Countries Bar<small>Longest-Lived Nations in Selected Year (Japan 82.6)</small></div>
+    </div>
+
+    <div class="chart-card">
+      <h4><span class="tag g">Visual 1</span> Snapshot-Safe KPI Strip (4 Cards)</h4>
+      <p>Place <code>[Snapshot Population]</code>, <code>[Avg Life Expectancy]</code>, <code>[Snapshot World GDP]</code>, and <code>[Countries Count]</code> into 4 Cards. Notice that even with NO year selected on a slicer, Population reads <b>6.25B</b> (not 50B!) because your DAX locks onto <code>MAX(year) = 2007</code>!</p>
+    </div>
+
+    <div class="chart-card">
+      <h4><span class="tag r">Visual 2</span> Hans Rosling Animated Bubble Chart (Play Axis + Logarithmic X-Axis)</h4>
+      <p><b>Why this chart?</b> Incomes span from $300 to $50,000+ (skewed right), so a linear X-axis crushes 100 poorer countries against the left wall. Switching X-axis to <b>Logarithmic</b> spreads countries evenly, and the <b>Play axis</b> animates 55 years of history!</p>
+      <div class="wells">
+        <div class="well"><strong>Values</strong><code>Gapminder[country]</code></div>
+        <div class="well"><strong>X-axis</strong><code>[Avg GDP per Capita]</code></div>
+        <div class="well"><strong>Y-axis</strong><code>[Avg Life Expectancy]</code></div>
+        <div class="well"><strong>Legend</strong><code>Gapminder[continent]</code></div>
+        <div class="well"><strong>Size</strong><code>[Snapshot Population]</code></div>
+        <div class="well"><strong>Play axis</strong><code>Gapminder[year]</code></div>
+      </div>
+      <ol style="margin:6px 0;padding-left:20px;">
+        <li>Click <b>Scatter chart</b> and drag all 6 fields into the exact wells above.</li>
+        <li>Click <b>Format visual → X-axis → Scale → Logarithmic</b>! Immediately the curved cloud straightens into a clean upward health-and-wealth diagonal!</li>
+        <li>Click the <b>Play (▶)</b> button in the bottom-left corner of the visual: watch China and India (the two giant Asian bubbles) race upward from ~40 years in 1952 to 73 and 65 years by 2007! Click any bubble during playback to trace its historical trail!</li>
+      </ol>
+    </div>
+
+    <div class="chart-card">
+      <h4><span class="tag y">Visual 3</span> Continent Trends Without Spaghetti — Small Multiples Line Chart</h4>
+      <p><b>Why this chart?</b> Putting 142 countries on one Line Chart creates unreadable "spaghetti." Putting <code>continent</code> into <b>Small multiples</b> creates a crisp grid of synchronized mini-charts sharing the exact same Y-axis scale!</p>
+      <div class="wells">
+        <div class="well"><strong>X-axis</strong><code>Gapminder[year]</code> (Continuous)</div>
+        <div class="well"><strong>Y-axis</strong><code>[Avg Life Expectancy]</code>, <code>[Pop Weighted Life Expectancy]</code></div>
+        <div class="well"><strong>Small multiples</strong><code>Gapminder[continent]</code></div>
+      </div>
+      <p>In <b>Format visual → Small multiples → Layout</b>, set <code>3 rows × 2 columns</code>. Compare Asia's dramatic 24-year leap against Africa's tragic HIV/AIDS stall in the 1990s.</p>
+    </div>
+
+    <div class="chart-card">
+      <h4><span class="tag y">Visual 4</span> World Population Expansion — Stacked Area Chart</h4>
+      <div class="wells">
+        <div class="well"><strong>X-axis</strong><code>Gapminder[year]</code></div>
+        <div class="well"><strong>Y-axis</strong><code>[Snapshot Population]</code></div>
+        <div class="well"><strong>Legend</strong><code>Gapminder[continent]</code></div>
+      </div>
+      <p>Click <b>Stacked area chart</b> (2nd row of Visualizations). Unlike a Line Chart, Stacked Area shows both each continent's growth AND how they add up to total global population (<code>2.41B → 6.25B</code>).</p>
+    </div>
+
+    <div class="chart-card">
+      <h4><span class="tag g">Visual 5</span> Top 10 Countries by Life Expectancy — Clustered Bar (Top-N Filter)</h4>
+      <p>Add a <b>Clustered bar chart</b> with <code>country</code> on Y-axis and <code>[Avg Life Expectancy]</code> on X-axis. Apply a visual-level <b>Top N = 10</b> filter on <code>country</code> by <code>[Avg Life Expectancy]</code>, and set X-axis Minimum to <code>75</code> (clearly labeled) so differences between Japan (<code>82.6</code>), Hong Kong (<code>82.2</code>), and Iceland (<code>81.8</code>) stand out.</p>
+    </div>
+
+    <ul class="task-list">
+      <li><label><input type="checkbox"> Loaded all 1,704 rows and set <code>year</code> Summarization = Don't summarize.</label></li>
+      <li><label><input type="checkbox"> Built semi-additive <code>MAX(year)</code> DAX measures so cards never sum across multiple years.</label></li>
+      <li><label><input type="checkbox"> Built Animated Log-Scale Bubble Chart, Small Multiples Line Chart, Stacked Area, and Top-10 Bar.</label></li>
+    </ul>
+  </section>
+
+  <!-- 6. SIGN-OFF -->
+  <section id="sign">
+    <h2 class="t">6. Client Sign-Off Checklist</h2>
+    <ul class="task-list">
+      <li><label><input type="checkbox"> Full dataset retains all <b>1,704 rows</b> (142 countries × 12 survey years).</label></li>
+      <li><label><input type="checkbox"> Default KPI Cards (latest year 2007) display <b>6.25B</b> Population, <b>67.0 yrs</b> Avg Life Expectancy, and <b>$58.11T</b> World GDP.</label></li>
+      <li><label><input type="checkbox"> Selecting <code>1952</code> on the Year Slicer updates Population to <b>2.41B</b> and Avg Life Expectancy to <b>49.1 yrs</b>.</label></li>
+      <li><label><input type="checkbox"> Bubble Chart uses a <b>Logarithmic X-axis</b> and animates smoothly from 1952 to 2007 via the Play Axis.</label></li>
+      <li><label><input type="checkbox"> Oceania leads 2007 continent average at <b>80.7 yrs</b>, and Japan leads countries at <b>82.6 yrs</b>.</label></li>
+    </ul>
+  </section>
+
+  <!-- 7. STRETCH -->
+  <section id="stretch">
+    <h2 class="t">7. Stretch Challenges</h2>
+    <ul>
+      <li><b>55-Year Life Expectancy Gain Measure:</b> Write a DAX measure <code>LifeExp Gain 1952-2007 = CALCULATE(AVERAGE('Gapminder'[lifeExp]), 'Gapminder'[year]=2007) - CALCULATE(AVERAGE('Gapminder'[lifeExp]), 'Gapminder'[year]=1952)</code> and rank the Top 10 fastest-improving countries (Oman gained +38.1 years!).</li>
+      <li><b>Country Drill-Through Profile Page:</b> Right-click any bubble → jump to a single-country 55-year profile showing its Life Expectancy, GDP per Capita, and Population lines together.</li>
+    </ul>
+  </section>
+
+  <!-- 8. MISTAKES -->
+  <section id="mistakes">
+    <h2 class="t">8. Trainer's Troubleshooting: Common Beginner Mistakes</h2>
+    <div class="warn-box">
+      <b>Mistake 1 — Filtering Year = 2007 inside Power Query:</b> If you filter to 2007 in Power Query, your table drops to 142 rows and your Line Chart, Stacked Area Chart, and Play Axis become completely dead (only 1 point!). Keep all 1,704 rows in Power Query and handle snapshots in DAX or slicers.
+    </div>
+    <div class="warn-box">
+      <b>Mistake 2 — Summing <code>gdpPercap</code> and calling it World GDP:</b> Adding Monaco's per-person income to India's per-person income is meaningless. Multiply <code>pop * gdpPercap</code> inside <code>SUMX</code>!
+    </div>
+    <div class="warn-box">
+      <b>Mistake 3 — Play Axis is missing on Scatter Chart:</b> Power BI's native Scatter Chart only shows the <b>Play axis</b> well when X-axis and Y-axis contain aggregated numeric measures (not "Don't summarize" columns).
     </div>
   </section>
-  <section id="sign">
-    <h2 class="t">6. Sign-off</h2>
-    <ul class="chk"><li>☐ Row count is <b>142</b> after the cleaning steps above.</li><li>☐ Average lifeExp is <b>67 years</b>.</li><li>☐ The leading continent is <b>Oceania</b> at <b>80.7 years</b>.</li><li>☐ Slicers filter every visual, and you can clear them back to the totals above.</li></ul>
-  </section>
-  <section id="stretch">
-    <h2 class="t">7. Stretch</h2>
-    <ul>
-      <li>A scatter of gdpPercap (X) and lifeExp (Y) with year as a play axis, or small multiples by continent.</li>
-      <li>Add a drill-through page that keeps the slicer filters and shows the underlying rows.</li>
-      <li>Sort a month-name column by the month number so the axis is not alphabetical.</li>
-    </ul>
-  </section>
-  <section id="mist">
-    <h2 class="t">8. Mistakes that hide the answer</h2>
-    <ul>
-      <li>Summing gdpPercap and calling it world GDP.</li><li>A line chart of every country at once. Filter to one continent first.</li>
-      <li>Summing an ID column, or averaging a rate that was already a percent.</li>
-      <li>Leaving dates as text, then wondering why the axis sorts wrong.</li>
-    </ul>
-  </section>
+
 </div>
-<footer>Gapminder data via the Plotly datasets repository (MIT). Credit Gapminder Foundation.</footer>
+
+<footer>
+  Source: Gapminder Foundation via Plotly datasets (MIT) · Manually verified against <code>data/gapminder.csv</code> (1,704 rows) · Works 100% offline.
+</footer>
+
+<script>
+(function(){
+  var KEY = 'pbi_guide_03_v2';
+  var boxes = document.querySelectorAll('input[type=checkbox]');
+  function update(){
+    var done = 0;
+    boxes.forEach(function(b){ if(b.checked) done++; });
+    var pct = boxes.length ? Math.round((done / boxes.length) * 100) : 0;
+    document.getElementById('progText').textContent = done + ' / ' + boxes.length + ' steps completed (' + pct + '%)';
+    document.getElementById('progFill').style.width = pct + '%';
+  }
+  function save(){
+    var state = [];
+    boxes.forEach(function(b){ state.push(b.checked ? 1 : 0); });
+    try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){}
+    update();
+  }
+  try{
+    var s = JSON.parse(localStorage.getItem(KEY) || '[]');
+    boxes.forEach(function(b, i){ if(s[i] !== undefined) b.checked = !!s[i]; });
+  }catch(e){}
+  boxes.forEach(function(b){ b.addEventListener('change', save); });
+  window.resetChecks = function(){
+    if(confirm('Reset all checkmarks for Practice Set 03?')){
+      boxes.forEach(function(b){ b.checked = false; });
+      save();
+    }
+  };
+  update();
+})();
+</script>
 </body>
 </html>

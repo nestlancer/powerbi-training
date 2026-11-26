@@ -3,145 +3,329 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Practice · CO₂ emissions</title>
+<title>16 · Global CO2 &amp; ESG Analytics — Beginner to Advanced Excel &amp; Power BI Guide</title>
 <style>
-  :root{--calc:#1d6f42;--calc-soft:#e7f3ec;--pbi:#caa400;--pbi-soft:#fff8e0;--ink:#1f2430;--muted:#5b6472;--line:#e3e7ee;--bg:#f6f8fb;--accent:#0b3d63;}
+  :root{
+    --calc:#1d6f42; --calc-soft:#e7f3ec;
+    --pbi:#b78900; --pbi-soft:#fff8e0;
+    --ink:#1f2430; --muted:#5b6472; --line:#e3e7ee; --bg:#f6f8fb;
+    --accent:#0b3d63; --danger:#c0392b; --danger-soft:#fdeaea;
+  }
   *{box-sizing:border-box;}
-  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.6;}
-  header{background:linear-gradient(120deg,#1d6f42,#0b3d63);color:#fff;padding:28px 26px;}
-  header h1{margin:0 0 6px;font-size:24px;}
-  header p{margin:0;max-width:860px;font-size:14.5px;}
-  header a{color:#fff;}
-  .wrap{max-width:1080px;margin:22px auto 70px;padding:0 22px;}
-  .facts{background:#fff;border:1px solid var(--line);border-left:5px solid var(--calc);border-radius:12px;padding:16px 20px;margin-bottom:22px;}
-  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.62;}
+  header{background:linear-gradient(125deg,#1d6f42 0%,#0f5132 48%,#0b3d63 100%);color:#fff;padding:32px 26px 28px;}
+  header .kicker{font-size:12px;text-transform:uppercase;letter-spacing:.8px;opacity:.88;font-weight:700;margin-bottom:6px;}
+  header h1{margin:0 0 8px;font-size:26px;letter-spacing:.2px;}
+  header p{margin:0;max-width:880px;font-size:14.8px;opacity:.95;}
+  header a{color:#fff;text-decoration:underline;}
+  .top-nav{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;align-items:center;}
+  .pill{display:inline-block;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.32);padding:4px 12px;border-radius:20px;font-size:12.5px;text-decoration:none;color:#fff;}
+  .wrap{max-width:1120px;margin:20px auto 70px;padding:0 22px;}
+  .prog-bar{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 18px;margin-bottom:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;position:sticky;top:10px;z-index:20;box-shadow:0 2px 8px rgba(15,23,42,.05);}
+  .prog-track{flex:1;min-width:180px;height:10px;background:#eef2f7;border-radius:99px;overflow:hidden;}
+  .prog-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--calc),#caa400);transition:width .25s;}
+  .prog-text{font-size:13px;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums;}
+  .btn-sm{border:1px solid var(--line);background:#fff;color:var(--ink);padding:5px 11px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;}
+  .btn-sm:hover{background:#f1f5f9;}
+  .toc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:20px;font-size:13.5px;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;}
+  .toc a{color:var(--accent);text-decoration:none;font-weight:600;}
+  .toc a:hover{text-decoration:underline;}
+  section{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px 26px;margin-bottom:20px;box-shadow:0 1px 2px rgba(20,30,50,.03);}
+  h2.t{font-size:20px;margin:0 0 14px;border-bottom:2px solid var(--calc);padding-bottom:8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  h2.t.pbi-h{border-bottom-color:#caa400;}
+  h3{font-size:16px;margin:20px 0 8px;color:var(--accent);}
+  h4{font-size:14.5px;margin:14px 0 6px;color:var(--ink);}
+  p{margin:8px 0;}
+  .facts{background:#fff;border:1px solid var(--line);border-left:5px solid var(--calc);border-radius:12px;padding:16px 18px;margin-bottom:18px;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:10px;}
   .stat{background:var(--calc-soft);border-radius:9px;padding:10px 12px;}
   .stat b{display:block;font-size:18px;color:var(--calc);}
   .stat span{font-size:12px;color:var(--muted);}
-  section{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 24px;margin-bottom:20px;}
-  h2.t{font-size:20px;margin:0 0 12px;border-bottom:2px solid var(--calc);padding-bottom:6px;}
-  h3{font-size:16px;margin:18px 0 8px;color:var(--accent);}
-  code{background:#eef2f7;padding:1px 6px;border-radius:5px;font-size:13px;font-family:"SF Mono",Consolas,monospace;}
-  pre{background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:10px;overflow:auto;font-size:13px;font-family:"SF Mono",Consolas,monospace;line-height:1.5;}
-  table{border-collapse:collapse;width:100%;margin:10px 0;font-size:13.5px;}
-  th,td{border:1px solid var(--line);padding:7px 10px;text-align:left;}
-  th{background:#f1f5f9;}
-  .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;color:#fff;}
-  .g{background:#27ae60;} .y{background:#e0a800;} .r{background:#c0392b;}
-  .req{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px dashed var(--line);}
+  .stat.warn{background:var(--danger-soft);}
+  .stat.warn b{color:var(--danger);}
+  code{background:#eef2f7;padding:2px 6px;border-radius:5px;font-size:12.8px;font-family:"SF Mono",Consolas,monospace;color:#0f172a;}
+  pre{background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:10px;overflow:auto;font-size:13px;font-family:"SF Mono",Consolas,monospace;line-height:1.55;margin:10px 0;}
+  table{border-collapse:collapse;width:100%;margin:12px 0;font-size:13.3px;}
+  th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top;}
+  th{background:#f1f5f9;font-weight:700;}
+  .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;color:#fff;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap;}
+  .g{background:#1d6f42;} .y{background:#d99000;} .r{background:#c0392b;} .b{background:#0b3d63;}
+  .req{display:flex;gap:12px;align-items:flex-start;padding:9px 0;border-bottom:1px dashed var(--line);}
   .req:last-child{border-bottom:none;}
-  .step{background:var(--calc-soft);border-radius:8px;padding:12px 14px;margin:10px 0;}
+  .step{background:var(--calc-soft);border-radius:10px;border:1px solid #cde4d6;padding:14px 16px;margin:12px 0;}
   .step b{color:var(--calc);}
-  .pbi-box{background:var(--pbi-soft);border-radius:8px;padding:12px 14px;margin:10px 0;}
-  .pbi-box b{color:#8a6a00;}
+  .pbi-box{background:var(--pbi-soft);border:1px solid #f2df9d;border-radius:10px;padding:14px 16px;margin:12px 0;}
+  .pbi-box b{color:#7c5d00;}
+  .chart-card{border:1px solid var(--line);border-left:5px solid #caa400;border-radius:10px;padding:14px 16px;margin:14px 0;background:#fcfdff;}
+  .chart-card h4{margin:0 0 8px;font-size:15.5px;color:var(--accent);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .wells{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin:10px 0;}
+  .well{background:#f4f6fa;border:1px solid var(--line);border-radius:7px;padding:7px 10px;font-size:12.8px;}
+  .well strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-bottom:2px;}
   .note{background:#fffaf0;border-left:4px solid #e0a800;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
-  .chk li{margin:4px 0;}
-  .toc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:20px;font-size:14px;}
-  .toc a{color:var(--accent);text-decoration:none;}
-  footer{text-align:center;color:var(--muted);font-size:12px;padding:10px 20px 28px;}
+  .warn-box{background:var(--danger-soft);border-left:4px solid var(--danger);border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
+  .wireframe{display:grid;grid-template-columns:repeat(12,1fr);gap:8px;background:#eef2f7;padding:14px;border-radius:12px;margin:12px 0;font-size:12px;}
+  .wf-box{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:10px;text-align:center;font-weight:600;color:var(--accent);}
+  .wf-box small{display:block;font-weight:400;color:var(--muted);margin-top:3px;font-size:11px;}
+  ul.task-list{list-style:none;padding:0;margin:10px 0;}
+  ul.task-list li{padding:5px 0;}
+  ul.task-list label{display:flex;gap:9px;align-items:flex-start;cursor:pointer;font-size:13.8px;}
+  ul.task-list input{margin-top:4px;width:16px;height:16px;flex:none;accent-color:var(--calc);}
+  footer{text-align:center;color:var(--muted);font-size:12.5px;padding:10px 20px 28px;}
   footer a{color:#3d4a5c;}
+  @media(max-width:740px){
+    .wrap{padding:0 12px;}
+    section{padding:16px 16px;}
+    .wireframe{grid-template-columns:1fr 1fr;}
+    .wf-box{grid-column:span 2 !important;}
+  }
 </style>
 </head>
 <body>
+
 <header>
-  <h1>16 · CO₂ emissions</h1>
-  <p>Our World in Data country-year CO₂ series. The file also contains regional totals. Those must be filtered out or every chart double-counts. Figures below were computed from the file in this folder. <a href="../index.html">All practice sets</a></p>
-</header>
-<div class="wrap">
-  <div class="toc"><b>Jump to:</b>
-    <a href="#profile">Profile</a> ·
-    <a href="#brief">Brief</a> ·
-    <a href="#req">Requirements</a> ·
-    <a href="#calc">Excel</a> ·
-    <a href="#pbi">Power BI</a> ·
-    <a href="#sign">Sign-off</a> ·
-    <a href="#stretch">Stretch</a>
+  <div class="kicker">Practice Set 16 of 20 · Wide-Table Pruning, Power Query Unpivot &amp; ESG Sustainability BI</div>
+  <h1>16 · Global CO2 Emissions (OWID) — 79-Column Pruning, Unpivoting Fuels &amp; ESG Views</h1>
+  <p>Tame Our World in Data's massive <b>56,269-row × 79-column</b> climate history (<code>1750–2025</code>)! Prune 79 columns down to 12 lean fields, separate 220 ISO-3 countries from <code>OWID_*</code> / blank regional rollups in one rule, <b>Unpivot 5 fossil-fuel columns</b> into a tidy Fuel Stacked Area Chart, and contrast Annual vs. Cumulative vs. Per-Capita emissions!</p>
+  <div class="top-nav">
+    <a class="pill" href="../index.html">← All 20 Practice Sets</a>
+    <a class="pill" href="../../index.html">← Main Excel &amp; Power BI Outline</a>
+    <span class="pill">Skills Taught: Choose Columns (79→12) · Unpivot Columns · Fuel Stacked Area · Annual vs Cumulative vs Per-Capita</span>
   </div>
+</header>
+
+<div class="wrap">
+
+  <div class="prog-bar">
+    <span class="prog-text" id="progText">0 / 0 steps completed</span>
+    <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+    <button class="btn-sm" type="button" onclick="resetChecks()">Reset checklist</button>
+  </div>
+
+  <div class="toc">
+    <b>Step-by-Step Map:</b>
+    <a href="#profile">1. 79-Column Audit &amp; ISO-3 Rule</a> ·
+    <a href="#brief">2. Client Brief</a> ·
+    <a href="#req">3. Requirements</a> ·
+    <a href="#excel">4. Phase A: Excel Step-by-Step</a> ·
+    <a href="#pbi">5. Phase B: Power BI Pruning, Unpivot &amp; Charts</a> ·
+    <a href="#sign">6. Sign-Off</a> ·
+    <a href="#stretch">7. Stretch</a> ·
+    <a href="#mistakes">8. Common Mistakes</a>
+  </div>
+
+  <!-- 1. PROFILE -->
   <section id="profile">
-    <h2 class="t">1. Verified profile</h2>
-    <div class="facts"><div class="grid"><div class="stat"><b>223</b><span>Rows</span></div><div class="stat"><b>37,748 million tonnes</b><span>Total co2</span></div><div class="stat"><b>Country rows only. Card total is 2025 alone.</b><span>Scope</span></div><div class="stat"><b>China</b><span>Top country</span></div></div></div>
-    <p>File: <code>owid-co2-data.csv</code>. Fact table for the steps: <code>Emissions</code>, renamed to <code>Emissions</code> in Power BI.</p>
-    
-    
-        <h3>Biggest groups (check your pivot against this)</h3>
-        <table><tr><th>country</th><th>co2 (million tonnes)</th></tr><tr><td>China</td><td>12,417</td></tr><tr><td>United States</td><td>5,036</td></tr><tr><td>India</td><td>3,203</td></tr><tr><td>Russia</td><td>1,767</td></tr><tr><td>Japan</td><td>960</td></tr><tr><td>Iran</td><td>855</td></tr></table>
-    <div class="note">Rows with a blank iso_code, or an iso_code that starts with OWID_, are continents and other groups. The sign-off number is countries only, one recent year, summed. A line chart is the right way to show change.</div>
+    <h2 class="t">1. Verified Data Profile &amp; The 3-Character <code>iso_code</code> Rule</h2>
+    <div class="facts">
+      <div class="grid">
+        <div class="stat"><b>56,269 × 79</b><span>Raw Rows × Columns (1750–2025)</span></div>
+        <div class="stat"><b>220</b><span>Clean 3-Letter ISO Economies</span></div>
+        <div class="stat"><b>37,748 Mt</b><span>2025 Country Sum (World = 38,995 Mt*)</span></div>
+        <div class="stat"><b>China (12.42B t)</b><span>#1 Annual Emitter (2025)</span></div>
+        <div class="stat"><b>USA (439.3B t)</b><span>#1 Cumulative Emitter (1750–2025)</span></div>
+        <div class="stat"><b>Coal (40.3%)</b><span>#1 Fuel Source (15,721 Mt in 2025)</span></div>
+      </div>
+    </div>
+
+    <div class="note">
+      <b>Two Essential OWID Climate Rules:</b><br>
+      1. <b>One-Line Country Filter (<code>Text.Length([iso_code]) = 3</code>):</b> Every regional/income aggregate (<code>World</code>, <code>Asia</code>, <code>High-income countries</code>, <code>OWID_WRL</code>) has either a blank <code>iso_code</code> or an 8-character <code>OWID_*</code> prefix! Filtering <code>Text.Length([iso_code]) = 3</code> isolates the exact <b>220 territorial economies</b> (`37,452.85 Mt` in 2024; `37,747.93 Mt` in 2025).<br>
+      <i>*Why is the <code>World</code> row (`38,995.11 Mt` in 2025) ~1,247 Mt higher than the 220-country sum?</i> Because ~1.25 billion tonnes come from <b>International Aviation &amp; Shipping</b> over open oceans!<br>
+      2. <b>Never Average Per-Capita Columns Across Countries:</b> Compute weighted Per-Capita in DAX via <code>DIVIDE(SUM(co2) * 1000000, SUM(population))</code>!
+    </div>
+
+    <h3>Top 8 Emitters: Annual vs. Per-Capita vs. Cumulative (2025 Verified)</h3>
+    <table>
+      <tr><th>Rank</th><th>Country</th><th>ISO</th><th>2025 Annual CO2 (Mt)</th><th>Per Capita (t/person)</th><th>Cumulative 1750–2025 (Mt)</th></tr>
+      <tr><td>1</td><td>China</td><td><code>CHN</code></td><td><b>12,417.49</b></td><td>8.77 t</td><td>298,480 (#2)</td></tr>
+      <tr><td>2</td><td>United States</td><td><code>USA</code></td><td><b>5,035.56</b></td><td>14.50 t</td><td><b>439,343 (#1!)</b></td></tr>
+      <tr><td>3</td><td>India</td><td><code>IND</code></td><td><b>3,203.41</b></td><td><b>2.19 t</b></td><td>69,190</td></tr>
+      <tr><td>4</td><td>Russia</td><td><code>RUS</code></td><td>1,766.67</td><td>12.27 t</td><td>123,574 (#3)</td></tr>
+      <tr><td>5</td><td>Japan</td><td><code>JPN</code></td><td>960.25</td><td>7.80 t</td><td>71,267</td></tr>
+      <tr><td>6</td><td>Iran</td><td><code>IRN</code></td><td>855.28</td><td>9.25 t</td><td>22,583</td></tr>
+      <tr><td>7</td><td>Indonesia</td><td><code>IDN</code></td><td>821.80</td><td>2.88 t</td><td>18,246</td></tr>
+      <tr><td>8</td><td>Saudi Arabia</td><td><code>SAU</code></td><td>638.25</td><td><b>18.46 t</b></td><td>18,550</td></tr>
+    </table>
   </section>
+
+  <!-- 2. BRIEF -->
   <section id="brief">
-    <h2 class="t">2. The client brief</h2>
-    <p><b>Who:</b> A climate briefing team.</p>
-    <p><b>The ask:</b> <i>Show country emissions over time, and a single-year ranking. Do not add 'World' on top of the countries, and do not add every year into one pile.</i></p>
+    <h2 class="t">2. Real-World Client Brief</h2>
+    <p><b>Client:</b> Corporate ESG &amp; Sovereign Climate Risk Advisory Practice.</p>
+    <p><b>The Ask:</b> <i>"Policy leaders ask completely different questions depending on which lens they use: Who emits the most CO2 right now? Who emitted the most cumulatively since 1750? Who emits the most per person? And which fossil fuels (Coal, Oil, Gas, Cement, Flaring) drive global emissions? Build an interactive ESG cockpit answering all four lenses without regional double-counting."</i></p>
   </section>
+
+  <!-- 3. REQUIREMENTS -->
   <section id="req">
-    <h2 class="t">3. Requirements</h2>
-    <div class="req"><span class="tag g">Beginner</span><div>KPI strip — row count, co2.</div></div><div class="req"><span class="tag g">Beginner</span><div>Bar chart of <b>country</b>.</div></div><div class="req"><span class="tag g">Beginner</span><div>Trend by <b>year</b>.</div></div><div class="req"><span class="tag y">Inter.</span><div>Top 10 <b>country</b>.</div></div><div class="req"><span class="tag r">Advan.</span><div>Slicers that cross-filter every visual on the page.</div></div>
+    <h2 class="t">3. Project Requirements (Beginner → Advanced)</h2>
+    <div class="req"><span class="tag g">Beginner</span><div><b>Prune 79 Columns to 12 (`Choose Columns`) + Keep `LEN(iso_code) = 3`:</b> Build a fast, clean 220-country fact table (`Emissions`).</div></div>
+    <div class="req"><span class="tag y">Inter.</span><div><b>Unpivot the 5 Fuel Columns (`coal_co2`, `oil_co2`, `gas_co2`, `cement_co2`, `flaring_co2`):</b> Build a `FuelEmissions` child table in Power Query to power a Fuel-Source Stacked Area Chart!</div></div>
+    <div class="req"><span class="tag r">Advan.</span><div><b>3-Lens ESG Comparison (Annual vs. Cumulative vs. Per-Capita) + Emitter Rank-Shift Ribbon Chart (1950–2025).</b></div></div>
   </section>
-  <section id="calc">
-    <h2 class="t">4. Phase A — Microsoft Excel</h2>
-    <p>Goal: open the file cleanly, add only the helper columns you need, and prove one total with a PivotTable before you touch Power BI.</p>
-    
-    <h3>Step 1 — Open it the right way</h3>
-    <div class="step">The file is wide. In Excel, work on a copy where you kept only country, year, iso_code, population, co2, and co2_per_capita, and you removed aggregate rows.<br><b>Formats:</b> <code>population</code> → Number; <code>co2</code> → Number; <code>co2_per_capita</code> → Number. Then <b>View → Freeze Panes → Freeze Top Row</b>.</div>
-    <h3>Step 2 — Look for dirt</h3>
-    <div class="step"><ul><li>Remove aggregate rows (blank iso_code, or iso_code starting with OWID_).</li><li>co2 is annual emissions. Summing all years is not &#x27;total emissions now&#x27;.</li><li>co2_per_capita is a rate. Average it only with care; prefer it on a line for one country.</li></ul></div>
-    
-        <h3>Step 3 — No extra formula required</h3>
-        <div class="step">The columns you need are already on the sheet. Use the pivot in the next step to prove the totals before you leave Excel.</div>
-    <h3>Step 4 — Pivot check</h3>
-    <div class="step">Select the data → <b>Insert → PivotTable</b>. Rows = <code>country</code>. Put <code>year</code> in Columns.
-    Values = <b>Sum of co2</b>.
-    The grand total must be <b>37,748 million tonnes</b>. If it is not, the filter or the number format is wrong — fix that before Power BI.
+
+  <!-- 4. EXCEL -->
+  <section id="excel">
+    <h2 class="t">4. Phase A — Step-by-Step in Microsoft Excel</h2>
+
+    <h3>Step A1 — Prune 79 Columns Using Excel Power Query</h3>
+    <div class="step">
+      Click <b>Data → From Text/CSV</b> → select <code>datasets/16-co2-emissions/data/owid-co2-data.csv</code> → click <b>Transform Data</b>! Click <b>Home → Choose Columns</b> and check ONLY: <code>country, year, iso_code, population, gdp, co2, co2_per_capita, cumulative_co2, coal_co2, oil_co2, gas_co2, cement_co2, flaring_co2</code>. Filter <code>iso_code</code> where length = 3 (or in Excel Pivot filter <code>LEN(iso_code)=3</code>) and verify 2024 sum = <b>37,452.85 Mt</b> and 2025 sum = <b>37,747.93 Mt</b>!
     </div>
-    <h3>Step 5 — Save</h3>
-    <div class="step"><b>Save As</b> <code>16-co2-emissions-clean.xlsx</code>. Power BI should read this file, not a half-filtered view you forgot to clear.</div>
+
+    <ul class="task-list">
+      <li><label><input type="checkbox"> Pruned 79 columns in Excel Power Query and verified 220 ISO-3 countries totaling 37,747.93 Mt in 2025.</label></li>
+    </ul>
   </section>
+
+  <!-- 5. POWER BI -->
   <section id="pbi">
-    <h2 class="t">5. Phase B — Power BI</h2>
-    <h3>Step 1 — Get data</h3>
-    <div class="pbi-box"><b>Get data → Text/CSV</b>. Choose columns: country, year, iso_code, population, co2, co2_per_capita. Filter iso_code to non-blank values that do not start with OWID_.</div>
-    <h3>Step 2 — Power Query</h3>
-    <div class="pbi-box">Rename the main query to <code>Emissions</code>. Set the types from Step 1. Watch <b>Applied Steps</b>. Then <b>Close &amp; Apply</b>.
-     The profile total is <b>co2 summed for the latest year only</b>, after that filter. Your card must use the same year filter or it will not match. Latest year in the cleaned country rows: <b>2025</b>. Sum <code>co2</code> for that year. The unit is million tonnes.</div>
-    <h3>Step 3 — Model</h3>
-    <div class="pbi-box"><p>One table. A star schema is not required for this set.</p>
-    <p>Hide key columns you do not want on the report. A hidden column can still be used by a relationship.</p></div>
-    <h3>Step 4 — Measures</h3>
-    <p>Write these as <b>measures</b>, not calculated columns. Replace the placeholder filter with a real value from the column.</p>
-    <pre>co2 = SUM(&#x27;Emissions&#x27;[co2])
-Row Count = COUNTROWS(&#x27;Emissions&#x27;)
-population = SUM(&#x27;Emissions&#x27;[population])</pre>
-    <h3>Step 5 — Visuals</h3>
+    <h2 class="t pbi-h">5. Phase B — Complete Power BI Column Pruning, Unpivoting &amp; Charts</h2>
+
+    <h3>Stage 1 &amp; 2 — Prune `Emissions` + Unpivot `FuelBreakdown` in Power Query</h3>
     <div class="pbi-box">
-      <ul>
-        <li>Cards for the measures in Step 4.</li>
-        <li>Bar chart: axis <code>country</code>, value the main measure.</li>
-        <li>Line chart: axis <code>year</code>.</li>
-        <li>A slicer for each small category (any low-cardinality column).</li>
-        <li>Click a bar and confirm the other visuals filter. Use <b>Format → Edit interactions</b> if one visual should stay still.</li>
-      </ul>
+      <ol style="margin:0;padding-left:20px;">
+        <li>Import <code>data/owid-co2-data.csv</code> → <b>Transform Data</b> → rename query to <code>Emissions</code>.</li>
+        <li><b>Step 1 — Prune 79 → 13 Columns:</b> Click <b>Home → Choose Columns → Choose Columns</b> → uncheck <i>(Select All Columns)</i> → check ONLY: <code>country</code>, <code>year</code>, <code>iso_code</code>, <code>population</code>, <code>gdp</code>, <code>co2</code>, <code>co2_per_capita</code>, <code>cumulative_co2</code>, <code>coal_co2</code>, <code>oil_co2</code>, <code>gas_co2</code>, <code>cement_co2</code>, <code>flaring_co2</code> → click <b>OK</b>.</li>
+        <li><b>Step 2 — Filter Clean Sovereign Countries:</b> Add Custom Column <code>CodeLen = Text.Length([iso_code])</code> → filter <code>CodeLen = 3</code> → remove <code>CodeLen</code>! Set numeric columns (`co2`..`flaring_co2`) = <b>Decimal Number</b> and `year` = <b>Whole Number</b>. Add a Composite Key <code>CountryYear = [iso_code] &amp; "-" &amp; Text.From([year])</code>.</li>
+        <li><b>Step 3 — Unpivot the 5 Fuel Columns (Core Power BI Skill!):</b>
+          <ul>
+            <li>Right-click <code>Emissions</code> in the Queries pane → <b>Reference</b> → rename to <code>FuelBreakdown</code>.</li>
+            <li>Keep ONLY <code>CountryYear</code>, <code>year</code>, <code>iso_code</code>, <code>coal_co2</code>, <code>oil_co2</code>, <code>gas_co2</code>, <code>cement_co2</code>, and <code>flaring_co2</code> (filter <code>year &gt;= 1900</code> for crisp modern charts!).</li>
+            <li>Select the 5 fuel columns (`coal_co2`..`flaring_co2`) → right-click → <b>Unpivot Only Selected Columns</b>!</li>
+            <li>Rename <code>Attribute</code> → <code>FuelType</code> (replace `_co2` with `""` and Capitalize Each Word: `Coal`, `Oil`, `Gas`, `Cement`, `Flaring`) and <code>Value</code> → <code>FuelMtCO2</code>!</li>
+          </ul>
+        </li>
+        <li>Click <b>Home → Close &amp; Apply</b> and relate <code>Emissions[CountryYear] (1) → (*) FuelBreakdown[CountryYear]</code>!</li>
+      </ol>
+    </div>
+
+    <h3>Stage 3 &amp; 4 — Snapshot-Safe ESG DAX Measures</h3>
+<pre>Selected Year = MAX ( 'Emissions'[year] )
+
+Annual CO2 (Mt) =
+VAR Yr = MAX ( 'Emissions'[year] )
+RETURN
+    CALCULATE ( SUM ( 'Emissions'[co2] ), 'Emissions'[year] = Yr )
+// Check 2025: 37,747.93 Mt (220 countries) | 2024: 37,452.85 Mt
+
+Cumulative CO2 (Mt) =
+VAR Yr = MAX ( 'Emissions'[year] )
+RETURN
+    CALCULATE ( SUM ( 'Emissions'[cumulative_co2] ), 'Emissions'[year] = Yr )
+// Check 2025: USA #1 (439,343 Mt) vs China #2 (298,480 Mt)!
+
+Weighted CO2 per Capita (t) =
+VAR Yr = MAX ( 'Emissions'[year] )
+VAR Tonnes = CALCULATE ( SUM ( 'Emissions'[co2] ), 'Emissions'[year] = Yr ) * 1000000
+VAR Pop = CALCULATE ( SUM ( 'Emissions'[population] ), 'Emissions'[year] = Yr )
+RETURN DIVIDE ( Tonnes, Pop )
+// Check 2025: ~4.59 t territorial (4.74 t incl. aviation/shipping)
+
+Fuel CO2 (Mt) = SUM ( 'FuelBreakdown'[FuelMtCO2] )</pre>
+
+    <h3>Stage 5 — Power BI Charts Journey: Build the 5-Visual ESG Climate Cockpit</h3>
+
+    <div class="wireframe">
+      <div class="wf-box" style="grid-column:span 12;">Header + Slicers: Year (Test 2024 &amp; 2025; Edit Interactions OFF on History Charts!) · Country</div>
+      <div class="wf-box" style="grid-column:span 3;">Card: Annual CO2 (220 Nations)<small>37,748 Mt (2025)</small></div>
+      <div class="wf-box" style="grid-column:span 3;">Card: Per-Capita Avg<small>4.59 t / person</small></div>
+      <div class="wf-box" style="grid-column:span 3;">Card: #1 Annual Emitter<small>China (12,417 Mt)</small></div>
+      <div class="wf-box" style="grid-column:span 3;">Card: #1 Cumulative (1750+)<small>USA (439,343 Mt)</small></div>
+      <div class="wf-box" style="grid-column:span 7;">Visual 2: Global Fossil-Fuel Mix Stacked Area (1900–2025)<small>Unpivoted Coal · Oil · Gas · Cement · Flaring</small></div>
+      <div class="wf-box" style="grid-column:span 5;">Visual 3: Annual vs Cumulative Top-10 Bar<small>China #1 Annual vs USA #1 Cumulative!</small></div>
+      <div class="wf-box" style="grid-column:span 6;">Visual 4: Top Emitters Rank-Shift Ribbon (1950–2025)<small>China Overtakes USA (2006) · India Overtakes Russia!</small></div>
+      <div class="wf-box" style="grid-column:span 6;">Visual 5: Per-Capita vs Total CO2 Table / Map<small>SAU 18.5t · USA 14.5t · CHN 8.8t · IND 2.2t</small></div>
+    </div>
+
+    <div class="chart-card">
+      <h4><span class="tag r">Visual 2</span> Global Fossil-Fuel Stack (1900–2025) — Unpivoted Stacked Area Chart</h4>
+      <div class="wells">
+        <div class="well"><strong>X-axis</strong><code>FuelBreakdown[year]</code></div>
+        <div class="well"><strong>Y-axis</strong><code>[Fuel CO2 (Mt)]</code></div>
+        <div class="well"><strong>Legend</strong><code>FuelBreakdown[FuelType]</code> (Coal, Oil, Gas, Cement, Flaring)</div>
+      </div>
+      <p><b>Why Unpivoting Was Essential:</b> When fuels were 5 separate columns, you couldn't put <code>FuelType</code> into a Legend or Slicer! Unpivoting turns 5 rigid columns into 1 dynamic Legend field!</p>
+    </div>
+
+    <div class="chart-card">
+      <h4><span class="tag y">Visual 3, 4 &amp; 5</span> Annual vs. Cumulative Bar + Emitter Ribbon Chart + Per-Capita Equity Table</h4>
+      <p>1. <b>Clustered bar chart:</b> Compare <code>[Annual CO2 (Mt)]</code> vs. <code>[Cumulative CO2 (Mt)]</code> (or use two side-by-side bars) to show how China leads today (`12.4B t`) while the US still holds #1 historical responsibility since 1750 (`439.3B t`).<br>
+      2. <b>Ribbon chart:</b> X = `year` (`1950, 1970, 1990, 2005, 2015, 2025`), Y = `[Annual CO2 (Mt)]`, Legend = Top 8 `country`.<br>
+      3. <b>Table / Map:</b> Contrast total vs. per-capita (`India = 2.19 t` vs `USA = 14.50 t` vs `Saudi Arabia = 18.46 t`).</p>
+    </div>
+
+    <ul class="task-list">
+      <li><label><input type="checkbox"> Pruned 79 columns to 13, filtered <code>LEN(iso_code)=3</code> (220 economies), and unpivoted the 5 fuel columns.</label></li>
+      <li><label><input type="checkbox"> Built Unpivoted Fuel Stacked Area, Emitter Ribbon Chart, and Annual-vs-Cumulative-vs-Per-Capita views.</label></li>
+    </ul>
+  </section>
+
+  <!-- 6. SIGN-OFF -->
+  <section id="sign">
+    <h2 class="t">6. Client Sign-Off Checklist</h2>
+    <ul class="task-list">
+      <li><label><input type="checkbox"> 220 clean ISO-3 economies sum to <b>37,452.85 Mt</b> in 2024 and <b>37,747.93 Mt</b> in 2025 (no <code>World</code>/<code>Asia</code> double-counting).</label></li>
+      <li><label><input type="checkbox"> 2025 Top 3 Annual Emitters: <b>China (12,417.49 Mt)</b>, <b>USA (5,035.56 Mt)</b>, <b>India (3,203.41 Mt)</b>.</label></li>
+      <li><label><input type="checkbox"> 2025 #1 Cumulative Emitter since 1750 is <b>United States (439,343 Mt)</b>.</label></li>
+    </ul>
+  </section>
+
+  <!-- 7. STRETCH -->
+  <section id="stretch">
+    <h2 class="t">7. Stretch Challenges</h2>
+    <ul>
+      <li><b>Carbon Intensity of GDP (kg CO2 per $):</b> Compute <code>DIVIDE(SUM(co2)*1e9, SUM(gdp))</code> to highlight economies decoupling GDP growth from carbon emissions (UK, France, Germany, US since 2007)!</li>
+    </ul>
+  </section>
+
+  <!-- 8. MISTAKES -->
+  <section id="mistakes">
+    <h2 class="t">8. Trainer's Troubleshooting: Common Beginner Mistakes</h2>
+    <div class="warn-box">
+      <b>Mistake 1 — Importing all 79 columns unpruned:</b> Bloats `.pbix` memory and buries beginners in 65 obscure columns in the Data pane! Always run <b>Choose Columns</b> early in Power Query.
+    </div>
+    <div class="warn-box">
+      <b>Mistake 2 — Leaving blank or <code>OWID_*</code> <code>iso_code</code> rows in:</b> Multiplies global CO2 ~5× by summing continents, income groups, and <code>World</code> on top of countries!
     </div>
   </section>
-  <section id="sign">
-    <h2 class="t">6. Sign-off</h2>
-    <ul class="chk"><li>☐ Row count is <b>223</b> after the cleaning steps above.</li><li>☐ Total co2 is <b>37,748 million tonnes</b>.</li><li>☐ The leading country is <b>China</b> at <b>12,417 million tonnes</b>.</li><li>☐ Slicers filter every visual, and you can clear them back to the totals above.</li></ul>
-  </section>
-  <section id="stretch">
-    <h2 class="t">7. Stretch</h2>
-    <ul>
-      <li>A line of co2 for the five countries that lead in the latest year, with Year on the axis.</li>
-      <li>Add a drill-through page that keeps the slicer filters and shows the underlying rows.</li>
-      <li>Sort a month-name column by the month number so the axis is not alphabetical.</li>
-    </ul>
-  </section>
-  <section id="mist">
-    <h2 class="t">8. Mistakes that hide the answer</h2>
-    <ul>
-      <li>Leaving &#x27;World&#x27; and &#x27;Asia&#x27; in the same total as the countries.</li><li>Summing co2 across every year and calling it the current total.</li>
-      <li>Summing an ID column, or averaging a rate that was already a percent.</li>
-      <li>Leaving dates as text, then wondering why the axis sorts wrong.</li>
-    </ul>
-  </section>
+
 </div>
-<footer>Our World in Data CO₂ dataset, CC BY 4.0. https://github.com/owid/co2-data</footer>
+
+<footer>
+  Source: Our World in Data / Global Carbon Budget · Manually verified against <code>data/owid-co2-data.csv</code> · Works 100% offline.
+</footer>
+
+<script>
+(function(){
+  var KEY = 'pbi_guide_16_v2';
+  var boxes = document.querySelectorAll('input[type=checkbox]');
+  function update(){
+    var done = 0;
+    boxes.forEach(function(b){ if(b.checked) done++; });
+    var pct = boxes.length ? Math.round((done / boxes.length) * 100) : 0;
+    document.getElementById('progText').textContent = done + ' / ' + boxes.length + ' steps completed (' + pct + '%)';
+    document.getElementById('progFill').style.width = pct + '%';
+  }
+  function save(){
+    var state = [];
+    boxes.forEach(function(b){ state.push(b.checked ? 1 : 0); });
+    try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){}
+    update();
+  }
+  try{
+    var s = JSON.parse(localStorage.getItem(KEY) || '[]');
+    boxes.forEach(function(b, i){ if(s[i] !== undefined) b.checked = !!s[i]; });
+  }catch(e){}
+  boxes.forEach(function(b){ b.addEventListener('change', save); });
+  window.resetChecks = function(){
+    if(confirm('Reset all checkmarks for Practice Set 16?')){
+      boxes.forEach(function(b){ b.checked = false; });
+      save();
+    }
+  };
+  update();
+})();
+</script>
 </body>
 </html>

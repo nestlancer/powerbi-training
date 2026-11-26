@@ -3,147 +3,603 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Practice · Financial sample</title>
+<title>01 · Financial Sample — Beginner to Advanced Excel &amp; Power BI Guide</title>
 <style>
-  :root{--calc:#1d6f42;--calc-soft:#e7f3ec;--pbi:#caa400;--pbi-soft:#fff8e0;--ink:#1f2430;--muted:#5b6472;--line:#e3e7ee;--bg:#f6f8fb;--accent:#0b3d63;}
+  :root{
+    --calc:#1d6f42; --calc-soft:#e7f3ec;
+    --pbi:#b78900; --pbi-soft:#fff8e0;
+    --ink:#1f2430; --muted:#5b6472; --line:#e3e7ee; --bg:#f6f8fb;
+    --accent:#0b3d63; --danger:#c0392b; --danger-soft:#fdeaea;
+  }
   *{box-sizing:border-box;}
-  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.6;}
-  header{background:linear-gradient(120deg,#1d6f42,#0b3d63);color:#fff;padding:28px 26px;}
-  header h1{margin:0 0 6px;font-size:24px;}
-  header p{margin:0;max-width:860px;font-size:14.5px;}
-  header a{color:#fff;}
-  .wrap{max-width:1080px;margin:22px auto 70px;padding:0 22px;}
-  .facts{background:#fff;border:1px solid var(--line);border-left:5px solid var(--calc);border-radius:12px;padding:16px 20px;margin-bottom:22px;}
-  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.62;}
+  header{background:linear-gradient(125deg,#1d6f42 0%,#0f5132 48%,#0b3d63 100%);color:#fff;padding:32px 26px 28px;}
+  header .kicker{font-size:12px;text-transform:uppercase;letter-spacing:.8px;opacity:.88;font-weight:700;margin-bottom:6px;}
+  header h1{margin:0 0 8px;font-size:26px;letter-spacing:.2px;}
+  header p{margin:0;max-width:880px;font-size:14.8px;opacity:.95;}
+  header a{color:#fff;text-decoration:underline;}
+  .top-nav{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;align-items:center;}
+  .pill{display:inline-block;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.32);padding:4px 12px;border-radius:20px;font-size:12.5px;text-decoration:none;color:#fff;}
+  .wrap{max-width:1120px;margin:20px auto 70px;padding:0 22px;}
+  .prog-bar{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 18px;margin-bottom:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;position:sticky;top:10px;z-index:20;box-shadow:0 2px 8px rgba(15,23,42,.05);}
+  .prog-track{flex:1;min-width:180px;height:10px;background:#eef2f7;border-radius:99px;overflow:hidden;}
+  .prog-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--calc),#caa400);transition:width .25s;}
+  .prog-text{font-size:13px;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums;}
+  .btn-sm{border:1px solid var(--line);background:#fff;color:var(--ink);padding:5px 11px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;}
+  .btn-sm:hover{background:#f1f5f9;}
+  .toc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:20px;font-size:13.5px;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;}
+  .toc a{color:var(--accent);text-decoration:none;font-weight:600;}
+  .toc a:hover{text-decoration:underline;}
+  section{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px 26px;margin-bottom:20px;box-shadow:0 1px 2px rgba(20,30,50,.03);}
+  h2.t{font-size:20px;margin:0 0 14px;border-bottom:2px solid var(--calc);padding-bottom:8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  h2.t.pbi-h{border-bottom-color:#caa400;}
+  h3{font-size:16px;margin:20px 0 8px;color:var(--accent);}
+  h4{font-size:14.5px;margin:14px 0 6px;color:var(--ink);}
+  p{margin:8px 0;}
+  .facts{background:#fff;border:1px solid var(--line);border-left:5px solid var(--calc);border-radius:12px;padding:16px 18px;margin-bottom:18px;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:10px;}
   .stat{background:var(--calc-soft);border-radius:9px;padding:10px 12px;}
   .stat b{display:block;font-size:18px;color:var(--calc);}
   .stat span{font-size:12px;color:var(--muted);}
-  section{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 24px;margin-bottom:20px;}
-  h2.t{font-size:20px;margin:0 0 12px;border-bottom:2px solid var(--calc);padding-bottom:6px;}
-  h3{font-size:16px;margin:18px 0 8px;color:var(--accent);}
-  code{background:#eef2f7;padding:1px 6px;border-radius:5px;font-size:13px;font-family:"SF Mono",Consolas,monospace;}
-  pre{background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:10px;overflow:auto;font-size:13px;font-family:"SF Mono",Consolas,monospace;line-height:1.5;}
-  table{border-collapse:collapse;width:100%;margin:10px 0;font-size:13.5px;}
-  th,td{border:1px solid var(--line);padding:7px 10px;text-align:left;}
-  th{background:#f1f5f9;}
-  .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;color:#fff;}
-  .g{background:#27ae60;} .y{background:#e0a800;} .r{background:#c0392b;}
-  .req{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px dashed var(--line);}
+  .stat.warn{background:var(--danger-soft);}
+  .stat.warn b{color:var(--danger);}
+  code{background:#eef2f7;padding:2px 6px;border-radius:5px;font-size:12.8px;font-family:"SF Mono",Consolas,monospace;color:#0f172a;}
+  pre{background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:10px;overflow:auto;font-size:13px;font-family:"SF Mono",Consolas,monospace;line-height:1.55;margin:10px 0;}
+  table{border-collapse:collapse;width:100%;margin:12px 0;font-size:13.3px;}
+  th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top;}
+  th{background:#f1f5f9;font-weight:700;}
+  .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;color:#fff;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap;}
+  .g{background:#1d6f42;} .y{background:#d99000;} .r{background:#c0392b;} .b{background:#0b3d63;}
+  .req{display:flex;gap:12px;align-items:flex-start;padding:9px 0;border-bottom:1px dashed var(--line);}
   .req:last-child{border-bottom:none;}
-  .step{background:var(--calc-soft);border-radius:8px;padding:12px 14px;margin:10px 0;}
+  .step{background:var(--calc-soft);border:1px solid #cde4d6;border-radius:10px;padding:14px 16px;margin:12px 0;}
   .step b{color:var(--calc);}
-  .pbi-box{background:var(--pbi-soft);border-radius:8px;padding:12px 14px;margin:10px 0;}
-  .pbi-box b{color:#8a6a00;}
+  .pbi-box{background:var(--pbi-soft);border:1px solid #f2df9d;border-radius:10px;padding:14px 16px;margin:12px 0;}
+  .pbi-box b{color:#7c5d00;}
+  .chart-card{border:1px solid var(--line);border-left:5px solid #caa400;border-radius:10px;padding:14px 16px;margin:14px 0;background:#fcfdff;}
+  .chart-card h4{margin:0 0 8px;font-size:15.5px;color:var(--accent);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .wells{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin:10px 0;}
+  .well{background:#f4f6fa;border:1px solid var(--line);border-radius:7px;padding:7px 10px;font-size:12.8px;}
+  .well strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-bottom:2px;}
   .note{background:#fffaf0;border-left:4px solid #e0a800;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
-  .chk li{margin:4px 0;}
-  .toc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:20px;font-size:14px;}
-  .toc a{color:var(--accent);text-decoration:none;}
-  footer{text-align:center;color:var(--muted);font-size:12px;padding:10px 20px 28px;}
+  .warn-box{background:var(--danger-soft);border-left:4px solid var(--danger);border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
+  .wireframe{display:grid;grid-template-columns:repeat(12,1fr);gap:8px;background:#eef2f7;padding:14px;border-radius:12px;margin:12px 0;font-size:12px;}
+  .wf-box{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:10px;text-align:center;font-weight:600;color:var(--accent);}
+  .wf-box small{display:block;font-weight:400;color:var(--muted);margin-top:3px;font-size:11px;}
+  ul.task-list{list-style:none;padding:0;margin:10px 0;}
+  ul.task-list li{padding:5px 0;}
+  ul.task-list label{display:flex;gap:9px;align-items:flex-start;cursor:pointer;font-size:13.8px;}
+  ul.task-list input{margin-top:4px;width:16px;height:16px;flex:none;accent-color:var(--calc);}
+  footer{text-align:center;color:var(--muted);font-size:12.5px;padding:10px 20px 28px;}
   footer a{color:#3d4a5c;}
+  @media(max-width:740px){
+    .wrap{padding:0 12px;}
+    section{padding:16px 16px;}
+    .wireframe{grid-template-columns:1fr 1fr;}
+    .wf-box{grid-column:span 2 !important;}
+  }
 </style>
 </head>
 <body>
+
 <header>
-  <h1>01 · Financial sample</h1>
-  <p>A small Microsoft finance workbook: country, segment, product, sales, and profit. Figures below were computed from the file in this folder. <a href="../index.html">All practice sets</a></p>
-</header>
-<div class="wrap">
-  <div class="toc"><b>Jump to:</b>
-    <a href="#profile">Profile</a> ·
-    <a href="#brief">Brief</a> ·
-    <a href="#req">Requirements</a> ·
-    <a href="#calc">Excel</a> ·
-    <a href="#pbi">Power BI</a> ·
-    <a href="#sign">Sign-off</a> ·
-    <a href="#stretch">Stretch</a>
+  <div class="kicker">Practice Set 01 of 20 · Executive Finance &amp; FP&amp;A Analytics</div>
+  <h1>01 · Financial Sample — Profit, Margin &amp; Discount Leakage Journey</h1>
+  <p>Your very first complete project! Start from the raw 700-row Microsoft Financial Sample workbook, fix a real hidden column-header trap in Excel and Power Query, build a Date Table and DAX measures from scratch, and construct a 6-visual CFO P&amp;L dashboard. Every single figure below was verified directly from <code>data/Financial-Sample.xlsx</code>.</p>
+  <div class="top-nav">
+    <a class="pill" href="../index.html">← All 20 Practice Sets</a>
+    <a class="pill" href="../../index.html">← Main Excel &amp; Power BI Outline</a>
+    <span class="pill">Charts Taught: KPI Cards · Clustered Bar · Waterfall · Combo Chart · Column · P&amp;L Matrix · What-If Slicer</span>
   </div>
+</header>
+
+<div class="wrap">
+
+  <div class="prog-bar">
+    <span class="prog-text" id="progText">0 / 0 steps completed</span>
+    <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+    <button class="btn-sm" type="button" onclick="resetChecks()">Reset checklist</button>
+  </div>
+
+  <div class="toc">
+    <b>Step-by-Step Map:</b>
+    <a href="#profile">1. Data Profile &amp; Columns</a> ·
+    <a href="#brief">2. Client Brief</a> ·
+    <a href="#req">3. Requirements</a> ·
+    <a href="#excel">4. Phase A: Excel Step-by-Step</a> ·
+    <a href="#pbi">5. Phase B: Power BI &amp; Charts Journey</a> ·
+    <a href="#sign">6. Sign-Off</a> ·
+    <a href="#stretch">7. Stretch</a> ·
+    <a href="#mistakes">8. Common Mistakes</a>
+  </div>
+
+  <!-- 1. VERIFIED PROFILE -->
   <section id="profile">
-    <h2 class="t">1. Verified profile</h2>
-    <div class="facts"><div class="grid"><div class="stat"><b>700</b><span>Rows</span></div><div class="stat"><b>$16.89M</b><span>Total Profit</span></div><div class="stat"><b>2013-09-01 → 2014-12-01</b><span>Dates</span></div><div class="stat"><b>France</b><span>Top Country</span></div></div></div>
-    <p>File: <code>Financial-Sample.xlsx</code>. Fact table for the steps: <code>Sheet1</code>, renamed to <code>Financials</code> in Power BI.</p>
-    
-    
-        <h3>Biggest groups (check your pivot against this)</h3>
-        <table><tr><th>Country</th><th>Profit</th></tr><tr><td>France</td><td>$3.78M</td></tr><tr><td>Germany</td><td>$3.68M</td></tr><tr><td>Canada</td><td>$3.53M</td></tr><tr><td>United States of America</td><td>$3.00M</td></tr><tr><td>Mexico</td><td>$2.91M</td></tr></table>
-    <div class="note">Profit is not the same shape as sales. A country can sell a lot and still contribute little profit. The pivot in Excel should show that before you build the report.</div>
+    <h2 class="t">1. Verified Data Profile &amp; Raw Column Map</h2>
+    <div class="facts">
+      <div class="grid">
+        <div class="stat"><b>700</b><span>Data rows (A2:P701)</span></div>
+        <div class="stat"><b>$127.93M</b><span>Gross Sales ($127,931,598.50)</span></div>
+        <div class="stat"><b>$118.73M</b><span>Net Sales ($118,726,350.26)</span></div>
+        <div class="stat"><b>$16.89M</b><span>Total Profit ($16,893,702.26)</span></div>
+        <div class="stat"><b>14.23%</b><span>Net Profit Margin (Profit ÷ Sales)</span></div>
+        <div class="stat warn"><b>-$614.55K</b><span>Enterprise Segment Loss (-3.13%)</span></div>
+      </div>
+    </div>
+
+    <div class="note">
+      <b>The Hidden Business Story (What Your Dashboard Will Prove):</b><br>
+      1. <b>High revenue does NOT mean high profit:</b> The <b>United States of America</b> is #1 in Net Sales (<code>$25.03M</code>), yet drops to <b>#4 in Profit</b> (<code>$3.00M</code>, 11.97% margin) because it gives away the most discounts (<code>$2.24M</code>). <b>France</b> is #3 in Sales (<code>$24.35M</code>) but <b>#1 in Profit</b> (<code>$3.78M</code>, 15.53% margin)!<br>
+      2. <b>One customer segment is losing money:</b> <b>Enterprise</b> generated <code>$19.61M</code> in Net Sales yet lost <b>-$614,545.62</b> overall, while <b>Government</b> generated <b>+$11.39M</b> in profit.<br>
+      3. <b>Discounts destroy margins:</b> Net Margin falls steadily from <b>21.86%</b> (<code>None</code>) → <b>17.87%</b> (<code>Low</code>) → <b>14.39%</b> (<code>Medium</code>) → <b>9.07%</b> (<code>High</code>), with <b>58 individual rows losing money</b>.
+    </div>
+
+    <h3>Raw Workbook Anatomy (<code>data/Financial-Sample.xlsx</code>)</h3>
+    <p>Inside this file there is one worksheet named <code>Sheet1</code> AND an Excel Table already formatted over <code>A1:P701</code> named <code>financials</code>. Here is every column from left to right so you know what each column means before writing a single formula:</p>
+    <table>
+      <tr><th>Excel Col</th><th>Raw Header</th><th>Data Type</th><th>What It Means &amp; Beginner Rule</th></tr>
+      <tr><td><code>A</code></td><td><code>Segment</code></td><td>Text</td><td>Customer group (5 values: Government, Small Business, Enterprise, Midmarket, Channel Partners). Use for bars, matrix rows, and slicers.</td></tr>
+      <tr><td><code>B</code></td><td><code>Country</code></td><td>Text</td><td>Market (5 values: Canada, France, Germany, Mexico, United States of America). Set Data Category = Country in Power BI for maps.</td></tr>
+      <tr><td><code>C</code></td><td><code>Product</code></td><td>Text</td><td>Product line (6 values: Paseo, VTT, Amarilla, Velo, Montana, Carretera).</td></tr>
+      <tr><td><code>D</code></td><td><code>Discount Band</code></td><td>Text</td><td>Discount tier (4 values: None, Low, Medium, High). <b>Trap:</b> This is text, not a number — and alphabetically it sorts High → Low → Medium → None!</td></tr>
+      <tr><td><code>E</code></td><td><code>Units Sold</code></td><td>Decimal</td><td>Quantity sold (total <code>1,125,806</code> units; some rows have <code>.5</code> like <code>1618.5</code>, so keep Decimal, not Whole Number!).</td></tr>
+      <tr><td><code>F</code>, <code>G</code></td><td><code>Manufacturing Price</code>, <code>Sale Price</code></td><td>Currency</td><td>Per-unit cost &amp; list price. <b>NEVER SUM unit prices across rows!</b> Only average them or hide them.</td></tr>
+      <tr><td><code>H</code></td><td><code>Gross Sales</code></td><td>Currency</td><td><code>Units Sold × Sale Price</code> before discounts (Total: <code>$127,931,598.50</code>).</td></tr>
+      <tr><td><code>I</code></td><td><code>Discounts</code></td><td>Currency</td><td>Dollar discount subtracted from Gross Sales (Total: <code>$9,205,248.24</code>).</td></tr>
+      <tr><td><code>J</code></td><td><code>&nbsp;Sales</code> ⚠️</td><td>Currency</td><td><b>HIDDEN DIRT!</b> Notice the <b>leading space</b> before the word <code>Sales</code> in cell <code>J1</code>! This is Net Sales (<code>Gross Sales - Discounts</code> = <code>$118,726,350.26</code>). Rename to <code>Net Sales</code>!</td></tr>
+      <tr><td><code>K</code></td><td><code>COGS</code></td><td>Currency</td><td>Cost of Goods Sold (Total: <code>$101,832,648.00</code>).</td></tr>
+      <tr><td><code>L</code></td><td><code>Profit</code></td><td>Currency</td><td><code>Net Sales - COGS</code> (Total: <code>$16,893,702.26</code>; 58 rows are negative!).</td></tr>
+      <tr><td><code>M</code></td><td><code>Date</code></td><td>Date</td><td>First day of each month from <code>2013-09-01</code> to <code>2014-12-01</code> (16 months total: 4 months in 2013, 12 months in 2014).</td></tr>
+      <tr><td><code>N</code>, <code>O</code>, <code>P</code></td><td><code>Month Number</code>, <code>Month Name</code>, <code>Year</code></td><td>Int / Text / Int</td><td>Pre-built date parts. In Power BI, you will build a proper <code>Calendar</code> table and hide these duplicate columns on the fact table.</td></tr>
+    </table>
+
+    <h3>Verification Check Tables (Match Your Excel Pivot &amp; Power BI Visuals Against These)</h3>
+    <table>
+      <tr><th>Country</th><th>Rows</th><th>Net Sales</th><th>Total Profit</th><th>Net Margin %</th><th>Discounts Given</th></tr>
+      <tr><td>France</td><td>140</td><td>$24,354,172.28</td><td><b>$3,781,020.78</b></td><td>15.53%</td><td>$1,727,502.22</td></tr>
+      <tr><td>Germany</td><td>140</td><td>$23,505,340.82</td><td>$3,680,388.82</td><td><b>15.66%</b></td><td>$1,416,126.68</td></tr>
+      <tr><td>Canada</td><td>140</td><td>$24,887,654.89</td><td>$3,529,228.89</td><td>14.18%</td><td>$2,044,508.61</td></tr>
+      <tr><td>United States of America</td><td>140</td><td><b>$25,029,830.17</b></td><td>$2,995,540.66</td><td style="color:#c0392b"><b>11.97%</b></td><td><b>$2,239,527.83</b></td></tr>
+      <tr><td>Mexico</td><td>140</td><td>$20,949,352.11</td><td>$2,907,523.11</td><td>13.88%</td><td>$1,777,582.89</td></tr>
+    </table>
+
+    <table>
+      <tr><th>Segment</th><th>Rows</th><th>Net Sales</th><th>Total Profit</th><th>Net Margin %</th></tr>
+      <tr><td>Government</td><td>300</td><td>$52,504,260.67</td><td><b>$11,388,173.17</b></td><td>21.69%</td></tr>
+      <tr><td>Small Business</td><td>100</td><td>$42,427,918.50</td><td>$4,143,168.50</td><td>9.77%</td></tr>
+      <tr><td>Channel Partners</td><td>100</td><td>$1,800,593.64</td><td>$1,316,803.14</td><td><b>73.13%</b></td></tr>
+      <tr><td>Midmarket</td><td>100</td><td>$2,381,883.08</td><td>$660,103.07</td><td>27.71%</td></tr>
+      <tr><td>Enterprise</td><td>100</td><td>$19,611,694.38</td><td style="color:#c0392b"><b>-$614,545.62</b></td><td style="color:#c0392b"><b>-3.13%</b></td></tr>
+    </table>
   </section>
+
+  <!-- 2. CLIENT BRIEF -->
   <section id="brief">
-    <h2 class="t">2. The client brief</h2>
-    <p><b>Who:</b> A regional finance lead at a manufacturing company.</p>
-    <p><b>The ask:</b> <i>We sell into several countries and segments. I need to see which country and which product actually make profit, and whether discounts are eating it.</i></p>
+    <h2 class="t">2. Real-World Client Brief</h2>
+    <p><b>Client:</b> Regional CFO &amp; Commercial Finance Lead at a B2B manufacturing firm selling 6 product lines across North America and Europe.</p>
+    <p><b>What the client told you in the kickoff call:</b> <i>"Our sales reps celebrate every time the US team tops $25M in revenue or signs big Enterprise deals, yet cash profit at the end of the quarter feels thin. I suspect aggressive High-band discounting and our Enterprise pricing are eating our margin. Build me an interactive executive P&amp;L dashboard where I can compare Net Sales vs Profit by Country, see which Segment is losing money, track monthly margin trends, and simulate what happens if we give an extra discount."</i></p>
   </section>
+
+  <!-- 3. REQUIREMENTS -->
   <section id="req">
-    <h2 class="t">3. Requirements</h2>
-    <div class="req"><span class="tag g">Beginner</span><div>KPI strip — row count, Profit.</div></div><div class="req"><span class="tag g">Beginner</span><div>Bar chart of <b>Country</b>.</div></div><div class="req"><span class="tag g">Beginner</span><div>Trend by <b>Date</b>.</div></div><div class="req"><span class="tag y">Inter.</span><div>Break the same number down by <b>Segment</b>.</div></div><div class="req"><span class="tag r">Advan.</span><div>A rate using <b>Year</b> (two values). Use DIVIDE, not an average of a rate column.</div></div><div class="req"><span class="tag r">Advan.</span><div>Slicers that cross-filter every visual on the page.</div></div>
+    <h2 class="t">3. Project Requirements (Beginner → Advanced)</h2>
+    <div class="req"><span class="tag g">Beginner</span><div><b>Clean the raw workbook &amp; verify P&amp;L math:</b> Fix the leading space on <code>&nbsp;Sales</code>, add row-level Margin &amp; Loss flags in Excel, and validate country/segment totals in a PivotTable.</div></div>
+    <div class="req"><span class="tag g">Beginner</span><div><b>Executive KPI Card Strip (4 Cards):</b> Show <b>Net Sales</b> (<code>$118.73M</code>), <b>Total Profit</b> (<code>$16.89M</code>), <b>Net Margin %</b> (<code>14.2%</code>), and <b>Discount Rate %</b> (<code>7.2%</code>).</div></div>
+    <div class="req"><span class="tag g">Beginner</span><div><b>Country Sales vs. Profit Comparison (Clustered Bar Chart):</b> Prove visually that the USA leads Net Sales while France leads Profit.</div></div>
+    <div class="req"><span class="tag y">Inter.</span><div><b>Segment Profit Bridge (Waterfall Chart):</b> Show each segment's positive or negative contribution to the <code>$16.89M</code> total profit, highlighting Enterprise's <code>-$615K</code> loss in red.</div></div>
+    <div class="req"><span class="tag y">Inter.</span><div><b>Monthly Revenue &amp; Margin Trend (Combo Line &amp; Clustered Column Chart):</b> Plot 16 months from Sep 2013 to Dec 2014 using a dedicated <code>Calendar</code> Date Table, with Net Sales as columns and Net Margin % as a line on a secondary axis.</div></div>
+    <div class="req"><span class="tag y">Inter.</span><div><b>Discount Tier Erosion Chart (Custom-Sorted Column Chart):</b> Sort <code>Discount Band</code> logically (<code>None → Low → Medium → High</code>, NOT alphabetically!) and plot Net Margin % by band.</div></div>
+    <div class="req"><span class="tag r">Advan.</span><div><b>Drillable P&amp;L Matrix + YoY Comparison + What-If Simulator:</b> Build a <code>Segment → Product</code> Matrix with conditional formatting, compute fair Sep–Dec YoY growth (<code>+40.15%</code> Profit YoY) using <code>SAMEPERIODLASTYEAR</code>, and add a What-If Extra Discount slider.</div></div>
   </section>
-  <section id="calc">
-    <h2 class="t">4. Phase A — Microsoft Excel</h2>
-    <p>Goal: open the file cleanly, add only the helper columns you need, and prove one total with a PivotTable before you touch Power BI.</p>
-    
-    <h3>Step 1 — Open it the right way</h3>
-    <div class="step"><b>Open</b> <code>Financial-Sample.xlsx</code>. If the Sales header has a leading space, rename it to <code>Sales</code>.<br><b>Formats:</b> <code>Date</code> → Date; <code>Gross Sales</code> → Number (2 decimals); <code>Sales</code> → Number (2 decimals); <code>COGS</code> → Number (2 decimals); <code>Profit</code> → Number (2 decimals). Then <b>View → Freeze Panes → Freeze Top Row</b>.</div>
-    <h3>Step 2 — Look for dirt</h3>
-    <div class="step"><ul><li>Turn on Filter and look for blank Product or Country rows.</li><li>Discount Band is text (None, Low, Medium, High), not a number.</li><li>Confirm Sales and Profit are numbers, not text.</li></ul></div>
-    
-        <h3>Step 3 — No extra formula required</h3>
-        <div class="step">The columns you need are already on the sheet. Use the pivot in the next step to prove the totals before you leave Excel.</div>
-    <h3>Step 4 — Pivot check</h3>
-    <div class="step">Select the data → <b>Insert → PivotTable</b>. Rows = <code>Country</code>. Put <code>Year</code> in Columns.
-    Values = <b>Sum of Profit</b>.
-    The grand total must be <b>$16.89M</b>. If it is not, the filter or the number format is wrong — fix that before Power BI.
+
+  <!-- 4. PHASE A: EXCEL -->
+  <section id="excel">
+    <h2 class="t">4. Phase A — Step-by-Step in Microsoft Excel (Beginner Friendly)</h2>
+    <p>Before opening Power BI, every strong analyst inspects the raw file in Excel, fixes obvious header bugs, and proves the grand totals with a PivotTable so you know your target numbers are rock solid.</p>
+
+    <h3>Step A1 — Open the Raw File &amp; Inspect the Excel Table</h3>
+    <div class="step">
+      <ol style="margin:0;padding-left:20px;">
+        <li>Open Excel → click <b>File → Open → Browse</b> → navigate to <code>datasets/01-financial-sample/data/Financial-Sample.xlsx</code>.</li>
+        <li>Click anywhere inside the data (for example cell <code>A2</code>). Look at the top ribbon: a green <b>Table Design</b> tab appears! Click <b>Table Design</b> and look at the far-left <b>Table Name</b> box — it says <code>financials</code>. That means rows <code>1</code> to <code>701</code> are already an official Excel Table.</li>
+        <li>Click <b>View → Freeze Panes → Freeze Top Row</b> so row 1 stays visible when you scroll down to row 701.</li>
+      </ol>
     </div>
-    <h3>Step 5 — Save</h3>
-    <div class="step"><b>Save As</b> <code>01-financial-sample-clean.xlsx</code>. Power BI should read this file, not a half-filtered view you forgot to clear.</div>
+
+    <h3>Step A2 — Fix the Hidden Header Space &amp; Format Numbers</h3>
+    <div class="step">
+      <ol style="margin:0;padding-left:20px;">
+        <li>Click cell <code>J1</code> and look in the <b>Formula Bar</b> at the top. You will see <code>&nbsp;Sales</code> (there is an invisible space before the S!). Double-click <code>J1</code>, delete everything, type <code>Net Sales</code> (clean and unambiguous), and press <b>Enter</b>.</li>
+        <li>Check formats: Select columns <code>H:L</code> (click column letter <code>H</code>, hold <b>Shift</b>, click <code>L</code>) → <b>Home → Number dropdown → Currency</b> (or format <code>$#,##0.00</code>).</li>
+        <li>Select column <code>M</code> (<code>Date</code>) → <b>Home → Number dropdown → Short Date</b> so dates read clearly (<code>9/1/2013</code> or <code>2013-09-01</code>).</li>
+        <li>Check for missing cells: Press <b>Ctrl + Shift + L</b> (or click the filter arrows already on row 1). Click the dropdown arrow on <code>Country</code>, <code>Segment</code>, and <code>Profit</code> — scroll to the bottom of each filter list to verify there is no <code>(Blanks)</code> item.</li>
+      </ol>
+    </div>
+
+    <h3>Step A3 — Add 3 Beginner Helper Columns (Columns Q, R, S)</h3>
+    <p>Because the data is already an Excel Table (<code>financials</code>), when you type a header in <code>Q1</code>, Excel automatically expands the table and fills your formula down all 700 rows!</p>
+    <div class="step">
+      <ol style="margin:0;padding-left:20px;">
+        <li>Click cell <code>Q1</code>, type <code>RowMarginPct</code>, and press <b>Enter</b>. In cell <code>Q2</code>, type:<br>
+        <code>=IF(J2=0, 0, L2/J2)</code><br>
+        <i>Plain-English meaning:</i> Divide <code>Profit</code> (<code>L2</code>) by <code>Net Sales</code> (<code>J2</code>), returning <code>0</code> if sales were ever zero. Select column <code>Q</code> → click the <b>%</b> button on the Home tab and click <b>Increase Decimal</b> once (<code>0.0%</code>).</li>
+        <li>Click cell <code>R1</code>, type <code>ProfitStatus</code>, and press <b>Enter</b>. In cell <code>R2</code>, type:<br>
+        <code>=IF(L2&lt;0, "Loss", IF(L2=0, "Break-Even", "Profitable"))</code><br>
+        <i>Check it:</i> Click the filter arrow on <code>ProfitStatus</code> → filter to <code>Loss</code> → look at the bottom-left Excel status bar: it says <b>58 of 700 records found</b>! Click <b>Data → Clear</b> so no filter stays active!</li>
+        <li>Click cell <code>S1</code>, type <code>BandSort</code>, and press <b>Enter</b> (this teaches you how to sort text bands in logical order instead of alphabetical!). In cell <code>S2</code>, type:<br>
+        <code>=IF(D2="None", 1, IF(D2="Low", 2, IF(D2="Medium", 3, 4)))</code></li>
+      </ol>
+      <p style="margin-bottom:0;font-size:12.8px;color:var(--muted);"><i>Note: If Excel turned your formula into structured table syntax like <code>=IF([@[Net Sales]]=0,0,[@Profit]/[@[Net Sales]])</code>, that is completely normal inside an Excel Table — both formulas give the exact same result!</i></p>
+    </div>
+
+    <h3>Step A4 — Prove the Numbers with Two Quick PivotTables</h3>
+    <div class="step">
+      <ol style="margin:0;padding-left:20px;">
+        <li>Click any cell inside the table → click <b>Insert → PivotTable</b> → leave <b>New Worksheet</b> selected → click <b>OK</b>.</li>
+        <li>Double-click the new sheet tab at the bottom and rename it <code>Pivot_Check</code>.</li>
+        <li>In the <b>PivotTable Fields</b> pane on the right:
+          <ul>
+            <li>Drag <code>Country</code> into <b>Rows</b>.</li>
+            <li>Drag <code>Net Sales</code> into <b>Values</b>, and drag <code>Profit</code> into <b>Values</b>.</li>
+            <li>Right-click any number in <code>Sum of Net Sales</code> → <b>Number Format → Currency → 2 decimals → OK</b>. Do the same for <code>Sum of Profit</code>.</li>
+            <li>Right-click any number in <code>Sum of Profit</code> → <b>Sort → Sort Largest to Smallest</b>.</li>
+          </ul>
+        </li>
+        <li><b>Verify against Section 1:</b> Confirm Grand Total Net Sales = <b>$118,726,350.26</b>, Grand Total Profit = <b>$16,893,702.26</b>, France is #1 in Profit (<b>$3,781,020.78</b>), and USA is #1 in Net Sales (<b>$25,029,830.17</b>).</li>
+        <li>Now test Segment: drag <code>Country</code> out of Rows and drag <code>Segment</code> into <b>Rows</b>. Confirm <code>Enterprise</code> shows <b>-$614,545.62</b>!</li>
+      </ol>
+    </div>
+
+    <h3>Step A5 — Save Your Clean Workbook</h3>
+    <div class="step">
+      Click back to <code>Sheet1</code>, double-check that <b>no filter is active</b> (all 700 rows visible), then click <b>File → Save As</b> and save as <code>01-financial-sample-clean.xlsx</code> inside the <code>01-financial-sample</code> folder.
+    </div>
+
+    <ul class="task-list">
+      <li><label><input type="checkbox"> Completed Phase A1–A2: Renamed <code>&nbsp;Sales</code> to <code>Net Sales</code> and formatted currency/date columns.</label></li>
+      <li><label><input type="checkbox"> Completed Phase A3: Added <code>RowMarginPct</code>, <code>ProfitStatus</code> (verified 58 Loss rows), and <code>BandSort</code>.</label></li>
+      <li><label><input type="checkbox"> Completed Phase A4–A5: Matched PivotTable totals ($118.73M Net Sales, $16.89M Profit) and saved clean <code>.xlsx</code>.</label></li>
+    </ul>
   </section>
+
+  <!-- 5. PHASE B: POWER BI -->
   <section id="pbi">
-    <h2 class="t">5. Phase B — Power BI</h2>
-    <h3>Step 1 — Get data</h3>
-    <div class="pbi-box"><b>Get data → Excel</b> → this workbook → the financial sheet → Transform.</div>
-    <h3>Step 2 — Power Query</h3>
-    <div class="pbi-box">Rename the main query to <code>Financials</code>. Set the types from Step 1. Watch <b>Applied Steps</b>. Then <b>Close &amp; Apply</b>.
-    </div>
-    <h3>Step 3 — Model</h3>
-    <div class="pbi-box"><p>One table. A star schema is not required for this set.</p>
-    <p>Hide key columns you do not want on the report. A hidden column can still be used by a relationship.</p></div>
-    <h3>Step 4 — Measures</h3>
-    <p>Write these as <b>measures</b>, not calculated columns. Replace the placeholder filter with a real value from the column.</p>
-    <pre>Profit = SUM(&#x27;Financials&#x27;[Profit])
-Row Count = COUNTROWS(&#x27;Financials&#x27;)
-GrossSales = SUM(&#x27;Financials&#x27;[Gross Sales])
-Margin % = DIVIDE([Profit], [GrossSales])
-Filtered rows = CALCULATE([Row Count], &#x27;Financials&#x27;[Year] = &lt;one of the two values&gt;)</pre>
-    <h3>Step 5 — Visuals</h3>
+    <h2 class="t pbi-h">5. Phase B — Complete Power BI &amp; Charts Journey (Step-by-Step)</h2>
+    <p>You can connect Power BI either to your cleaned <code>01-financial-sample-clean.xlsx</code> OR directly to the raw <code>data/Financial-Sample.xlsx</code> (below we show how to clean the raw file right inside Power Query so you learn the repeatable developer workflow!).</p>
+
+    <h3>Stage 1 — Connect to Data (Avoid the Navigator Duplicate Trap!)</h3>
     <div class="pbi-box">
-      <ul>
-        <li>Cards for the measures in Step 4.</li>
-        <li>Bar chart: axis <code>Country</code>, value the main measure.</li>
-        <li>Line chart: axis <code>Date</code>.</li>
-        <li>A slicer for each small category (Discount Band, Segment, Country).</li>
-        <li>Click a bar and confirm the other visuals filter. Use <b>Format → Edit interactions</b> if one visual should stay still.</li>
-      </ul>
+      <ol style="margin:0;padding-left:20px;">
+        <li>Open <b>Power BI Desktop</b> → close the splash screen → on the <b>Home</b> ribbon click <b>Excel workbook</b> (or <b>Get data → Excel workbook</b>).</li>
+        <li>Select <code>data/Financial-Sample.xlsx</code> (or your <code>01-financial-sample-clean.xlsx</code>) and click <b>Open</b>.</li>
+        <li><b>CRITICAL BEGINNER CHECK in the Navigator window:</b> You will see TWO items:
+          <ul>
+            <li><code>financials</code> (has a <b>blue bar on top</b> = official Excel Table) ✅ <b>Tick ONLY this box!</b></li>
+            <li><code>Sheet1</code> (plain grid icon = worksheet) ❌ <b>Leave UNTICKED!</b> (If you tick both, you load the exact same 700 rows twice!)</li>
+          </ul>
+        </li>
+        <li>Click the <b>Transform Data</b> button at the bottom-right (NOT Load yet — always inspect in Power Query first!).</li>
+      </ol>
+    </div>
+
+    <h3>Stage 2 — Clean &amp; Shape in Power Query Editor</h3>
+    <div class="pbi-box">
+      <ol style="margin:0;padding-left:20px;">
+        <li><b>Rename the Query:</b> In the right-hand <b>Query Settings → Properties → Name</b> box, change <code>financials</code> to <code>Financials</code> (clean PascalCase table name).</li>
+        <li><b>Fix the Hidden Header Space (if reading raw file):</b> Scroll across to the <code>&nbsp;Sales</code> column. Double-click the header, type <code>Net Sales</code>, and press <b>Enter</b>.</li>
+        <li><b>Trim Text Columns (Good Habit):</b> Hold <b>Ctrl</b> and click the headers <code>Segment</code>, <code>Country</code>, <code>Product</code>, and <code>Discount Band</code> → go to the <b>Transform</b> tab → click <b>Format → Trim</b>.</li>
+        <li><b>Verify Data Types (click the small icon on the left of each column header):</b>
+          <ul>
+            <li><code>Segment</code>, <code>Country</code>, <code>Product</code>, <code>Discount Band</code>, <code>Month Name</code> → <b>ABC (Text)</b></li>
+            <li><code>Units Sold</code> → <b>1.2 (Decimal Number)</b> — <i>do NOT choose Whole Number, or half-units like 1618.5 get rounded!</i></li>
+            <li><code>Manufacturing Price</code>, <code>Sale Price</code>, <code>Gross Sales</code>, <code>Discounts</code>, <code>Net Sales</code>, <code>COGS</code>, <code>Profit</code> → <b>$ (Fixed decimal number / Currency)</b> or <b>1.2 (Decimal Number)</b></li>
+            <li><code>Date</code> → <b>Calendar icon (Date)</b> — if it says Date/Time, click it and choose <b>Date</b>.</li>
+          </ul>
+        </li>
+        <li><b>Add the Discount Band Sort Column (in Power Query):</b> Click the <b>Add Column</b> tab → <b>Conditional Column</b>:
+          <ul>
+            <li>New column name: <code>BandSort</code></li>
+            <li>If <code>Discount Band</code> equals <code>None</code> → Output <code>1</code></li>
+            <li>Click <b>Add Clause</b>: Else If <code>Discount Band</code> equals <code>Low</code> → Output <code>2</code></li>
+            <li>Click <b>Add Clause</b>: Else If <code>Discount Band</code> equals <code>Medium</code> → Output <code>3</code></li>
+            <li>Else → <code>4</code> → click <b>OK</b>. Change <code>BandSort</code>'s type icon to <b>123 (Whole Number)</b>.</li>
+          </ul>
+        </li>
+        <li>Look at <b>Applied Steps</b> on the right — every transformation is recorded! Click <b>Home → Close &amp; Apply</b>.</li>
+      </ol>
+    </div>
+
+    <h3>Stage 3 — Data Modeling, Date Table &amp; Custom Sorting</h3>
+    <p>Even on a 1-table workbook, professional Power BI developers create a continuous <b>Calendar Date Table</b> so DAX Time Intelligence (<code>SAMEPERIODLASTYEAR</code>, <code>TOTALYTD</code>) works without gaps.</p>
+    <div class="pbi-box">
+      <ol style="margin:0;padding-left:20px;">
+        <li>Click <b>Data view</b> (table icon on the left rail) → on the top <b>Table tools</b> ribbon click <b>New table</b> → paste this DAX formula and press <b>Enter</b>:
+<pre>Calendar =
+ADDCOLUMNS (
+    CALENDAR ( DATE ( 2013, 1, 1 ), DATE ( 2014, 12, 31 ) ),
+    "Year", YEAR ( [Date] ),
+    "MonthNum", MONTH ( [Date] ),
+    "Month", FORMAT ( [Date], "MMM" ),
+    "YearMonth", FORMAT ( [Date], "YYYY-MM" ),
+    "Quarter", "Q" &amp; FORMAT ( [Date], "Q" )
+)</pre>
+        </li>
+        <li><b>Mark as Date Table:</b> With <code>Calendar</code> selected, click <b>Table tools → Mark as date table → Mark as date table</b> → choose column <code>Date</code> → click <b>OK</b>.</li>
+        <li><b>Fix Alphabetical Month Sorting:</b> In <code>Calendar</code>, click the <code>Month</code> column → click <b>Column tools → Sort by column → MonthNum</b>. (Now charts run <code>Jan, Feb, Mar...</code> instead of <code>Apr, Aug, Dec...</code>!)</li>
+        <li><b>Fix Alphabetical Discount Band Sorting:</b> Click the <code>Financials</code> table on the right → click the <code>Discount Band</code> column → click <b>Column tools → Sort by column → BandSort</b>.</li>
+        <li><b>Set Country Geography:</b> Click <code>Financials[Country]</code> → <b>Column tools → Data category → Country</b>.</li>
+        <li><b>Create the Relationship:</b> Click <b>Model view</b> (3rd icon on the left rail). Drag <code>Calendar[Date]</code> onto <code>Financials[Date]</code>. Confirm the line shows <b>1</b> on <code>Calendar</code> and <b>*</b> (many) on <code>Financials</code>.</li>
+        <li><b>Hide Clutter Columns:</b> In Model view, click the eye icon to hide <code>Financials[Date]</code>, <code>Financials[Month Number]</code>, <code>Financials[Month Name]</code>, <code>Financials[Year]</code>, <code>Financials[BandSort]</code>, and <code>Calendar[MonthNum]</code> so you never accidentally drag the wrong Year or Month onto a chart!</li>
+      </ol>
+    </div>
+
+    <h3>Stage 4 — DAX Measures (Beginner → Intermediate → Advanced)</h3>
+    <p>Switch to <b>Report view</b> (top icon on left rail). Right-click the <code>Financials</code> table in the <b>Data</b> pane → click <b>New measure</b> for each formula below. After pressing Enter on each measure, set its format in the top <b>Measure tools</b> ribbon!</p>
+
+    <h4>Beginner Measures (Core Additive Totals)</h4>
+<pre>Gross Sales = SUM ( 'Financials'[Gross Sales] )
+// Format: Currency ($), 2 decimals -> Check card: $127.93M ($127,931,598.50)
+
+Total Discounts = SUM ( 'Financials'[Discounts] )
+// Format: Currency ($), 2 decimals -> Check card: $9.21M ($9,205,248.24)
+
+Net Sales = SUM ( 'Financials'[Net Sales] )
+// Format: Currency ($), 2 decimals -> Check card: $118.73M ($118,726,350.26)
+
+Total COGS = SUM ( 'Financials'[COGS] )
+// Format: Currency ($), 2 decimals -> Check card: $101.83M ($101,832,648.00)
+
+Total Profit = SUM ( 'Financials'[Profit] )
+// Format: Currency ($), 2 decimals -> Check card: $16.89M ($16,893,702.26)
+
+Units Sold Total = SUM ( 'Financials'[Units Sold] )
+// Format: Whole number with comma (#,0) -> Check card: 1,125,806</pre>
+
+    <h4>Intermediate Measures (Safe Ratios &amp; Conditional Counts)</h4>
+<pre>Net Margin % = DIVIDE ( [Total Profit], [Net Sales], 0 )
+// Format: Percentage (%), 1 decimal -> Overall check: 14.2% (14.23%)
+// WHY DIVIDE? Never average row-level margins! Always divide total profit by total net sales.
+
+Discount Rate % = DIVIDE ( [Total Discounts], [Gross Sales], 0 )
+// Format: Percentage (%), 1 decimal -> Overall check: 7.2% (7.20%)
+
+Loss Rows Count = CALCULATE ( COUNTROWS ( 'Financials' ), 'Financials'[Profit] &lt; 0 )
+// Format: Whole number -> Overall check: 58</pre>
+
+    <h4>Advanced Measures (Time Intelligence YoY % &amp; Share of Profit)</h4>
+<pre>Profit PY = CALCULATE ( [Total Profit], SAMEPERIODLASTYEAR ( 'Calendar'[Date] ) )
+// Format: Currency ($) -> When filtered to Year = 2014 &amp; Months Sep-Dec, returns $3,878,464.51!
+
+Profit YoY % =
+VAR PriorProfit = [Profit PY]
+RETURN
+    IF ( NOT ISBLANK ( PriorProfit ), DIVIDE ( [Total Profit] - PriorProfit, PriorProfit ) )
+// Format: Percentage (%), 1 decimal -> For Sep-Dec 2014 vs Sep-Dec 2013, check: +40.1% (+40.15%)</pre>
+
+    <h3>Stage 5 — Power BI Charts Journey: Build the 6-Visual Executive Canvas</h3>
+    <p>First, set up a clean canvas: click empty space on the report page → in the <b>Visualizations</b> pane click the <b>Format page</b> brush icon → <b>Canvas background</b> → set Color to light gray <code>#F6F8FB</code> and Transparency to <code>0%</code>. Rename <code>Page 1</code> at the bottom to <code>Executive P&amp;L</code>. Use this exact layout grid:</p>
+
+    <div class="wireframe">
+      <div class="wf-box" style="grid-column:span 8;">Report Title Banner + Slicer Bar (Year · Country · Segment · Discount Band)</div>
+      <div class="wf-box" style="grid-column:span 4;">What-If Extra Discount Slider</div>
+      <div class="wf-box" style="grid-column:span 3;">Card 1: Net Sales<small>$118.73M</small></div>
+      <div class="wf-box" style="grid-column:span 3;">Card 2: Total Profit<small>$16.89M</small></div>
+      <div class="wf-box" style="grid-column:span 3;">Card 3: Net Margin %<small>14.2%</small></div>
+      <div class="wf-box" style="grid-column:span 3;">Card 4: Discount Rate %<small>7.2%</small></div>
+      <div class="wf-box" style="grid-column:span 6;">Visual 2: Clustered Bar<small>Net Sales vs Profit by Country</small></div>
+      <div class="wf-box" style="grid-column:span 6;">Visual 3: Waterfall Chart<small>Profit Bridge by Segment (Enterprise in Red!)</small></div>
+      <div class="wf-box" style="grid-column:span 8;">Visual 4: Line &amp; Clustered Column Combo Chart<small>Monthly Net Sales &amp; Net Margin % Trend (Sep 2013 – Dec 2014)</small></div>
+      <div class="wf-box" style="grid-column:span 4;">Visual 5: Column Chart<small>Net Margin % by Discount Band</small></div>
+      <div class="wf-box" style="grid-column:span 12;">Visual 6: Drillable P&amp;L Matrix<small>Segment → Product × Discount Band with Conditional Red Loss Highlighting</small></div>
+    </div>
+
+    <!-- Visual 1 -->
+    <div class="chart-card">
+      <h4><span class="tag g">Visual 1</span> Executive KPI Strip — 4 Card Visuals</h4>
+      <p><b>Why this chart?</b> Executives scan top-left to top-right in 3 seconds. Four clean Cards establish the headline P&amp;L numbers before any breakdown.</p>
+      <ol style="margin:6px 0;padding-left:20px;">
+        <li>Click blank canvas → in <b>Visualizations</b> click the <b>Card</b> icon (rectangle with <code>123</code>).</li>
+        <li>Drag <code>[Net Sales]</code> into the <b>Fields</b> well. Resize the card to sit in the top-left quarter.</li>
+        <li>Click <b>Format visual</b> (paintbrush) → <b>Callout value</b> → set Font size to <code>26 pt</code>, Display units = <b>Millions</b>. Turn <b>Category label</b> ON, or turn it OFF and turn <b>General → Title</b> ON with text <code>Net Sales</code>. under <b>General → Effects</b>, turn <b>Visual border</b> ON (rounded corners <code>8 px</code>).</li>
+        <li>Copy and paste that Card 3 times (<b>Ctrl+C</b>, <b>Ctrl+V</b>) so all 4 cards have identical styling! Swap the field in Cards 2, 3, and 4 to <code>[Total Profit]</code> (<code>$16.89M</code>), <code>[Net Margin %]</code> (<code>14.2%</code>), and <code>[Discount Rate %]</code> (<code>7.2%</code>).</li>
+      </ol>
+    </div>
+
+    <!-- Visual 2 -->
+    <div class="chart-card">
+      <h4><span class="tag g">Visual 2</span> Country Revenue vs. Profit — Clustered Bar Chart</h4>
+      <p><b>Why this chart?</b> Horizontal bars keep long names like <i>United States of America</i> horizontal and readable without tilted text, while side-by-side bars compare top-line vs bottom-line.</p>
+      <div class="wells">
+        <div class="well"><strong>Y-axis</strong><code>Financials[Country]</code></div>
+        <div class="well"><strong>X-axis (2 measures)</strong><code>[Net Sales]</code>, then <code>[Total Profit]</code></div>
+        <div class="well"><strong>Tooltips</strong><code>[Net Margin %]</code>, <code>[Total Discounts]</code></div>
+      </div>
+      <ol style="margin:6px 0;padding-left:20px;">
+        <li>Click blank canvas → click <b>Clustered bar chart</b> (1st icon, row 1 of Visualizations).</li>
+        <li>Drag the fields into the wells shown above. Click the <code>...</code> (More options) at the top-right of the visual → <b>Sort axis → Total Profit → Sort descending</b>.</li>
+        <li>In <b>Format visual → Bars</b>, color <code>Net Sales</code> slate blue (<code>#64748B</code>) and <code>Total Profit</code> emerald green (<code>#1D6F42</code>). Turn <b>Data labels</b> ON (Display units = Millions, 1 decimal).</li>
+        <li><b>Title:</b> <code>USA Leads Revenue ($25.0M), but France Leads Profit ($3.8M)</code>. Hover over USA to see why in the tooltip: <code>12.0%</code> margin and <code>$2.24M</code> in discounts!</li>
+      </ol>
+    </div>
+
+    <!-- Visual 3 -->
+    <div class="chart-card">
+      <h4><span class="tag y">Visual 3</span> Segment Profit Bridge — Waterfall Chart</h4>
+      <p><b>Why this chart?</b> A Waterfall chart is the #1 finance visual for showing how positive and negative business units add up to a grand total — instantly exposing a money-losing segment.</p>
+      <div class="wells">
+        <div class="well"><strong>Category</strong><code>Financials[Segment]</code></div>
+        <div class="well"><strong>Y-axis</strong><code>[Total Profit]</code></div>
+        <div class="well"><strong>Tooltips</strong><code>[Net Sales]</code>, <code>[Net Margin %]</code></div>
+      </div>
+      <ol style="margin:6px 0;padding-left:20px;">
+        <li>Click blank canvas → click <b>Waterfall chart</b> (staircase bars icon in Visualizations).</li>
+        <li>Drag <code>Segment</code> to <b>Category</b> and <code>[Total Profit]</code> to <b>Y-axis</b>.</li>
+        <li>In <b>Format visual → Columns → Colors</b>, confirm <b>Increase</b> = Green (<code>#1D6F42</code>), <b>Decrease</b> = Red (<code>#C0392B</code>), and <b>Total</b> = Navy (<code>#0B3D63</code>). Turn <b>Data labels</b> ON.</li>
+        <li><b>What you see immediately:</b> Four green bars climb above <code>$17.5M</code>, and then <b>Enterprise drops red (-$0.61M)</b> to land at the <code>$16.89M</code> Total bar!</li>
+      </ol>
+    </div>
+
+    <!-- Visual 4 -->
+    <div class="chart-card">
+      <h4><span class="tag y">Visual 4</span> Monthly Sales &amp; Margin % — Line and Clustered Column Combo Chart</h4>
+      <p><b>Why this chart?</b> Net Sales is in millions of dollars while Net Margin % is a percentage (0–25%). Plotting both on one axis crushes the percentage into a flat zero line — a dual-axis Combo Chart solves that!</p>
+      <div class="wells">
+        <div class="well"><strong>X-axis</strong><code>Calendar[Year]</code> + <code>Calendar[Month]</code></div>
+        <div class="well"><strong>Column y-axis</strong><code>[Net Sales]</code></div>
+        <div class="well"><strong>Line y-axis</strong><code>[Net Margin %]</code></div>
+        <div class="well"><strong>Tooltips</strong><code>[Total Profit]</code>, <code>[Profit YoY %]</code></div>
+      </div>
+      <ol style="margin:6px 0;padding-left:20px;">
+        <li>Click blank canvas → click <b>Line and clustered column chart</b>.</li>
+        <li>Drag <code>Calendar[Year]</code> and <code>Calendar[Month]</code> into <b>X-axis</b> (or <code>Calendar[YearMonth]</code>). Click the <b>Expand all down one level in the hierarchy</b> forked-arrow icon at the top of the visual so all 16 months (<code>2013 Sep</code> → <code>2014 Dec</code>) appear in calendar order!</li>
+        <li>Drag <code>[Net Sales]</code> to <b>Column y-axis</b> and <code>[Net Margin %]</code> to <b>Line y-axis</b>.</li>
+        <li>Format the line color as gold (<code>#D99000</code>), Stroke width = <code>3 px</code>, and turn <b>Markers</b> ON so every monthly margin point is crisp.</li>
+      </ol>
+    </div>
+
+    <!-- Visual 5 -->
+    <div class="chart-card">
+      <h4><span class="tag y">Visual 5</span> Discount Tier Erosion — Clustered Column Chart</h4>
+      <p><b>Why this chart?</b> Tests your <code>Sort by column</code> setup and answers the CFO's exact question: "Are discounts eating our margin?"</p>
+      <div class="wells">
+        <div class="well"><strong>X-axis</strong><code>Financials[Discount Band]</code></div>
+        <div class="well"><strong>Y-axis</strong><code>[Net Margin %]</code></div>
+        <div class="well"><strong>Tooltips</strong><code>[Total Profit]</code>, <code>[Loss Rows Count]</code></div>
+      </div>
+      <ol style="margin:6px 0;padding-left:20px;">
+        <li>Click blank canvas → click <b>Clustered column chart</b>.</li>
+        <li>Add <code>Discount Band</code> to X-axis and <code>[Net Margin %]</code> to Y-axis.</li>
+        <li>Click <code>...</code> on the visual → <b>Sort axis → Discount Band → Sort ascending</b>. Because you set <code>Sort by column = BandSort</code> in Stage 3, the X-axis reads <b>None (21.9%) → Low (17.9%) → Medium (14.4%) → High (9.1%)</b> like a staircase going down!</li>
+      </ol>
+    </div>
+
+    <!-- Visual 6 -->
+    <div class="chart-card">
+      <h4><span class="tag r">Visual 6</span> Drillable Segment × Product P&amp;L Matrix (Conditional Formatting)</h4>
+      <p><b>Why this chart?</b> Finance leaders always want the exact P&amp;L table underneath the charts, with red flags on negative cells.</p>
+      <div class="wells">
+        <div class="well"><strong>Rows (2 levels)</strong><code>Financials[Segment]</code>, then <code>Financials[Product]</code></div>
+        <div class="well"><strong>Columns</strong><code>Financials[Discount Band]</code></div>
+        <div class="well"><strong>Values</strong><code>[Total Profit]</code>, <code>[Net Margin %]</code></div>
+      </div>
+      <ol style="margin:6px 0;padding-left:20px;">
+        <li>Click blank canvas → click <b>Matrix</b> (grid icon next to Table).</li>
+        <li>Drag fields into Rows, Columns, and Values as shown above. Click the <code>+</code> icon next to <code>Enterprise</code> in the Matrix to expand all 6 products under Enterprise!</li>
+        <li><b>Add Red Loss Highlighting:</b> In the Visualizations pane, right-click <code>[Total Profit]</code> in the <b>Values</b> well → <b>Conditional formatting → Background color</b>:
+          <ul>
+            <li>Format style = <b>Rules</b></li>
+            <li>Rule 1: If value is <code>&gt;= Min</code> Number and <code>&lt; 0</code> Number → choose soft red (<code>#FDEAEA</code>)</li>
+            <li>Click <b>+ New rule</b>: If value is <code>&gt;= 0</code> Number and <code>&lt;= Max</code> Number → choose white or soft green → click <b>OK</b>.</li>
+          </ul>
+        </li>
+        <li>Every loss-making Segment × Product × Discount Band combination lights up in red immediately!</li>
+      </ol>
+    </div>
+
+    <h3>Stage 6 — Add Slicers, Cross-Filtering &amp; What-If Extra Discount Simulator</h3>
+    <div class="pbi-box">
+      <ol style="margin:0;padding-left:20px;">
+        <li><b>Add 3 Filter Slicers:</b> Click blank canvas → click <b>Slicer</b> → drag <code>Calendar[Year]</code> into Field. In <b>Format visual → Slicer settings → Options → Style</b>, select <b>Tile</b> (button style). Add two more Dropdown slicers for <code>Financials[Country]</code> and <code>Financials[Segment]</code>.</li>
+        <li><b>Test Fair YoY Comparison:</b> Click <code>2014</code> on the Year slicer and select <code>Sep, Oct, Nov, Dec</code> (or hover over Sep–Dec 2014 on your Combo Chart) — confirm <code>[Profit YoY %]</code> reads <b>+40.15%</b>! Clear slicers afterward.</li>
+        <li><b>Build the Advanced What-If Simulator:</b>
+          <ul>
+            <li>Click the top <b>Modeling</b> ribbon → <b>New parameter → Numeric range</b>.</li>
+            <li>Name: <code>Extra Discount %</code> · Data type: <b>Decimal number</b> · Minimum: <code>0</code> · Maximum: <code>0.10</code> · Increment: <code>0.01</code> · Default: <code>0</code> · keep <b>Add slicer to this page</b> ticked → click <b>Create</b>.</li>
+            <li>Format <code>'Extra Discount %'[Extra Discount %]</code> as Percentage, then create this measure on <code>Financials</code>:
+<pre>Simulated Profit = [Total Profit] - ( [Gross Sales] * 'Extra Discount %'[Extra Discount % Value] )</pre>
+            </li>
+            <li>Place <code>[Simulated Profit]</code> in a small Card next to the slider. Drag the slider from <code>0%</code> to <code>5%</code>: watch Simulated Profit drop by <code>$6.40M</code> (from <code>$16.89M</code> down to <code>$10.50M</code>)! Save your file as <code>01-financial-sample.pbix</code>.</li>
+          </ul>
+        </li>
+      </ol>
+    </div>
+
+    <ul class="task-list">
+      <li><label><input type="checkbox"> Stage 1–2 complete: Loaded <code>financials</code> table ONLY, fixed <code>Net Sales</code> header, and added <code>BandSort</code>.</label></li>
+      <li><label><input type="checkbox"> Stage 3 complete: Built <code>Calendar</code> table, linked 1-to-many, sorted <code>Month</code> &amp; <code>Discount Band</code>, and hid duplicate date columns.</label></li>
+      <li><label><input type="checkbox"> Stage 4 complete: Created all Beginner, Intermediate, and Advanced DAX measures with proper Currency/% formats.</label></li>
+      <li><label><input type="checkbox"> Stage 5–6 complete: Built all 6 visuals + Slicers + What-If Extra Discount Simulator.</label></li>
+    </ul>
+  </section>
+
+  <!-- 6. SIGN-OFF -->
+  <section id="sign">
+    <h2 class="t">6. Client Sign-Off Checklist (Verify Before Delivering)</h2>
+    <ul class="task-list">
+      <li><label><input type="checkbox"> With all slicers cleared, total row count is exactly <b>700</b> (not 1,400 from loading both Sheet1 and financials!).</label></li>
+      <li><label><input type="checkbox"> KPI Strip shows Net Sales <b>$118.73M</b>, Total Profit <b>$16.89M</b>, Net Margin <b>14.2%</b>, Discount Rate <b>7.2%</b>.</label></li>
+      <li><label><input type="checkbox"> Country Clustered Bar proves <b>USA</b> leads Net Sales (<b>$25.03M</b>) while <b>France</b> leads Profit (<b>$3.78M</b>).</label></li>
+      <li><label><input type="checkbox"> Segment Waterfall highlights <b>Enterprise</b> as a red negative bar at <b>-$614.55K</b>.</label></li>
+      <li><label><input type="checkbox"> Combo Chart runs chronologically from <b>Sep 2013</b> to <b>Dec 2014</b> (16 months, not alphabetical).</label></li>
+      <li><label><input type="checkbox"> Discount Band Column Chart runs <b>None → Low → Medium → High</b> and shows margin dropping from <b>21.9%</b> to <b>9.1%</b>.</label></li>
+      <li><label><input type="checkbox"> Matrix conditional formatting flags negative profit cells in red, and the What-If slider dynamically updates <code>[Simulated Profit]</code>.</label></li>
+    </ul>
+  </section>
+
+  <!-- 7. STRETCH -->
+  <section id="stretch">
+    <h2 class="t">7. Stretch Challenges (Level Up Your Portfolio)</h2>
+    <ul>
+      <li><b>Drill-Through Transaction Audit Page:</b> Create a second page named <code>Deal Detail</code>, turn its visibility to Hidden, drag <code>Segment</code> and <code>Country</code> into the <b>Drill through</b> well, add a Table showing individual loss-making rows, and add a <b>Back</b> button. Right-click the red <code>Enterprise</code> bar on Page 1 → <b>Drill through → Deal Detail</b>!</li>
+      <li><b>Filled Map Page:</b> Add a <b>Filled map</b> visual using <code>Financials[Country]</code> on Location and conditional color rules on <code>[Net Margin %]</code>.</li>
+      <li><b>Clear All Slicers Button:</b> Go to <b>Insert → Buttons → Clear all slicers</b> and place it at the top-right of the header bar for one-click executive reset.</li>
+    </ul>
+  </section>
+
+  <!-- 8. COMMON MISTAKES -->
+  <section id="mistakes">
+    <h2 class="t">8. Trainer's Troubleshooting: Mistakes That Trip Beginners</h2>
+    <div class="warn-box">
+      <b>Mistake 1 — Totals are double ($33.79M Profit instead of $16.89M):</b> You ticked BOTH <code>financials</code> and <code>Sheet1</code> in Power BI Navigator. Open <code>Transform data</code>, right-click the extra <code>Sheet1</code> query on the left, and click <b>Delete</b>.
+    </div>
+    <div class="warn-box">
+      <b>Mistake 2 — Net Margin % shows 27.7% instead of 14.2%:</b> You averaged the row-level margin column (<code>AVERAGE(RowMarginPct)</code>), giving tiny Channel Partner orders the same weight as massive Small Business orders! Always compute ratios with <code>DIVIDE([Total Profit], [Net Sales])</code>.
+    </div>
+    <div class="warn-box">
+      <b>Mistake 3 — Full-year 2014 vs 2013 looks like +235% growth:</b> Remember 2013 only contains 4 months (Sep–Dec), whereas 2014 has all 12 months! Always check date coverage before presenting annual growth to a CFO.
+    </div>
+    <div class="warn-box">
+      <b>Mistake 4 — Discount Band or Months sort alphabetically:</b> Select the text column in Data view → <b>Column tools → Sort by column</b> → pick its numeric sort column (<code>BandSort</code> or <code>MonthNum</code>).
     </div>
   </section>
-  <section id="sign">
-    <h2 class="t">6. Sign-off</h2>
-    <ul class="chk"><li>☐ Row count is <b>700</b> after the cleaning steps above.</li><li>☐ Total Profit is <b>$16.89M</b>.</li><li>☐ The leading Country is <b>France</b> at <b>$3.78M</b>.</li><li>☐ The date axis runs from <b>2013-09-01</b> to <b>2014-12-01</b>.</li><li>☐ Slicers filter every visual, and you can clear them back to the totals above.</li></ul>
-  </section>
-  <section id="stretch">
-    <h2 class="t">7. Stretch</h2>
-    <ul>
-      <li>A what-if parameter that cuts Profit by an extra discount on one segment.</li>
-      <li>Add a drill-through page that keeps the slicer filters and shows the underlying rows.</li>
-      <li>Sort a month-name column by the month number so the axis is not alphabetical.</li>
-    </ul>
-  </section>
-  <section id="mist">
-    <h2 class="t">8. Mistakes that hide the answer</h2>
-    <ul>
-      <li>Treating Discount Band as a number you can average.</li><li>Building the report on Gross Sales when the client asked about Profit.</li>
-      <li>Summing an ID column, or averaging a rate that was already a percent.</li>
-      <li>Leaving dates as text, then wondering why the axis sorts wrong.</li>
-    </ul>
-  </section>
+
 </div>
-<footer>Microsoft Financial Sample workbook. https://learn.microsoft.com/en-us/power-bi/create-reports/sample-financial-download</footer>
+
+<footer>
+  Source: Microsoft Financial Sample workbook (<a href="https://learn.microsoft.com/en-us/power-bi/create-reports/sample-financial-download">Microsoft Learn</a>) · Every figure manually verified against <code>data/Financial-Sample.xlsx</code> · Works 100% offline.
+</footer>
+
+<script>
+(function(){
+  var KEY = 'pbi_guide_01_v2';
+  var boxes = document.querySelectorAll('input[type=checkbox]');
+  function update(){
+    var done = 0;
+    boxes.forEach(function(b){ if(b.checked) done++; });
+    var pct = boxes.length ? Math.round((done / boxes.length) * 100) : 0;
+    document.getElementById('progText').textContent = done + ' / ' + boxes.length + ' steps completed (' + pct + '%)';
+    document.getElementById('progFill').style.width = pct + '%';
+  }
+  function save(){
+    var state = [];
+    boxes.forEach(function(b){ state.push(b.checked ? 1 : 0); });
+    try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){}
+    update();
+  }
+  try{
+    var s = JSON.parse(localStorage.getItem(KEY) || '[]');
+    boxes.forEach(function(b, i){ if(s[i] !== undefined) b.checked = !!s[i]; });
+  }catch(e){}
+  boxes.forEach(function(b){ b.addEventListener('change', save); });
+  window.resetChecks = function(){
+    if(confirm('Reset all checkmarks for Practice Set 01?')){
+      boxes.forEach(function(b){ b.checked = false; });
+      save();
+    }
+  };
+  update();
+})();
+</script>
 </body>
 </html>

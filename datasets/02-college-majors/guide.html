@@ -3,145 +3,488 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Practice · College majors and pay</title>
+<title>02 · College Majors &amp; Pay — Beginner to Advanced Excel &amp; Power BI Guide</title>
 <style>
-  :root{--calc:#1d6f42;--calc-soft:#e7f3ec;--pbi:#caa400;--pbi-soft:#fff8e0;--ink:#1f2430;--muted:#5b6472;--line:#e3e7ee;--bg:#f6f8fb;--accent:#0b3d63;}
+  :root{
+    --calc:#1d6f42; --calc-soft:#e7f3ec;
+    --pbi:#b78900; --pbi-soft:#fff8e0;
+    --ink:#1f2430; --muted:#5b6472; --line:#e3e7ee; --bg:#f6f8fb;
+    --accent:#0b3d63; --danger:#c0392b; --danger-soft:#fdeaea;
+  }
   *{box-sizing:border-box;}
-  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.6;}
-  header{background:linear-gradient(120deg,#1d6f42,#0b3d63);color:#fff;padding:28px 26px;}
-  header h1{margin:0 0 6px;font-size:24px;}
-  header p{margin:0;max-width:860px;font-size:14.5px;}
-  header a{color:#fff;}
-  .wrap{max-width:1080px;margin:22px auto 70px;padding:0 22px;}
-  .facts{background:#fff;border:1px solid var(--line);border-left:5px solid var(--calc);border-radius:12px;padding:16px 20px;margin-bottom:22px;}
-  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.62;}
+  header{background:linear-gradient(125deg,#1d6f42 0%,#0f5132 48%,#0b3d63 100%);color:#fff;padding:32px 26px 28px;}
+  header .kicker{font-size:12px;text-transform:uppercase;letter-spacing:.8px;opacity:.88;font-weight:700;margin-bottom:6px;}
+  header h1{margin:0 0 8px;font-size:26px;letter-spacing:.2px;}
+  header p{margin:0;max-width:880px;font-size:14.8px;opacity:.95;}
+  header a{color:#fff;text-decoration:underline;}
+  .top-nav{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;align-items:center;}
+  .pill{display:inline-block;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.32);padding:4px 12px;border-radius:20px;font-size:12.5px;text-decoration:none;color:#fff;}
+  .wrap{max-width:1120px;margin:20px auto 70px;padding:0 22px;}
+  .prog-bar{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 18px;margin-bottom:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;position:sticky;top:10px;z-index:20;box-shadow:0 2px 8px rgba(15,23,42,.05);}
+  .prog-track{flex:1;min-width:180px;height:10px;background:#eef2f7;border-radius:99px;overflow:hidden;}
+  .prog-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--calc),#caa400);transition:width .25s;}
+  .prog-text{font-size:13px;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums;}
+  .btn-sm{border:1px solid var(--line);background:#fff;color:var(--ink);padding:5px 11px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;}
+  .btn-sm:hover{background:#f1f5f9;}
+  .toc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:20px;font-size:13.5px;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;}
+  .toc a{color:var(--accent);text-decoration:none;font-weight:600;}
+  .toc a:hover{text-decoration:underline;}
+  section{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px 26px;margin-bottom:20px;box-shadow:0 1px 2px rgba(20,30,50,.03);}
+  h2.t{font-size:20px;margin:0 0 14px;border-bottom:2px solid var(--calc);padding-bottom:8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  h2.t.pbi-h{border-bottom-color:#caa400;}
+  h3{font-size:16px;margin:20px 0 8px;color:var(--accent);}
+  h4{font-size:14.5px;margin:14px 0 6px;color:var(--ink);}
+  p{margin:8px 0;}
+  .facts{background:#fff;border:1px solid var(--line);border-left:5px solid var(--calc);border-radius:12px;padding:16px 18px;margin-bottom:18px;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:10px;}
   .stat{background:var(--calc-soft);border-radius:9px;padding:10px 12px;}
   .stat b{display:block;font-size:18px;color:var(--calc);}
   .stat span{font-size:12px;color:var(--muted);}
-  section{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 24px;margin-bottom:20px;}
-  h2.t{font-size:20px;margin:0 0 12px;border-bottom:2px solid var(--calc);padding-bottom:6px;}
-  h3{font-size:16px;margin:18px 0 8px;color:var(--accent);}
-  code{background:#eef2f7;padding:1px 6px;border-radius:5px;font-size:13px;font-family:"SF Mono",Consolas,monospace;}
-  pre{background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:10px;overflow:auto;font-size:13px;font-family:"SF Mono",Consolas,monospace;line-height:1.5;}
-  table{border-collapse:collapse;width:100%;margin:10px 0;font-size:13.5px;}
-  th,td{border:1px solid var(--line);padding:7px 10px;text-align:left;}
-  th{background:#f1f5f9;}
-  .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;color:#fff;}
-  .g{background:#27ae60;} .y{background:#e0a800;} .r{background:#c0392b;}
-  .req{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px dashed var(--line);}
+  .stat.warn{background:var(--danger-soft);}
+  .stat.warn b{color:var(--danger);}
+  code{background:#eef2f7;padding:2px 6px;border-radius:5px;font-size:12.8px;font-family:"SF Mono",Consolas,monospace;color:#0f172a;}
+  pre{background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:10px;overflow:auto;font-size:13px;font-family:"SF Mono",Consolas,monospace;line-height:1.55;margin:10px 0;}
+  table{border-collapse:collapse;width:100%;margin:12px 0;font-size:13.3px;}
+  th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top;}
+  th{background:#f1f5f9;font-weight:700;}
+  .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;color:#fff;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap;}
+  .g{background:#1d6f42;} .y{background:#d99000;} .r{background:#c0392b;} .b{background:#0b3d63;}
+  .req{display:flex;gap:12px;align-items:flex-start;padding:9px 0;border-bottom:1px dashed var(--line);}
   .req:last-child{border-bottom:none;}
-  .step{background:var(--calc-soft);border-radius:8px;padding:12px 14px;margin:10px 0;}
+  .step{background:var(--calc-soft);border:1px solid #cde4d6;border-radius:10px;padding:14px 16px;margin:12px 0;}
   .step b{color:var(--calc);}
-  .pbi-box{background:var(--pbi-soft);border-radius:8px;padding:12px 14px;margin:10px 0;}
-  .pbi-box b{color:#8a6a00;}
+  .pbi-box{background:var(--pbi-soft);border:1px solid #f2df9d;border-radius:10px;padding:14px 16px;margin:12px 0;}
+  .pbi-box b{color:#7c5d00;}
+  .chart-card{border:1px solid var(--line);border-left:5px solid #caa400;border-radius:10px;padding:14px 16px;margin:14px 0;background:#fcfdff;}
+  .chart-card h4{margin:0 0 8px;font-size:15.5px;color:var(--accent);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .wells{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin:10px 0;}
+  .well{background:#f4f6fa;border:1px solid var(--line);border-radius:7px;padding:7px 10px;font-size:12.8px;}
+  .well strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-bottom:2px;}
   .note{background:#fffaf0;border-left:4px solid #e0a800;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
-  .chk li{margin:4px 0;}
-  .toc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:20px;font-size:14px;}
-  .toc a{color:var(--accent);text-decoration:none;}
-  footer{text-align:center;color:var(--muted);font-size:12px;padding:10px 20px 28px;}
+  .warn-box{background:var(--danger-soft);border-left:4px solid var(--danger);border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
+  .wireframe{display:grid;grid-template-columns:repeat(12,1fr);gap:8px;background:#eef2f7;padding:14px;border-radius:12px;margin:12px 0;font-size:12px;}
+  .wf-box{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:10px;text-align:center;font-weight:600;color:var(--accent);}
+  .wf-box small{display:block;font-weight:400;color:var(--muted);margin-top:3px;font-size:11px;}
+  ul.task-list{list-style:none;padding:0;margin:10px 0;}
+  ul.task-list li{padding:5px 0;}
+  ul.task-list label{display:flex;gap:9px;align-items:flex-start;cursor:pointer;font-size:13.8px;}
+  ul.task-list input{margin-top:4px;width:16px;height:16px;flex:none;accent-color:var(--calc);}
+  footer{text-align:center;color:var(--muted);font-size:12.5px;padding:10px 20px 28px;}
   footer a{color:#3d4a5c;}
+  @media(max-width:740px){
+    .wrap{padding:0 12px;}
+    section{padding:16px 16px;}
+    .wireframe{grid-template-columns:1fr 1fr;}
+    .wf-box{grid-column:span 2 !important;}
+  }
 </style>
 </head>
 <body>
+
 <header>
-  <h1>02 · College majors and pay</h1>
-  <p>Recent US college graduates by major: employment, earnings, and the share of women. Figures below were computed from the file in this folder. <a href="../index.html">All practice sets</a></p>
-</header>
-<div class="wrap">
-  <div class="toc"><b>Jump to:</b>
-    <a href="#profile">Profile</a> ·
-    <a href="#brief">Brief</a> ·
-    <a href="#req">Requirements</a> ·
-    <a href="#calc">Excel</a> ·
-    <a href="#pbi">Power BI</a> ·
-    <a href="#sign">Sign-off</a> ·
-    <a href="#stretch">Stretch</a>
+  <div class="kicker">Practice Set 02 of 20 · Higher-Education &amp; Labor Economics Benchmarking</div>
+  <h1>02 · College Majors &amp; Pay — Weighted Rates, Percentiles &amp; ROI Quadrants</h1>
+  <p>A cross-sectional benchmark of 173 US college majors (6.77M graduates). Learn how to import your first CSV cleanly, fix ALL-CAPS text and a real missing-value row (<code>FOOD SCIENCE</code>), stop averaging pre-calculated rate columns, and build Quadrant Bubble Charts, 100% Stacked Bars, Top-N Percentile Bars, and Salary Histograms.</p>
+  <div class="top-nav">
+    <a class="pill" href="../index.html">← All 20 Practice Sets</a>
+    <a class="pill" href="../../index.html">← Main Excel &amp; Power BI Outline</a>
+    <span class="pill">Charts Taught: Quadrant Bubble Scatter · 100% Stacked Bar · Top-N Clustered Bar · Histogram · Data-Bar Table</span>
   </div>
+</header>
+
+<div class="wrap">
+
+  <div class="prog-bar">
+    <span class="prog-text" id="progText">0 / 0 steps completed</span>
+    <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+    <button class="btn-sm" type="button" onclick="resetChecks()">Reset checklist</button>
+  </div>
+
+  <div class="toc">
+    <b>Step-by-Step Map:</b>
+    <a href="#profile">1. Data Profile &amp; Columns</a> ·
+    <a href="#brief">2. Client Brief</a> ·
+    <a href="#req">3. Requirements</a> ·
+    <a href="#excel">4. Phase A: Excel Step-by-Step</a> ·
+    <a href="#pbi">5. Phase B: Power BI &amp; Charts Journey</a> ·
+    <a href="#sign">6. Sign-Off</a> ·
+    <a href="#stretch">7. Stretch</a> ·
+    <a href="#mistakes">8. Common Mistakes</a>
+  </div>
+
+  <!-- 1. PROFILE -->
   <section id="profile">
-    <h2 class="t">1. Verified profile</h2>
-    <div class="facts"><div class="grid"><div class="stat"><b>173</b><span>Rows</span></div><div class="stat"><b>$40,151</b><span>Average Median</span></div><div class="stat"><b>Engineering</b><span>Top Major_category</span></div></div></div>
-    <p>File: <code>recent-grads.csv</code>. Fact table for the steps: <code>Majors</code>, renamed to <code>Majors</code> in Power BI.</p>
-    
-    
-        <h3>Biggest groups (check your pivot against this)</h3>
-        <table><tr><th>Major_category</th><th>Median</th></tr><tr><td>Engineering</td><td>$57,383</td></tr><tr><td>Business</td><td>$43,538</td></tr><tr><td>Computers &amp; Mathematics</td><td>$42,745</td></tr><tr><td>Law &amp; Public Policy</td><td>$42,200</td></tr><tr><td>Physical Sciences</td><td>$41,890</td></tr><tr><td>Social Science</td><td>$37,344</td></tr></table>
-    <div class="note">Median pay and unemployment do not move together. A category can pay well and still have a high unemployment rate in this snapshot. Do not average the unemployment-rate column across majors with different sizes — weight it, or show the median.</div>
+    <h2 class="t">1. Verified Data Profile &amp; Raw Column Map</h2>
+    <div class="facts">
+      <div class="grid">
+        <div class="stat"><b>173</b><span>College majors (16 categories)</span></div>
+        <div class="stat"><b>6,771,654</b><span>Total graduates (172 non-blank)</span></div>
+        <div class="stat"><b>$40,151</b><span>Avg of Median earnings ($40,151.45)</span></div>
+        <div class="stat"><b>7.19%</b><span>Weighted Unemployment (vs 6.82% naive!)</span></div>
+        <div class="stat"><b>57.52%</b><span>Women share of all graduates</span></div>
+        <div class="stat warn"><b>1 Row</b><span>Missing gender/total (FOOD SCIENCE)</span></div>
+      </div>
+    </div>
+
+    <div class="note">
+      <b>The Analyst Insight (What Clients Test in Interviews!):</b><br>
+      1. <b>High pay ≠ Low unemployment:</b> <b>Education</b> majors earn a modest <code>$32,350</code> average median salary, yet have the <b>lowest weighted unemployment rate of any category (4.95%)</b>! Meanwhile <b>Social Science</b> (<code>9.67%</code>) and <b>Law &amp; Public Policy</b> (<code>8.53%</code>) face nearly double the unemployment.<br>
+      2. <b>Never average a percentage across unequal groups:</b> Petroleum Engineering has <code>2,339</code> graduates while Business Management has <code>329,927</code>. Averaging <code>Unemployment_rate</code> gives <code>6.82%</code>; dividing total unemployed by total labor force gives the true <b>7.19%</b>.<br>
+      3. <b>No dates exist in this file!</b> This is a <i>cross-sectional snapshot</i> — do NOT try to build a Line Chart or Date Table when there is no time column.
+    </div>
+
+    <h3>Raw CSV Column Map (<code>data/recent-grads.csv</code>, Columns A–U)</h3>
+    <table>
+      <tr><th>Excel Col</th><th>Raw Header</th><th>Type</th><th>Meaning &amp; Analyst Rule</th></tr>
+      <tr><td><code>A</code>, <code>B</code></td><td><code>Rank</code>, <code>Major_code</code></td><td>Whole Number</td><td>Pay rank (1 = highest median) and census major ID. <b>Do NOT sum!</b> Set Summarization = Don't summarize.</td></tr>
+      <tr><td><code>C</code></td><td><code>Major</code></td><td>Text</td><td>Major name in ALL CAPS (e.g., <code>PETROLEUM ENGINEERING</code>). Convert to Proper Case for clean visuals!</td></tr>
+      <tr><td><code>D</code>, <code>E</code>, <code>F</code></td><td><code>Total</code>, <code>Men</code>, <code>Women</code></td><td>Whole Number</td><td>Graduate headcounts. <b>HIDDEN DIRT:</b> Row 23 (<code>Rank 22, FOOD SCIENCE</code>) has <b>blank</b> <code>Total</code>, <code>Men</code>, <code>Women</code>, and <code>ShareWomen</code>! Keep the row (its salary &amp; employment data are valid), just leave those 4 cells null/blank.</td></tr>
+      <tr><td><code>G</code></td><td><code>Major_category</code></td><td>Text</td><td>16 academic families (Engineering, Business, Health, Education, etc.).</td></tr>
+      <tr><td><code>H</code></td><td><code>ShareWomen</code></td><td>Decimal (0–1)</td><td><code>Women ÷ Total</code> for that single major. Do NOT average across categories — write a weighted DAX measure!</td></tr>
+      <tr><td><code>J</code>–<code>N</code></td><td><code>Employed</code>, <code>Full_time</code>, <code>Part_time</code>, <code>Full_time_year_round</code>, <code>Unemployed</code></td><td>Whole Number</td><td>Headcounts in the labor force. Additive — safe to <code>SUM</code>!</td></tr>
+      <tr><td><code>O</code></td><td><code>Unemployment_rate</code></td><td>Decimal (0–1)</td><td><code>Unemployed ÷ (Employed + Unemployed)</code> for that major. Recompute with <code>DIVIDE</code> in Power BI!</td></tr>
+      <tr><td><code>P</code>, <code>Q</code>, <code>R</code></td><td><code>Median</code>, <code>P25th</code>, <code>P75th</code></td><td>Currency</td><td>50th, 25th, and 75th percentile full-time year-round pay. <b>NEVER SUM salaries across majors!</b> Use <code>AVERAGE</code> or <code>MEDIAN</code>.</td></tr>
+      <tr><td><code>S</code>, <code>T</code>, <code>U</code></td><td><code>College_jobs</code>, <code>Non_college_jobs</code>, <code>Low_wage_jobs</code></td><td>Whole Number</td><td>Job quality headcounts — lets you compute what % of employed grads land a degree-requiring job!</td></tr>
+    </table>
+
+    <h3>Verification Check Table (Top &amp; Notable Categories)</h3>
+    <table>
+      <tr><th>Major Category</th><th>Majors</th><th>Avg of Median Pay</th><th>Total Graduates</th><th>Weighted Unemp. %</th><th>Women Share %</th></tr>
+      <tr><td>Engineering</td><td>29</td><td><b>$57,383</b></td><td>537,583</td><td>6.62%</td><td>24.05%</td></tr>
+      <tr><td>Business</td><td>13</td><td>$43,538</td><td><b>1,302,376</b></td><td>6.84%</td><td>48.72%</td></tr>
+      <tr><td>Computers &amp; Mathematics</td><td>11</td><td>$42,745</td><td>299,008</td><td>7.17%</td><td>30.19%</td></tr>
+      <tr><td>Law &amp; Public Policy</td><td>5</td><td>$42,200</td><td>179,107</td><td>8.53%</td><td>49.12%</td></tr>
+      <tr><td>Physical Sciences</td><td>10</td><td>$41,890</td><td>185,479</td><td>5.36%</td><td>48.57%</td></tr>
+      <tr><td>Social Science</td><td>9</td><td>$37,344</td><td>529,966</td><td style="color:#c0392b"><b>9.67%</b></td><td>51.54%</td></tr>
+      <tr><td>Health</td><td>12</td><td>$36,825</td><td>463,230</td><td>5.63%</td><td><b>83.70%</b></td></tr>
+      <tr><td>Education</td><td>16</td><td>$32,350</td><td>559,129</td><td style="color:#1d6f42"><b>4.95% (Lowest!)</b></td><td>81.48%</td></tr>
+      <tr><td>Psychology &amp; Social Work</td><td>9</td><td>$30,100</td><td>481,007</td><td>8.05%</td><td>79.60%</td></tr>
+    </table>
   </section>
+
+  <!-- 2. BRIEF -->
   <section id="brief">
-    <h2 class="t">2. The client brief</h2>
-    <p><b>Who:</b> A university careers office.</p>
-    <p><b>The ask:</b> <i>Students keep asking which majors pay and which ones are crowded. Show median earnings, unemployment, and the share of women, by major category.</i></p>
+    <h2 class="t">2. Real-World Client Brief</h2>
+    <p><b>Client:</b> Dean of Student Advising &amp; University Career Services Office.</p>
+    <p><b>The Ask:</b> <i>"Parents and incoming freshmen ask us two questions every week: 'Which majors actually pay well, and will my child find a college-level job?' Right now we hand them a 173-row spreadsheet in ugly ALL CAPS. Build an interactive Major ROI Explorer showing pay vs. unemployment quadrants, gender balance by field, the Top 10 highest-paying majors with their 25th–75th percentile pay spread, and a searchable major table."</i></p>
   </section>
+
+  <!-- 3. REQUIREMENTS -->
   <section id="req">
-    <h2 class="t">3. Requirements</h2>
-    <div class="req"><span class="tag g">Beginner</span><div>KPI strip — row count, Median.</div></div><div class="req"><span class="tag g">Beginner</span><div>Bar chart of <b>Major_category</b>.</div></div><div class="req"><span class="tag y">Inter.</span><div>Top 10 <b>Major</b>.</div></div><div class="req"><span class="tag r">Advan.</span><div>Slicers that cross-filter every visual on the page.</div></div>
+    <h2 class="t">3. Project Requirements (Beginner → Advanced)</h2>
+    <div class="req"><span class="tag g">Beginner</span><div><b>Import CSV cleanly &amp; fix text/blanks:</b> Convert ALL-CAPS major names to Title Case, preserve <code>Food Science</code> despite its 4 blank demographic cells, and verify category pay in an Excel PivotTable.</div></div>
+    <div class="req"><span class="tag g">Beginner</span><div><b>4-Card Benchmark Strip:</b> Total Graduates (<code>6.77M</code>), Avg Median Pay (<code>$40,151</code>), Weighted Unemployment % (<code>7.19%</code>), and Women Share % (<code>57.5%</code>).</div></div>
+    <div class="req"><span class="tag y">Inter.</span><div><b>Gender Balance by Academic Field (100% Stacked Bar Chart):</b> Compare Men vs. Women headcount share across all 16 major categories.</div></div>
+    <div class="req"><span class="tag y">Inter.</span><div><b>Top 10 Highest-Paying Majors with Percentile Spread (Clustered Bar + Top-N Filter):</b> Plot <code>P25th</code>, <code>Median</code>, and <code>P75th</code> side-by-side for the Top 10 majors.</div></div>
+    <div class="req"><span class="tag y">Inter.</span><div><b>Earnings Distribution Histogram (Column Chart by Pay Band):</b> Bucket all 173 majors into 5 salary bands (<code>&lt;$30K</code> to <code>$70K+</code>) to show where most majors cluster.</div></div>
+    <div class="req"><span class="tag r">Advan.</span><div><b>Career ROI Quadrant Bubble Chart + Searchable Advisor Table:</b> Plot <code>Avg Median Pay</code> (X) vs. <code>Weighted Unemployment %</code> (Y), sized by <code>Total Graduates</code>, divided into 4 quadrants using Analytics Average Lines, paired with a conditionally formatted Advisor Table.</div></div>
   </section>
-  <section id="calc">
-    <h2 class="t">4. Phase A — Microsoft Excel</h2>
-    <p>Goal: open the file cleanly, add only the helper columns you need, and prove one total with a PivotTable before you touch Power BI.</p>
-    
-    <h3>Step 1 — Open it the right way</h3>
-    <div class="step"><b>Data → From Text/CSV</b> → <code>recent-grads.csv</code> → comma → Load.<br><b>Formats:</b> <code>P75th</code> → Number; <code>Total</code> → Number; <code>Employed</code> → Number; <code>P25th</code> → Number. Then <b>View → Freeze Panes → Freeze Top Row</b>.</div>
-    <h3>Step 2 — Look for dirt</h3>
-    <div class="step"><ul><li>173 majors. That is the whole file — do not expect a time axis.</li><li>ShareWomen and Unemployment_rate are fractions (0.25 means 25%). Format them as %.</li><li>Rank is not a measure. Do not sum it.</li></ul></div>
-    
-        <h3>Step 3 — No extra formula required</h3>
-        <div class="step">The columns you need are already on the sheet. Use the pivot in the next step to prove the totals before you leave Excel.</div>
-    <h3>Step 4 — Pivot check</h3>
-    <div class="step">Select the data → <b>Insert → PivotTable</b>. Rows = <code>Major_category</code>.
-    Values = <b>Average of Median</b>.
-    The grand total must be <b>$40,151</b>. If it is not, the filter or the number format is wrong — fix that before Power BI.
+
+  <!-- 4. EXCEL -->
+  <section id="excel">
+    <h2 class="t">4. Phase A — Step-by-Step in Microsoft Excel</h2>
+
+    <h3>Step A1 — Import the CSV Properly (Don't Just Double-Click!)</h3>
+    <div class="step">
+      <ol style="margin:0;padding-left:20px;">
+        <li>Open a blank Excel workbook → click the <b>Data</b> tab on the top ribbon → click <b>From Text/CSV</b> (far left).</li>
+        <li>Select <code>datasets/02-college-majors/data/recent-grads.csv</code> → click <b>Import</b>.</li>
+        <li>In the preview window, confirm <b>Delimiter = Comma</b> and check that 21 columns appear cleanly → click <b>Load</b>. (Excel automatically formats it as a green Excel Table named <code>recent_grads</code> and freezes headers when scrolling!)</li>
+      </ol>
     </div>
-    <h3>Step 5 — Save</h3>
-    <div class="step"><b>Save As</b> <code>02-college-majors-clean.xlsx</code>. Power BI should read this file, not a half-filtered view you forgot to clear.</div>
+
+    <h3>Step A2 — Inspect Row 23 (Food Science) &amp; Format Numbers</h3>
+    <div class="step">
+      <ol style="margin:0;padding-left:20px;">
+        <li>Scroll down to <b>Row 23</b> (<code>Rank = 22</code>, <code>FOOD SCIENCE</code>). Notice cells <code>D23:F23</code> (<code>Total</code>, <code>Men</code>, <code>Women</code>) and <code>H23</code> (<code>ShareWomen</code>) are empty! <b>Do NOT delete this row</b> — its <code>Median</code> (<code>$53,000</code>) and <code>Employed</code> (<code>3,149</code>) are valid and needed for the 173-row pay check!</li>
+        <li>Format columns <code>H</code> (<code>ShareWomen</code>) and <code>O</code> (<code>Unemployment_rate</code>) as <b>Percentage (1 decimal)</b>.</li>
+        <li>Format columns <code>P:R</code> (<code>Median</code>, <code>P25th</code>, <code>P75th</code>) as <b>Currency ($#,##0, 0 decimals)</b>.</li>
+        <li>Format headcount columns <code>D:F</code>, <code>J:N</code>, and <code>S:U</code> as <b>Number with comma separator (#,##0)</b>.</li>
+      </ol>
+    </div>
+
+    <h3>Step A3 — Add 3 Helper Columns (Columns V, W, X)</h3>
+    <div class="step">
+      <ol style="margin:0;padding-left:20px;">
+        <li><b>Column V — <code>MajorClean</code> (Fix ALL CAPS with PROPER):</b> In cell <code>V1</code> type <code>MajorClean</code>. In cell <code>V2</code> type:<br>
+        <code>=PROPER(C2)</code><br>
+        Watch <code>PETROLEUM ENGINEERING</code> turn into clean <code>Petroleum Engineering</code> across all 173 rows!</li>
+        <li><b>Column W — <code>PayBand</code> (Salary Histogram Buckets):</b> In cell <code>W1</code> type <code>PayBand</code>. In cell <code>W2</code> type:<br>
+        <code>=IF(P2&lt;30000,"1. Under $30K",IF(P2&lt;40000,"2. $30K–$39K",IF(P2&lt;50000,"3. $40K–$49K",IF(P2&lt;70000,"4. $50K–$69K","5. $70K+"))))</code><br>
+        <i>Why number prefixes 1–5?</i> So any PivotTable or beginner chart automatically sorts the salary buckets from lowest to highest!</li>
+        <li><b>Column X — <code>PaySpread</code> (75th minus 25th Percentile Upside):</b> In cell <code>X1</code> type <code>PaySpread</code>. In cell <code>X2</code> type:<br>
+        <code>=R2-Q2</code><br>
+        This measures earning upside within each major (e.g., <code>$125,000 - $95,000 = $30,000</code> for Petroleum Engineering).</li>
+      </ol>
+    </div>
+
+    <h3>Step A4 — Validate with an Excel PivotTable</h3>
+    <div class="step">
+      <ol style="margin:0;padding-left:20px;">
+        <li>Click inside the table → <b>Insert → PivotTable → New Worksheet → OK</b>. Rename the sheet <code>Pivot_Check</code>.</li>
+        <li>Drag <code>Major_category</code> to <b>Rows</b>.</li>
+        <li>Drag <code>Major</code> to <b>Values</b> (automatically becomes <code>Count of Major</code> — confirm Grand Total = <b>173</b>).</li>
+        <li>Drag <code>Median</code> to <b>Values</b> → click it in the Values box → <b>Value Field Settings → Summarize value field by: Average → Number Format: Currency (0 decimals) → OK</b>.</li>
+        <li>Drag <code>Total</code> to <b>Values</b> (<code>Sum of Total</code> = <b>6,771,654</b>).</li>
+        <li>Sort by <code>Average of Median</code> Largest to Smallest: confirm <b>Engineering = $57,383</b> at the top, <b>Psychology &amp; Social Work = $30,100</b> at the bottom, and Grand Total Average = <b>$40,151</b>!</li>
+        <li>Save the workbook as <code>02-college-majors-clean.xlsx</code>.</li>
+      </ol>
+    </div>
+
+    <ul class="task-list">
+      <li><label><input type="checkbox"> Imported <code>recent-grads.csv</code> via <code>Data → From Text/CSV</code> and inspected row 23 (<code>FOOD SCIENCE</code>).</label></li>
+      <li><label><input type="checkbox"> Built <code>MajorClean</code> (<code>PROPER</code>), <code>PayBand</code>, and <code>PaySpread</code> helper columns.</label></li>
+      <li><label><input type="checkbox"> Verified PivotTable: 173 majors, $40,151 Avg Median, Engineering #1 at $57,383.</label></li>
+    </ul>
   </section>
+
+  <!-- 5. POWER BI -->
   <section id="pbi">
-    <h2 class="t">5. Phase B — Power BI</h2>
-    <h3>Step 1 — Get data</h3>
-    <div class="pbi-box"><b>Get data → Text/CSV</b> → comma → Transform.</div>
-    <h3>Step 2 — Power Query</h3>
-    <div class="pbi-box">Rename the main query to <code>Majors</code>. Set the types from Step 1. Watch <b>Applied Steps</b>. Then <b>Close &amp; Apply</b>.
-    </div>
-    <h3>Step 3 — Model</h3>
-    <div class="pbi-box"><p>One table. A star schema is not required for this set.</p>
-    <p>Hide key columns you do not want on the report. A hidden column can still be used by a relationship.</p></div>
-    <h3>Step 4 — Measures</h3>
-    <p>Write these as <b>measures</b>, not calculated columns. Replace the placeholder filter with a real value from the column.</p>
-    <pre>Median = AVERAGE(&#x27;Majors&#x27;[Median])
-Row Count = COUNTROWS(&#x27;Majors&#x27;)
-P75th = SUM(&#x27;Majors&#x27;[P75th])</pre>
-    <h3>Step 5 — Visuals</h3>
+    <h2 class="t pbi-h">5. Phase B — Complete Power BI &amp; Charts Journey</h2>
+
+    <h3>Stage 1 &amp; 2 — Connect to Raw CSV &amp; Clean in Power Query</h3>
     <div class="pbi-box">
-      <ul>
-        <li>Cards for the measures in Step 4.</li>
-        <li>Bar chart: axis <code>Major_category</code>, value the main measure.</li>
-        
-        <li>A slicer for each small category (Major_category).</li>
-        <li>Click a bar and confirm the other visuals filter. Use <b>Format → Edit interactions</b> if one visual should stay still.</li>
-      </ul>
+      <ol style="margin:0;padding-left:20px;">
+        <li>In Power BI Desktop, click <b>Home → Text/CSV</b> → select <code>data/recent-grads.csv</code> → click <b>Transform Data</b>.</li>
+        <li>Rename the query on the right from <code>recent-grads</code> to <code>Majors</code>.</li>
+        <li><b>Convert ALL CAPS to Title Case in 2 clicks:</b> Right-click the <code>Major</code> column header → <b>Transform → Capitalize Each Word</b>!</li>
+        <li><b>Check Data Types:</b>
+          <ul>
+            <li><code>Rank</code>, <code>Major_code</code>, <code>Total</code>, <code>Men</code>, <code>Women</code>, <code>Sample_size</code>, <code>Employed</code>, <code>Full_time</code>, <code>Part_time</code>, <code>Full_time_year_round</code>, <code>Unemployed</code>, <code>College_jobs</code>, <code>Non_college_jobs</code>, <code>Low_wage_jobs</code> → <b>123 (Whole Number)</b>. Notice row 22 (<code>Food Science</code>) shows <i>null</i> in <code>Total/Men/Women/ShareWomen</code> — Power BI handles <i>null</i> cleanly without counting it as zero!</li>
+            <li><code>ShareWomen</code>, <code>Unemployment_rate</code> → <b>1.2 (Decimal Number)</b>.</li>
+            <li><code>Median</code>, <code>P25th</code>, <code>P75th</code> → <b>$ (Fixed decimal number)</b> or <b>123 (Whole Number)</b>.</li>
+          </ul>
+        </li>
+        <li><b>Add the Salary Band Column:</b> Click <b>Add Column → Conditional Column</b> → Name: <code>PayBand</code>:
+          <ul>
+            <li>If <code>Median</code> is less than <code>30000</code> → <code>1. Under $30K</code></li>
+            <li>Else if <code>Median</code> is less than <code>40000</code> → <code>2. $30K–$39K</code></li>
+            <li>Else if <code>Median</code> is less than <code>50000</code> → <code>3. $40K–$49K</code></li>
+            <li>Else if <code>Median</code> is less than <code>70000</code> → <code>4. $50K–$69K</code></li>
+            <li>Else → <code>5. $70K+</code> → click <b>OK</b>, set type to <b>ABC (Text)</b>.</li>
+          </ul>
+        </li>
+        <li>Click <b>Home → Close &amp; Apply</b>.</li>
+      </ol>
+    </div>
+
+    <h3>Stage 3 — Model View Cleanup (Stop Accidental Summing!)</h3>
+    <div class="pbi-box">
+      <ol style="margin:0;padding-left:20px;">
+        <li>This dataset is a single 173-row cross-sectional benchmark table — <b>no Date Table is needed because there are no dates</b>.</li>
+        <li>In the <b>Data</b> pane, click <code>Rank</code> → on the <b>Column tools</b> ribbon change <b>Summarization → Don't summarize</b>. Repeat for <code>Major_code</code>. (This prevents Power BI from ever summing Major Codes!)</li>
+        <li>Hide raw rate columns <code>ShareWomen</code> and <code>Unemployment_rate</code> (right-click → <b>Hide</b>) so report users use your accurate weighted DAX measures instead!</li>
+      </ol>
+    </div>
+
+    <h3>Stage 4 — DAX Measures (Beginner → Advanced)</h3>
+    <p>Right-click <code>Majors</code> → <b>New measure</b> for each formula below:</p>
+<pre>// --- BEGINNER MEASURES ---
+Majors Count = COUNTROWS ( 'Majors' )
+// Format: Whole number -> Check: 173
+
+Total Graduates = SUM ( 'Majors'[Total] )
+// Format: Whole number (#,0) -> Check: 6,771,654
+
+Total Men = SUM ( 'Majors'[Men] )
+Total Women = SUM ( 'Majors'[Women] )
+
+Avg Median Pay = AVERAGE ( 'Majors'[Median] )
+// Format: Currency ($#,0) -> Check: $40,151
+
+Avg P25 Pay = AVERAGE ( 'Majors'[P25th] )
+Avg P75 Pay = AVERAGE ( 'Majors'[P75th] )
+
+// --- INTERMEDIATE MEASURES (True Weighted Ratios!) ---
+Weighted Unemployment % =
+DIVIDE (
+    SUM ( 'Majors'[Unemployed] ),
+    SUM ( 'Majors'[Employed] ) + SUM ( 'Majors'[Unemployed] ),
+    0
+)
+// Format: Percentage (0.00%) -> Check: 7.19% (NOT the unweighted 6.82%!)
+
+Women Share % = DIVIDE ( [Total Women], [Total Graduates], 0 )
+// Format: Percentage (0.0%) -> Check: 57.5% (57.52%)
+
+College Job Match % = DIVIDE ( SUM ( 'Majors'[College_jobs] ), SUM ( 'Majors'[Employed] ), 0 )
+// Format: Percentage (0.0%) -> Check what share of working grads hold college-level jobs!
+
+// --- ADVANCED MEASURE (Pay Upside Spread) ---
+Interquartile Pay Spread = [Avg P75 Pay] - [Avg P25 Pay]
+// Format: Currency ($#,0) -> Shows salary growth potential from 25th to 75th percentile</pre>
+
+    <h3>Stage 5 — Power BI Charts Journey: Build the 6-Visual Career ROI Dashboard</h3>
+
+    <div class="wireframe">
+      <div class="wf-box" style="grid-column:span 12;">Header + Slicers: Major_category (Dropdown) · PayBand (Tile Buttons)</div>
+      <div class="wf-box" style="grid-column:span 3;">Card: Total Graduates<small>6.77M</small></div>
+      <div class="wf-box" style="grid-column:span 3;">Card: Avg Median Pay<small>$40,151</small></div>
+      <div class="wf-box" style="grid-column:span 3;">Card: Weighted Unemp %<small>7.19%</small></div>
+      <div class="wf-box" style="grid-column:span 3;">Card: Women Share %<small>57.5%</small></div>
+      <div class="wf-box" style="grid-column:span 7;">Visual 2: Quadrant Bubble Scatter<small>Median Pay (X) vs Unemployment % (Y), Size = Grads</small></div>
+      <div class="wf-box" style="grid-column:span 5;">Visual 3: 100% Stacked Bar<small>Men vs Women Share by Major Category</small></div>
+      <div class="wf-box" style="grid-column:span 7;">Visual 4: Top 10 Majors Clustered Bar<small>P25th vs Median vs P75th Pay Spread</small></div>
+      <div class="wf-box" style="grid-column:span 5;">Visual 5: Salary Band Histogram<small>Majors Count by PayBand</small></div>
+      <div class="wf-box" style="grid-column:span 12;">Visual 6: Searchable Career Advisor Table<small>Major · Category · Graduates · Median Pay (Data Bars) · Unemp % · College Job Match %</small></div>
+    </div>
+
+    <div class="chart-card">
+      <h4><span class="tag g">Visual 1</span> 4-Card Benchmark Strip</h4>
+      <p>Create 4 formatted <b>Card</b> visuals across the top showing <code>[Total Graduates]</code> (<code>6.77M</code>), <code>[Avg Median Pay]</code> (<code>$40,151</code>), <code>[Weighted Unemployment %]</code> (<code>7.19%</code>), and <code>[Women Share %]</code> (<code>57.5%</code>).</p>
+    </div>
+
+    <div class="chart-card">
+      <h4><span class="tag r">Visual 2</span> Career ROI Quadrant Bubble Chart (Scatter + Analytics Reference Lines)</h4>
+      <p><b>Why this chart?</b> A Scatter/Bubble chart is the single best visual when comparing TWO numeric measures at once (Pay vs. Risk) while showing volume via bubble size!</p>
+      <div class="wells">
+        <div class="well"><strong>Values (Detail)</strong><code>Majors[Major_category]</code> (or <code>Majors[Major]</code>)</div>
+        <div class="well"><strong>X-axis</strong><code>[Avg Median Pay]</code></div>
+        <div class="well"><strong>Y-axis</strong><code>[Weighted Unemployment %]</code></div>
+        <div class="well"><strong>Size</strong><code>[Total Graduates]</code></div>
+        <div class="well"><strong>Legend</strong><code>Majors[Major_category]</code></div>
+      </div>
+      <ol style="margin:6px 0;padding-left:20px;">
+        <li>Click blank canvas → click <b>Scatter chart</b> (dots icon in Visualizations).</li>
+        <li>Drag fields into the 5 wells above (start with <code>Major_category</code> in <b>Values</b> for 16 clean bubbles, or put <code>Major</code> in <b>Values</b> and <code>Major_category</code> in <b>Legend</b> to see all 173 majors!).</li>
+        <li><b>Add the 4-Quadrant Reference Lines:</b> With the Scatter selected, click the magnifying-glass <b>Add further analyses to your visual (Analytics)</b> icon at the top of the Visualizations pane:
+          <ul>
+            <li>Expand <b>X-Axis Constant Line</b> (or <b>Average line</b>) → click <b>+ Add line</b> → Value = <code>40151</code> (dashed gray, Data label ON: <code>Avg Pay $40.2K</code>).</li>
+            <li>Expand <b>Y-Axis Constant Line</b> → click <b>+ Add line</b> → Value = <code>0.0719</code> (dashed gray, Data label ON: <code>Avg Unemp 7.2%</code>).</li>
+          </ul>
+        </li>
+        <li><b>How to read the 4 quadrants:</b> Bottom-Right = <b>Sweet Spot</b> (High Pay + Low Unemployment: <i>Engineering, Physical Sciences</i>); Top-Left = <b>Tough Market</b> (Low Pay + High Unemployment: <i>Arts, Humanities, Social Science</i>); Bottom-Left = <b>High Job Security, Modest Pay</b> (<i>Education</i>!).</li>
+      </ol>
+    </div>
+
+    <div class="chart-card">
+      <h4><span class="tag y">Visual 3</span> Gender Balance by Field — 100% Stacked Bar Chart</h4>
+      <p><b>Why this chart?</b> Categories range from 12K grads to 1.3M grads. A regular stacked bar hides small categories; a <b>100% Stacked Bar</b> normalizes every bar to 0–100% so gender proportions are crystal clear!</p>
+      <div class="wells">
+        <div class="well"><strong>Y-axis</strong><code>Majors[Major_category]</code></div>
+        <div class="well"><strong>X-axis (2 measures)</strong><code>[Total Women]</code>, <code>[Total Men]</code></div>
+        <div class="well"><strong>Tooltips</strong><code>[Total Graduates]</code>, <code>[Avg Median Pay]</code></div>
+      </div>
+      <ol style="margin:6px 0;padding-left:20px;">
+        <li>Click <b>100% stacked bar chart</b> (3rd icon, row 1 of Visualizations).</li>
+        <li>Drag <code>Major_category</code> to Y-axis, and both <code>[Total Women]</code> and <code>[Total Men]</code> to X-axis.</li>
+        <li>Turn <b>Data labels</b> ON and add a 50% vertical constant line in the Analytics pane so parity (50/50) is obvious at a glance!</li>
+      </ol>
+    </div>
+
+    <div class="chart-card">
+      <h4><span class="tag y">Visual 4</span> Top 10 Highest-Paying Majors &amp; Percentile Spread — Top-N Clustered Bar</h4>
+      <p><b>Why this chart?</b> Teaches you Power BI's <b>Top N visual-level filter</b> AND shows students that even within one major, 25th vs. 75th percentile pay varies widely.</p>
+      <div class="wells">
+        <div class="well"><strong>Y-axis</strong><code>Majors[Major]</code></div>
+        <div class="well"><strong>X-axis (3 measures)</strong><code>[Avg P25 Pay]</code>, <code>[Avg Median Pay]</code>, <code>[Avg P75 Pay]</code></div>
+      </div>
+      <ol style="margin:6px 0;padding-left:20px;">
+        <li>Click <b>Clustered bar chart</b> and add the fields above. (Initially it tries to show all 173 majors with a scrollbar!)</li>
+        <li>Open the <b>Filters</b> pane (right of canvas) → under <b>Filters on this visual</b>, expand <code>Major</code> → change <b>Filter type</b> from <i>Basic filtering</i> to <b>Top N</b> → Show items: <b>Top</b> <code>10</code> → drag <code>[Avg Median Pay]</code> into <b>By value</b> → click <b>Apply filter</b>!</li>
+        <li>Confirm <b>Petroleum Engineering</b> leads at <code>$95K / $110K / $125K</code>, followed by Mining, Metallurgical, Naval Architecture, and Chemical Engineering!</li>
+      </ol>
+    </div>
+
+    <div class="chart-card">
+      <h4><span class="tag y">Visual 5</span> Earnings Distribution Histogram — Clustered Column Chart</h4>
+      <div class="wells">
+        <div class="well"><strong>X-axis</strong><code>Majors[PayBand]</code></div>
+        <div class="well"><strong>Y-axis</strong><code>[Majors Count]</code></div>
+        <div class="well"><strong>Tooltips</strong><code>[Total Graduates]</code></div>
+      </div>
+      <p>Click <b>Clustered column chart</b>, place <code>PayBand</code> on X-axis and <code>[Majors Count]</code> on Y-axis, and sort ascending by <code>PayBand</code>. Turn <b>Format visual → Columns → Layout → Space between categories</b> down to <code>8%</code> so the bars look like a classic statistical histogram!</p>
+    </div>
+
+    <div class="chart-card">
+      <h4><span class="tag r">Visual 6</span> Interactive Career Advisor Table (Data Bars + Search Slicer)</h4>
+      <ol style="margin:6px 0;padding-left:20px;">
+        <li>Add a <b>Table</b> visual with columns: <code>Major</code>, <code>Major_category</code>, <code>[Total Graduates]</code>, <code>[Avg Median Pay]</code>, <code>[Weighted Unemployment %]</code>, and <code>[College Job Match %]</code>.</li>
+        <li>Right-click <code>[Avg Median Pay]</code> in the Columns well → <b>Conditional formatting → Data bars</b> → click <b>OK</b>.</li>
+        <li>Add two <b>Slicers</b> at the top: <code>Major_category</code> (Dropdown) and <code>PayBand</code> (Tile). Bonus tip: click <code>...</code> on a Major slicer → turn <b>Search</b> ON so a student can type <i>"Computer"</i> or <i>"Nursing"</i> to find any major instantly!</li>
+      </ol>
+    </div>
+
+    <ul class="task-list">
+      <li><label><input type="checkbox"> Cleaned CSV in Power Query: Proper-cased <code>Major</code>, preserved <i>nulls</i> on Food Science, added <code>PayBand</code>.</label></li>
+      <li><label><input type="checkbox"> Created weighted DAX measures (<code>Weighted Unemployment % = 7.19%</code>, <code>Women Share % = 57.5%</code>).</label></li>
+      <li><label><input type="checkbox"> Built all 6 visuals including Quadrant Bubble Scatter, 100% Stacked Bar, and Top-10 Filter Bar.</label></li>
+    </ul>
+  </section>
+
+  <!-- 6. SIGN-OFF -->
+  <section id="sign">
+    <h2 class="t">6. Client Sign-Off Checklist</h2>
+    <ul class="task-list">
+      <li><label><input type="checkbox"> Majors Count is <b>173</b> and Total Graduates is <b>6,771,654</b>.</label></li>
+      <li><label><input type="checkbox"> Avg Median Pay is <b>$40,151</b>, with <b>Engineering</b> #1 at <b>$57,383</b> and <b>Petroleum Engineering</b> #1 major at <b>$110,000</b>.</label></li>
+      <li><label><input type="checkbox"> Weighted Unemployment % reads <b>7.19%</b> (NOT 6.82%), with <b>Education</b> lowest at <b>4.95%</b> and <b>Social Science</b> highest at <b>9.67%</b>.</label></li>
+      <li><label><input type="checkbox"> Women Share % reads <b>57.5%</b> overall, with <b>Health</b> at <b>83.7%</b> and <b>Engineering</b> at <b>24.1%</b>.</label></li>
+      <li><label><input type="checkbox"> Clicking any category in the 100% Stacked Bar cross-filters the Top-10 Bar, Histogram, and Advisor Table.</label></li>
+    </ul>
+  </section>
+
+  <!-- 7. STRETCH -->
+  <section id="stretch">
+    <h2 class="t">7. Stretch Challenges</h2>
+    <ul>
+      <li><b>Report Page Tooltip Card:</b> Create a tiny tooltip page (Canvas settings → Type = <b>Tooltip</b>) showing a mini bar chart of <code>College_jobs</code> vs <code>Non_college_jobs</code> vs <code>Low_wage_jobs</code> when hovering over any bubble on the Scatter chart!</li>
+      <li><b>Weighted Median Approximation / Graduate-Weighted Pay:</b> Write <code>Grad Weighted Pay = DIVIDE(SUMX('Majors', 'Majors'[Total] * 'Majors'[Median]), [Total Graduates])</code> and compare it against the simple average <code>$40,151</code>!</li>
+    </ul>
+  </section>
+
+  <!-- 8. MISTAKES -->
+  <section id="mistakes">
+    <h2 class="t">8. Trainer's Troubleshooting: Common Beginner Mistakes</h2>
+    <div class="warn-box">
+      <b>Mistake 1 — Summing Median, P25th, or P75th:</b> Power BI defaults numeric columns to <code>SUM</code>, which produces nonsense like "$6.95M total median salary." Always wrap salary columns in <code>AVERAGE()</code> or <code>MEDIAN()</code>!
+    </div>
+    <div class="warn-box">
+      <b>Mistake 2 — Deleting Row 23 (Food Science) or replacing blanks with 0:</b> If you replace <code>ShareWomen</code> blank with <code>0</code>, Food Science looks 100% male when its gender split was simply unreported. Leave unknown demographics as <i>null</i>.
+    </div>
+    <div class="warn-box">
+      <b>Mistake 3 — Scatter Chart shows only ONE dot:</b> You forgot to put <code>Major_category</code> or <code>Major</code> into the <b>Values</b> well of the Scatter chart! Without a grouping column in <b>Values</b>, Power BI aggregates all 173 rows into one grand-total dot.
     </div>
   </section>
-  <section id="sign">
-    <h2 class="t">6. Sign-off</h2>
-    <ul class="chk"><li>☐ Row count is <b>173</b> after the cleaning steps above.</li><li>☐ Average Median is <b>$40,151</b>.</li><li>☐ The leading Major_category is <b>Engineering</b> at <b>$57,383</b>.</li><li>☐ Slicers filter every visual, and you can clear them back to the totals above.</li></ul>
-  </section>
-  <section id="stretch">
-    <h2 class="t">7. Stretch</h2>
-    <ul>
-      <li>A scatter of Median earnings (X) against Unemployment_rate (Y), with Major_category as the legend.</li>
-      <li>Add a drill-through page that keeps the slicer filters and shows the underlying rows.</li>
-      <li>Sort a month-name column by the month number so the axis is not alphabetical.</li>
-    </ul>
-  </section>
-  <section id="mist">
-    <h2 class="t">8. Mistakes that hide the answer</h2>
-    <ul>
-      <li>Averaging Unemployment_rate across a category as if every major had the same number of graduates.</li><li>Using Total (graduate count) as if it were dollars.</li>
-      <li>Summing an ID column, or averaging a rate that was already a percent.</li>
-      <li>Leaving dates as text, then wondering why the axis sorts wrong.</li>
-    </ul>
-  </section>
+
 </div>
-<footer>FiveThirtyEight college-majors data, CC BY 4.0. https://github.com/fivethirtyeight/data</footer>
+
+<footer>
+  Source: FiveThirtyEight College Majors dataset (CC BY 4.0, American Community Survey PUMS) · Manually verified against <code>data/recent-grads.csv</code> · Works 100% offline.
+</footer>
+
+<script>
+(function(){
+  var KEY = 'pbi_guide_02_v2';
+  var boxes = document.querySelectorAll('input[type=checkbox]');
+  function update(){
+    var done = 0;
+    boxes.forEach(function(b){ if(b.checked) done++; });
+    var pct = boxes.length ? Math.round((done / boxes.length) * 100) : 0;
+    document.getElementById('progText').textContent = done + ' / ' + boxes.length + ' steps completed (' + pct + '%)';
+    document.getElementById('progFill').style.width = pct + '%';
+  }
+  function save(){
+    var state = [];
+    boxes.forEach(function(b){ state.push(b.checked ? 1 : 0); });
+    try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){}
+    update();
+  }
+  try{
+    var s = JSON.parse(localStorage.getItem(KEY) || '[]');
+    boxes.forEach(function(b, i){ if(s[i] !== undefined) b.checked = !!s[i]; });
+  }catch(e){}
+  boxes.forEach(function(b){ b.addEventListener('change', save); });
+  window.resetChecks = function(){
+    if(confirm('Reset all checkmarks for Practice Set 02?')){
+      boxes.forEach(function(b){ b.checked = false; });
+      save();
+    }
+  };
+  update();
+})();
+</script>
 </body>
 </html>
