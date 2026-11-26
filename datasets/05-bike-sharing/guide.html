@@ -3,146 +3,396 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Practice · Bike sharing</title>
+<title>05 · Bike Sharing Operations — Beginner to Advanced Excel &amp; Power BI Guide</title>
 <style>
-  :root{--calc:#1d6f42;--calc-soft:#e7f3ec;--pbi:#caa400;--pbi-soft:#fff8e0;--ink:#1f2430;--muted:#5b6472;--line:#e3e7ee;--bg:#f6f8fb;--accent:#0b3d63;}
+  :root{
+    --calc:#1d6f42; --calc-soft:#e7f3ec;
+    --pbi:#b78900; --pbi-soft:#fff8e0;
+    --ink:#1f2430; --muted:#5b6472; --line:#e3e7ee; --bg:#f6f8fb;
+    --accent:#0b3d63; --danger:#c0392b; --danger-soft:#fdeaea;
+  }
   *{box-sizing:border-box;}
-  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.6;}
-  header{background:linear-gradient(120deg,#1d6f42,#0b3d63);color:#fff;padding:28px 26px;}
-  header h1{margin:0 0 6px;font-size:24px;}
-  header p{margin:0;max-width:860px;font-size:14.5px;}
-  header a{color:#fff;}
-  .wrap{max-width:1080px;margin:22px auto 70px;padding:0 22px;}
-  .facts{background:#fff;border:1px solid var(--line);border-left:5px solid var(--calc);border-radius:12px;padding:16px 20px;margin-bottom:22px;}
-  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.62;}
+  header{background:linear-gradient(125deg,#1d6f42 0%,#0f5132 48%,#0b3d63 100%);color:#fff;padding:32px 26px 28px;}
+  header .kicker{font-size:12px;text-transform:uppercase;letter-spacing:.8px;opacity:.88;font-weight:700;margin-bottom:6px;}
+  header h1{margin:0 0 8px;font-size:26px;letter-spacing:.2px;}
+  header p{margin:0;max-width:880px;font-size:14.8px;opacity:.95;}
+  header a{color:#fff;text-decoration:underline;}
+  .top-nav{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;align-items:center;}
+  .pill{display:inline-block;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.32);padding:4px 12px;border-radius:20px;font-size:12.5px;text-decoration:none;color:#fff;}
+  .wrap{max-width:1120px;margin:20px auto 70px;padding:0 22px;}
+  .prog-bar{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 18px;margin-bottom:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;position:sticky;top:10px;z-index:20;box-shadow:0 2px 8px rgba(15,23,42,.05);}
+  .prog-track{flex:1;min-width:180px;height:10px;background:#eef2f7;border-radius:99px;overflow:hidden;}
+  .prog-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--calc),#caa400);transition:width .25s;}
+  .prog-text{font-size:13px;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums;}
+  .btn-sm{border:1px solid var(--line);background:#fff;color:var(--ink);padding:5px 11px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;}
+  .btn-sm:hover{background:#f1f5f9;}
+  .toc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:20px;font-size:13.5px;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;}
+  .toc a{color:var(--accent);text-decoration:none;font-weight:600;}
+  .toc a:hover{text-decoration:underline;}
+  section{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px 26px;margin-bottom:20px;box-shadow:0 1px 2px rgba(20,30,50,.03);}
+  h2.t{font-size:20px;margin:0 0 14px;border-bottom:2px solid var(--calc);padding-bottom:8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  h2.t.pbi-h{border-bottom-color:#caa400;}
+  h3{font-size:16px;margin:20px 0 8px;color:var(--accent);}
+  h4{font-size:14.5px;margin:14px 0 6px;color:var(--ink);}
+  p{margin:8px 0;}
+  .facts{background:#fff;border:1px solid var(--line);border-left:5px solid var(--calc);border-radius:12px;padding:16px 18px;margin-bottom:18px;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:10px;}
   .stat{background:var(--calc-soft);border-radius:9px;padding:10px 12px;}
   .stat b{display:block;font-size:18px;color:var(--calc);}
   .stat span{font-size:12px;color:var(--muted);}
-  section{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 24px;margin-bottom:20px;}
-  h2.t{font-size:20px;margin:0 0 12px;border-bottom:2px solid var(--calc);padding-bottom:6px;}
-  h3{font-size:16px;margin:18px 0 8px;color:var(--accent);}
-  code{background:#eef2f7;padding:1px 6px;border-radius:5px;font-size:13px;font-family:"SF Mono",Consolas,monospace;}
-  pre{background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:10px;overflow:auto;font-size:13px;font-family:"SF Mono",Consolas,monospace;line-height:1.5;}
-  table{border-collapse:collapse;width:100%;margin:10px 0;font-size:13.5px;}
-  th,td{border:1px solid var(--line);padding:7px 10px;text-align:left;}
-  th{background:#f1f5f9;}
-  .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;color:#fff;}
-  .g{background:#27ae60;} .y{background:#e0a800;} .r{background:#c0392b;}
-  .req{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px dashed var(--line);}
+  .stat.warn{background:var(--danger-soft);}
+  .stat.warn b{color:var(--danger);}
+  code{background:#eef2f7;padding:2px 6px;border-radius:5px;font-size:12.8px;font-family:"SF Mono",Consolas,monospace;color:#0f172a;}
+  pre{background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:10px;overflow:auto;font-size:13px;font-family:"SF Mono",Consolas,monospace;line-height:1.55;margin:10px 0;}
+  table{border-collapse:collapse;width:100%;margin:12px 0;font-size:13.3px;}
+  th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top;}
+  th{background:#f1f5f9;font-weight:700;}
+  .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;color:#fff;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap;}
+  .g{background:#1d6f42;} .y{background:#d99000;} .r{background:#c0392b;} .b{background:#0b3d63;}
+  .req{display:flex;gap:12px;align-items:flex-start;padding:9px 0;border-bottom:1px dashed var(--line);}
   .req:last-child{border-bottom:none;}
-  .step{background:var(--calc-soft);border-radius:8px;padding:12px 14px;margin:10px 0;}
+  .step{background:var(--calc-soft);border:1px solid #cde4d6;border-radius:10px;padding:14px 16px;margin:12px 0;}
   .step b{color:var(--calc);}
-  .pbi-box{background:var(--pbi-soft);border-radius:8px;padding:12px 14px;margin:10px 0;}
-  .pbi-box b{color:#8a6a00;}
+  .pbi-box{background:var(--pbi-soft);border:1px solid #f2df9d;border-radius:10px;padding:14px 16px;margin:12px 0;}
+  .pbi-box b{color:#7c5d00;}
+  .chart-card{border:1px solid var(--line);border-left:5px solid #caa400;border-radius:10px;padding:14px 16px;margin:14px 0;background:#fcfdff;}
+  .chart-card h4{margin:0 0 8px;font-size:15.5px;color:var(--accent);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .wells{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin:10px 0;}
+  .well{background:#f4f6fa;border:1px solid var(--line);border-radius:7px;padding:7px 10px;font-size:12.8px;}
+  .well strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-bottom:2px;}
   .note{background:#fffaf0;border-left:4px solid #e0a800;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
-  .chk li{margin:4px 0;}
-  .toc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:20px;font-size:14px;}
-  .toc a{color:var(--accent);text-decoration:none;}
-  footer{text-align:center;color:var(--muted);font-size:12px;padding:10px 20px 28px;}
+  .warn-box{background:var(--danger-soft);border-left:4px solid var(--danger);border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
+  .wireframe{display:grid;grid-template-columns:repeat(12,1fr);gap:8px;background:#eef2f7;padding:14px;border-radius:12px;margin:12px 0;font-size:12px;}
+  .wf-box{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:10px;text-align:center;font-weight:600;color:var(--accent);}
+  .wf-box small{display:block;font-weight:400;color:var(--muted);margin-top:3px;font-size:11px;}
+  ul.task-list{list-style:none;padding:0;margin:10px 0;}
+  ul.task-list li{padding:5px 0;}
+  ul.task-list label{display:flex;gap:9px;align-items:flex-start;cursor:pointer;font-size:13.8px;}
+  ul.task-list input{margin-top:4px;width:16px;height:16px;flex:none;accent-color:var(--calc);}
+  footer{text-align:center;color:var(--muted);font-size:12.5px;padding:10px 20px 28px;}
   footer a{color:#3d4a5c;}
+  @media(max-width:740px){
+    .wrap{padding:0 12px;}
+    section{padding:16px 16px;}
+    .wireframe{grid-template-columns:1fr 1fr;}
+    .wf-box{grid-column:span 2 !important;}
+  }
 </style>
 </head>
 <body>
+
 <header>
-  <h1>05 · Bike sharing</h1>
-  <p>Daily and hourly rentals, with weather. Use the daily file in Excel and the hourly file in Power BI. Figures below were computed from the file in this folder. <a href="../index.html">All practice sets</a></p>
-</header>
-<div class="wrap">
-  <div class="toc"><b>Jump to:</b>
-    <a href="#profile">Profile</a> ·
-    <a href="#brief">Brief</a> ·
-    <a href="#req">Requirements</a> ·
-    <a href="#calc">Excel</a> ·
-    <a href="#pbi">Power BI</a> ·
-    <a href="#sign">Sign-off</a> ·
-    <a href="#stretch">Stretch</a>
+  <div class="kicker">Practice Set 05 of 20 · Urban Mobility, Operations Dispatch &amp; Weather Elasticity</div>
+  <h1>05 · Bike Sharing — Grain Discipline, Rush-Hour Heatmaps &amp; Weather Impact</h1>
+  <p>Two files sit in this folder: <code>day.csv</code> (731 days) and <code>hour.csv</code> (17,379 hours) covering 3,292,679 Capital Bikeshare trips across 2011–2012. Learn why you must NEVER join two fact tables at different grains, decode numeric weather/season codes into executive labels, and build Dual-Peak Rush-Hour Curves and a 24×7 Dispatch Heatmap Matrix!</p>
+  <div class="top-nav">
+    <a class="pill" href="../index.html">← All 20 Practice Sets</a>
+    <a class="pill" href="../../index.html">← Main Excel &amp; Power BI Outline</a>
+    <span class="pill">Charts Taught: Dual-Line Rush-Hour Curve · 24×7 Heatmap Matrix · Stacked Column · Weather Combo · Donut</span>
   </div>
+</header>
+
+<div class="wrap">
+
+  <div class="prog-bar">
+    <span class="prog-text" id="progText">0 / 0 steps completed</span>
+    <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+    <button class="btn-sm" type="button" onclick="resetChecks()">Reset checklist</button>
+  </div>
+
+  <div class="toc">
+    <b>Step-by-Step Map:</b>
+    <a href="#profile">1. Data Profile &amp; Codebook</a> ·
+    <a href="#brief">2. Client Brief</a> ·
+    <a href="#req">3. Requirements</a> ·
+    <a href="#excel">4. Phase A: Excel (day.csv)</a> ·
+    <a href="#pbi">5. Phase B: Power BI (hour.csv)</a> ·
+    <a href="#sign">6. Sign-Off</a> ·
+    <a href="#stretch">7. Stretch</a> ·
+    <a href="#mistakes">8. Common Mistakes</a>
+  </div>
+
+  <!-- 1. PROFILE -->
   <section id="profile">
-    <h2 class="t">1. Verified profile</h2>
-    <div class="facts"><div class="grid"><div class="stat"><b>731</b><span>Rows</span></div><div class="stat"><b>3,292,679</b><span>Total cnt</span></div><div class="stat"><b>3</b><span>Top season</span></div></div></div>
-    <p>Files: <code>day.csv</code>, <code>hour.csv</code>. Fact table for the steps: <code>Trips</code>, renamed to <code>Trips</code> in Power BI.</p>
-    
-    
-        <h3>Biggest groups (check your pivot against this)</h3>
-        <table><tr><th>season</th><th>cnt</th></tr><tr><td>3</td><td>1,061,129</td></tr><tr><td>2</td><td>918,589</td></tr><tr><td>4</td><td>841,613</td></tr><tr><td>1</td><td>471,348</td></tr></table>
-    <div class="note">day.csv and hour.csv are two grains. Do not stack them and do not relate them. Excel practices on the 731 daily rows. Power BI practices on the hourly file.</div>
+    <h2 class="t">1. Verified Data Profile, Grain Rule &amp; UCI Codebook</h2>
+    <div class="facts">
+      <div class="grid">
+        <div class="stat"><b>3,292,679</b><span>Total Rides (in BOTH files!)</span></div>
+        <div class="stat"><b>731 vs 17,379</b><span>Rows: day.csv vs hour.csv</span></div>
+        <div class="stat"><b>81.17%</b><span>Registered Members (2,672,662)</span></div>
+        <div class="stat"><b>+64.88%</b><span>2012 vs 2011 Ride Growth</span></div>
+        <div class="stat"><b>5:00 PM (525/hr)</b><span>#1 Weekday Commute Peak</span></div>
+        <div class="stat warn"><b>-45.5% Rides</b><span>Drop in Light Rain/Snow vs Clear</span></div>
+      </div>
+    </div>
+
+    <div class="note">
+      <b>Golden Data-Modeling Lesson — Grain Discipline:</b><br>
+      <code>day.csv</code> (731 daily summaries) and <code>hour.csv</code> (17,379 hourly records) represent the <b>exact same 3,292,679 rides</b> at two different levels of detail ("grains").<br>
+      • Use <code>day.csv</code> in <b>Excel Phase A</b> (fast, lightweight 731-row PivotTable check).<br>
+      • Load <b>ONLY <code>hour.csv</code></b> into <b>Power BI Phase B</b>! Because <code>hour.csv</code> contains both the date (<code>dteday</code>) AND the hour (<code>hr</code>), it can answer every daily, monthly, annual, AND hourly question from one table. Never load both or link them!
+    </div>
+
+    <h3>UCI Codebook (Translate These Numeric Codes into Readable Labels!)</h3>
+    <p>Beginners often leave raw codes like <code>season = 3</code> or <code>weathersit = 2</code> on their charts — clients hate guessing numbers! Use this official dictionary from the dataset documentation:</p>
+    <table>
+      <tr><th>Column</th><th>Raw Codes</th><th>Clean Label &amp; Verified Ride Totals (<code>hour.csv</code>)</th></tr>
+      <tr><td><code>season</code></td><td><code>1, 2, 3, 4</code></td><td><code>1 = Winter–Spring</code> (471,348 rides) · <code>2 = Spring–Summer</code> (918,589) · <code>3 = Peak Summer</code> (<b>1,061,129 — #1!</b>) · <code>4 = Autumn</code> (841,613)</td></tr>
+      <tr><td><code>yr</code></td><td><code>0, 1</code></td><td><code>0 = 2011</code> (1,243,103 rides) · <code>1 = 2012</code> (2,049,576 rides, <b>+64.9% YoY</b>)</td></tr>
+      <tr><td><code>workingday</code></td><td><code>0, 1</code></td><td><code>1 = Working Day</code> (Mon–Fri non-holiday; twin peaks 8am &amp; 5pm) · <code>0 = Weekend / Holiday</code> (1pm peak)</td></tr>
+      <tr><td><code>weekday</code></td><td><code>0..6</code></td><td><code>0 = Sun</code>, <code>1 = Mon</code>, <code>2 = Tue</code>, <code>3 = Wed</code>, <code>4 = Thu</code>, <code>5 = Fri</code>, <code>6 = Sat</code></td></tr>
+      <tr><td><code>weathersit</code></td><td><code>1, 2, 3, 4</code></td><td><code>1 = Clear / Partly Cloudy</code> (204.9 rides/hr, 11,413 hrs) · <code>2 = Mist / Cloudy</code> (175.2/hr, 4,544 hrs) · <code>3 = Light Rain / Snow</code> (111.6/hr, 1,419 hrs) · <code>4 = Heavy Storm / Ice</code> (74.3/hr, 3 hrs)</td></tr>
+      <tr><td><code>temp</code>, <code>hum</code></td><td><code>0.0–1.0</code></td><td>Normalized fractions: <code>Celsius ≈ temp × 41</code>, <code>Humidity % = hum × 100</code>. <b>Average only — NEVER SUM!</b></td></tr>
+      <tr><td><code>casual</code>, <code>registered</code>, <code>cnt</code></td><td>Whole Number</td><td><code>casual</code> (620,017) + <code>registered</code> (2,672,662) = <code>cnt</code> (3,292,679) on every single row!</td></tr>
+    </table>
   </section>
+
+  <!-- 2. BRIEF -->
   <section id="brief">
-    <h2 class="t">2. The client brief</h2>
-    <p><b>Who:</b> A city bike-share operator.</p>
-    <p><b>The ask:</b> <i>I need to know which days and which hours we are busy, how much of that is casual riders versus members, and whether bad weather actually cuts rides.</i></p>
+    <h2 class="t">2. Real-World Client Brief</h2>
+    <p><b>Client:</b> Director of Fleet Operations at a City Bike-Share Network.</p>
+    <p><b>The Ask:</b> <i>"Our rebalancing vans keep arriving at empty docks too late! Show me the exact hours and weekdays when stations get slammed, how weekday commuter traffic differs from weekend tourist rides, how fast our member base grew from 2011 to 2012, and how much rain cuts hourly demand so we can schedule bike maintenance during wet shifts."</i></p>
   </section>
+
+  <!-- 3. REQUIREMENTS -->
   <section id="req">
-    <h2 class="t">3. Requirements</h2>
-    <div class="req"><span class="tag g">Beginner</span><div>KPI strip — row count, cnt.</div></div><div class="req"><span class="tag g">Beginner</span><div>Bar chart of <b>season</b>.</div></div><div class="req"><span class="tag y">Inter.</span><div>Break the same number down by <b>holiday</b>.</div></div><div class="req"><span class="tag r">Advan.</span><div>A rate using <b>yr</b> (two values). Use DIVIDE, not an average of a rate column.</div></div><div class="req"><span class="tag r">Advan.</span><div>Slicers that cross-filter every visual on the page.</div></div>
+    <h2 class="t">3. Project Requirements (Beginner → Advanced)</h2>
+    <div class="req"><span class="tag g">Beginner</span><div><b>Excel sanity check on <code>day.csv</code>:</b> Verify <code>casual + registered = cnt</code> across all 731 days, translate <code>season</code> codes, and confirm the <code>3,292,679</code> ride grand total.</div></div>
+    <div class="req"><span class="tag g">Beginner</span><div><b>4-Card Operations KPI Strip + Rider Mix Donut:</b> Total Rides (<code>3.29M</code>), Registered Share % (<code>81.2%</code>), Avg Hourly Rides (<code>189.5</code>), and 2012 YoY Ride Growth % (<code>+64.9%</code>).</div></div>
+    <div class="req"><span class="tag y">Inter.</span><div><b>Commuter vs. Weekend Hourly Profile (Dual-Line Chart):</b> Plot hours <code>0–23</code> on X-axis and <code>Avg Hourly Rides</code> on Y-axis split by <code>DayType</code> — proving the 8am/5pm rush hours vs 1pm weekend leisure curve!</div></div>
+    <div class="req"><span class="tag y">Inter.</span><div><b>Monthly Growth &amp; Rider Mix (Stacked Column Chart):</b> Show 24 monthly bars (Jan 2011 – Dec 2012) stacked by <code>Registered</code> vs <code>Casual</code> rides.</div></div>
+    <div class="req"><span class="tag y">Inter.</span><div><b>Weather Elasticity Combo Chart:</b> Compare <code>Avg Hourly Rides</code> (Columns) and <code>Casual Share %</code> (Line) across Clear, Mist, Light Rain/Snow, and Stormy hours.</div></div>
+    <div class="req"><span class="tag r">Advan.</span><div><b>24 × 7 Fleet Rebalancing Heatmap (Matrix with Gradient Conditional Formatting):</b> Hours <code>0–23</code> down Rows × Days <code>Sun–Sat</code> across Columns, shaded dynamically by <code>Avg Hourly Rides</code>!</div></div>
   </section>
-  <section id="calc">
-    <h2 class="t">4. Phase A — Microsoft Excel</h2>
-    <p>Goal: open the file cleanly, add only the helper columns you need, and prove one total with a PivotTable before you touch Power BI.</p>
-    
-    <h3>Step 1 — Open it the right way</h3>
-    <div class="step"><b>Excel:</b> open <code>day.csv</code> only. <b>Power BI:</b> load <code>hour.csv</code> as the fact table. Leave <code>day.csv</code> out of the model.<br><b>Formats:</b> <code>cnt</code> → Number; <code>registered</code> → Number; <code>casual</code> → Number; <code>weathersit</code> → Number. Then <b>View → Freeze Panes → Freeze Top Row</b>.</div>
-    <h3>Step 2 — Look for dirt</h3>
-    <div class="step"><ul><li>season, weathersit, and weekday are codes, not labels. Keep a small lookup (1 = clear, and so on) or replace the values.</li><li>temp and hum are normalized (not degrees, not a percent in the 0–100 sense). Do not sum them.</li><li>cnt is the measure. instant is a row id.</li></ul></div>
-    
-        <h3>Step 3 — No extra formula required</h3>
-        <div class="step">The columns you need are already on the sheet. Use the pivot in the next step to prove the totals before you leave Excel.</div>
-    <h3>Step 4 — Pivot check</h3>
-    <div class="step">Select the data → <b>Insert → PivotTable</b>. Rows = <code>season</code>.
-    Values = <b>Sum of cnt</b>.
-    The grand total must be <b>3,292,679</b>. If it is not, the filter or the number format is wrong — fix that before Power BI.
-    <div class='note'><code>hour.csv</code> has <b>17,379</b> rows and the same total rides if you sum <code>cnt</code> (<b>3,292,679</b>). Do not put both files in one model. The sign-off row count is <code>day.csv</code>.</div></div>
-    <h3>Step 5 — Save</h3>
-    <div class="step"><b>Save As</b> <code>05-bike-sharing-clean.xlsx</code>. Power BI should read this file, not a half-filtered view you forgot to clear.</div>
+
+  <!-- 4. EXCEL -->
+  <section id="excel">
+    <h2 class="t">4. Phase A — Step-by-Step in Microsoft Excel (<code>day.csv</code>, 731 Rows)</h2>
+
+    <h3>Step A1 — Open <code>day.csv</code> &amp; Verify Data Integrity</h3>
+    <div class="step">
+      <ol style="margin:0;padding-left:20px;">
+        <li>Open Excel → <b>Data → From Text/CSV</b> → select <code>datasets/05-bike-sharing/data/day.csv</code> → Delimiter = Comma → <b>Load</b>.</li>
+        <li>Format column <code>B</code> (<code>dteday</code>) as Date and columns <code>N:P</code> (<code>casual</code>, <code>registered</code>, <code>cnt</code>) as <code>#,##0</code>.</li>
+        <li><b>Integrity Check Formula (Column Q):</b> In <code>Q1</code> type <code>MathCheck</code>, and in <code>Q2</code> type <code>=(N2+O2)-P2</code>. Check the filter dropdown on <code>MathCheck</code>: the ONLY value is <code>0</code>! Every single day balances to the exact trip.</li>
+      </ol>
+    </div>
+
+    <h3>Step A2 — Add Readable Labels in Excel (Columns R &amp; S)</h3>
+    <div class="step">
+      <ol style="margin:0;padding-left:20px;">
+        <li><b>Column R — <code>SeasonName</code>:</b> <code>=CHOOSE(C2, "1. Winter-Spring", "2. Spring-Summer", "3. Peak Summer", "4. Autumn")</code><br>
+        <i>Beginner Bonus Function!</i> Whenever a code is cleanly <code>1, 2, 3, 4</code>, Excel's <code>CHOOSE()</code> is much shorter and cleaner than four nested <code>IF</code>s!</li>
+        <li><b>Column S — <code>TempCelsius</code>:</b> <code>=ROUND(J2*41, 1)</code> (converts normalized <code>0–1</code> temperature into readable °C).</li>
+      </ol>
+    </div>
+
+    <h3>Step A3 — PivotTable Check</h3>
+    <div class="step">
+      Insert a PivotTable: Rows = <code>SeasonName</code>, Columns = <code>yr</code>, Values = <code>Sum of cnt</code>. Confirm <b>3. Peak Summer = 1,061,129</b>, <code>yr 0</code> (2011) = <b>1,243,103</b>, <code>yr 1</code> (2012) = <b>2,049,576</b>, and Grand Total = <b>3,292,679</b> across <b>731 daily rows</b>! Save as <code>05-bike-sharing-day-check.xlsx</code>.
+    </div>
+
+    <ul class="task-list">
+      <li><label><input type="checkbox"> Checked <code>(casual + registered) - cnt = 0</code> across all 731 days in <code>day.csv</code>.</label></li>
+      <li><label><input type="checkbox"> Used <code>CHOOSE()</code> to label seasons and verified 3,292,679 total rides in Excel PivotTable.</label></li>
+    </ul>
   </section>
+
+  <!-- 5. POWER BI -->
   <section id="pbi">
-    <h2 class="t">5. Phase B — Power BI</h2>
-    <h3>Step 1 — Get data</h3>
-    <div class="pbi-box"><b>Get data → Text/CSV</b> → <code>hour.csv</code>. dteday is a date. cnt is total rentals. casual + registered should equal cnt.</div>
-    <h3>Step 2 — Power Query</h3>
-    <div class="pbi-box">Rename the main query to <code>Trips</code>. Set the types from Step 1. Watch <b>Applied Steps</b>. Then <b>Close &amp; Apply</b>.
-     Add a check column <code>casual + registered - cnt</code>. It should be 0. Then remove that check column.</div>
-    <h3>Step 3 — Model</h3>
-    <div class="pbi-box"><p>One table. A star schema is not required for this set.</p>
-    <p>Hide key columns you do not want on the report. A hidden column can still be used by a relationship.</p></div>
-    <h3>Step 4 — Measures</h3>
-    <p>Write these as <b>measures</b>, not calculated columns. Replace the placeholder filter with a real value from the column.</p>
-    <pre>cnt = SUM(&#x27;Trips&#x27;[cnt])
-Row Count = COUNTROWS(&#x27;Trips&#x27;)
-registered = SUM(&#x27;Trips&#x27;[registered])
-Filtered rows = CALCULATE([Row Count], &#x27;Trips&#x27;[yr] = &lt;one of the two values&gt;)</pre>
-    <h3>Step 5 — Visuals</h3>
+    <h2 class="t pbi-h">5. Phase B — Complete Power BI &amp; Charts Journey (<code>hour.csv</code>, 17,379 Rows)</h2>
+
+    <h3>Stage 1 &amp; 2 — Load <code>hour.csv</code> &amp; Translate Codes in Power Query</h3>
     <div class="pbi-box">
-      <ul>
-        <li>Cards for the measures in Step 4.</li>
-        <li>Bar chart: axis <code>season</code>, value the main measure.</li>
-        
-        <li>A slicer for each small category (yr, holiday, workingday).</li>
-        <li>Click a bar and confirm the other visuals filter. Use <b>Format → Edit interactions</b> if one visual should stay still.</li>
-      </ul>
+      <ol style="margin:0;padding-left:20px;">
+        <li>In Power BI Desktop, click <b>Home → Text/CSV</b> → select <code>data/hour.csv</code> (leave <code>day.csv</code> alone!) → click <b>Transform Data</b>. Rename query to <code>Trips</code>.</li>
+        <li>Set <code>dteday</code> = <b>Date</b>; <code>hr</code>, <code>weekday</code>, <code>casual</code>, <code>registered</code>, <code>cnt</code> = <b>123 (Whole Number)</b>; <code>temp</code>, <code>atemp</code>, <code>hum</code>, <code>windspeed</code> = <b>1.2 (Decimal Number)</b>.</li>
+        <li><b>Add 4 Human-Readable Conditional Columns</b> (<b>Add Column → Conditional Column</b>):
+          <ul>
+            <li><code>DayType</code>: If <code>workingday = 1</code> → <code>Working Day</code>, Else → <code>Weekend / Holiday</code>.</li>
+            <li><code>WeatherLabel</code>: <code>1 → 1. Clear</code> · <code>2 → 2. Mist / Cloudy</code> · <code>3 → 3. Light Rain / Snow</code> · Else → <code>4. Heavy Storm</code>.</li>
+            <li><code>SeasonLabel</code>: <code>1 → 1. Winter-Spring</code> · <code>2 → 2. Spring-Summer</code> · <code>3 → 3. Peak Summer</code> · Else → <code>4. Autumn</code>.</li>
+            <li><code>WeekdayShort</code> (Custom Column): <code>List.Range({"Sun","Mon","Tue","Wed","Thu","Fri","Sat"}, [weekday], 1){0}</code> (or Conditional Column <code>0=Sun … 6=Sat</code>).</li>
+          </ul>
+        </li>
+        <li>Click <b>Home → Close &amp; Apply</b>. Confirm <b>17,379 rows</b> load into <code>Trips</code>!</li>
+      </ol>
+    </div>
+
+    <h3>Stage 3 — Model View: Calendar Table &amp; Weekday Sorting</h3>
+    <div class="pbi-box">
+      <ol style="margin:0;padding-left:20px;">
+        <li>In <b>Data view → New table</b>, create a continuous 2011–2012 Calendar:
+<pre>Calendar =
+ADDCOLUMNS (
+    CALENDAR ( DATE ( 2011, 1, 1 ), DATE ( 2012, 12, 31 ) ),
+    "Year", YEAR ( [Date] ),
+    "MonthNum", MONTH ( [Date] ),
+    "Month", FORMAT ( [Date], "MMM" ),
+    "YearMonth", FORMAT ( [Date], "YYYY-MM" )
+)</pre>
+        Mark as date table, sort <code>Month</code> by <code>MonthNum</code>, and relate <code>Calendar[Date]</code> (1) → <code>Trips[dteday]</code> (*).</li>
+        <li>On <code>Trips</code>, select <code>WeekdayShort</code> → <b>Column tools → Sort by column → weekday</b> (so columns run <code>Sun, Mon, Tue, Wed, Thu, Fri, Sat</code>!). Also set <code>hr</code> Summarization = <b>Don't summarize</b>.</li>
+      </ol>
+    </div>
+
+    <h3>Stage 4 — DAX Measures (Beginner → Advanced)</h3>
+<pre>Total Rides = SUM ( 'Trips'[cnt] )
+// Format: #,0 -> Check: 3,292,679 (exact match to day.csv!)
+
+Hourly Rows = COUNTROWS ( 'Trips' )
+// Format: #,0 -> Check: 17,379
+
+Registered Rides = SUM ( 'Trips'[registered] )
+// Check: 2,672,662
+
+Casual Rides = SUM ( 'Trips'[casual] )
+// Check: 620,017
+
+Registered Share % = DIVIDE ( [Registered Rides], [Total Rides], 0 )
+// Format: 0.0% -> Check: 81.2% (81.17%)
+
+Casual Share % = DIVIDE ( [Casual Rides], [Total Rides], 0 )
+// Format: 0.0% -> Check: 18.8% (18.83%)
+
+Avg Hourly Rides = AVERAGE ( 'Trips'[cnt] )
+// Format: 0.0 -> Check: 189.5 rides/hr overall (525.3 at 5pm on Working Days!)
+
+Avg Temp Celsius = AVERAGE ( 'Trips'[temp] ) * 41
+// Format: 0.0°C
+
+Rides YoY % =
+VAR PriorYr = CALCULATE ( [Total Rides], SAMEPERIODLASTYEAR ( 'Calendar'[Date] ) )
+RETURN
+    IF ( NOT ISBLANK ( PriorYr ), DIVIDE ( [Total Rides] - PriorYr, PriorYr ) )
+// Select Year = 2012 -> Check: +64.9% (+64.88%)</pre>
+
+    <h3>Stage 5 — Power BI Charts Journey: Build the 6-Visual Dispatch Dashboard</h3>
+
+    <div class="wireframe">
+      <div class="wf-box" style="grid-column:span 12;">Header + Slicers: Calendar[Year] (Tile) · SeasonLabel (Tile) · DayType (Tile)</div>
+      <div class="wf-box" style="grid-column:span 3;">Card: Total Rides<small>3,292,679</small></div>
+      <div class="wf-box" style="grid-column:span 3;">Card: Registered Share<small>81.2%</small></div>
+      <div class="wf-box" style="grid-column:span 3;">Card: Avg Hourly Rides<small>189.5 / hr</small></div>
+      <div class="wf-box" style="grid-column:span 3;">Card: 2012 YoY Growth<small>+64.9%</small></div>
+      <div class="wf-box" style="grid-column:span 7;">Visual 2: Dual-Line Hourly Curve<small>Hours 0–23: Working Day (8am/5pm Twin Peaks) vs Weekend (1pm)</small></div>
+      <div class="wf-box" style="grid-column:span 5;">Visual 3: 24 × 7 Heatmap Matrix<small>Hour (Rows) × Weekday (Cols) Gradient Colored</small></div>
+      <div class="wf-box" style="grid-column:span 6;">Visual 4: Monthly Stacked Column<small>24 Months: Registered vs Casual Expansion</small></div>
+      <div class="wf-box" style="grid-column:span 4;">Visual 5: Weather Impact Combo<small>Avg Rides/Hr (Cols) + Casual % (Line)</small></div>
+      <div class="wf-box" style="grid-column:span 2;">Visual 6: Donut<small>Member vs Casual</small></div>
+    </div>
+
+    <div class="chart-card">
+      <h4><span class="tag y">Visual 2</span> Commuter vs. Leisure Diurnal Curve — Dual-Line Chart</h4>
+      <div class="wells">
+        <div class="well"><strong>X-axis</strong><code>Trips[hr]</code> (Continuous, 0 to 23)</div>
+        <div class="well"><strong>Y-axis</strong><code>[Avg Hourly Rides]</code></div>
+        <div class="well"><strong>Legend</strong><code>Trips[DayType]</code></div>
+      </div>
+      <p>This single visual is the crown jewel of transit analytics: the <b>Working Day</b> line forms an unmistakable "M" shape spiking at <b>Hour 8 (477.0)</b> and <b>Hour 17 (525.3)</b>, while the <b>Weekend / Holiday</b> line forms a smooth hill peaking at <b>Hour 13 (372.7)</b>!</p>
+    </div>
+
+    <div class="chart-card">
+      <h4><span class="tag r">Visual 3</span> 24 × 7 Fleet Rebalancing Heatmap — Matrix Visual</h4>
+      <p><b>Why this chart?</b> Power BI doesn't need a custom marketplace visual to make a heatmap — a formatted <b>Matrix</b> does it natively!</p>
+      <div class="wells">
+        <div class="well"><strong>Rows</strong><code>Trips[hr]</code></div>
+        <div class="well"><strong>Columns</strong><code>Trips[WeekdayShort]</code></div>
+        <div class="well"><strong>Values</strong><code>[Avg Hourly Rides]</code></div>
+      </div>
+      <ol style="margin:6px 0;padding-left:20px;">
+        <li>Create a <b>Matrix</b> with the wells above. Turn off <b>Row subtotals</b> and <b>Column subtotals</b> in Format visual so the heatmap stays focused on the 168 hourly cells.</li>
+        <li>Right-click <code>[Avg Hourly Rides]</code> in Values → <b>Conditional formatting → Background color</b> → Gradient from pale cream (Minimum) → amber (Middle) → deep forest green (Maximum).</li>
+        <li>Optional pro touch: apply the exact same gradient to <b>Font color</b> if you want a pure color-only heatmap, or keep numbers visible for dispatchers!</li>
+      </ol>
+    </div>
+
+    <div class="chart-card">
+      <h4><span class="tag y">Visual 4, 5 &amp; 6</span> Monthly Stacked Column + Weather Combo + Rider Mix Donut</h4>
+      <p>1. <b>Stacked column chart:</b> X-axis = <code>Calendar[YearMonth]</code>, Y-axis = <code>[Registered Rides]</code> &amp; <code>[Casual Rides]</code>.<br>
+      2. <b>Line and clustered column chart:</b> X-axis = <code>Trips[WeatherLabel]</code>, Column y-axis = <code>[Avg Hourly Rides]</code> (<code>204.9 → 175.2 → 111.6 → 74.3</code>), Line y-axis = <code>[Casual Share %]</code> (watch casual riders vanish during rain while registered commuters keep riding!).<br>
+      3. <b>Donut chart:</b> Values = <code>[Registered Rides]</code> and <code>[Casual Rides]</code>.</p>
+    </div>
+
+    <ul class="task-list">
+      <li><label><input type="checkbox"> Loaded ONLY <code>hour.csv</code> (17,379 rows) into Power BI and translated numeric codes.</label></li>
+      <li><label><input type="checkbox"> Built Dual-Line Hourly Curve, 24×7 Heatmap Matrix, Stacked Column, Weather Combo, and Donut.</label></li>
+    </ul>
+  </section>
+
+  <!-- 6. SIGN-OFF -->
+  <section id="sign">
+    <h2 class="t">6. Client Sign-Off Checklist</h2>
+    <ul class="task-list">
+      <li><label><input type="checkbox"> Excel <code>day.csv</code> has <b>731 rows</b> and Power BI <code>hour.csv</code> has <b>17,379 rows</b> — and BOTH show exact Total Rides = <b>3,292,679</b>!</label></li>
+      <li><label><input type="checkbox"> Registered Share = <b>81.2%</b> (2,672,662) and Casual Share = <b>18.8%</b> (620,017).</label></li>
+      <li><label><input type="checkbox"> Selecting 2012 shows <b>2,049,576 rides</b> and <b>+64.9% YoY growth</b> over 2011 (1,243,103).</label></li>
+      <li><label><input type="checkbox"> Working Day curve peaks at <b>Hour 17 (525.3/hr)</b> and <b>Hour 8 (477.0/hr)</b>; Weekend curve peaks at <b>Hour 13 (372.7/hr)</b>.</label></li>
+      <li><label><input type="checkbox"> No chart displays raw mystery numbers like "Season 3" or "Weathersit 1".</label></li>
+    </ul>
+  </section>
+
+  <!-- 7. STRETCH -->
+  <section id="stretch">
+    <h2 class="t">7. Stretch Challenges</h2>
+    <ul>
+      <li><b>Temperature Sweet-Spot Scatter:</b> Plot <code>Avg Temp Celsius</code> (X-axis) vs <code>[Total Rides]</code> (Y-axis) at the daily grain using <code>VALUES('Calendar'[Date])</code> to discover at what temperature heat starts <i>reducing</i> ridership!</li>
+      <li><b>What-If Bad Weather Maintenance Threshold:</b> Create a numeric parameter for rain-hour threshold to count how many daytime shift hours qualify for dock maintenance.</li>
+    </ul>
+  </section>
+
+  <!-- 8. MISTAKES -->
+  <section id="mistakes">
+    <h2 class="t">8. Trainer's Troubleshooting: Common Beginner Mistakes</h2>
+    <div class="warn-box">
+      <b>Mistake 1 — Loading both <code>day.csv</code> and <code>hour.csv</code> and relating them on <code>dteday</code>:</b> One day matches 24 hours, creating a trap where daily numbers multiply 24× or cross-filters break. Always keep one fact table per grain!
+    </div>
+    <div class="warn-box">
+      <b>Mistake 2 — Summing <code>temp</code> or <code>hum</code>:</b> Adding 24 hourly temperatures together gives "14.2 normalized degrees." Always use <code>AVERAGE()</code> for weather readings!
+    </div>
+    <div class="warn-box">
+      <b>Mistake 3 — Subtotals washing out the Heatmap Matrix colors:</b> If Row/Column subtotals are left ON and conditional formatting includes totals, the Grand Total turns dark green and all 168 hourly cells turn pale white! Always set Conditional Formatting "Apply to" = <b>Values only</b> (not Totals).
     </div>
   </section>
-  <section id="sign">
-    <h2 class="t">6. Sign-off</h2>
-    <ul class="chk"><li>☐ Row count is <b>731</b> after the cleaning steps above.</li><li>☐ Total cnt is <b>3,292,679</b>.</li><li>☐ The leading season is <b>3</b> at <b>1,061,129</b>.</li><li>☐ Slicers filter every visual, and you can clear them back to the totals above.</li></ul>
-  </section>
-  <section id="stretch">
-    <h2 class="t">7. Stretch</h2>
-    <ul>
-      <li>A line of cnt by hour, with a slicer for workingday, built on hour.csv.</li>
-      <li>Add a drill-through page that keeps the slicer filters and shows the underlying rows.</li>
-      <li>Sort a month-name column by the month number so the axis is not alphabetical.</li>
-    </ul>
-  </section>
-  <section id="mist">
-    <h2 class="t">8. Mistakes that hide the answer</h2>
-    <ul>
-      <li>Relating day.csv to hour.csv on dteday. One day matches many hours, and both tables already contain cnt, so totals double.</li><li>Summing the temperature column.</li>
-      <li>Summing an ID column, or averaging a rate that was already a percent.</li>
-      <li>Leaving dates as text, then wondering why the axis sorts wrong.</li>
-    </ul>
-  </section>
+
 </div>
-<footer>UCI Bike Sharing Dataset. Fanaee-T and Gama, 2013. https://archive.ics.uci.edu/dataset/275/bike+sharing+dataset</footer>
+
+<footer>
+  Source: UCI Bike Sharing Dataset (Fanaee-T &amp; Gama, 2013) · Manually verified against <code>data/day.csv</code> &amp; <code>data/hour.csv</code> · Works 100% offline.
+</footer>
+
+<script>
+(function(){
+  var KEY = 'pbi_guide_05_v2';
+  var boxes = document.querySelectorAll('input[type=checkbox]');
+  function update(){
+    var done = 0;
+    boxes.forEach(function(b){ if(b.checked) done++; });
+    var pct = boxes.length ? Math.round((done / boxes.length) * 100) : 0;
+    document.getElementById('progText').textContent = done + ' / ' + boxes.length + ' steps completed (' + pct + '%)';
+    document.getElementById('progFill').style.width = pct + '%';
+  }
+  function save(){
+    var state = [];
+    boxes.forEach(function(b){ state.push(b.checked ? 1 : 0); });
+    try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){}
+    update();
+  }
+  try{
+    var s = JSON.parse(localStorage.getItem(KEY) || '[]');
+    boxes.forEach(function(b, i){ if(s[i] !== undefined) b.checked = !!s[i]; });
+  }catch(e){}
+  boxes.forEach(function(b){ b.addEventListener('change', save); });
+  window.resetChecks = function(){
+    if(confirm('Reset all checkmarks for Practice Set 05?')){
+      boxes.forEach(function(b){ b.checked = false; });
+      save();
+    }
+  };
+  update();
+})();
+</script>
 </body>
 </html>

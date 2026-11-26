@@ -3,150 +3,353 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Practice · Online retail invoices</title>
+<title>14 · UK Online Retail (542k Rows) — Beginner to Advanced Excel &amp; Power BI Guide</title>
 <style>
-  :root{--calc:#1d6f42;--calc-soft:#e7f3ec;--pbi:#caa400;--pbi-soft:#fff8e0;--ink:#1f2430;--muted:#5b6472;--line:#e3e7ee;--bg:#f6f8fb;--accent:#0b3d63;}
+  :root{
+    --calc:#1d6f42; --calc-soft:#e7f3ec;
+    --pbi:#b78900; --pbi-soft:#fff8e0;
+    --ink:#1f2430; --muted:#5b6472; --line:#e3e7ee; --bg:#f6f8fb;
+    --accent:#0b3d63; --danger:#c0392b; --danger-soft:#fdeaea;
+  }
   *{box-sizing:border-box;}
-  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.6;}
-  header{background:linear-gradient(120deg,#1d6f42,#0b3d63);color:#fff;padding:28px 26px;}
-  header h1{margin:0 0 6px;font-size:24px;}
-  header p{margin:0;max-width:860px;font-size:14.5px;}
-  header a{color:#fff;}
-  .wrap{max-width:1080px;margin:22px auto 70px;padding:0 22px;}
-  .facts{background:#fff;border:1px solid var(--line);border-left:5px solid var(--calc);border-radius:12px;padding:16px 20px;margin-bottom:22px;}
-  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.62;}
+  header{background:linear-gradient(125deg,#1d6f42 0%,#0f5132 48%,#0b3d63 100%);color:#fff;padding:32px 26px 28px;}
+  header .kicker{font-size:12px;text-transform:uppercase;letter-spacing:.8px;opacity:.88;font-weight:700;margin-bottom:6px;}
+  header h1{margin:0 0 8px;font-size:26px;letter-spacing:.2px;}
+  header p{margin:0;max-width:880px;font-size:14.8px;opacity:.95;}
+  header a{color:#fff;text-decoration:underline;}
+  .top-nav{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;align-items:center;}
+  .pill{display:inline-block;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.32);padding:4px 12px;border-radius:20px;font-size:12.5px;text-decoration:none;color:#fff;}
+  .wrap{max-width:1120px;margin:20px auto 70px;padding:0 22px;}
+  .prog-bar{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 18px;margin-bottom:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;position:sticky;top:10px;z-index:20;box-shadow:0 2px 8px rgba(15,23,42,.05);}
+  .prog-track{flex:1;min-width:180px;height:10px;background:#eef2f7;border-radius:99px;overflow:hidden;}
+  .prog-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--calc),#caa400);transition:width .25s;}
+  .prog-text{font-size:13px;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums;}
+  .btn-sm{border:1px solid var(--line);background:#fff;color:var(--ink);padding:5px 11px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;}
+  .btn-sm:hover{background:#f1f5f9;}
+  .toc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:20px;font-size:13.5px;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;}
+  .toc a{color:var(--accent);text-decoration:none;font-weight:600;}
+  .toc a:hover{text-decoration:underline;}
+  section{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px 26px;margin-bottom:20px;box-shadow:0 1px 2px rgba(20,30,50,.03);}
+  h2.t{font-size:20px;margin:0 0 14px;border-bottom:2px solid var(--calc);padding-bottom:8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  h2.t.pbi-h{border-bottom-color:#caa400;}
+  h3{font-size:16px;margin:20px 0 8px;color:var(--accent);}
+  h4{font-size:14.5px;margin:14px 0 6px;color:var(--ink);}
+  p{margin:8px 0;}
+  .facts{background:#fff;border:1px solid var(--line);border-left:5px solid var(--calc);border-radius:12px;padding:16px 18px;margin-bottom:18px;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:10px;}
   .stat{background:var(--calc-soft);border-radius:9px;padding:10px 12px;}
   .stat b{display:block;font-size:18px;color:var(--calc);}
   .stat span{font-size:12px;color:var(--muted);}
-  section{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 24px;margin-bottom:20px;}
-  h2.t{font-size:20px;margin:0 0 12px;border-bottom:2px solid var(--calc);padding-bottom:6px;}
-  h3{font-size:16px;margin:18px 0 8px;color:var(--accent);}
-  code{background:#eef2f7;padding:1px 6px;border-radius:5px;font-size:13px;font-family:"SF Mono",Consolas,monospace;}
-  pre{background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:10px;overflow:auto;font-size:13px;font-family:"SF Mono",Consolas,monospace;line-height:1.5;}
-  table{border-collapse:collapse;width:100%;margin:10px 0;font-size:13.5px;}
-  th,td{border:1px solid var(--line);padding:7px 10px;text-align:left;}
-  th{background:#f1f5f9;}
-  .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;color:#fff;}
-  .g{background:#27ae60;} .y{background:#e0a800;} .r{background:#c0392b;}
-  .req{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px dashed var(--line);}
+  .stat.warn{background:var(--danger-soft);}
+  .stat.warn b{color:var(--danger);}
+  code{background:#eef2f7;padding:2px 6px;border-radius:5px;font-size:12.8px;font-family:"SF Mono",Consolas,monospace;color:#0f172a;}
+  pre{background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:10px;overflow:auto;font-size:13px;font-family:"SF Mono",Consolas,monospace;line-height:1.55;margin:10px 0;}
+  table{border-collapse:collapse;width:100%;margin:12px 0;font-size:13.3px;}
+  th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top;}
+  th{background:#f1f5f9;font-weight:700;}
+  .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;color:#fff;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap;}
+  .g{background:#1d6f42;} .y{background:#d99000;} .r{background:#c0392b;} .b{background:#0b3d63;}
+  .req{display:flex;gap:12px;align-items:flex-start;padding:9px 0;border-bottom:1px dashed var(--line);}
   .req:last-child{border-bottom:none;}
-  .step{background:var(--calc-soft);border-radius:8px;padding:12px 14px;margin:10px 0;}
+  .step{background:var(--calc-soft);border-radius:10px;border:1px solid #cde4d6;padding:14px 16px;margin:12px 0;}
   .step b{color:var(--calc);}
-  .pbi-box{background:var(--pbi-soft);border-radius:8px;padding:12px 14px;margin:10px 0;}
-  .pbi-box b{color:#8a6a00;}
+  .pbi-box{background:var(--pbi-soft);border:1px solid #f2df9d;border-radius:10px;padding:14px 16px;margin:12px 0;}
+  .pbi-box b{color:#7c5d00;}
+  .chart-card{border:1px solid var(--line);border-left:5px solid #caa400;border-radius:10px;padding:14px 16px;margin:14px 0;background:#fcfdff;}
+  .chart-card h4{margin:0 0 8px;font-size:15.5px;color:var(--accent);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .wells{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin:10px 0;}
+  .well{background:#f4f6fa;border:1px solid var(--line);border-radius:7px;padding:7px 10px;font-size:12.8px;}
+  .well strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-bottom:2px;}
   .note{background:#fffaf0;border-left:4px solid #e0a800;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
-  .chk li{margin:4px 0;}
-  .toc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:20px;font-size:14px;}
-  .toc a{color:var(--accent);text-decoration:none;}
-  footer{text-align:center;color:var(--muted);font-size:12px;padding:10px 20px 28px;}
+  .warn-box{background:var(--danger-soft);border-left:4px solid var(--danger);border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
+  .wireframe{display:grid;grid-template-columns:repeat(12,1fr);gap:8px;background:#eef2f7;padding:14px;border-radius:12px;margin:12px 0;font-size:12px;}
+  .wf-box{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:10px;text-align:center;font-weight:600;color:var(--accent);}
+  .wf-box small{display:block;font-weight:400;color:var(--muted);margin-top:3px;font-size:11px;}
+  ul.task-list{list-style:none;padding:0;margin:10px 0;}
+  ul.task-list li{padding:5px 0;}
+  ul.task-list label{display:flex;gap:9px;align-items:flex-start;cursor:pointer;font-size:13.8px;}
+  ul.task-list input{margin-top:4px;width:16px;height:16px;flex:none;accent-color:var(--calc);}
+  footer{text-align:center;color:var(--muted);font-size:12.5px;padding:10px 20px 28px;}
   footer a{color:#3d4a5c;}
+  @media(max-width:740px){
+    .wrap{padding:0 12px;}
+    section{padding:16px 16px;}
+    .wireframe{grid-template-columns:1fr 1fr;}
+    .wf-box{grid-column:span 2 !important;}
+  }
 </style>
 </head>
 <body>
+
 <header>
-  <h1>14 · Online retail invoices</h1>
-  <p>UK online gift wholesaler. One row is one invoice line. About 540,000 lines — Excel will feel slow; that is part of the lesson. Figures below were computed from the file in this folder. <a href="../index.html">All practice sets</a></p>
-</header>
-<div class="wrap">
-  <div class="toc"><b>Jump to:</b>
-    <a href="#profile">Profile</a> ·
-    <a href="#brief">Brief</a> ·
-    <a href="#req">Requirements</a> ·
-    <a href="#calc">Excel</a> ·
-    <a href="#pbi">Power BI</a> ·
-    <a href="#sign">Sign-off</a> ·
-    <a href="#stretch">Stretch</a>
+  <div class="kicker">Practice Set 14 of 20 · Half-Million-Row ERP Ledger, Credit Notes &amp; 80/20 Pareto DAX</div>
+  <h1>14 · UK Online Retail (541,909 Rows) — Credit-Note Returns, <code>SUMX</code> &amp; Pareto Charts</h1>
+  <p>Scale up to <b>541,909 real ERP invoice lines</b> (£9.75M Net Revenue) from a UK wholesale giftware merchant! Reconcile Gross Sales (<code>£10.67M</code>) against <code>C</code>-prefixed Credit Notes (<code>-£896.8K</code>) and Bad-Debt write-offs (<code>-£22.1K</code>), preserve 135,080 Guest checkouts, fix customs country codes (<code>EIRE → Ireland</code>), and build an <b>80/20 Customer Pareto Chart</b>!</p>
+  <div class="top-nav">
+    <a class="pill" href="../index.html">← All 20 Practice Sets</a>
+    <a class="pill" href="../../index.html">← Main Excel &amp; Power BI Outline</a>
+    <span class="pill">Charts Taught: Gross-to-Net Waterfall · 80/20 Pareto Combo · Export Map · Wholesale vs Guest Column</span>
   </div>
+</header>
+
+<div class="wrap">
+
+  <div class="prog-bar">
+    <span class="prog-text" id="progText">0 / 0 steps completed</span>
+    <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+    <button class="btn-sm" type="button" onclick="resetChecks()">Reset checklist</button>
+  </div>
+
+  <div class="toc">
+    <b>Step-by-Step Map:</b>
+    <a href="#profile">1. 542k-Row Ledger Reconciliation</a> ·
+    <a href="#brief">2. Client Brief</a> ·
+    <a href="#req">3. Requirements</a> ·
+    <a href="#excel">4. Phase A: Excel at 542k Rows</a> ·
+    <a href="#pbi">5. Phase B: Power BI &amp; Pareto DAX</a> ·
+    <a href="#sign">6. Sign-Off</a> ·
+    <a href="#stretch">7. Stretch</a> ·
+    <a href="#mistakes">8. Common Mistakes</a>
+  </div>
+
+  <!-- 1. PROFILE -->
   <section id="profile">
-    <h2 class="t">1. Verified profile</h2>
-    <div class="facts"><div class="grid"><div class="stat"><b>541,909</b><span>Rows</span></div><div class="stat"><b>$9.75M</b><span>Total LineSales</span></div><div class="stat"><b>2010-12-01 → 2011-12-09</b><span>Dates</span></div><div class="stat"><b>United Kingdom</b><span>Top Country</span></div></div></div>
-    <p>File: <code>Online Retail.xlsx</code>. Fact table for the steps: <code>Online Retail</code>, renamed to <code>Invoices</code> in Power BI.</p>
-    
-    
-        <h3>Biggest groups (check your pivot against this)</h3>
-        <table><tr><th>Country</th><th>LineSales</th></tr><tr><td>United Kingdom</td><td>$8.19M</td></tr><tr><td>Netherlands</td><td>$284,662</td></tr><tr><td>EIRE</td><td>$263,277</td></tr><tr><td>Germany</td><td>$221,698</td></tr><tr><td>France</td><td>$197,404</td></tr><tr><td>Australia</td><td>$137,077</td></tr></table>
-    <div class="note">There is no revenue column. Revenue is Quantity times UnitPrice. Cancellations are negative, so a plain sum is already a net. CustomerID is blank on a large share of rows — those are still real invoices.</div>
+    <h2 class="t">1. Verified 541,909-Row ERP Reconciliation</h2>
+    <div class="facts">
+      <div class="grid">
+        <div class="stat"><b>541,909</b><span>ERP Invoice Lines (Sheet: Online Retail)</span></div>
+        <div class="stat"><b>£10,666,685</b><span>Gross Positive Sales</span></div>
+        <div class="stat warn"><b>-£896,812</b><span>9,288 'C' Credit-Note Lines (8.41%)</span></div>
+        <div class="stat"><b>£9,747,748</b><span>All-Rows Net Revenue (SUMX)</span></div>
+        <div class="stat"><b>84.00% UK</b><span>£8.19M Domestic · £1.56M Export</span></div>
+        <div class="stat"><b>4,372</b><span>Registered Accounts (+24.9% Guest!)</span></div>
+      </div>
+    </div>
+
+    <div class="note">
+      <b>Exact Penny-for-Penny ERP Ledger Reconciliation (Memorize This Pattern!):</b><br>
+      • <b>Gross Positive Sales</b> (<code>Quantity &gt; 0</code> and <code>UnitPrice &gt; 0</code>): <b><code>£10,666,684.54</code></b><br>
+      • <b>Less: Credit-Note Returns</b> (<code>InvoiceNo</code> starts with <code>"C"</code>, 9,288 rows): <b><code>-£896,812.49</code></b><br>
+      • <b>Less: Bad-Debt Write-Offs</b> (<code>InvoiceNo</code> starts with <code>"A"</code>, <code>UnitPrice &lt; 0</code>, 2 rows): <b><code>-£22,124.12</code></b><br>
+      • <b>Equals Net Ledger Revenue</b> (<code>SUMX('Retail', [Quantity]*[UnitPrice])</code>): <b><code>£9,747,747.93</code></b>!<br>
+      <i>And NEVER delete the 135,080 rows with blank <code>CustomerID</code>!</i> Those are real paid walk-in/guest checkouts worth £1.45M — label them <code>"Guest Checkout"</code> instead!
+    </div>
+
+    <h3>Top 6 Countries &amp; Top Wholesale Accounts Verification</h3>
+    <table>
+      <tr><th>Country</th><th>Net Revenue (£)</th><th>Share %</th><th>Top CustomerID</th><th>Net Spend (£)</th></tr>
+      <tr><td>United Kingdom</td><td><b>£8,187,806.36</b></td><td>84.00%</td><td><code>14646</code> (Netherlands)</td><td><b>£279,489.02</b></td></tr>
+      <tr><td>Netherlands</td><td>£284,661.54</td><td>2.92%</td><td><code>18102</code> (UK)</td><td>£256,438.49</td></tr>
+      <tr><td><code>EIRE</code> → <b>Ireland</b></td><td>£263,276.82</td><td>2.70%</td><td><code>17450</code> (UK)</td><td>£187,482.17</td></tr>
+      <tr><td>Germany</td><td>£221,698.21</td><td>2.27%</td><td><code>14911</code> (Ireland)</td><td>£132,572.62</td></tr>
+      <tr><td>France</td><td>£197,403.90</td><td>2.03%</td><td><code>12415</code> (Australia)</td><td>£123,725.45</td></tr>
+      <tr><td>Australia</td><td>£137,077.27</td><td>1.41%</td><td colspan="2"><i>4,372 registered accounts total</i></td></tr>
+    </table>
   </section>
+
+  <!-- 2. BRIEF -->
   <section id="brief">
-    <h2 class="t">2. The client brief</h2>
-    <p><b>Who:</b> The owner of a gift wholesaler.</p>
-    <p><b>The ask:</b> <i>Which countries and which products make the revenue, and how much of the file is cancellations? Cancellations use an invoice number that starts with C and a negative quantity.</i></p>
+    <h2 class="t">2. Real-World Client Brief</h2>
+    <p><b>Client:</b> Finance Director &amp; Export Sales Lead, UK Giftware Wholesaler.</p>
+    <p><b>The Ask:</b> <i>"Excel freezes every time our team writes 542,000 VLOOKUPs on this ledger! Move our reporting into Power BI's columnar engine, reconcile Gross Sales vs. Credit Notes vs. Net Revenue to the penny, show our European/Australian export footprint without the UK drowning out the map, and build an 80/20 Pareto chart of our top wholesale accounts."</i></p>
   </section>
+
+  <!-- 3. REQUIREMENTS -->
   <section id="req">
-    <h2 class="t">3. Requirements</h2>
-    <div class="req"><span class="tag g">Beginner</span><div>KPI strip — row count, LineSales.</div></div><div class="req"><span class="tag g">Beginner</span><div>Bar chart of <b>Country</b>.</div></div><div class="req"><span class="tag g">Beginner</span><div>Trend by <b>InvoiceDate</b>.</div></div><div class="req"><span class="tag y">Inter.</span><div>Top 10 <b>Country</b>.</div></div><div class="req"><span class="tag r">Advan.</span><div>Slicers that cross-filter every visual on the page.</div></div>
+    <h2 class="t">3. Project Requirements (Beginner → Advanced)</h2>
+    <div class="req"><span class="tag g">Beginner</span><div><b>Clean 541,909 Rows Without Dropping Revenue:</b> Classify <code>EntryType</code> (<code>Gross Sale</code>, <code>Credit Note</code>, <code>Bad Debt</code>, <code>Stock Write-Off</code>), map blank <code>CustomerID</code> → <code>"Guest"</code>, and fix <code>EIRE → Ireland</code> &amp; <code>RSA → South Africa</code>.</div></div>
+    <div class="req"><span class="tag g">Beginner</span><div><b>Gross-to-Net KPI Strip + Waterfall Chart:</b> Reconcile <code>£10.67M → -£896.8K → -£22.1K → £9.75M</code>.</div></div>
+    <div class="req"><span class="tag y">Inter.</span><div><b>Export Markets Map (Excluding UK Domestic Giant) + Registered vs. Guest Monthly Stacked Column.</b></div></div>
+    <div class="req"><span class="tag r">Advan.</span><div><b>80/20 Wholesale Customer Pareto Combo Chart:</b> Rank registered accounts and plot cumulative % of wholesale revenue from 0% to 100%!</div></div>
   </section>
-  <section id="calc">
-    <h2 class="t">4. Phase A — Microsoft Excel</h2>
-    <p>Goal: open the file cleanly, add only the helper columns you need, and prove one total with a PivotTable before you touch Power BI.</p>
-    
-    <h3>Step 1 — Open it the right way</h3>
-    <div class="step"><b>Open</b> <code>Online Retail.xlsx</code>. If Excel is slow, do the pivot on a Table and do not scroll every row. Power BI is the better place for the full file.<br><b>Formats:</b> <code>InvoiceDate</code> → Date; <code>UnitPrice</code> → Number (2 decimals); <code>StockCode</code> → Number; <code>Quantity</code> → Number. Then <b>View → Freeze Panes → Freeze Top Row</b>.</div>
-    <h3>Step 2 — Look for dirt</h3>
-    <div class="step"><ul><li>Do not delete blank CustomerID rows.</li><li>Invoice numbers that start with C are cancellations. Quantity is negative on those rows.</li><li>UnitPrice can be zero. A helper LineSales = Quantity * UnitPrice is the revenue column.</li></ul></div>
-    
-        <h3>Step 3 — Helper columns</h3>
-        <div class="step">Put these in the first empty columns and fill down (double-click the fill handle).<br>
-        <b>LineSales</b> &nbsp; <code>=D2*F2</code><br>
-<b>Year</b> &nbsp; <code>=YEAR(E2)</code><br>
-<b>MonthNum</b> &nbsp; <code>=MONTH(E2)</code><br>
-<b>MonthName</b> &nbsp; <code>=TEXT(E2,&quot;MMM&quot;)</code>
-        <br><i>Excel on this machine uses a comma between arguments. If your Excel uses semicolons, swap them.</i></div>
-    <h3>Step 4 — Pivot check</h3>
-    <div class="step">Select the data → <b>Insert → PivotTable</b>. Rows = <code>Country</code>. Group the date by years and put years in Columns.
-    Values = <b>Sum of LineSales</b>.
-    The grand total must be <b>$9.75M</b>. If it is not, the filter or the number format is wrong — fix that before Power BI.
+
+  <!-- 4. EXCEL -->
+  <section id="excel">
+    <h2 class="t">4. Phase A — Step-by-Step in Microsoft Excel (Performance Survival Rules!)</h2>
+
+    <h3>Step A1 — Why 542,000 Rows Need Power Pivot / PivotTables (Not Volatile Formulas)</h3>
+    <div class="step">
+      Open <code>datasets/14-online-retail/data/Online Retail.xlsx</code> (give Excel 8–12 seconds to unpack 541,909 rows!). Add just two lightweight columns:<br>
+      • <code>I2 (LineAmount)</code>: <code>=D2*F2</code><br>
+      • <code>J2 (EntryType)</code>: <code>=IF(LEFT(A2,1)="C","Credit Note",IF(F2&lt;0,"Bad Debt",IF(D2&gt;0,"Gross Sale","Stock Adj")))</code><br>
+      Insert a PivotTable with <code>EntryType</code> in Rows and <code>Sum of LineAmount</code> in Values: verify <b>Gross Sale = £10,666,684.54</b>, <b>Credit Note = -£896,812.49</b>, <b>Bad Debt = -£22,124.12</b>, and <b>Grand Total = £9,747,747.93</b>!
     </div>
-    <h3>Step 5 — Save</h3>
-    <div class="step"><b>Save As</b> <code>14-online-retail-clean.xlsx</code>. Power BI should read this file, not a half-filtered view you forgot to clear.</div>
+
+    <ul class="task-list">
+      <li><label><input type="checkbox"> Reconciled all four ERP <code>EntryType</code> buckets in Excel to £9,747,747.93 Net Revenue.</label></li>
+    </ul>
   </section>
+
+  <!-- 5. POWER BI -->
   <section id="pbi">
-    <h2 class="t">5. Phase B — Power BI</h2>
-    <h3>Step 1 — Get data</h3>
-    <div class="pbi-box"><b>Get data → Excel</b> → the Online Retail sheet. InvoiceNo stays text so the leading C is kept.</div>
-    <h3>Step 2 — Power Query</h3>
-    <div class="pbi-box">Rename the main query to <code>Invoices</code>. Set the types from Step 1. Watch <b>Applied Steps</b>. Then <b>Close &amp; Apply</b>.
-    </div>
-    <h3>Step 3 — Model</h3>
-    <div class="pbi-box"><p>One table. A star schema is not required for this set.</p>
-    <p>Hide key columns you do not want on the report. A hidden column can still be used by a relationship.</p></div>
-    <h3>Step 4 — Measures</h3>
-    <p>Write these as <b>measures</b>, not calculated columns. Replace the placeholder filter with a real value from the column.</p>
-    <pre>Line Sales = SUMX(&#x27;Invoices&#x27;, &#x27;Invoices&#x27;[Quantity] * &#x27;Invoices&#x27;[UnitPrice])
-Row Count = COUNTROWS(&#x27;Invoices&#x27;)
-UnitPrice = SUM(&#x27;Invoices&#x27;[UnitPrice])</pre>
-    <h3>Step 5 — Visuals</h3>
+    <h2 class="t pbi-h">5. Phase B — Complete Power BI &amp; 80/20 Pareto Journey</h2>
+
+    <h3>Stage 1 &amp; 2 — High-Speed Power Query Cleaning (Zero Pre-Calculated Line Column Needed!)</h3>
     <div class="pbi-box">
-      <ul>
-        <li>Cards for the measures in Step 4.</li>
-        <li>Bar chart: axis <code>Country</code>, value the main measure.</li>
-        <li>Line chart: axis <code>InvoiceDate</code>.</li>
-        <li>A slicer for each small category (Country).</li>
-        <li>Click a bar and confirm the other visuals filter. Use <b>Format → Edit interactions</b> if one visual should stay still.</li>
-      </ul>
+      <ol style="margin:0;padding-left:20px;">
+        <li>Click <b>Home → Excel workbook</b> → select <code>data/Online Retail.xlsx</code> → check <code>Online Retail</code> → <b>Transform Data</b>. Rename query to <code>Retail</code>.</li>
+        <li><b>Important Type Check:</b> Ensure <code>InvoiceNo</code>, <code>StockCode</code>, and <code>CustomerID</code> are all <b>ABC (Text)</b>! (Because <code>InvoiceNo</code> has <code>C536379</code> and <code>StockCode</code> has <code>85123A</code>!)</li>
+        <li>Replace <code>null</code> in <code>CustomerID</code> with <code>"Guest"</code>.</li>
+        <li>In <code>Country</code>, use <b>Replace Values</b>: <code>EIRE → Ireland</code>, <code>RSA → South Africa</code>, <code>Channel Islands → United Kingdom</code>.</li>
+        <li>Add Conditional/Custom Column <code>EntryType</code>:
+<pre>if Text.StartsWith([InvoiceNo], "C") then "Credit Note"
+else if [UnitPrice] &lt; 0 then "Bad Debt"
+else if [Quantity] &gt; 0 and [UnitPrice] &gt; 0 then "Gross Sale"
+else "Stock Write-Off"</pre>
+        </li>
+        <li>Extract <code>OrderDate</code> (Date Only) from <code>InvoiceDate</code>. Click <b>Home → Close &amp; Apply</b> — watch Power BI's VertiPaq engine compress 541,909 rows into ~12 MB in seconds!</li>
+      </ol>
+    </div>
+
+    <h3>Stage 3 &amp; 4 — Calendar Table + Gross/Net &amp; 80/20 Pareto DAX</h3>
+    <p>Create a <code>Calendar</code> table (<code>2010-12-01</code> to <code>2011-12-09</code>) and relate <code>Calendar[Date] → Retail[OrderDate]</code>. Then write:</p>
+<pre>Net Revenue =
+SUMX ( 'Retail', 'Retail'[Quantity] * 'Retail'[UnitPrice] )
+// Check: £9,747,747.93
+
+Gross Sales =
+CALCULATE ( [Net Revenue], 'Retail'[EntryType] = "Gross Sale" )
+// Check: £10,666,684.54
+
+Credit Note Returns =
+CALCULATE ( [Net Revenue], 'Retail'[EntryType] = "Credit Note" )
+// Check: -£896,812.49
+
+Return Rate % =
+DIVIDE ( ABS ( [Credit Note Returns] ), [Gross Sales] )
+// Check: 8.41%
+
+Registered Accounts =
+CALCULATE ( DISTINCTCOUNT ( 'Retail'[CustomerID] ), 'Retail'[CustomerID] &lt;&gt; "Guest" )
+// Check: 4,372
+
+// ADVANCED: 80/20 Customer Pareto Cumulative % (across Top Registered Accounts)
+Pareto Cumulative % =
+VAR CurrentCustRev = [Net Revenue]
+VAR AllRegCustomers =
+    FILTER ( ALLSELECTED ( 'Retail'[CustomerID] ), 'Retail'[CustomerID] &lt;&gt; "Guest" )
+VAR TotalRegRev =
+    CALCULATE ( [Net Revenue], AllRegCustomers )
+VAR CumRev =
+    SUMX (
+        FILTER ( AllRegCustomers, [Net Revenue] &gt;= CurrentCustRev ),
+        [Net Revenue]
+    )
+RETURN
+    DIVIDE ( CumRev, TotalRegRev )</pre>
+
+    <h3>Stage 5 — Power BI Charts Journey: Build the 5-Visual Wholesale Ledger Suite</h3>
+
+    <div class="wireframe">
+      <div class="wf-box" style="grid-column:span 12;">Header + Slicers: Date Range · Country · Account Type (Registered vs Guest)</div>
+      <div class="wf-box" style="grid-column:span 3;">Card: Gross Sales<small>£10.67M</small></div>
+      <div class="wf-box" style="grid-column:span 3;">Card: Credit Returns<small>-£896.8K (8.41%)</small></div>
+      <div class="wf-box" style="grid-column:span 3;">Card: Net Revenue<small>£9.75M</small></div>
+      <div class="wf-box" style="grid-column:span 3;">Card: Registered Accounts<small>4,372</small></div>
+      <div class="wf-box" style="grid-column:span 5;">Visual 2: Gross-to-Net Ledger Waterfall<small>Gross £10.67M → Returns -£897K → Bad Debt -£22K → Total £9.75M</small></div>
+      <div class="wf-box" style="grid-column:span 7;">Visual 3: Top 50 Customers 80/20 Pareto Combo<small>Columns: Net Revenue (£279K #1) · Line: Pareto Cumulative %</small></div>
+      <div class="wf-box" style="grid-column:span 6;">Visual 4: International Export Map (Excl. UK)<small>Netherlands £285K · Ireland £263K · Germany £222K</small></div>
+      <div class="wf-box" style="grid-column:span 6;">Visual 5: Monthly Seasonality Stacked Column<small>Nov 2011 Pre-Christmas Wholesale Surge!</small></div>
+    </div>
+
+    <div class="chart-card">
+      <h4><span class="tag y">Visual 2</span> Gross-to-Net ERP Reconciliation — Waterfall Chart</h4>
+      <div class="wells">
+        <div class="well"><strong>Category</strong><code>Retail[EntryType]</code> (filter out <code>Stock Write-Off</code> which is £0.00)</div>
+        <div class="well"><strong>Y-axis</strong><code>[Net Revenue]</code></div>
+      </div>
+      <p>Green bar starts at <code>£10.67M</code> (Gross Sale), drops red by <code>-£896.8K</code> (Credit Note) and <code>-£22.1K</code> (Bad Debt), and lands cleanly on the blue <b>Total = £9.75M</b> pillar!</p>
+    </div>
+
+    <div class="chart-card">
+      <h4><span class="tag r">Visual 3</span> 80/20 Wholesale Customer Concentration — Pareto Combo Chart (First Time in This Course!)</h4>
+      <div class="wells">
+        <div class="well"><strong>X-axis</strong><code>Retail[CustomerID]</code> (Visual filter: <code>CustomerID &lt;&gt; "Guest"</code> AND Top N = Top 40 by <code>[Net Revenue]</code>)</div>
+        <div class="well"><strong>Column Y-axis</strong><code>[Net Revenue]</code></div>
+        <div class="well"><strong>Line Y-axis</strong><code>[Pareto Cumulative %]</code> (format as <code>0.0%</code>!)</div>
+      </div>
+      <p><b>Executive Insight:</b> Just the Top 5 wholesale accounts (<code>14646</code>, <code>18102</code>, <code>17450</code>, <code>14911</code>, <code>12415</code>) generate nearly <b>£980,000</b> — over 11% of all registered wholesale revenue!</p>
+    </div>
+
+    <div class="chart-card">
+      <h4><span class="tag y">Visual 4 &amp; 5</span> International Export Map + Holiday Wholesale Surge</h4>
+      <p>1. <b>Map:</b> Location = <code>Retail[Country]</code>, Bubble size = <code>[Net Revenue]</code>, Visual filter: <code>Country is not United Kingdom</code> (so the 36 export countries aren't dwarfed by the UK's 84%!). Confirm <b>Netherlands (£285K)</b>, <b>Ireland (£263K)</b>, and <b>Germany (£222K)</b> lead exports!<br>
+      2. <b>Stacked column chart:</b> X-axis = <code>Calendar[YearMonth]</code>, Y-axis = <code>[Net Revenue]</code>, spotting the massive Sep–Nov 2011 retail restocking surge ahead of Christmas!</p>
+    </div>
+
+    <ul class="task-list">
+      <li><label><input type="checkbox"> Built Gross-to-Net Waterfall Chart reconciling £10.67M Gross → £9.75M Net.</label></li>
+      <li><label><input type="checkbox"> Built Top-40 Customer Pareto Combo Chart and International Export Map (with <code>EIRE → Ireland</code> fixed).</label></li>
+    </ul>
+  </section>
+
+  <!-- 6. SIGN-OFF -->
+  <section id="sign">
+    <h2 class="t">6. Client Sign-Off Checklist</h2>
+    <ul class="task-list">
+      <li><label><input type="checkbox"> Gross Sales = <b>£10,666,684.54</b>; Credit Notes = <b>-£896,812.49</b> (<code>8.41%</code>); Net Revenue = <b>£9,747,747.93</b>.</label></li>
+      <li><label><input type="checkbox"> Registered Accounts = <b>4,372</b> (#1 <code>14646</code> = <b>£279,489.02</b>), and 135,080 Guest lines are preserved.</label></li>
+      <li><label><input type="checkbox"> UK share = <b>84.00%</b> (£8,187,806.36) and Ireland (<code>EIRE</code>) plots accurately on the map (£263,276.82).</label></li>
+    </ul>
+  </section>
+
+  <!-- 7. STRETCH -->
+  <section id="stretch">
+    <h2 class="t">7. Stretch Challenges</h2>
+    <ul>
+      <li><b>Postage &amp; Fee Isolation:</b> Filter <code>StockCode</code> values <code>POST</code>, <code>DOT</code>, <code>M</code> (Manual), and <code>AMAZONFEE</code> to separate Merchandise Sales from Shipping &amp; Marketplace Fees!</li>
+    </ul>
+  </section>
+
+  <!-- 8. MISTAKES -->
+  <section id="mistakes">
+    <h2 class="t">8. Trainer's Troubleshooting: Common Beginner Mistakes</h2>
+    <div class="warn-box">
+      <b>Mistake 1 — Setting <code>InvoiceNo</code> or <code>StockCode</code> to Whole Number:</b> Every <code>C</code>-prefixed credit note (<code>C536379</code>) turns into an Error and silently wipes out <code>-£896,812</code> of returns, overstating Net Revenue by nearly £900K!
+    </div>
+    <div class="warn-box">
+      <b>Mistake 2 — Writing <code>SUM(Quantity) * SUM(UnitPrice)</code> instead of <code>SUMX</code>:</b> Multiplying column sums produces trillions of pounds! Always iterate row-by-row with <code>SUMX</code>.
     </div>
   </section>
-  <section id="sign">
-    <h2 class="t">6. Sign-off</h2>
-    <ul class="chk"><li>☐ Row count is <b>541,909</b> after the cleaning steps above.</li><li>☐ Total LineSales is <b>$9.75M</b>.</li><li>☐ The leading Country is <b>United Kingdom</b> at <b>$8.19M</b>.</li><li>☐ The date axis runs from <b>2010-12-01</b> to <b>2011-12-09</b>.</li><li>☐ Slicers filter every visual, and you can clear them back to the totals above.</li></ul>
-  </section>
-  <section id="stretch">
-    <h2 class="t">7. Stretch</h2>
-    <ul>
-      <li>A ReturnFlag column, LEFT(InvoiceNo, 1) = "C", and a card for net LineSales versus the return lines only.</li>
-      <li>Add a drill-through page that keeps the slicer filters and shows the underlying rows.</li>
-      <li>Sort a month-name column by the month number so the axis is not alphabetical.</li>
-    </ul>
-  </section>
-  <section id="mist">
-    <h2 class="t">8. Mistakes that hide the answer</h2>
-    <ul>
-      <li>Setting InvoiceNo to a whole number and losing the letter C.</li><li>Dropping blank customers and then wondering why the total moved.</li>
-      <li>Summing an ID column, or averaging a rate that was already a percent.</li>
-      <li>Leaving dates as text, then wondering why the axis sorts wrong.</li>
-    </ul>
-  </section>
+
 </div>
-<footer>UCI Online Retail. Daqing Chen, 2015. https://archive.ics.uci.edu/dataset/352/online+retail</footer>
+
+<footer>
+  Source: UCI Machine Learning Repository (Chen et al., 2012) · Manually verified against <code>data/Online Retail.xlsx</code> · Works 100% offline.
+</footer>
+
+<script>
+(function(){
+  var KEY = 'pbi_guide_14_v2';
+  var boxes = document.querySelectorAll('input[type=checkbox]');
+  function update(){
+    var done = 0;
+    boxes.forEach(function(b){ if(b.checked) done++; });
+    var pct = boxes.length ? Math.round((done / boxes.length) * 100) : 0;
+    document.getElementById('progText').textContent = done + ' / ' + boxes.length + ' steps completed (' + pct + '%)';
+    document.getElementById('progFill').style.width = pct + '%';
+  }
+  function save(){
+    var state = [];
+    boxes.forEach(function(b){ state.push(b.checked ? 1 : 0); });
+    try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){}
+    update();
+  }
+  try{
+    var s = JSON.parse(localStorage.getItem(KEY) || '[]');
+    boxes.forEach(function(b, i){ if(s[i] !== undefined) b.checked = !!s[i]; });
+  }catch(e){}
+  boxes.forEach(function(b){ b.addEventListener('change', save); });
+  window.resetChecks = function(){
+    if(confirm('Reset all checkmarks for Practice Set 14?')){
+      boxes.forEach(function(b){ b.checked = false; });
+      save();
+    }
+  };
+  update();
+})();
+</script>
 </body>
 </html>

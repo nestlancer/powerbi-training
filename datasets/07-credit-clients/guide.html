@@ -3,146 +3,371 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Practice · Credit-card clients</title>
+<title>07 · Credit-Card Default Risk — Beginner to Advanced Excel &amp; Power BI Guide</title>
 <style>
-  :root{--calc:#1d6f42;--calc-soft:#e7f3ec;--pbi:#caa400;--pbi-soft:#fff8e0;--ink:#1f2430;--muted:#5b6472;--line:#e3e7ee;--bg:#f6f8fb;--accent:#0b3d63;}
+  :root{
+    --calc:#1d6f42; --calc-soft:#e7f3ec;
+    --pbi:#b78900; --pbi-soft:#fff8e0;
+    --ink:#1f2430; --muted:#5b6472; --line:#e3e7ee; --bg:#f6f8fb;
+    --accent:#0b3d63; --danger:#c0392b; --danger-soft:#fdeaea;
+  }
   *{box-sizing:border-box;}
-  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.6;}
-  header{background:linear-gradient(120deg,#1d6f42,#0b3d63);color:#fff;padding:28px 26px;}
-  header h1{margin:0 0 6px;font-size:24px;}
-  header p{margin:0;max-width:860px;font-size:14.5px;}
-  header a{color:#fff;}
-  .wrap{max-width:1080px;margin:22px auto 70px;padding:0 22px;}
-  .facts{background:#fff;border:1px solid var(--line);border-left:5px solid var(--calc);border-radius:12px;padding:16px 20px;margin-bottom:22px;}
-  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.62;}
+  header{background:linear-gradient(125deg,#1d6f42 0%,#0f5132 48%,#0b3d63 100%);color:#fff;padding:32px 26px 28px;}
+  header .kicker{font-size:12px;text-transform:uppercase;letter-spacing:.8px;opacity:.88;font-weight:700;margin-bottom:6px;}
+  header h1{margin:0 0 8px;font-size:26px;letter-spacing:.2px;}
+  header p{margin:0;max-width:880px;font-size:14.8px;opacity:.95;}
+  header a{color:#fff;text-decoration:underline;}
+  .top-nav{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;align-items:center;}
+  .pill{display:inline-block;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.32);padding:4px 12px;border-radius:20px;font-size:12.5px;text-decoration:none;color:#fff;}
+  .wrap{max-width:1120px;margin:20px auto 70px;padding:0 22px;}
+  .prog-bar{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 18px;margin-bottom:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;position:sticky;top:10px;z-index:20;box-shadow:0 2px 8px rgba(15,23,42,.05);}
+  .prog-track{flex:1;min-width:180px;height:10px;background:#eef2f7;border-radius:99px;overflow:hidden;}
+  .prog-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--calc),#caa400);transition:width .25s;}
+  .prog-text{font-size:13px;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums;}
+  .btn-sm{border:1px solid var(--line);background:#fff;color:var(--ink);padding:5px 11px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;}
+  .btn-sm:hover{background:#f1f5f9;}
+  .toc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:20px;font-size:13.5px;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;}
+  .toc a{color:var(--accent);text-decoration:none;font-weight:600;}
+  .toc a:hover{text-decoration:underline;}
+  section{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px 26px;margin-bottom:20px;box-shadow:0 1px 2px rgba(20,30,50,.03);}
+  h2.t{font-size:20px;margin:0 0 14px;border-bottom:2px solid var(--calc);padding-bottom:8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  h2.t.pbi-h{border-bottom-color:#caa400;}
+  h3{font-size:16px;margin:20px 0 8px;color:var(--accent);}
+  h4{font-size:14.5px;margin:14px 0 6px;color:var(--ink);}
+  p{margin:8px 0;}
+  .facts{background:#fff;border:1px solid var(--line);border-left:5px solid var(--calc);border-radius:12px;padding:16px 18px;margin-bottom:18px;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:10px;}
   .stat{background:var(--calc-soft);border-radius:9px;padding:10px 12px;}
   .stat b{display:block;font-size:18px;color:var(--calc);}
   .stat span{font-size:12px;color:var(--muted);}
-  section{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 24px;margin-bottom:20px;}
-  h2.t{font-size:20px;margin:0 0 12px;border-bottom:2px solid var(--calc);padding-bottom:6px;}
-  h3{font-size:16px;margin:18px 0 8px;color:var(--accent);}
-  code{background:#eef2f7;padding:1px 6px;border-radius:5px;font-size:13px;font-family:"SF Mono",Consolas,monospace;}
-  pre{background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:10px;overflow:auto;font-size:13px;font-family:"SF Mono",Consolas,monospace;line-height:1.5;}
-  table{border-collapse:collapse;width:100%;margin:10px 0;font-size:13.5px;}
-  th,td{border:1px solid var(--line);padding:7px 10px;text-align:left;}
-  th{background:#f1f5f9;}
-  .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;color:#fff;}
-  .g{background:#27ae60;} .y{background:#e0a800;} .r{background:#c0392b;}
-  .req{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px dashed var(--line);}
+  .stat.warn{background:var(--danger-soft);}
+  .stat.warn b{color:var(--danger);}
+  code{background:#eef2f7;padding:2px 6px;border-radius:5px;font-size:12.8px;font-family:"SF Mono",Consolas,monospace;color:#0f172a;}
+  pre{background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:10px;overflow:auto;font-size:13px;font-family:"SF Mono",Consolas,monospace;line-height:1.55;margin:10px 0;}
+  table{border-collapse:collapse;width:100%;margin:12px 0;font-size:13.3px;}
+  th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top;}
+  th{background:#f1f5f9;font-weight:700;}
+  .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;color:#fff;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap;}
+  .g{background:#1d6f42;} .y{background:#d99000;} .r{background:#c0392b;} .b{background:#0b3d63;}
+  .req{display:flex;gap:12px;align-items:flex-start;padding:9px 0;border-bottom:1px dashed var(--line);}
   .req:last-child{border-bottom:none;}
-  .step{background:var(--calc-soft);border-radius:8px;padding:12px 14px;margin:10px 0;}
+  .step{background:var(--calc-soft);border:1px solid #cde4d6;border-radius:10px;padding:14px 16px;margin:12px 0;}
   .step b{color:var(--calc);}
-  .pbi-box{background:var(--pbi-soft);border-radius:8px;padding:12px 14px;margin:10px 0;}
-  .pbi-box b{color:#8a6a00;}
+  .pbi-box{background:var(--pbi-soft);border:1px solid #f2df9d;border-radius:10px;padding:14px 16px;margin:12px 0;}
+  .pbi-box b{color:#7c5d00;}
+  .chart-card{border:1px solid var(--line);border-left:5px solid #caa400;border-radius:10px;padding:14px 16px;margin:14px 0;background:#fcfdff;}
+  .chart-card h4{margin:0 0 8px;font-size:15.5px;color:var(--accent);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .wells{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin:10px 0;}
+  .well{background:#f4f6fa;border:1px solid var(--line);border-radius:7px;padding:7px 10px;font-size:12.8px;}
+  .well strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-bottom:2px;}
   .note{background:#fffaf0;border-left:4px solid #e0a800;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
-  .chk li{margin:4px 0;}
-  .toc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:20px;font-size:14px;}
-  .toc a{color:var(--accent);text-decoration:none;}
-  footer{text-align:center;color:var(--muted);font-size:12px;padding:10px 20px 28px;}
+  .warn-box{background:var(--danger-soft);border-left:4px solid var(--danger);border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
+  .wireframe{display:grid;grid-template-columns:repeat(12,1fr);gap:8px;background:#eef2f7;padding:14px;border-radius:12px;margin:12px 0;font-size:12px;}
+  .wf-box{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:10px;text-align:center;font-weight:600;color:var(--accent);}
+  .wf-box small{display:block;font-weight:400;color:var(--muted);margin-top:3px;font-size:11px;}
+  ul.task-list{list-style:none;padding:0;margin:10px 0;}
+  ul.task-list li{padding:5px 0;}
+  ul.task-list label{display:flex;gap:9px;align-items:flex-start;cursor:pointer;font-size:13.8px;}
+  ul.task-list input{margin-top:4px;width:16px;height:16px;flex:none;accent-color:var(--calc);}
+  footer{text-align:center;color:var(--muted);font-size:12.5px;padding:10px 20px 28px;}
   footer a{color:#3d4a5c;}
+  @media(max-width:740px){
+    .wrap{padding:0 12px;}
+    section{padding:16px 16px;}
+    .wireframe{grid-template-columns:1fr 1fr;}
+    .wf-box{grid-column:span 2 !important;}
+  }
 </style>
 </head>
 <body>
+
 <header>
-  <h1>07 · Credit-card clients</h1>
-  <p>30,000 card clients and whether they defaulted next month. Figures below were computed from the file in this folder. <a href="../index.html">All practice sets</a></p>
-</header>
-<div class="wrap">
-  <div class="toc"><b>Jump to:</b>
-    <a href="#profile">Profile</a> ·
-    <a href="#brief">Brief</a> ·
-    <a href="#req">Requirements</a> ·
-    <a href="#calc">Excel</a> ·
-    <a href="#pbi">Power BI</a> ·
-    <a href="#sign">Sign-off</a> ·
-    <a href="#stretch">Stretch</a>
+  <div class="kicker">Practice Set 07 of 20 · Banking Credit Risk, Delinquency &amp; Exposure Analytics</div>
+  <h1>07 · Credit-Card Clients — Double-Header Cleanup, Risk Matrices &amp; Decomposition Trees</h1>
+  <p>Audit 30,000 credit-card accounts (6,636 defaults = 22.12% portfolio default rate). Fix a real-world 2-row Excel header mess (<code>X1..X23, Y</code> above the real column names), consolidate undocumented category codes, and build Power BI's interactive <b>Decomposition Tree</b>, Risk Appetite Gauge, and Traffic-Light Delinquency Matrix.</p>
+  <div class="top-nav">
+    <a class="pill" href="../index.html">← All 20 Practice Sets</a>
+    <a class="pill" href="../../index.html">← Main Excel &amp; Power BI Outline</a>
+    <span class="pill">Charts Taught: Decomposition Tree · Traffic-Light Risk Matrix · Limit-Band Combo · Risk Gauge</span>
   </div>
+</header>
+
+<div class="wrap">
+
+  <div class="prog-bar">
+    <span class="prog-text" id="progText">0 / 0 steps completed</span>
+    <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+    <button class="btn-sm" type="button" onclick="resetChecks()">Reset checklist</button>
+  </div>
+
+  <div class="toc">
+    <b>Step-by-Step Map:</b>
+    <a href="#profile">1. Data Profile &amp; Columns</a> ·
+    <a href="#brief">2. Client Brief</a> ·
+    <a href="#req">3. Requirements</a> ·
+    <a href="#excel">4. Phase A: Excel Step-by-Step</a> ·
+    <a href="#pbi">5. Phase B: Power BI &amp; Charts Journey</a> ·
+    <a href="#sign">6. Sign-Off</a> ·
+    <a href="#stretch">7. Stretch</a> ·
+    <a href="#mistakes">8. Common Mistakes</a>
+  </div>
+
+  <!-- 1. PROFILE -->
   <section id="profile">
-    <h2 class="t">1. Verified profile</h2>
-    <div class="facts"><div class="grid"><div class="stat"><b>30,000</b><span>Rows</span></div><div class="stat"><b>22.1%</b><span>Average default payment next month</span></div><div class="stat"><b>3</b><span>Top EDUCATION</span></div></div></div>
-    <p>File: <code>default of credit card clients.xls</code>. Fact table for the steps: <code>Data</code>, renamed to <code>Clients</code> in Power BI.</p>
-    
-    
-        <h3>Biggest groups (check your pivot against this)</h3>
-        <table><tr><th>EDUCATION</th><th>default payment next month</th></tr><tr><td>3</td><td>25.2%</td></tr><tr><td>2</td><td>23.7%</td></tr><tr><td>1</td><td>19.2%</td></tr><tr><td>6</td><td>15.7%</td></tr><tr><td>5</td><td>6.4%</td></tr><tr><td>4</td><td>5.7%</td></tr></table>
-    <div class="note">The last column is the default flag (1 = defaulted). Limit balance is the credit limit, not the amount they spent. Summing the limit overstates exposure if you then talk about it as 'money owed'.</div>
+    <h2 class="t">1. Verified Data Profile &amp; Credit-Risk Drivers</h2>
+    <div class="facts">
+      <div class="grid">
+        <div class="stat"><b>30,000</b><span>Cardholders (Rows 3–30,002)</span></div>
+        <div class="stat warn"><b>22.12% (6,636)</b><span>Defaulted next month (Y = 1)</span></div>
+        <div class="stat warn"><b>69.55%</b><span>Default rate if 2+ months late!</span></div>
+        <div class="stat"><b>NT$167,484</b><span>Average credit limit</span></div>
+        <div class="stat"><b>30.58%</b><span>Sep Credit Utilization (Bill1 ÷ Limit)</span></div>
+        <div class="stat"><b>31.79% vs 13.26%</b><span>Default: &lt;=50K vs &gt;300K limit</span></div>
+      </div>
+    </div>
+
+    <div class="note">
+      <b>Three Real-World Banking Traps Inside <code>default of credit card clients.xls</code>:</b><br>
+      1. <b>The Double-Header Row Trap:</b> Row 1 contains research variable tags (<code>'', 'X1', 'X2', ..., 'X23', 'Y'</code>), while <b>Row 2 holds the real column names</b> (<code>ID, LIMIT_BAL, ..., default payment next month</code>)! Until Row 1 is deleted, every number is forced into Text!<br>
+      2. <b>Undocumented Codes in <code>EDUCATION</code> &amp; <code>MARRIAGE</code>:</b> Official codes are <code>1 = Graduate School</code>, <code>2 = University</code>, <code>3 = High School</code>, <code>4 = Others</code> — yet the raw file also contains <code>0, 5, 6</code>! Consolidate <code>0, 4, 5, 6 → "4. Other"</code> (468 clients) so charts stay clean.<br>
+      3. <b>Six Monthly Columns Are Snapshots, NOT Additive Revenue:</b> <code>BILL_AMT1..6</code> are statement balances from Sep back to Apr. Summing all 6 bills multiplies a revolving balance 6×! Use <code>BILL_AMT1</code> (latest statement, avg <code>NT$51,223</code>) against <code>LIMIT_BAL</code> (avg <code>NT$167,484</code>) to measure Credit Utilization (<b>30.58%</b>).
+    </div>
+
+    <h3>Verified Risk Breakdown Tables</h3>
+    <table>
+      <tr><th>Latest Repayment Status (<code>PAY_0</code>)</th><th>Clients</th><th>Defaults</th><th>Default Rate %</th></tr>
+      <tr><td>On Time / Revolving (<code>&lt;= 0</code>)</td><td>23,182</td><td>3,207</td><td>13.83%</td></tr>
+      <tr><td>1 Month Late (<code>PAY_0 = 1</code>)</td><td>3,688</td><td>1,252</td><td><b>33.95%</b></td></tr>
+      <tr><td>2+ Months Delinquent (<code>PAY_0 &gt;= 2</code>)</td><td>3,130</td><td>2,177</td><td style="color:#c0392b"><b>69.55% (69.14% at 2m, 75.78% at 3m!)</b></td></tr>
+    </table>
+
+    <table>
+      <tr><th>Credit Limit Band (<code>LIMIT_BAL</code>)</th><th>Clients</th><th>Defaults</th><th>Default Rate %</th><th>Education (Raw)</th><th>Default Rate %</th></tr>
+      <tr><td>1. &lt;= NT$50K</td><td>7,676</td><td>2,440</td><td style="color:#c0392b"><b>31.79%</b></td><td>3 = High School (4,917)</td><td><b>25.16%</b></td></tr>
+      <tr><td>2. NT$51K–150K</td><td>8,724</td><td>2,069</td><td>23.72%</td><td>2 = University (14,030)</td><td>23.73%</td></tr>
+      <tr><td>3. NT$151K–300K</td><td>9,037</td><td>1,522</td><td>16.84%</td><td>1 = Grad School (10,585)</td><td>19.23%</td></tr>
+      <tr><td>4. &gt; NT$300K</td><td>4,563</td><td>605</td><td style="color:#1d6f42"><b>13.26%</b></td><td>0,4,5,6 = Other (468)</td><td>7.05%</td></tr>
+    </table>
   </section>
+
+  <!-- 2. BRIEF -->
   <section id="brief">
-    <h2 class="t">2. The client brief</h2>
-    <p><b>Who:</b> A credit-risk team.</p>
-    <p><b>The ask:</b> <i>Show me the default rate by education and by credit limit. I do not want 30,000 names. I want the rate, and the count behind it.</i></p>
+    <h2 class="t">2. Real-World Client Brief</h2>
+    <p><b>Client:</b> Chief Credit Risk Officer (CRO) at a retail card issuer (20.0% portfolio risk ceiling).</p>
+    <p><b>The Ask:</b> <i>"Next-month defaults hit 22.1%, breaching our 20% risk appetite! Don't hand me 30,000 account IDs or cryptic numbers like Education=3 and PAY_0=2. Build an executive Risk &amp; Delinquency Dashboard with an interactive root-cause tree so my collections managers can drill from overall default rate down into delinquency stage, credit limit tier, and demographics."</i></p>
   </section>
+
+  <!-- 3. REQUIREMENTS -->
   <section id="req">
-    <h2 class="t">3. Requirements</h2>
-    <div class="req"><span class="tag g">Beginner</span><div>KPI strip — row count, default payment next month.</div></div><div class="req"><span class="tag g">Beginner</span><div>Bar chart of <b>EDUCATION</b>.</div></div><div class="req"><span class="tag y">Inter.</span><div>Break the same number down by <b>default payment next month</b>.</div></div><div class="req"><span class="tag r">Advan.</span><div>A rate using <b>SEX</b> (two values). Use DIVIDE, not an average of a rate column.</div></div><div class="req"><span class="tag r">Advan.</span><div>Slicers that cross-filter every visual on the page.</div></div>
+    <h2 class="t">3. Project Requirements (Beginner → Advanced)</h2>
+    <div class="req"><span class="tag g">Beginner</span><div><b>Remove the <code>X1..Y</code> title row &amp; decode numeric categories:</b> Promote Row 2 as true headers and map <code>SEX</code>, <code>EDUCATION</code>, <code>MARRIAGE</code>, and <code>PAY_0</code> into clear business labels.</div></div>
+    <div class="req"><span class="tag g">Beginner</span><div><b>KPI Strip + CRO Risk Appetite Gauge:</b> Total Cardholders (<code>30,000</code>), Defaulted Accounts (<code>6,636</code>), Credit Utilization % (<code>30.6%</code>), and a <b>Gauge</b> comparing <code>22.12%</code> Default Rate against the <code>20.0%</code> Risk Ceiling.</div></div>
+    <div class="req"><span class="tag y">Inter.</span><div><b>Limit-Band Exposure &amp; Default Combo Chart:</b> Columns = <code>Cardholders</code> by Credit Limit Band; Line = <code>Default Rate %</code> falling from <code>31.8%</code> down to <code>13.3%</code>.</div></div>
+    <div class="req"><span class="tag y">Inter.</span><div><b>Education &amp; Gender Clustered Bar Charts:</b> Compare Graduate School (<code>19.2%</code>), University (<code>23.7%</code>), and High School (<code>25.2%</code>).</div></div>
+    <div class="req"><span class="tag r">Advan.</span><div><b>Interactive AI Root-Cause Explorer (Decomposition Tree):</b> Let the CRO click <code>+ → High value</code> on <code>[Default Rate %]</code> to automatically split across Delinquency, Limit Band, Education, and Gender!</div></div>
+    <div class="req"><span class="tag r">Advan.</span><div><b>Collections Priority Matrix with Traffic-Light Icons:</b> <code>DelinquencyTier × LimitBand</code> showing account counts and Default Rate % with red/amber/green icon rules.</div></div>
   </section>
-  <section id="calc">
-    <h2 class="t">4. Phase A — Microsoft Excel</h2>
-    <p>Goal: open the file cleanly, add only the helper columns you need, and prove one total with a PivotTable before you touch Power BI.</p>
-    
-    <h3>Step 1 — Open it the right way</h3>
-    <div class="step"><b>Open</b> the <code>.xls</code> file. The first row may be a title. If the headers are in row 2, delete the title row or use it as the header before you build a pivot.<br><b>Formats:</b> <code>EDUCATION</code> → Number; <code>SEX</code> → Number; <code>MARRIAGE</code> → Number; <code>default payment next month</code> → Number. Then <b>View → Freeze Panes → Freeze Top Row</b>.</div>
-    <h3>Step 2 — Look for dirt</h3>
-    <div class="step"><ul><li>Confirm the default flag is 0/1, not text.</li><li>Education and sex are codes. Write down the legend from the source note (1 = graduate school, and so on) and replace the codes or leave a note on the visual.</li><li>BILL_AMT and PAY_AMT columns repeat for six months. Do not sum all six into one &#x27;total bill&#x27; unless the client asked for that — it mixes months.</li></ul></div>
-    
-        <h3>Step 3 — No extra formula required</h3>
-        <div class="step">The columns you need are already on the sheet. Use the pivot in the next step to prove the totals before you leave Excel.</div>
-    <h3>Step 4 — Pivot check</h3>
-    <div class="step">Select the data → <b>Insert → PivotTable</b>. Rows = <code>EDUCATION</code>.
-    Values = <b>Average of default payment next month</b>.
-    The grand total must be <b>22.1%</b>. Format the value as Percentage. If it is not, the filter or the number format is wrong — fix that before Power BI.
+
+  <!-- 4. EXCEL -->
+  <section id="excel">
+    <h2 class="t">4. Phase A — Step-by-Step in Microsoft Excel</h2>
+
+    <h3>Step A1 — Open <code>.xls</code> &amp; Delete the Dummy <code>X1..Y</code> Row</h3>
+    <div class="step">
+      <ol style="margin:0;padding-left:20px;">
+        <li>Open <code>datasets/07-credit-clients/data/default of credit card clients.xls</code> in Excel (sheet name: <code>Data</code>).</li>
+        <li>Look at Row 1: <code>B1 = X1</code>, <code>C1 = X2</code>, …, <code>Y1 = Y</code>. Look at Row 2: <code>A2 = ID</code>, <code>B2 = LIMIT_BAL</code>, …, <code>Y2 = default payment next month</code>!</li>
+        <li>Right-click row number <b>1</b> on the far left → click <b>Delete</b>. Now Row 1 has your clean headers and Rows 2–30,001 hold all 30,000 clients!</li>
+        <li>Click <b>View → Freeze Panes → Freeze Top Row</b>.</li>
+      </ol>
     </div>
-    <h3>Step 5 — Save</h3>
-    <div class="step"><b>Save As</b> <code>07-credit-clients-clean.xlsx</code>. Power BI should read this file, not a half-filtered view you forgot to clear.</div>
+
+    <h3>Step A2 — Add 3 Helper Columns (Columns Z, AA, AB)</h3>
+    <div class="step">
+      <ol style="margin:0;padding-left:20px;">
+        <li><b>Column Z — <code>EduLabel</code>:</b> <code>=IF(D2=1,"1. Graduate School",IF(D2=2,"2. University",IF(D2=3,"3. High School","4. Other")))</code></li>
+        <li><b>Column AA — <code>DelinquencyTier</code> (from <code>PAY_0</code> in G2):</b> <code>=IF(G2&lt;=0,"1. Current / Revolving",IF(G2=1,"2. 1 Month Late","3. 2+ Months Late"))</code></li>
+        <li><b>Column AB — <code>LimitBand</code> (from <code>LIMIT_BAL</code> in B2):</b> <code>=IF(B2&lt;=50000,"1. <=50K",IF(B2&lt;=150000,"2. 51K-150K",IF(B2&lt;=300000,"3. 151K-300K","4. >300K")))</code></li>
+      </ol>
+    </div>
+
+    <h3>Step A3 — PivotTable Check</h3>
+    <div class="step">
+      Insert a PivotTable: Rows = <code>DelinquencyTier</code>, Columns = <code>LimitBand</code>, Values = <code>Average of default payment next month</code> (formatted as <code>0.0%</code>). Confirm overall Grand Total = <b>22.1% (22.12%)</b>, <code>3. 2+ Months Late</code> = <b>69.6%</b>, and <b>Save As</b> <code>07-credit-clients-clean.xlsx</code> (saving as modern <code>.xlsx</code> is also much faster for Power BI than legacy 97–2003 <code>.xls</code>!).
+    </div>
+
+    <ul class="task-list">
+      <li><label><input type="checkbox"> Deleted dummy Row 1 (<code>X1..Y</code>) so Row 1 holds <code>ID..default payment next month</code>.</label></li>
+      <li><label><input type="checkbox"> Added <code>EduLabel</code>, <code>DelinquencyTier</code>, and <code>LimitBand</code> and verified 22.12% default rate in PivotTable.</label></li>
+    </ul>
   </section>
+
+  <!-- 5. POWER BI -->
   <section id="pbi">
-    <h2 class="t">5. Phase B — Power BI</h2>
-    <h3>Step 1 — Get data</h3>
-    <div class="pbi-box"><b>Get data → Excel</b>. If Power Query promotes the title row, use <b>Use First Row as Headers</b> once, or remove the title row first.</div>
-    <h3>Step 2 — Power Query</h3>
-    <div class="pbi-box">Rename the main query to <code>Clients</code>. Set the types from Step 1. Watch <b>Applied Steps</b>. Then <b>Close &amp; Apply</b>.
-    </div>
-    <h3>Step 3 — Model</h3>
-    <div class="pbi-box"><p>One table. A star schema is not required for this set.</p>
-    <p>Hide key columns you do not want on the report. A hidden column can still be used by a relationship.</p></div>
-    <h3>Step 4 — Measures</h3>
-    <p>Write these as <b>measures</b>, not calculated columns. Replace the placeholder filter with a real value from the column.</p>
-    <pre>defaultpaymentnextmonth = AVERAGE(&#x27;Clients&#x27;[default payment next month])
-Row Count = COUNTROWS(&#x27;Clients&#x27;)
-EDUCATION = SUM(&#x27;Clients&#x27;[EDUCATION])
-Filtered rows = CALCULATE([Row Count], &#x27;Clients&#x27;[SEX] = &lt;one of the two values&gt;)</pre>
-    <h3>Step 5 — Visuals</h3>
+    <h2 class="t pbi-h">5. Phase B — Complete Power BI &amp; Charts Journey</h2>
+
+    <h3>Stage 1 &amp; 2 — Clean Headers &amp; Risk Tiers in Power Query</h3>
     <div class="pbi-box">
-      <ul>
-        <li>Cards for the measures in Step 4.</li>
-        <li>Bar chart: axis <code>EDUCATION</code>, value the main measure.</li>
-        
-        <li>A slicer for each small category (SEX, default payment next month, MARRIAGE).</li>
-        <li>Click a bar and confirm the other visuals filter. Use <b>Format → Edit interactions</b> if one visual should stay still.</li>
-      </ul>
+      <ol style="margin:0;padding-left:20px;">
+        <li>Connect to your saved <code>07-credit-clients-clean.xlsx</code> (or raw <code>.xls</code>) → tick <code>Data</code> → click <b>Transform Data</b>. Rename query to <code>Clients</code>.</li>
+        <li><b>If connecting to the raw <code>.xls</code>:</b> Power Query promoted <code>X1..Y</code> as headers, leaving <code>ID, LIMIT_BAL...</code> in Row 1! Simply click <b>Home → Use First Row as Headers</b> one more time, then select all 25 columns (<b>Ctrl+A</b>) and click <b>Transform → Detect Data Type</b>! Verify all 25 columns are <b>123 (Whole Number)</b>.</li>
+        <li>Rename column <code>default payment next month</code> to <code>DefaultFlag</code> (much cleaner to type in DAX!).</li>
+        <li>Add Conditional Columns (if not already in your Excel file):
+          <ul>
+            <li><code>EducationLabel</code>: <code>1 → 1. Graduate School</code> · <code>2 → 2. University</code> · <code>3 → 3. High School</code> · Else → <code>4. Other</code>.</li>
+            <li><code>DelinquencyTier</code>: <code>PAY_0 &lt;= 0 → 1. Current / Revolving</code> · <code>PAY_0 = 1 → 2. 1 Month Late</code> · Else → <code>3. 2+ Months Late</code>.</li>
+            <li><code>LimitBand</code>: <code>LIMIT_BAL &lt;= 50000 → 1. &lt;=50K</code> · <code>&lt;= 150000 → 2. 51K-150K</code> · <code>&lt;= 300000 → 3. 151K-300K</code> · Else → <code>4. &gt;300K</code>.</li>
+            <li><code>GenderLabel</code>: <code>SEX = 1 → Male</code> · Else → <code>Female</code>.</li>
+          </ul>
+        </li>
+        <li>Click <b>Home → Close &amp; Apply</b>.</li>
+      </ol>
+    </div>
+
+    <h3>Stage 3 &amp; 4 — Model Hygiene &amp; Credit-Risk DAX Measures</h3>
+    <div class="pbi-box">
+      Set <code>ID</code>, <code>SEX</code>, <code>EDUCATION</code>, <code>MARRIAGE</code>, and <code>PAY_0..PAY_6</code> Summarization = <b>Don't summarize</b> (or hide raw code columns!). Then create these measures:
+    </div>
+<pre>Total Clients = COUNTROWS ( 'Clients' )
+// Check: 30,000
+
+Defaulted Clients = SUM ( 'Clients'[DefaultFlag] )
+// Check: 6,636
+
+Default Rate % = DIVIDE ( [Defaulted Clients], [Total Clients], 0 )
+// Format: 0.00% -> Check: 22.12%
+
+Risk Ceiling % = 0.20
+// 20.0% CRO risk threshold
+
+Avg Credit Limit = AVERAGE ( 'Clients'[LIMIT_BAL] )
+// Format: $#,0 -> Check: $167,484 (NT$)
+
+Credit Utilization % =
+DIVIDE ( SUM ( 'Clients'[BILL_AMT1] ), SUM ( 'Clients'[LIMIT_BAL] ), 0 )
+// Format: 0.0% -> Check: 30.6% (30.58%)
+
+Severe Delinquent Clients = CALCULATE ( [Total Clients], 'Clients'[PAY_0] &gt;= 2 )
+// Check: 3,130 high-risk accounts (69.55% default rate!)</pre>
+
+    <h3>Stage 5 — Power BI Charts Journey: Build the 5-Visual CRO Risk Suite</h3>
+
+    <div class="wireframe">
+      <div class="wf-box" style="grid-column:span 12;">Header + Slicers: GenderLabel (Tile) · EducationLabel (Dropdown) · MARRIAGE</div>
+      <div class="wf-box" style="grid-column:span 3;">Card: Cardholders<small>30,000</small></div>
+      <div class="wf-box" style="grid-column:span 3;">Card: Defaults<small>6,636 (3,130 Severe)</small></div>
+      <div class="wf-box" style="grid-column:span 3;">Card: Utilization %<small>30.6%</small></div>
+      <div class="wf-box" style="grid-column:span 3;">Visual 1B: Risk Gauge<small>22.12% vs 20.0% Ceiling</small></div>
+      <div class="wf-box" style="grid-column:span 7;">Visual 2: AI Decomposition Tree<small>Default Rate % → DelinquencyTier → LimitBand → Education</small></div>
+      <div class="wf-box" style="grid-column:span 5;">Visual 3: Limit-Band Exposure Combo<small>Columns = Clients · Line = Default Rate %</small></div>
+      <div class="wf-box" style="grid-column:span 7;">Visual 4: Collections Traffic-Light Matrix<small>DelinquencyTier × LimitBand with Red/Amber/Green Icons</small></div>
+      <div class="wf-box" style="grid-column:span 5;">Visual 5: Education &amp; Gender Bar<small>High School 25.2% · Univ 23.7% · Grad 19.2%</small></div>
+    </div>
+
+    <div class="chart-card">
+      <h4><span class="tag r">Visual 2</span> Interactive Root-Cause Explorer — Decomposition Tree Visual</h4>
+      <p><b>Why this chart?</b> Executives love clicking through root causes live in meetings without waiting for an analyst to build 10 separate charts!</p>
+      <div class="wells">
+        <div class="well"><strong>Analyze</strong><code>[Default Rate %]</code></div>
+        <div class="well"><strong>Explain by (4 fields)</strong><code>DelinquencyTier</code>, <code>LimitBand</code>, <code>EducationLabel</code>, <code>GenderLabel</code></div>
+        <div class="well"><strong>Tooltips</strong><code>[Total Clients]</code>, <code>[Defaulted Clients]</code></div>
+      </div>
+      <ol style="margin:6px 0;padding-left:20px;">
+        <li>Click the branching tree <b>Decomposition tree</b> icon (AI visuals row in Visualizations).</li>
+        <li>Drag <code>[Default Rate %]</code> to <b>Analyze</b> and the 4 category fields to <b>Explain by</b>.</li>
+        <li>Click the <code>+</code> sign next to the root <code>Default Rate % (22.12%)</code> bar → click <b>High value</b> (lightbulb icon)! Power BI automatically tests all 4 columns and picks <code>DelinquencyTier</code> because <code>3. 2+ Months Late</code> jumps to <b>69.55%</b>! Click <code>+ → High value</code> again on <code>3. 2+ Months Late</code> to drill straight into the highest-risk credit band!</li>
+      </ol>
+    </div>
+
+    <div class="chart-card">
+      <h4><span class="tag y">Visual 3</span> Credit Limit Exposure vs. Default Rate — Combo Chart</h4>
+      <p>Put <code>LimitBand</code> on X-axis, <code>[Total Clients]</code> on Column y-axis, and <code>[Default Rate %]</code> on Line y-axis. Shows default risk dropping smoothly from <b>31.8% (&lt;=50K) → 23.7% → 16.8% → 13.3% (&gt;300K)</b>.</p>
+    </div>
+
+    <div class="chart-card">
+      <h4><span class="tag r">Visual 4</span> Collections Priority Matrix with Traffic-Light Icons</h4>
+      <div class="wells">
+        <div class="well"><strong>Rows</strong><code>Clients[DelinquencyTier]</code></div>
+        <div class="well"><strong>Columns</strong><code>Clients[LimitBand]</code></div>
+        <div class="well"><strong>Values</strong><code>[Total Clients]</code>, <code>[Default Rate %]</code></div>
+      </div>
+      <p>Right-click <code>[Default Rate %]</code> in Values → <b>Conditional formatting → Icons</b> → Rules: Green circle if <code>&lt; 0.18</code>, Amber triangle if <code>&gt;= 0.18 and &lt; 0.30</code>, Red diamond/circle if <code>&gt;= 0.30</code> → click <b>OK</b>!</p>
+    </div>
+
+    <ul class="task-list">
+      <li><label><input type="checkbox"> Promoted true Row-2 headers and converted all 25 raw columns to Whole Number.</label></li>
+      <li><label><input type="checkbox"> Built Decomposition Tree, CRO Risk Gauge, Limit-Band Combo Chart, and Traffic-Light Matrix.</label></li>
+    </ul>
+  </section>
+
+  <!-- 6. SIGN-OFF -->
+  <section id="sign">
+    <h2 class="t">6. Client Sign-Off Checklist</h2>
+    <ul class="task-list">
+      <li><label><input type="checkbox"> Total Clients = <b>30,000</b> (NOT 30,001 with header row mixed in!), Defaults = <b>6,636</b>, Default Rate = <b>22.12%</b>.</label></li>
+      <li><label><input type="checkbox"> Credit Utilization % = <b>30.6%</b> and Avg Credit Limit = <b>NT$167,484</b>.</label></li>
+      <li><label><input type="checkbox"> Delinquency split confirms <b>69.55%</b> default rate on <code>2+ Months Late</code> (3,130 accounts) vs <b>13.83%</b> on Current.</label></li>
+      <li><label><input type="checkbox"> Education labels cleanly show High School (<b>25.16%</b>), University (<b>23.73%</b>), Grad School (<b>19.23%</b>), and Other (<b>7.05%</b>).</label></li>
+    </ul>
+  </section>
+
+  <!-- 7. STRETCH -->
+  <section id="stretch">
+    <h2 class="t">7. Stretch Challenges</h2>
+    <ul>
+      <li><b>Power Query Unpivot on 6-Month Statement History:</b> Duplicate the <code>Clients</code> query, keep <code>ID</code>, <code>DefaultFlag</code>, and <code>BILL_AMT1..BILL_AMT6</code>, right-click <code>ID</code> + <code>DefaultFlag</code> → <b>Unpivot Other Columns</b>! Map <code>BILL_AMT6 → Apr</code> through <code>BILL_AMT1 → Sep</code> and plot a 2-line chart comparing 6-month average bill trajectory of Defaulters vs Non-Defaulters!</li>
+    </ul>
+  </section>
+
+  <!-- 8. MISTAKES -->
+  <section id="mistakes">
+    <h2 class="t">8. Trainer's Troubleshooting: Common Beginner Mistakes</h2>
+    <div class="warn-box">
+      <b>Mistake 1 — Columns are named <code>X1, X2, ..., Y</code> and everything is Text:</b> You forgot to promote Row 2 as headers! Click <b>Use First Row as Headers</b> in Power Query and re-detect data types.
+    </div>
+    <div class="warn-box">
+      <b>Mistake 2 — Summing <code>EDUCATION</code> or <code>BILL_AMT1..6</code>:</b> Summing numeric category codes or summing 6 monthly balance snapshots creates fake totals. Always check what each column represents in the business world!
     </div>
   </section>
-  <section id="sign">
-    <h2 class="t">6. Sign-off</h2>
-    <ul class="chk"><li>☐ Row count is <b>30,000</b> after the cleaning steps above.</li><li>☐ Average default payment next month is <b>22.1%</b>.</li><li>☐ The leading EDUCATION is <b>3</b> at <b>25.2%</b>.</li><li>☐ Slicers filter every visual, and you can clear them back to the totals above.</li></ul>
-  </section>
-  <section id="stretch">
-    <h2 class="t">7. Stretch</h2>
-    <ul>
-      <li>A small multiples view of default rate by limit-balance band. Build the band with a nested IF or with Power BI grouping.</li>
-      <li>Add a drill-through page that keeps the slicer filters and shows the underlying rows.</li>
-      <li>Sort a month-name column by the month number so the axis is not alphabetical.</li>
-    </ul>
-  </section>
-  <section id="mist">
-    <h2 class="t">8. Mistakes that hide the answer</h2>
-    <ul>
-      <li>Summing six months of bill amounts and calling it the balance.</li><li>A default rate made by averaging the 0/1 column inside a bad total.</li>
-      <li>Summing an ID column, or averaging a rate that was already a percent.</li>
-      <li>Leaving dates as text, then wondering why the axis sorts wrong.</li>
-    </ul>
-  </section>
+
 </div>
-<footer>UCI Default of Credit Card Clients. Yeh and Lien, 2009. https://archive.ics.uci.edu/dataset/350/default+of+credit+card+clients</footer>
+
+<footer>
+  Source: UCI Default of Credit Card Clients (Yeh &amp; Lien, 2009) · Manually verified against <code>data/default of credit card clients.xls</code> · Works 100% offline.
+</footer>
+
+<script>
+(function(){
+  var KEY = 'pbi_guide_07_v2';
+  var boxes = document.querySelectorAll('input[type=checkbox]');
+  function update(){
+    var done = 0;
+    boxes.forEach(function(b){ if(b.checked) done++; });
+    var pct = boxes.length ? Math.round((done / boxes.length) * 100) : 0;
+    document.getElementById('progText').textContent = done + ' / ' + boxes.length + ' steps completed (' + pct + '%)';
+    document.getElementById('progFill').style.width = pct + '%';
+  }
+  function save(){
+    var state = [];
+    boxes.forEach(function(b){ state.push(b.checked ? 1 : 0); });
+    try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){}
+    update();
+  }
+  try{
+    var s = JSON.parse(localStorage.getItem(KEY) || '[]');
+    boxes.forEach(function(b, i){ if(s[i] !== undefined) b.checked = !!s[i]; });
+  }catch(e){}
+  boxes.forEach(function(b){ b.addEventListener('change', save); });
+  window.resetChecks = function(){
+    if(confirm('Reset all checkmarks for Practice Set 07?')){
+      boxes.forEach(function(b){ b.checked = false; });
+      save();
+    }
+  };
+  update();
+})();
+</script>
 </body>
 </html>

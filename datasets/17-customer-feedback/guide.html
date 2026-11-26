@@ -3,150 +3,346 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Practice · Support tickets and customers</title>
+<title>17 · SaaS Support &amp; CSAT (7-Table Model) — Beginner to Advanced Excel &amp; Power BI Guide</title>
 <style>
-  :root{--calc:#1d6f42;--calc-soft:#e7f3ec;--pbi:#caa400;--pbi-soft:#fff8e0;--ink:#1f2430;--muted:#5b6472;--line:#e3e7ee;--bg:#f6f8fb;--accent:#0b3d63;}
+  :root{
+    --calc:#1d6f42; --calc-soft:#e7f3ec;
+    --pbi:#b78900; --pbi-soft:#fff8e0;
+    --ink:#1f2430; --muted:#5b6472; --line:#e3e7ee; --bg:#f6f8fb;
+    --accent:#0b3d63; --danger:#c0392b; --danger-soft:#fdeaea;
+  }
   *{box-sizing:border-box;}
-  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.6;}
-  header{background:linear-gradient(120deg,#1d6f42,#0b3d63);color:#fff;padding:28px 26px;}
-  header h1{margin:0 0 6px;font-size:24px;}
-  header p{margin:0;max-width:860px;font-size:14.5px;}
-  header a{color:#fff;}
-  .wrap{max-width:1080px;margin:22px auto 70px;padding:0 22px;}
-  .facts{background:#fff;border:1px solid var(--line);border-left:5px solid var(--calc);border-radius:12px;padding:16px 20px;margin-bottom:22px;}
-  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.62;}
+  header{background:linear-gradient(125deg,#1d6f42 0%,#0f5132 48%,#0b3d63 100%);color:#fff;padding:32px 26px 28px;}
+  header .kicker{font-size:12px;text-transform:uppercase;letter-spacing:.8px;opacity:.88;font-weight:700;margin-bottom:6px;}
+  header h1{margin:0 0 8px;font-size:26px;letter-spacing:.2px;}
+  header p{margin:0;max-width:880px;font-size:14.8px;opacity:.95;}
+  header a{color:#fff;text-decoration:underline;}
+  .top-nav{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;align-items:center;}
+  .pill{display:inline-block;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.32);padding:4px 12px;border-radius:20px;font-size:12.5px;text-decoration:none;color:#fff;}
+  .wrap{max-width:1120px;margin:20px auto 70px;padding:0 22px;}
+  .prog-bar{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 18px;margin-bottom:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;position:sticky;top:10px;z-index:20;box-shadow:0 2px 8px rgba(15,23,42,.05);}
+  .prog-track{flex:1;min-width:180px;height:10px;background:#eef2f7;border-radius:99px;overflow:hidden;}
+  .prog-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--calc),#caa400);transition:width .25s;}
+  .prog-text{font-size:13px;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums;}
+  .btn-sm{border:1px solid var(--line);background:#fff;color:var(--ink);padding:5px 11px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;}
+  .btn-sm:hover{background:#f1f5f9;}
+  .toc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:20px;font-size:13.5px;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;}
+  .toc a{color:var(--accent);text-decoration:none;font-weight:600;}
+  .toc a:hover{text-decoration:underline;}
+  section{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px 26px;margin-bottom:20px;box-shadow:0 1px 2px rgba(20,30,50,.03);}
+  h2.t{font-size:20px;margin:0 0 14px;border-bottom:2px solid var(--calc);padding-bottom:8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  h2.t.pbi-h{border-bottom-color:#caa400;}
+  h3{font-size:16px;margin:20px 0 8px;color:var(--accent);}
+  h4{font-size:14.5px;margin:14px 0 6px;color:var(--ink);}
+  p{margin:8px 0;}
+  .facts{background:#fff;border:1px solid var(--line);border-left:5px solid var(--calc);border-radius:12px;padding:16px 18px;margin-bottom:18px;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:10px;}
   .stat{background:var(--calc-soft);border-radius:9px;padding:10px 12px;}
   .stat b{display:block;font-size:18px;color:var(--calc);}
   .stat span{font-size:12px;color:var(--muted);}
-  section{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 24px;margin-bottom:20px;}
-  h2.t{font-size:20px;margin:0 0 12px;border-bottom:2px solid var(--calc);padding-bottom:6px;}
-  h3{font-size:16px;margin:18px 0 8px;color:var(--accent);}
-  code{background:#eef2f7;padding:1px 6px;border-radius:5px;font-size:13px;font-family:"SF Mono",Consolas,monospace;}
-  pre{background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:10px;overflow:auto;font-size:13px;font-family:"SF Mono",Consolas,monospace;line-height:1.5;}
-  table{border-collapse:collapse;width:100%;margin:10px 0;font-size:13.5px;}
-  th,td{border:1px solid var(--line);padding:7px 10px;text-align:left;}
-  th{background:#f1f5f9;}
-  .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;color:#fff;}
-  .g{background:#27ae60;} .y{background:#e0a800;} .r{background:#c0392b;}
-  .req{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px dashed var(--line);}
+  .stat.warn{background:var(--danger-soft);}
+  .stat.warn b{color:var(--danger);}
+  code{background:#eef2f7;padding:2px 6px;border-radius:5px;font-size:12.8px;font-family:"SF Mono",Consolas,monospace;color:#0f172a;}
+  pre{background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:10px;overflow:auto;font-size:13px;font-family:"SF Mono",Consolas,monospace;line-height:1.55;margin:10px 0;}
+  table{border-collapse:collapse;width:100%;margin:12px 0;font-size:13.3px;}
+  th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top;}
+  th{background:#f1f5f9;font-weight:700;}
+  .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;color:#fff;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap;}
+  .g{background:#1d6f42;} .y{background:#d99000;} .r{background:#c0392b;} .b{background:#0b3d63;}
+  .req{display:flex;gap:12px;align-items:flex-start;padding:9px 0;border-bottom:1px dashed var(--line);}
   .req:last-child{border-bottom:none;}
-  .step{background:var(--calc-soft);border-radius:8px;padding:12px 14px;margin:10px 0;}
+  .step{background:var(--calc-soft);border-radius:10px;border:1px solid #cde4d6;padding:14px 16px;margin:12px 0;}
   .step b{color:var(--calc);}
-  .pbi-box{background:var(--pbi-soft);border-radius:8px;padding:12px 14px;margin:10px 0;}
-  .pbi-box b{color:#8a6a00;}
+  .pbi-box{background:var(--pbi-soft);border:1px solid #f2df9d;border-radius:10px;padding:14px 16px;margin:12px 0;}
+  .pbi-box b{color:#7c5d00;}
+  .chart-card{border:1px solid var(--line);border-left:5px solid #caa400;border-radius:10px;padding:14px 16px;margin:14px 0;background:#fcfdff;}
+  .chart-card h4{margin:0 0 8px;font-size:15.5px;color:var(--accent);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .wells{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin:10px 0;}
+  .well{background:#f4f6fa;border:1px solid var(--line);border-radius:7px;padding:7px 10px;font-size:12.8px;}
+  .well strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-bottom:2px;}
   .note{background:#fffaf0;border-left:4px solid #e0a800;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
-  .chk li{margin:4px 0;}
-  .toc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:20px;font-size:14px;}
-  .toc a{color:var(--accent);text-decoration:none;}
-  footer{text-align:center;color:var(--muted);font-size:12px;padding:10px 20px 28px;}
+  .warn-box{background:var(--danger-soft);border-left:4px solid var(--danger);border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
+  .wireframe{display:grid;grid-template-columns:repeat(12,1fr);gap:8px;background:#eef2f7;padding:14px;border-radius:12px;margin:12px 0;font-size:12px;}
+  .wf-box{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:10px;text-align:center;font-weight:600;color:var(--accent);}
+  .wf-box small{display:block;font-weight:400;color:var(--muted);margin-top:3px;font-size:11px;}
+  ul.task-list{list-style:none;padding:0;margin:10px 0;}
+  ul.task-list li{padding:5px 0;}
+  ul.task-list label{display:flex;gap:9px;align-items:flex-start;cursor:pointer;font-size:13.8px;}
+  ul.task-list input{margin-top:4px;width:16px;height:16px;flex:none;accent-color:var(--calc);}
+  footer{text-align:center;color:var(--muted);font-size:12.5px;padding:10px 20px 28px;}
   footer a{color:#3d4a5c;}
+  @media(max-width:740px){
+    .wrap{padding:0 12px;}
+    section{padding:16px 16px;}
+    .wireframe{grid-template-columns:1fr 1fr;}
+    .wf-box{grid-column:span 2 !important;}
+  }
 </style>
 </head>
 <body>
+
 <header>
-  <h1>17 · Support tickets and customers</h1>
-  <p>A multi-table Microsoft sample: customers, tickets, devices, and small lookup tables. Figures below were computed from the file in this folder. <a href="../index.html">All practice sets</a></p>
-</header>
-<div class="wrap">
-  <div class="toc"><b>Jump to:</b>
-    <a href="#profile">Profile</a> ·
-    <a href="#brief">Brief</a> ·
-    <a href="#req">Requirements</a> ·
-    <a href="#calc">Excel</a> ·
-    <a href="#pbi">Power BI</a> ·
-    <a href="#sign">Sign-off</a> ·
-    <a href="#stretch">Stretch</a>
+  <div class="kicker">Practice Set 17 of 20 · 7-Sheet Snowflake Flattening, Many-to-Many Traps &amp; Key Influencers AI</div>
+  <h1>17 · SaaS Support &amp; Customer Feedback — 7-Table Modeling &amp; Key Influencers AI</h1>
+  <p>Tackle a real <b>7-sheet SaaS Customer Success workbook</b> (45,218 Customers, 126,644 Support Tickets, 69,057 Device Logins + 4 Snowflake Lookups)! Flatten Snowflake lookups in Power Query, avoid the notorious <b>Device ↔ Tickets Many-to-Many Chasm Trap</b>, and launch Power BI's <b>Key Influencers AI Visual</b> to discover what drives Low CSAT!</p>
+  <div class="top-nav">
+    <a class="pill" href="../index.html">← All 20 Practice Sets</a>
+    <a class="pill" href="../../index.html">← Main Excel &amp; Power BI Outline</a>
+    <span class="pill">Skills Taught: Snowflake → Star Merge · Chasm Trap Avoidance · Key Influencers AI Visual · SLA Breach KPI</span>
   </div>
+</header>
+
+<div class="wrap">
+
+  <div class="prog-bar">
+    <span class="prog-text" id="progText">0 / 0 steps completed</span>
+    <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+    <button class="btn-sm" type="button" onclick="resetChecks()">Reset checklist</button>
+  </div>
+
+  <div class="toc">
+    <b>Step-by-Step Map:</b>
+    <a href="#profile">1. 7-Sheet Schema &amp; Chasm Trap</a> ·
+    <a href="#brief">2. Client Brief</a> ·
+    <a href="#req">3. Requirements</a> ·
+    <a href="#excel">4. Phase A: Excel Multi-Sheet Audit</a> ·
+    <a href="#pbi">5. Phase B: Power BI Star Model &amp; Key Influencers AI</a> ·
+    <a href="#sign">6. Sign-Off</a> ·
+    <a href="#stretch">7. Stretch</a> ·
+    <a href="#mistakes">8. Common Mistakes</a>
+  </div>
+
+  <!-- 1. PROFILE -->
   <section id="profile">
-    <h2 class="t">1. Verified profile</h2>
-    <div class="facts"><div class="grid"><div class="stat"><b>126,644</b><span>Rows</span></div><div class="stat"><b>3.67</b><span>Average Duration</span></div><div class="stat"><b>2018-05-01 → 2018-12-01</b><span>Dates</span></div><div class="stat"><b>1</b><span>Top Escalated</span></div></div></div>
-    <p>File: <code>customer-feedback.xlsx</code>. Fact table for the steps: <code>Support Tickets</code>, renamed to <code>Tickets</code> in Power BI.</p>
-    <h3>Tables in this set</h3><ul><li><code>Customer Table</code> — 45,218 rows. Columns: Customer ID, Tenure, Geography ID, Completed tutorial, Subscription ID, Role, Company ID, Rating, Theme, Original Score</li><li><code>Support Tickets</code> — 126,644 rows. Columns: Support Ticket ID, Customer ID, Date Created, Date Completed, Escalated, Duration</li><li><code>Device</code> — 69,057 rows. Columns: ID, Customer ID, device</li><li><code>Company</code> — 3 rows. Columns: Company ID, Company Size</li><li><code>Subscription</code> — 3 rows. Columns: Subscription ID, Subscription Type</li><li><code>Geography</code> — 10 rows. Columns: Geography ID, Continent, Country-Region</li><li><code>Role</code> — 3 rows. Columns: Role ID, Role in Org</li></ul>
-    
-        <h3>Biggest groups (check your pivot against this)</h3>
-        <table><tr><th>Escalated</th><th>Duration</th></tr><tr><td>1</td><td>4.10</td></tr><tr><td>0</td><td>3.61</td></tr></table>
-    <div class="note">Support Tickets is the fact. Country sits on Geography, reached through Customer. If you drag Country onto a ticket chart before the relationships exist, the chart is wrong or blank.</div>
+    <h2 class="t">1. Verified 7-Sheet Schema &amp; The Many-to-Many Chasm Trap</h2>
+    <div class="facts">
+      <div class="grid">
+        <div class="stat"><b>45,218</b><span>Unique Customers (Avg Score 7.42/10)</span></div>
+        <div class="stat warn"><b>11.71% Low</b><span>5,293 Low vs 39,925 High CSAT</span></div>
+        <div class="stat"><b>126,644</b><span>Support Tickets (Avg 3.67 days)</span></div>
+        <div class="stat warn"><b>12.04%</b><span>Escalated Tickets (15,254)</span></div>
+        <div class="stat warn"><b>33.30%</b><span>&gt;4-Day SLA Breaches (42,169)</span></div>
+        <div class="stat"><b>2.17× Risk!</b><span>Skipping Tutorial Doubles Low CSAT!</span></div>
+      </div>
+    </div>
+
+    <div class="note">
+      <b>Why Naive 7-Table Drag-and-Drop Fails (And How to Model Like a Senior Architect):</b><br>
+      1. <b>Flatten the 4 Tiny Snowflake Tables into <code>Customers</code>:</b> Sheets <code>Company</code> (3 rows), <code>Subscription</code> (3 rows), <code>Geography</code> (10 rows), and <code>Role</code> (3 rows) only connect to <code>Customer Table</code>! Merging them into <code>Customers</code> in Power Query (and unchecking <b>Enable load</b> on those 4 tiny tables) turns a cluttered 7-table web into a crystal-clear 3-table model!<br>
+      2. <b>NEVER Join <code>Device</code> Directly to <code>Support Tickets</code>!</b> One customer can log in on multiple devices (<code>69,057</code> rows) AND open multiple tickets (<code>126,644</code> rows). Both tables must hang as <code>*</code> children off <code>Customers[Customer ID] (1)</code>!
+    </div>
+
+    <h3>All 7 Workbook Sheets at a Glance (<code>customer-feedback.xlsx</code>)</h3>
+    <table>
+      <tr><th>Sheet Name</th><th>Rows</th><th>Grain &amp; Primary Key</th><th>Key Columns &amp; Values</th></tr>
+      <tr><td><code>Customer Table</code></td><td><b>45,218</b></td><td>1 row per <code>Customer ID</code></td><td><code>Tenure</code>, <code>Completed tutorial</code> (yes/no), <code>Rating</code> (High/Low), <code>Theme</code>, <code>Original Score</code> (1–10)</td></tr>
+      <tr><td><code>Support Tickets</code></td><td><b>126,644</b></td><td>1 row per <code>Support Ticket ID</code></td><td><code>Customer ID</code> (34,920 distinct; 10,298 have 0 tickets!), <code>Escalated</code> (0/1), <code>Duration</code> (0–9 days)</td></tr>
+      <tr><td><code>Device</code></td><td><b>69,057</b></td><td>1 row per Customer × Device</td><td><code>browser</code> (42,885), <code>mobile</code> (13,713), <code>tablet</code> (12,459)</td></tr>
+      <tr><td><code>Company</code></td><td>3</td><td><code>Company ID</code> (1..3)</td><td><code>&lt; 5,000</code> · <code>5,000 - 50,000</code> · <code>&gt; 50,000</code></td></tr>
+      <tr><td><code>Subscription</code></td><td>3</td><td><code>Subscription ID</code> (1..3)</td><td><code>Basic</code> · <code>Premier</code> · <code>Deluxe</code></td></tr>
+      <tr><td><code>Geography</code></td><td>10</td><td><code>Geography ID</code> (1..10)</td><td><code>Europe</code> (UK, FR, DE, ES, PT), <code>Asia</code> (IN, CN), <code>North America</code> (US, CA, MX)</td></tr>
+      <tr><td><code>Role</code></td><td>3</td><td><code>Role ID</code> (1..3, matches <code>Role</code>!)</td><td><code>publisher</code> (4.07% Low) · <code>consumer</code> (14.93% Low) · <code>administrator</code> (13.42% Low)</td></tr>
+    </table>
   </section>
+
+  <!-- 2. BRIEF -->
   <section id="brief">
-    <h2 class="t">2. The client brief</h2>
-    <p><b>Who:</b> A software company's support director.</p>
-    <p><b>The ask:</b> <i>How many tickets do we close, how long do they take, and which countries and subscription types generate them? The ticket file does not contain the country — the customer file does.</i></p>
+    <h2 class="t">2. Real-World Client Brief</h2>
+    <p><b>Client:</b> Chief Customer Officer (CCO), B2B Cloud Collaboration SaaS.</p>
+    <p><b>The Ask:</b> <i>"11.7% of our customers gave us a Low CSAT rating, 12.0% of our 126,644 support tickets escalated to Tier-2 engineering, and a third of tickets breach our 4-day SLA! Build a clean relational model and use Power BI's AI root-cause visual to tell Product and Onboarding exactly what drives Low CSAT."</i></p>
   </section>
+
+  <!-- 3. REQUIREMENTS -->
   <section id="req">
-    <h2 class="t">3. Requirements</h2>
-    <div class="req"><span class="tag g">Beginner</span><div>KPI strip — row count, Duration.</div></div><div class="req"><span class="tag g">Beginner</span><div>Bar chart of <b>Escalated</b>.</div></div><div class="req"><span class="tag g">Beginner</span><div>Trend by <b>Date Created</b>.</div></div><div class="req"><span class="tag y">Inter.</span><div>Break the same number down by <b>Duration</b>.</div></div><div class="req"><span class="tag y">Inter.</span><div>Relationships between the tables before you build visuals.</div></div><div class="req"><span class="tag r">Advan.</span><div>A rate using <b>Escalated</b> (two values). Use DIVIDE, not an average of a rate column.</div></div><div class="req"><span class="tag r">Advan.</span><div>Slicers that cross-filter every visual on the page.</div></div>
+    <h2 class="t">3. Project Requirements (Beginner → Advanced)</h2>
+    <div class="req"><span class="tag g">Beginner</span><div><b>Import All 7 Sheets + Merge the 4 Snowflake Lookups into <code>Customers</code>:</b> Disable load on the 4 tiny staging tables so your Data pane stays ultra-clean!</div></div>
+    <div class="req"><span class="tag y">Inter.</span><div><b>Model <code>Customers (1) → (*) Support Tickets</code> and <code>Customers (1) → (*) Device</code>:</b> Zero Many-to-Many joins!</div></div>
+    <div class="req"><span class="tag r">Advan.</span><div><b>Power BI Key Influencers AI Visual:</b> Analyze <code>Customers[Rating] = "Low"</code> explained by <code>Completed tutorial</code>, <code>Role in Org</code>, <code>Subscription Type</code>, <code>Company Size</code>, and Customer Ticket Count!</div></div>
+    <div class="req"><span class="tag y">Inter.</span><div><b>Support SLA &amp; Escalation Suite:</b> Complaint Theme Bar (<code>speed = 1,301</code> Low ratings!), Escalation Matrix, and SLA Breach Gauge.</div></div>
   </section>
-  <section id="calc">
-    <h2 class="t">4. Phase A — Microsoft Excel</h2>
-    <p>Goal: open the file cleanly, add only the helper columns you need, and prove one total with a PivotTable before you touch Power BI.</p>
-    
-    <h3>Step 1 — Open it the right way</h3>
-    <div class="step"><b>Open</b> <code>customer-feedback.xlsx</code> and look at each sheet. Excel practice starts on <b>Support Tickets</b>. Power BI loads every sheet.<br><b>Formats:</b> <code>Date Created</code> → Date; <code>Escalated</code> → Number; <code>Duration</code> → Number. Then <b>View → Freeze Panes → Freeze Top Row</b>.</div>
-    <h3>Step 2 — Look for dirt</h3>
-    <div class="step"><ul><li>Date Created and Date Completed are dates. Duration is already on the ticket — check that it matches the two dates before you trust it.</li><li>Escalated is a flag. Decide whether it is true/false or text before you write CALCULATE.</li><li>Company and Subscription are tiny lookups. They exist so you practice relationships, not because they are large.</li></ul></div>
-    
-        <h3>Step 3 — Helper columns</h3>
-        <div class="step">Put these in the first empty columns and fill down (double-click the fill handle).<br>
-        <b>Year</b> &nbsp; <code>=YEAR(C2)</code><br>
-<b>MonthNum</b> &nbsp; <code>=MONTH(C2)</code><br>
-<b>MonthName</b> &nbsp; <code>=TEXT(C2,&quot;MMM&quot;)</code>
-        <br><i>Excel on this machine uses a comma between arguments. If your Excel uses semicolons, swap them.</i></div>
-    <h3>Step 4 — Pivot check</h3>
-    <div class="step">Select the data → <b>Insert → PivotTable</b>. Rows = <code>Escalated</code>. Group the date by years and put years in Columns.
-    Values = <b>Average of Duration</b>.
-    The grand total must be <b>3.67</b>. If it is not, the filter or the number format is wrong — fix that before Power BI.
+
+  <!-- 4. EXCEL -->
+  <section id="excel">
+    <h2 class="t">4. Phase A — Step-by-Step in Microsoft Excel</h2>
+
+    <h3>Step A1 — Enrich <code>Customer Table</code> Using <code>XLOOKUP</code> &amp; <code>COUNTIF</code></h3>
+    <div class="step">
+      Open <code>datasets/17-customer-feedback/data/customer-feedback.xlsx</code>. On <code>Customer Table</code>, test how onboarding and support friction drive Low CSAT:<br>
+      • <code>K2 (RoleName)</code>: <code>=XLOOKUP(F2, Role!$A$2:$A$4, Role!$B$2:$B$4)</code><br>
+      • <code>L2 (TicketCount)</code>: <code>=COUNTIF('Support Tickets'!$B$2:$B$126645, A2)</code><br>
+      Insert a PivotTable with <code>Completed tutorial</code> in Rows and <code>Rating</code> in Columns (% of Row Total): confirm <b><code>no</code> = 16.71% Low</b> vs. <b><code>yes</code> = 7.71% Low</b>!
     </div>
-    <h3>Step 5 — Save</h3>
-    <div class="step"><b>Save As</b> <code>17-customer-feedback-clean.xlsx</code>. Power BI should read this file, not a half-filtered view you forgot to clear.</div>
+
+    <ul class="task-list">
+      <li><label><input type="checkbox"> Verified in Excel that skipping the tutorial more than doubles Low-CSAT rate (16.71% vs 7.71%).</label></li>
+    </ul>
   </section>
+
+  <!-- 5. POWER BI -->
   <section id="pbi">
-    <h2 class="t">5. Phase B — Power BI</h2>
-    <h3>Step 1 — Get data</h3>
-    <div class="pbi-box"><b>Get data → Excel</b> and tick every sheet except an empty one. Rename Support Tickets to Tickets.</div>
-    <h3>Step 2 — Power Query</h3>
-    <div class="pbi-box">Rename the main query to <code>Tickets</code>. Set the types from Step 1. Watch <b>Applied Steps</b>. Then <b>Close &amp; Apply</b>.
-    </div>
-    <h3>Step 3 — Model</h3>
-    <div class="pbi-box"><ul><li><code>Customer Table[Customer ID]</code> → <code>Tickets[Customer ID]</code> (one-to-many)</li><li><code>Customer Table[Customer ID]</code> → <code>Device[Customer ID]</code> (one-to-many)</li><li><code>Geography[Geography ID]</code> → <code>Customer Table[Geography ID]</code> (one-to-many)</li></ul>
-    <p>Hide key columns you do not want on the report. A hidden column can still be used by a relationship.</p></div>
-    <h3>Step 4 — Measures</h3>
-    <p>Write these as <b>measures</b>, not calculated columns. Replace the placeholder filter with a real value from the column.</p>
-    <pre>Duration = AVERAGE(&#x27;Tickets&#x27;[Duration])
-Row Count = COUNTROWS(&#x27;Tickets&#x27;)
-Escalated = SUM(&#x27;Tickets&#x27;[Escalated])
-Filtered rows = CALCULATE([Row Count], &#x27;Tickets&#x27;[Escalated] = &lt;one of the two values&gt;)</pre>
-    <h3>Step 5 — Visuals</h3>
+    <h2 class="t pbi-h">5. Phase B — Complete Power BI Snowflake-to-Star &amp; AI Visuals Journey</h2>
+
+    <h3>Stage 1 &amp; 2 — Flatten Snowflake Lookups via Power Query <code>Merge Queries</code></h3>
     <div class="pbi-box">
-      <ul>
-        <li>Cards for the measures in Step 4.</li>
-        <li>Bar chart: axis <code>Escalated</code>, value the main measure.</li>
-        <li>Line chart: axis <code>Date Created</code>.</li>
-        <li>A slicer for each small category (Escalated, Duration).</li>
-        <li>Click a bar and confirm the other visuals filter. Use <b>Format → Edit interactions</b> if one visual should stay still.</li>
-      </ul>
+      <ol style="margin:0;padding-left:20px;">
+        <li>Click <b>Home → Excel workbook</b> → select <code>data/customer-feedback.xlsx</code> → check ALL 7 sheets → click <b>Transform Data</b>.</li>
+        <li>Click <code>Customer Table</code> (rename to <code>Customers</code>). Use <b>Home → Merge Queries</b> four times (Left Outer Join) to pull descriptive labels right onto <code>Customers</code>:
+          <ul>
+            <li>Merge <code>Customers[Company ID]</code> = <code>Company[Company ID]</code> → expand <code>Company Size</code>.</li>
+            <li>Merge <code>Customers[Subscription ID]</code> = <code>Subscription[Subscription ID]</code> → expand <code>Subscription Type</code>.</li>
+            <li>Merge <code>Customers[Geography ID]</code> = <code>Geography[Geography ID]</code> → expand <code>Continent</code> and <code>Country-Region</code>.</li>
+            <li>Merge <code>Customers[Role]</code> = <code>Role[Role ID]</code> → expand <code>Role in Org</code>.</li>
+          </ul>
+        </li>
+        <li>Right-click each of the 4 tiny lookup queries (<code>Company</code>, <code>Subscription</code>, <code>Geography</code>, <code>Role</code>) in the left pane → <b>uncheck Enable load</b>! (They turn italic — staging only!)</li>
+        <li>In <code>Support Tickets</code>, ensure <code>Date Created</code> and <code>Date Completed</code> are <b>Date</b>, and <code>Escalated</code> and <code>Duration</code> are <b>Whole Number</b>. Click <b>Home → Close &amp; Apply</b>.</li>
+      </ol>
+    </div>
+
+    <h3>Stage 3 — Clean 3-Table Star Architecture + Customer Ticket Bucket Column</h3>
+    <pre>Device (*) ◄──── (1) Customers (1) ────► (*) Support Tickets</pre>
+    <div class="pbi-box">
+      In <b>Data view</b> on <code>Customers</code>, add ONE calculated column so Key Influencers can test whether heavy support-ticket volume drives Low CSAT:<br>
+      <code>Ticket Tier = VAR n = CALCULATE(COUNTROWS('Support Tickets')) RETURN IF(n=0, "0 Tickets", IF(n&lt;=3, "1–3 Tickets", "4+ Tickets"))</code>
+    </div>
+
+    <h3>Stage 4 — SaaS Support &amp; CSAT DAX Measures</h3>
+<pre>Total Customers = COUNTROWS ( 'Customers' )
+// Check: 45,218
+
+Avg CSAT Score = AVERAGE ( 'Customers'[Original Score] )
+// Check: 7.42
+
+Low CSAT Rate % =
+DIVIDE (
+    CALCULATE ( [Total Customers], 'Customers'[Rating] = "Low" ),
+    [Total Customers]
+)
+// Check: 11.71% (5,293 Low)
+
+Total Tickets = COUNTROWS ( 'Support Tickets' )
+// Check: 126,644
+
+Escalation Rate % =
+DIVIDE (
+    CALCULATE ( [Total Tickets], 'Support Tickets'[Escalated] = 1 ),
+    [Total Tickets]
+)
+// Check: 12.04% (15,254 escalated)
+
+Avg Resolution Days = AVERAGE ( 'Support Tickets'[Duration] )
+// Check: 3.67 days
+
+SLA Breach Rate (&gt;4d) % =
+DIVIDE (
+    CALCULATE ( [Total Tickets], 'Support Tickets'[Duration] &gt; 4 ),
+    [Total Tickets]
+)
+// Check: 33.30% (42,169 tickets!)</pre>
+
+    <h3>Stage 5 — Power BI Charts Journey: Build the 5-Visual SaaS Customer Success Suite</h3>
+
+    <div class="wireframe">
+      <div class="wf-box" style="grid-column:span 12;">Header + Slicers: Continent / Country-Region · Subscription Type · Company Size</div>
+      <div class="wf-box" style="grid-column:span 3;">Card: Avg CSAT Score<small>7.42 / 10 (11.7% Low)</small></div>
+      <div class="wf-box" style="grid-column:span 3;">Card: Support Tickets<small>126,644</small></div>
+      <div class="wf-box" style="grid-column:span 3;">Card: Escalation Rate<small>12.04% (15,254)</small></div>
+      <div class="wf-box" style="grid-column:span 3;">Card: SLA Breach (&gt;4d)<small>33.30% (Target &lt;15%!)</small></div>
+      <div class="wf-box" style="grid-column:span 7;">Visual 2: Key Influencers AI Visual (What Drives Low Rating?)<small>Role = consumer/admin · Tutorial = no (2.17×!) · Ticket Tier = 4+</small></div>
+      <div class="wf-box" style="grid-column:span 5;">Visual 3: Low-CSAT Complaint Themes Bar<small>speed (1,301) · features (841) · price (708)</small></div>
+      <div class="wf-box" style="grid-column:span 6;">Visual 4: SLA Compliance Gauge<small>Value: 33.3% Breach vs Target: 15.0%</small></div>
+      <div class="wf-box" style="grid-column:span 6;">Visual 5: Role × Subscription × Tutorial Matrix<small>Customers · Low CSAT % · Tickets · Escalation %</small></div>
+    </div>
+
+    <div class="chart-card">
+      <h4><span class="tag r">Visual 2</span> Automated Root-Cause Discovery — Key Influencers AI Visual (First Time in This Course!)</h4>
+      <p><b>Where to find it:</b> Click the <b>Key influencers</b> icon (speech-bubble with person/chart icon next to Decomposition Tree in Visualizations)!</p>
+      <div class="wells">
+        <div class="well"><strong>Analyze</strong><code>Customers[Rating]</code> (at top of visual, set dropdown: <i>What influences Rating to be</i> → <b>Low</b>!)</div>
+        <div class="well"><strong>Explain by</strong><code>Completed tutorial</code>, <code>Role in Org</code>, <code>Company Size</code>, <code>Subscription Type</code>, <code>Continent</code>, <code>Ticket Tier</code></div>
+      </div>
+      <p><b>Watch Power BI Run Logistic Regression Automatically:</b> Click each bubble in the left rank list AND click the <b>Top segments</b> tab at the top of the visual — Power BI automatically discovers multi-factor customer segments where Low CSAT spikes above 30%–40%!</p>
+    </div>
+
+    <div class="chart-card">
+      <h4><span class="tag y">Visual 3, 4 &amp; 5</span> Complaint Theme Bar + SLA Gauge + Customer Success Matrix</h4>
+      <p>1. <b>Clustered bar chart:</b> Y-axis = <code>Customers[Theme]</code>, X-axis = <code>CALCULATE([Total Customers], 'Customers'[Rating]="Low")</code> → proves <b><code>speed</code> (1,301)</b> is the #1 product pain point!<br>
+      2. <b>Gauge + Matrix:</b> Track <code>[SLA Breach Rate (&gt;4d) %]</code> (`33.3%`) and cross-tabulate <code>Role in Org × Completed tutorial</code>.</p>
+    </div>
+
+    <ul class="task-list">
+      <li><label><input type="checkbox"> Merged the 4 Snowflake lookup tables into <code>Customers</code> and disabled load on staging queries.</label></li>
+      <li><label><input type="checkbox"> Built Key Influencers AI visual on <code>Rating = Low</code> and verified Tutorial &amp; Role multipliers.</label></li>
+    </ul>
+  </section>
+
+  <!-- 6. SIGN-OFF -->
+  <section id="sign">
+    <h2 class="t">6. Client Sign-Off Checklist</h2>
+    <ul class="task-list">
+      <li><label><input type="checkbox"> Customers = <b>45,218</b>; Low CSAT = <b>5,293 (11.71%)</b>; Avg Original Score = <b>7.42</b>.</label></li>
+      <li><label><input type="checkbox"> Tickets = <b>126,644</b>; Escalated = <b>15,254 (12.04%)</b>; Avg Duration = <b>3.67 days</b>; &gt;4d SLA Breach = <b>33.30%</b>.</label></li>
+      <li><label><input type="checkbox"> Zero Many-to-Many relationships exist in Model view.</label></li>
+    </ul>
+  </section>
+
+  <!-- 7. STRETCH -->
+  <section id="stretch">
+    <h2 class="t">7. Stretch Challenges</h2>
+    <ul>
+      <li><b>Zero-Ticket Happy Cohort:</b> Compare Low CSAT % for the <b>10,298 customers with 0 support tickets</b> vs. customers with 4+ tickets!</li>
+    </ul>
+  </section>
+
+  <!-- 8. MISTAKES -->
+  <section id="mistakes">
+    <h2 class="t">8. Trainer's Troubleshooting: Common Beginner Mistakes</h2>
+    <div class="warn-box">
+      <b>Mistake 1 — Dragging <code>Device[Customer ID]</code> onto <code>Support Tickets[Customer ID]</code>:</b> Creates a Many-to-Many join that multiplies ticket counts for multi-device users! Always route both through <code>Customers[Customer ID]</code>.
+    </div>
+    <div class="warn-box">
+      <b>Mistake 2 — Putting a Measure in Key Influencers <i>Analyze</i> well without a row-level grain:</b> When analyzing a customer column like <code>Customers[Rating]</code>, Power BI evaluates at the <code>Customers</code> table grain automatically!
     </div>
   </section>
-  <section id="sign">
-    <h2 class="t">6. Sign-off</h2>
-    <ul class="chk"><li>☐ Row count is <b>126,644</b> after the cleaning steps above.</li><li>☐ Average Duration is <b>3.67</b>.</li><li>☐ The leading Escalated is <b>1</b> at <b>4.10</b>.</li><li>☐ The date axis runs from <b>2018-05-01</b> to <b>2018-12-01</b>.</li><li>☐ Slicers filter every visual, and you can clear them back to the totals above.</li><li>☐ Every relationship in the model view is one-to-many, from the lookup table to the fact table.</li></ul>
-  </section>
-  <section id="stretch">
-    <h2 class="t">7. Stretch</h2>
-    <ul>
-      <li>Average duration by country, which only works after Tickets → Customer → Geography.</li>
-      <li>Add a drill-through page that keeps the slicer filters and shows the underlying rows.</li>
-      <li>Sort a month-name column by the month number so the axis is not alphabetical.</li>
-    </ul>
-  </section>
-  <section id="mist">
-    <h2 class="t">8. Mistakes that hide the answer</h2>
-    <ul>
-      <li>A many-to-many link from Tickets to Device on Customer ID. Both sides repeat. Link each of them to Customer instead.</li><li>Putting Country on the ticket table by hand with a VLOOKUP you then forget to refresh.</li>
-      <li>Summing an ID column, or averaging a rate that was already a percent.</li>
-      <li>Leaving dates as text, then wondering why the axis sorts wrong.</li>
-    </ul>
-  </section>
+
 </div>
-<footer>Microsoft Power BI Desktop monthly sample, customerfeedback.xlsx. https://github.com/microsoft/powerbi-desktop-samples</footer>
+
+<footer>
+  Source: Microsoft Power BI Official Key Influencers Sample · Manually verified against all 7 sheets of <code>data/customer-feedback.xlsx</code> · Works 100% offline.
+</footer>
+
+<script>
+(function(){
+  var KEY = 'pbi_guide_17_v2';
+  var boxes = document.querySelectorAll('input[type=checkbox]');
+  function update(){
+    var done = 0;
+    boxes.forEach(function(b){ if(b.checked) done++; });
+    var pct = boxes.length ? Math.round((done / boxes.length) * 100) : 0;
+    document.getElementById('progText').textContent = done + ' / ' + boxes.length + ' steps completed (' + pct + '%)';
+    document.getElementById('progFill').style.width = pct + '%';
+  }
+  function save(){
+    var state = [];
+    boxes.forEach(function(b){ state.push(b.checked ? 1 : 0); });
+    try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){}
+    update();
+  }
+  try{
+    var s = JSON.parse(localStorage.getItem(KEY) || '[]');
+    boxes.forEach(function(b, i){ if(s[i] !== undefined) b.checked = !!s[i]; });
+  }catch(e){}
+  boxes.forEach(function(b){ b.addEventListener('change', save); });
+  window.resetChecks = function(){
+    if(confirm('Reset all checkmarks for Practice Set 17?')){
+      boxes.forEach(function(b){ b.checked = false; });
+      save();
+    }
+  };
+  update();
+})();
+</script>
 </body>
 </html>

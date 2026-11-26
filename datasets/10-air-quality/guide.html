@@ -3,149 +3,363 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Practice · Air quality sensors</title>
+<title>10 · Air Quality IoT Sensors — Beginner to Advanced Excel &amp; Power BI Guide</title>
 <style>
-  :root{--calc:#1d6f42;--calc-soft:#e7f3ec;--pbi:#caa400;--pbi-soft:#fff8e0;--ink:#1f2430;--muted:#5b6472;--line:#e3e7ee;--bg:#f6f8fb;--accent:#0b3d63;}
+  :root{
+    --calc:#1d6f42; --calc-soft:#e7f3ec;
+    --pbi:#b78900; --pbi-soft:#fff8e0;
+    --ink:#1f2430; --muted:#5b6472; --line:#e3e7ee; --bg:#f6f8fb;
+    --accent:#0b3d63; --danger:#c0392b; --danger-soft:#fdeaea;
+  }
   *{box-sizing:border-box;}
-  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.6;}
-  header{background:linear-gradient(120deg,#1d6f42,#0b3d63);color:#fff;padding:28px 26px;}
-  header h1{margin:0 0 6px;font-size:24px;}
-  header p{margin:0;max-width:860px;font-size:14.5px;}
-  header a{color:#fff;}
-  .wrap{max-width:1080px;margin:22px auto 70px;padding:0 22px;}
-  .facts{background:#fff;border:1px solid var(--line);border-left:5px solid var(--calc);border-radius:12px;padding:16px 20px;margin-bottom:22px;}
-  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.62;}
+  header{background:linear-gradient(125deg,#1d6f42 0%,#0f5132 48%,#0b3d63 100%);color:#fff;padding:32px 26px 28px;}
+  header .kicker{font-size:12px;text-transform:uppercase;letter-spacing:.8px;opacity:.88;font-weight:700;margin-bottom:6px;}
+  header h1{margin:0 0 8px;font-size:26px;letter-spacing:.2px;}
+  header p{margin:0;max-width:880px;font-size:14.8px;opacity:.95;}
+  header a{color:#fff;text-decoration:underline;}
+  .top-nav{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;align-items:center;}
+  .pill{display:inline-block;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.32);padding:4px 12px;border-radius:20px;font-size:12.5px;text-decoration:none;color:#fff;}
+  .wrap{max-width:1120px;margin:20px auto 70px;padding:0 22px;}
+  .prog-bar{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 18px;margin-bottom:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;position:sticky;top:10px;z-index:20;box-shadow:0 2px 8px rgba(15,23,42,.05);}
+  .prog-track{flex:1;min-width:180px;height:10px;background:#eef2f7;border-radius:99px;overflow:hidden;}
+  .prog-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--calc),#caa400);transition:width .25s;}
+  .prog-text{font-size:13px;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums;}
+  .btn-sm{border:1px solid var(--line);background:#fff;color:var(--ink);padding:5px 11px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;}
+  .btn-sm:hover{background:#f1f5f9;}
+  .toc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:20px;font-size:13.5px;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;}
+  .toc a{color:var(--accent);text-decoration:none;font-weight:600;}
+  .toc a:hover{text-decoration:underline;}
+  section{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px 26px;margin-bottom:20px;box-shadow:0 1px 2px rgba(20,30,50,.03);}
+  h2.t{font-size:20px;margin:0 0 14px;border-bottom:2px solid var(--calc);padding-bottom:8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  h2.t.pbi-h{border-bottom-color:#caa400;}
+  h3{font-size:16px;margin:20px 0 8px;color:var(--accent);}
+  h4{font-size:14.5px;margin:14px 0 6px;color:var(--ink);}
+  p{margin:8px 0;}
+  .facts{background:#fff;border:1px solid var(--line);border-left:5px solid var(--calc);border-radius:12px;padding:16px 18px;margin-bottom:18px;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:10px;}
   .stat{background:var(--calc-soft);border-radius:9px;padding:10px 12px;}
   .stat b{display:block;font-size:18px;color:var(--calc);}
   .stat span{font-size:12px;color:var(--muted);}
-  section{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 24px;margin-bottom:20px;}
-  h2.t{font-size:20px;margin:0 0 12px;border-bottom:2px solid var(--calc);padding-bottom:6px;}
-  h3{font-size:16px;margin:18px 0 8px;color:var(--accent);}
-  code{background:#eef2f7;padding:1px 6px;border-radius:5px;font-size:13px;font-family:"SF Mono",Consolas,monospace;}
-  pre{background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:10px;overflow:auto;font-size:13px;font-family:"SF Mono",Consolas,monospace;line-height:1.5;}
-  table{border-collapse:collapse;width:100%;margin:10px 0;font-size:13.5px;}
-  th,td{border:1px solid var(--line);padding:7px 10px;text-align:left;}
-  th{background:#f1f5f9;}
-  .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;color:#fff;}
-  .g{background:#27ae60;} .y{background:#e0a800;} .r{background:#c0392b;}
-  .req{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px dashed var(--line);}
+  .stat.warn{background:var(--danger-soft);}
+  .stat.warn b{color:var(--danger);}
+  code{background:#eef2f7;padding:2px 6px;border-radius:5px;font-size:12.8px;font-family:"SF Mono",Consolas,monospace;color:#0f172a;}
+  pre{background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:10px;overflow:auto;font-size:13px;font-family:"SF Mono",Consolas,monospace;line-height:1.55;margin:10px 0;}
+  table{border-collapse:collapse;width:100%;margin:12px 0;font-size:13.3px;}
+  th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top;}
+  th{background:#f1f5f9;font-weight:700;}
+  .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;color:#fff;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap;}
+  .g{background:#1d6f42;} .y{background:#d99000;} .r{background:#c0392b;} .b{background:#0b3d63;}
+  .req{display:flex;gap:12px;align-items:flex-start;padding:9px 0;border-bottom:1px dashed var(--line);}
   .req:last-child{border-bottom:none;}
-  .step{background:var(--calc-soft);border-radius:8px;padding:12px 14px;margin:10px 0;}
+  .step{background:var(--calc-soft);border:1px solid #cde4d6;border-radius:10px;padding:14px 16px;margin:12px 0;}
   .step b{color:var(--calc);}
-  .pbi-box{background:var(--pbi-soft);border-radius:8px;padding:12px 14px;margin:10px 0;}
-  .pbi-box b{color:#8a6a00;}
+  .pbi-box{background:var(--pbi-soft);border:1px solid #f2df9d;border-radius:10px;padding:14px 16px;margin:12px 0;}
+  .pbi-box b{color:#7c5d00;}
+  .chart-card{border:1px solid var(--line);border-left:5px solid #caa400;border-radius:10px;padding:14px 16px;margin:14px 0;background:#fcfdff;}
+  .chart-card h4{margin:0 0 8px;font-size:15.5px;color:var(--accent);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .wells{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin:10px 0;}
+  .well{background:#f4f6fa;border:1px solid var(--line);border-radius:7px;padding:7px 10px;font-size:12.8px;}
+  .well strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-bottom:2px;}
   .note{background:#fffaf0;border-left:4px solid #e0a800;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
-  .chk li{margin:4px 0;}
-  .toc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:20px;font-size:14px;}
-  .toc a{color:var(--accent);text-decoration:none;}
-  footer{text-align:center;color:var(--muted);font-size:12px;padding:10px 20px 28px;}
+  .warn-box{background:var(--danger-soft);border-left:4px solid var(--danger);border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
+  .wireframe{display:grid;grid-template-columns:repeat(12,1fr);gap:8px;background:#eef2f7;padding:14px;border-radius:12px;margin:12px 0;font-size:12px;}
+  .wf-box{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:10px;text-align:center;font-weight:600;color:var(--accent);}
+  .wf-box small{display:block;font-weight:400;color:var(--muted);margin-top:3px;font-size:11px;}
+  ul.task-list{list-style:none;padding:0;margin:10px 0;}
+  ul.task-list li{padding:5px 0;}
+  ul.task-list label{display:flex;gap:9px;align-items:flex-start;cursor:pointer;font-size:13.8px;}
+  ul.task-list input{margin-top:4px;width:16px;height:16px;flex:none;accent-color:var(--calc);}
+  footer{text-align:center;color:var(--muted);font-size:12.5px;padding:10px 20px 28px;}
   footer a{color:#3d4a5c;}
+  @media(max-width:740px){
+    .wrap{padding:0 12px;}
+    section{padding:16px 16px;}
+    .wireframe{grid-template-columns:1fr 1fr;}
+    .wf-box{grid-column:span 2 !important;}
+  }
 </style>
 </head>
 <body>
+
 <header>
-  <h1>10 · Air quality sensors</h1>
-  <p>Hourly sensor readings from an Italian city, with a reference analyzer and several metal-oxide sensors. Figures below were computed from the file in this folder. <a href="../index.html">All practice sets</a></p>
-</header>
-<div class="wrap">
-  <div class="toc"><b>Jump to:</b>
-    <a href="#profile">Profile</a> ·
-    <a href="#brief">Brief</a> ·
-    <a href="#req">Requirements</a> ·
-    <a href="#calc">Excel</a> ·
-    <a href="#pbi">Power BI</a> ·
-    <a href="#sign">Sign-off</a> ·
-    <a href="#stretch">Stretch</a>
+  <div class="kicker">Practice Set 10 of 20 · IoT Telemetry, Sentinel Cleaning &amp; Analytics Reference Lines</div>
+  <h1>10 · Urban Air Quality — Sentinel Values (<code>-200</code>), Sensor Calibration &amp; Alert Lines</h1>
+  <p>Clean 9,357 hourly environmental telemetry readings from an Italian roadside station (<code>Mar 2004 – Apr 2005</code>). Strip 114 trailing blank Excel rows, replace hardware sentinel codes (<code>-200 → null</code>) so averages stop turning negative, quarantine a 90%-dead sensor, and master Power BI's <b>Analytics Pane Constant Line &amp; Scatter Trend Line</b>!</p>
+  <div class="top-nav">
+    <a class="pill" href="../index.html">← All 20 Practice Sets</a>
+    <a class="pill" href="../../index.html">← Main Excel &amp; Power BI Outline</a>
+    <span class="pill">Charts Taught: Diurnal Line + Analytics Constant Line · Calibration Scatter + Trend Line · Seasonal Combo · Breach Table</span>
   </div>
+</header>
+
+<div class="wrap">
+
+  <div class="prog-bar">
+    <span class="prog-text" id="progText">0 / 0 steps completed</span>
+    <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+    <button class="btn-sm" type="button" onclick="resetChecks()">Reset checklist</button>
+  </div>
+
+  <div class="toc">
+    <b>Step-by-Step Map:</b>
+    <a href="#profile">1. Data Profile &amp; The -200 Sentinel Trap</a> ·
+    <a href="#brief">2. Client Brief</a> ·
+    <a href="#req">3. Requirements</a> ·
+    <a href="#excel">4. Phase A: Excel Step-by-Step</a> ·
+    <a href="#pbi">5. Phase B: Power BI &amp; Charts Journey</a> ·
+    <a href="#sign">6. Sign-Off</a> ·
+    <a href="#stretch">7. Stretch</a> ·
+    <a href="#mistakes">8. Common Mistakes</a>
+  </div>
+
+  <!-- 1. PROFILE -->
   <section id="profile">
-    <h2 class="t">1. Verified profile</h2>
-    <div class="facts"><div class="grid"><div class="stat"><b>9,357</b><span>Rows</span></div><div class="stat"><b>2.15 mg/m³</b><span>Average CO(GT)</span></div><div class="stat"><b>2004-03-10 → 2005-04-04</b><span>Dates</span></div><div class="stat"><b>19:00:00</b><span>Top Time</span></div></div></div>
-    <p>File: <code>AirQualityUCI.xlsx</code>. Fact table for the steps: <code>AirQualityUCI</code>, renamed to <code>AirQuality</code> in Power BI.</p>
-    
-    
-        <h3>Biggest groups (check your pivot against this)</h3>
-        <table><tr><th>Time</th><th>CO(GT) (mg/m³)</th></tr><tr><td>19:00:00</td><td>3.73</td></tr><tr><td>20:00:00</td><td>3.47</td></tr><tr><td>18:00:00</td><td>3.44</td></tr><tr><td>09:00:00</td><td>2.97</td></tr><tr><td>08:00:00</td><td>2.82</td></tr><tr><td>17:00:00</td><td>2.82</td></tr></table>
-    <div class="note">A reading of -200 in this file means 'missing', not a real negative concentration. Replace -200 with null before you average, or the daily pattern is pulled downward.</div>
+    <h2 class="t">1. Verified Data Profile &amp; The <code>-200</code> Hardware Sentinel Trap</h2>
+    <div class="facts">
+      <div class="grid">
+        <div class="stat"><b>9,357</b><span>Valid hourly rows (+114 blank rows!)</span></div>
+        <div class="stat"><b>2.15 mg/m³</b><span>Clean CO(GT) Avg (raw = -34.21!)</span></div>
+        <div class="stat"><b>113.08 µg/m³</b><span>Clean NO2(GT) Avg (raw = 58.14)</span></div>
+        <div class="stat"><b>19:00 (3.73)</b><span>Peak Evening Smog Hour</span></div>
+        <div class="stat warn"><b>388 hrs</b><span>EU NO2 Limit Breaches (&gt;200 µg/m³)</span></div>
+        <div class="stat warn"><b>90.2% Dead!</b><span>NMHC(GT) has 8,443 -200s!</span></div>
+      </div>
+    </div>
+
+    <div class="note">
+      <b>Why IoT &amp; Lab Sensors Use Sentinel Codes Like <code>-200</code>:</b><br>
+      Old industrial loggers couldn't write blank cells, so whenever a gas analyzer went offline for calibration, it logged <b><code>-200</code></b>. Look at what happens if you take a raw average without converting <code>-200</code> to <code>null</code>:<br>
+      • <code>CO(GT)</code> has <b>1,683</b> <code>-200</code> readings (18.0%) → Raw Average = <b><code>-34.21 mg/m³</code></b> (negative air pollution is physically impossible!) → Clean Average = <b><code>2.15 mg/m³</code></b>.<br>
+      • <code>NMHC(GT)</code> has <b>8,443</b> <code>-200</code> readings (<b>90.2% offline!</b>) — that reference analyzer failed permanently in May 2004 and must be quarantined/dropped.<br>
+      • Sheet <code>AirQualityUCI</code> also has <b>114 empty formatted rows</b> at the bottom (rows 9,359–9,472) that you must remove!
+    </div>
+
+    <h3>Column Dictionary &amp; Verified Clean Averages (<code>AirQualityUCI</code>, Columns A–O)</h3>
+    <table>
+      <tr><th>Col</th><th>Column Name</th><th>Meaning</th><th><code>-200</code> Count</th><th>Clean Average</th></tr>
+      <tr><td>A–B</td><td><code>Date</code>, <code>Time</code></td><td><code>2004-03-10</code> to <code>2005-04-04</code>, hourly (<code>00:00–23:00</code>)</td><td>0</td><td>9,357 hours</td></tr>
+      <tr><td>C</td><td><code>CO(GT)</code></td><td>True Carbon Monoxide reference analyzer (mg/m³)</td><td>1,683 (18.0%)</td><td><b>2.15 mg/m³</b></td></tr>
+      <tr><td>D</td><td><code>PT08.S1(CO)</code></td><td>Tin-oxide IoT sensor targeting CO (raw resistance)</td><td>366 (3.9%)</td><td>1,099.71</td></tr>
+      <tr><td>E</td><td><code>NMHC(GT)</code></td><td>Non-Methane Hydrocarbons (µg/m³) — <b>DROP (90.2% missing!)</b></td><td>8,443 (90.2%)</td><td>218.81 (unusable)</td></tr>
+      <tr><td>F</td><td><code>C6H6(GT)</code></td><td>True Benzene concentration (µg/m³)</td><td>366 (3.9%)</td><td><b>10.08 µg/m³</b></td></tr>
+      <tr><td>H</td><td><code>NOx(GT)</code></td><td>True Nitrogen Oxides (ppb)</td><td>1,639 (17.5%)</td><td><b>246.88 ppb</b></td></tr>
+      <tr><td>J</td><td><code>NO2(GT)</code></td><td>True Nitrogen Dioxide (µg/m³) — EU 1-hr limit = <code>200 µg/m³</code></td><td>1,642 (17.5%)</td><td><b>113.08 µg/m³</b></td></tr>
+      <tr><td>M–O</td><td><code>T</code>, <code>RH</code>, <code>AH</code></td><td>Temperature (°C), Relative Humidity (%), Absolute Humidity</td><td>366 (3.9%)</td><td><b>18.32 °C</b> · <b>49.23% RH</b></td></tr>
+    </table>
   </section>
+
+  <!-- 2. BRIEF -->
   <section id="brief">
-    <h2 class="t">2. The client brief</h2>
-    <p><b>Who:</b> An environmental team.</p>
-    <p><b>The ask:</b> <i>Show the daily pattern of carbon monoxide and whether the cheap sensors move with the reference analyzer. Missing hours should stay missing.</i></p>
+    <h2 class="t">2. Real-World Client Brief</h2>
+    <p><b>Client:</b> Municipal Environmental Protection &amp; Smart-City IoT Engineering Team.</p>
+    <p><b>The Ask:</b> <i>"Our raw station workbook shows negative Carbon Monoxide averages because nobody stripped the <code>-200</code> offline codes! Clean the sensor feed, audit sensor uptime, show us the 24-hour rush-hour smog profile with regulatory alert lines, and prove whether our low-cost <code>PT08.S1</code> IoT sensor tracks the expensive <code>CO(GT)</code> reference analyzer accurately."</i></p>
   </section>
+
+  <!-- 3. REQUIREMENTS -->
   <section id="req">
-    <h2 class="t">3. Requirements</h2>
-    <div class="req"><span class="tag g">Beginner</span><div>KPI strip — row count, CO(GT).</div></div><div class="req"><span class="tag g">Beginner</span><div>Bar chart of <b>Time</b>.</div></div><div class="req"><span class="tag g">Beginner</span><div>Trend by <b>Date</b>.</div></div><div class="req"><span class="tag y">Inter.</span><div>Top 10 <b>Time</b>.</div></div><div class="req"><span class="tag r">Advan.</span><div>Slicers that cross-filter every visual on the page.</div></div>
+    <h2 class="t">3. Project Requirements (Beginner → Advanced)</h2>
+    <div class="req"><span class="tag g">Beginner</span><div><b>Remove 114 Blank Rows + Replace <code>-200</code> with <code>null</code> Across All Sensor Columns:</b> Never replace with <code>0</code> (zero would pretend the air had zero pollution!).</div></div>
+    <div class="req"><span class="tag g">Beginner</span><div><b>Quarantine Broken Sensor <code>NMHC(GT)</code> + Extract <code>Hour</code> (0–23):</b> Drop the 90.2%-missing column and extract integer hour of day.</div></div>
+    <div class="req"><span class="tag y">Inter.</span><div><b>24-Hour Diurnal Pollution Line Chart + Analytics Constant Line:</b> Show twin rush-hour peaks (<code>09:00 = 2.97</code>, <code>19:00 = 3.73 mg/m³</code>) and add a dashed reference line from Power BI's <b>Analytics pane</b>.</div></div>
+    <div class="req"><span class="tag r">Advan.</span><div><b>IoT Sensor Calibration Scatter Plot + Linear Trend Line:</b> Plot <code>CO(GT)</code> vs. <code>PT08.S1(CO)</code> across hourly points and enable Power BI's <b>Trend line</b>!</div></div>
+    <div class="req"><span class="tag r">Advan.</span><div><b>Regulatory Breach Counter &amp; Winter Inversion Combo Chart:</b> Count EU NO2 breaches (<code>&gt;200 µg/m³ = 388 hrs</code>) and High-CO hours (<code>&gt;4.0 mg/m³ = 812 hrs</code>), and compare monthly pollution vs. Temperature (<code>T</code>).</div></div>
   </section>
-  <section id="calc">
-    <h2 class="t">4. Phase A — Microsoft Excel</h2>
-    <p>Goal: open the file cleanly, add only the helper columns you need, and prove one total with a PivotTable before you touch Power BI.</p>
-    
-    <h3>Step 1 — Open it the right way</h3>
-    <div class="step"><b>Open</b> <code>AirQualityUCI.xlsx</code>. Date and Time are separate. The sensor columns use a comma as the decimal mark in the CSV twin — the workbook is the easier file.<br><b>Formats:</b> <code>Date</code> → Date; <code>PT08.S4(NO2)</code> → Number; <code>PT08.S1(CO)</code> → Number; <code>PT08.S5(O3)</code> → Number; <code>PT08.S2(NMHC)</code> → Number. Then <b>View → Freeze Panes → Freeze Top Row</b>.</div>
-    <h3>Step 2 — Look for dirt</h3>
-    <div class="step"><ul><li>Replace -200 with blank on every sensor column before any average.</li><li>Do not sum hourly readings and call it a daily total unless you mean a sum. The client asked for a pattern, so average by hour.</li><li>NMHC(GT) is mostly missing. Do not build the main visual on it.</li></ul></div>
-    
-        <h3>Step 3 — Helper columns</h3>
-        <div class="step">Put these in the first empty columns and fill down (double-click the fill handle).<br>
-        <b>Year</b> &nbsp; <code>=YEAR(A2)</code><br>
-<b>MonthNum</b> &nbsp; <code>=MONTH(A2)</code><br>
-<b>MonthName</b> &nbsp; <code>=TEXT(A2,&quot;MMM&quot;)</code>
-        <br><i>Excel on this machine uses a comma between arguments. If your Excel uses semicolons, swap them.</i></div>
-    <h3>Step 4 — Pivot check</h3>
-    <div class="step">Select the data → <b>Insert → PivotTable</b>. Rows = <code>Time</code>. Group the date by years and put years in Columns.
-    Values = <b>Average of CO(GT)</b>.
-    The grand total must be <b>2.15 mg/m³</b>. If it is not, the filter or the number format is wrong — fix that before Power BI.
-    </div>
-    <h3>Step 5 — Save</h3>
-    <div class="step"><b>Save As</b> <code>10-air-quality-clean.xlsx</code>. Power BI should read this file, not a half-filtered view you forgot to clear.</div>
-  </section>
-  <section id="pbi">
-    <h2 class="t">5. Phase B — Power BI</h2>
-    <h3>Step 1 — Get data</h3>
-    <div class="pbi-box"><b>Get data → Excel</b> → the air-quality sheet. Replace -200 with null on the sensor columns.</div>
-    <h3>Step 2 — Power Query</h3>
-    <div class="pbi-box">Rename the main query to <code>AirQuality</code>. Set the types from Step 1. Watch <b>Applied Steps</b>. Then <b>Close &amp; Apply</b>.
-    </div>
-    <h3>Step 3 — Model</h3>
-    <div class="pbi-box"><p>One table. A star schema is not required for this set.</p>
-    <p>Hide key columns you do not want on the report. A hidden column can still be used by a relationship.</p></div>
-    <h3>Step 4 — Measures</h3>
-    <p>Write these as <b>measures</b>, not calculated columns. Replace the placeholder filter with a real value from the column.</p>
-    <pre>CO = AVERAGE(&#x27;AirQuality&#x27;[CO(GT)])
-NO2 = AVERAGE(&#x27;AirQuality&#x27;[NO2(GT)])
-Row Count = COUNTROWS(&#x27;AirQuality&#x27;)</pre>
-    <h3>Step 5 — Visuals</h3>
-    <div class="pbi-box">
+
+  <!-- 4. EXCEL -->
+  <section id="excel">
+    <h2 class="t">4. Phase A — Step-by-Step in Microsoft Excel</h2>
+
+    <h3>Step A1 — Save a Working Copy &amp; Replace Exact <code>-200</code> Cells with Blank</h3>
+    <div class="step">
+      Open <code>datasets/10-air-quality/data/AirQualityUCI.xlsx</code> and immediately click <b>File → Save As → <code>10-air-quality-clean.xlsx</code></b> (keep original untouched!).<br>
+      Select columns <code>C:O</code> → press <code>Ctrl + H</code> (Find &amp; Replace):
       <ul>
-        <li>Cards for the measures in Step 4.</li>
-        <li>Bar chart: axis <code>Time</code>, value the main measure.</li>
-        <li>Line chart: axis <code>Date</code>.</li>
-        <li>A slicer for each small category (Time).</li>
-        <li>Click a bar and confirm the other visuals filter. Use <b>Format → Edit interactions</b> if one visual should stay still.</li>
+        <li><b>Find what:</b> <code>-200</code></li>
+        <li><b>Replace with:</b> <i>(leave completely empty!)</i></li>
+        <li>Click <b>Options &gt;&gt;</b> and CHECK <b>Match entire cell contents</b>! (Crucial — without this, values like <code>1200</code> would get mangled!)</li>
+        <li>Click <b>Replace All</b>. Excel ignores blank cells inside <code>AVERAGE()</code> automatically!</li>
       </ul>
     </div>
+
+    <h3>Step A2 — Verify Clean Averages &amp; Breach Counts with Formulas</h3>
+    <div class="step">
+<pre>// Clean CO(GT) Average:
+=AVERAGE(C2:C9358)                 --&gt; 2.15 mg/m³
+
+// Clean NO2(GT) Average:
+=AVERAGE(J2:J9358)                 --&gt; 113.08 µg/m³
+
+// EU 1-Hour NO2 Directive Breaches (&gt; 200 µg/m³):
+=COUNTIF(J2:J9358, "&gt;200")         --&gt; 388 hours
+
+// High Carbon Monoxide Alert Hours (&gt; 4.0 mg/m³):
+=COUNTIF(C2:C9358, "&gt;4")           --&gt; 812 hours
+
+// CO(GT) Sensor Uptime %:
+=COUNT(C2:C9358) / 9357            --&gt; 82.0% (7,674 valid hours)</pre>
+    </div>
+
+    <ul class="task-list">
+      <li><label><input type="checkbox"> Replaced exact <code>-200</code> cells with blank in Excel copy and verified Clean CO = 2.15, NO2 = 113.08, and 388 EU NO2 breaches.</label></li>
+    </ul>
   </section>
+
+  <!-- 5. POWER BI -->
+  <section id="pbi">
+    <h2 class="t pbi-h">5. Phase B — Complete Power BI &amp; Charts Journey</h2>
+
+    <h3>Stage 1 &amp; 2 — Multi-Column Sentinel Cleaning in Power Query</h3>
+    <div class="pbi-box">
+      <ol style="margin:0;padding-left:20px;">
+        <li>Click <b>Home → Excel workbook</b> → select <code>data/AirQualityUCI.xlsx</code> → check sheet <code>AirQualityUCI</code> → click <b>Transform Data</b>. Rename query to <code>AirQuality</code>.</li>
+        <li><b>Step 1 — Strip the 114 Trailing Blank Rows:</b> Click <b>Home → Remove Rows → Remove Blank Rows</b> (or filter <code>Date</code> to uncheck <code>null</code>). Row count becomes exactly <b>9,357</b>!</li>
+        <li><b>Step 2 — Drop the 90.2%-Dead Sensor:</b> Right-click column <code>NMHC(GT)</code> → <b>Remove</b>.</li>
+        <li><b>Step 3 — Replace <code>-200</code> with <code>null</code> Across ALL 12 Remaining Sensor Columns at Once!</b> Click column <code>CO(GT)</code>, hold <code>Shift</code>, and click column <code>AH</code> so all 12 numeric columns are highlighted together! Right-click any selected header → <b>Replace Values</b> → Value To Find: <code>-200</code> → Replace With: <code>null</code> (lowercase!) → click <b>OK</b>.</li>
+        <li><b>Step 4 — Extract Clean <code>Hour</code> (0–23):</b> Click column <code>Time</code> → set Data Type = <b>Time</b> → click <b>Add Column → Time → Hour → Hour</b>. Set <code>Date</code> = <b>Date</b>.</li>
+        <li>Click <b>Home → Close &amp; Apply</b>.</li>
+      </ol>
+    </div>
+
+    <h3>Stage 3 &amp; 4 — Core Telemetry &amp; Compliance DAX Measures</h3>
+<pre>Total Monitored Hours = COUNTROWS ( 'AirQuality' )
+// Check: 9,357
+
+Avg CO (mg/m3) = AVERAGE ( 'AirQuality'[CO(GT)] )
+// Check: 2.15 (DAX AVERAGE automatically skips nulls!)
+
+Avg NO2 (ug/m3) = AVERAGE ( 'AirQuality'[NO2(GT)] )
+// Check: 113.08
+
+Avg Benzene (ug/m3) = AVERAGE ( 'AirQuality'[C6H6(GT)] )
+// Check: 10.08
+
+Avg Temp (C) = AVERAGE ( 'AirQuality'[T] )
+// Check: 18.32 °C
+
+CO Sensor Uptime % =
+DIVIDE ( COUNT ( 'AirQuality'[CO(GT)] ), [Total Monitored Hours] )
+// Check: 82.0% (vs 96.1% for PT08.S1!)
+
+EU NO2 Breach Hours =
+CALCULATE ( COUNTROWS ( 'AirQuality' ), 'AirQuality'[NO2(GT)] &gt; 200 )
+// Check: 388 hours
+
+High CO Alert Hours =
+CALCULATE ( COUNTROWS ( 'AirQuality' ), 'AirQuality'[CO(GT)] &gt; 4.0 )
+// Check: 812 hours</pre>
+
+    <h3>Stage 5 — Power BI Charts Journey: Build the 5-Visual Environmental Suite</h3>
+
+    <div class="wireframe">
+      <div class="wf-box" style="grid-column:span 12;">Header + Slicers: Date Range Between Slicer · Month Name · Weekday vs Weekend</div>
+      <div class="wf-box" style="grid-column:span 3;">Card: Avg CO<small>2.15 mg/m³ (82.0% uptime)</small></div>
+      <div class="wf-box" style="grid-column:span 3;">Card: Avg NO2<small>113.1 µg/m³</small></div>
+      <div class="wf-box" style="grid-column:span 3;">Card: EU NO2 Breaches<small>388 hrs (&gt;200 µg/m³)</small></div>
+      <div class="wf-box" style="grid-column:span 3;">Card: High CO Alerts<small>812 hrs (&gt;4.0 mg/m³)</small></div>
+      <div class="wf-box" style="grid-column:span 7;">Visual 2: 24-Hr Diurnal Curve + Constant Alert Line<small>05h Trough (0.71) → 09h Rush (2.97) → 19h Peak (3.73)</small></div>
+      <div class="wf-box" style="grid-column:span 5;">Visual 3: IoT Calibration Scatter + Trend Line<small>X: CO(GT) Reference vs Y: PT08.S1(CO) IoT Sensor</small></div>
+      <div class="wf-box" style="grid-column:span 7;">Visual 4: Monthly Smog vs Temperature Combo<small>Columns: Avg CO &amp; Breach Hrs · Line: Avg Temp °C (Winter Inversions!)</small></div>
+      <div class="wf-box" style="grid-column:span 5;">Visual 5: Top Pollution Breach Episodes Table<small>Date · Hour · CO(GT) · NO2(GT) · Benzene · Temp</small></div>
+    </div>
+
+    <div class="chart-card">
+      <h4><span class="tag y">Visual 2</span> 24-Hour Diurnal Smog Profile — Line Chart + Analytics Constant Line</h4>
+      <div class="wells">
+        <div class="well"><strong>X-axis</strong><code>AirQuality[Hour]</code> (Continuous 0–23)</div>
+        <div class="well"><strong>Y-axis</strong><code>[Avg CO (mg/m3)]</code> (or add a Field Parameter / 2nd chart for <code>[Avg NO2 (ug/m3)]</code>)</div>
+      </div>
+      <p><b>Add Your First Analytics Constant Line:</b> With the Line Chart selected, click the magnifying-glass icon at the top of the Visualizations pane (<b>Add further analyses to your visual / Analytics pane</b>) → expand <b>Y-axis constant line</b> → click <b>+ Add line</b> → Value = <code>3.0</code> → Color = Red, Style = Dashed, Data label = On (Text: <code>Rush-Hour Smog Alert (3.0 mg/m³)</code>). Notice how only the <code>18:00–20:00</code> evening hours pierce above 3.0 on average!</p>
+    </div>
+
+    <div class="chart-card">
+      <h4><span class="tag r">Visual 3</span> Low-Cost IoT Sensor Calibration — Scatter Chart + Analytics Trend Line</h4>
+      <div class="wells">
+        <div class="well"><strong>Values (Detail)</strong>Create an Index column in Power Query (<b>Add Column → Index Column</b>) and drop <code>Index</code> here (or plot daily averages using <code>AirQuality[Date]</code> for a super-fast 391-point calibration scatter!)</div>
+        <div class="well"><strong>X-axis</strong><code>[Avg CO (mg/m3)]</code> (Reference Gas Analyzer)</div>
+        <div class="well"><strong>Y-axis</strong><code>AVERAGE(AirQuality[PT08.S1(CO)])</code> (Low-cost Tin-Oxide Sensor)</div>
+      </div>
+      <p><b>Turn On Linear Trend Line:</b> Open the <b>Analytics pane (magnifying glass)</b> → toggle <b>Trend line = On</b>! The tight upward slope proves to the engineering team that the cheap IoT sensor tracks real Carbon Monoxide reliably — and maintains <b>96.1% uptime</b> vs. <b>82.0%</b> for the reference analyzer!</p>
+    </div>
+
+    <div class="chart-card">
+      <h4><span class="tag y">Visual 4 &amp; 5</span> Winter Inversion Combo Chart + Top Breach Hours Table</h4>
+      <p>1. <b>Line and clustered column chart:</b> X-axis = <code>Date</code> (Year + Month hierarchy), Column Y-axis = <code>[EU NO2 Breach Hours]</code>, Line Y-axis = <code>[Avg Temp (C)]</code>. Notice how breaches skyrocket in cold winter months (Nov–Feb) when cold air traps vehicle exhaust near street level!<br>
+      2. <b>Table:</b> List <code>Date</code>, <code>Hour</code>, <code>CO(GT)</code>, <code>NO2(GT)</code>, <code>C6H6(GT)</code>, and <code>T</code> sorted by <code>NO2(GT)</code> descending (peaking at <code>339.7 µg/m³</code>!).</p>
+    </div>
+
+    <ul class="task-list">
+      <li><label><input type="checkbox"> Removed 114 blank rows, dropped <code>NMHC(GT)</code>, and replaced <code>-200</code> with <code>null</code> across all 12 sensor columns.</label></li>
+      <li><label><input type="checkbox"> Built Diurnal Line with Analytics Constant Line, IoT Calibration Scatter with Trend Line, and Seasonal Combo Chart.</label></li>
+    </ul>
+  </section>
+
+  <!-- 6. SIGN-OFF -->
   <section id="sign">
-    <h2 class="t">6. Sign-off</h2>
-    <ul class="chk"><li>☐ Row count is <b>9,357</b> after the cleaning steps above.</li><li>☐ Average CO(GT) is <b>2.15 mg/m³</b>.</li><li>☐ The leading Time is <b>19:00:00</b> at <b>3.73 mg/m³</b>.</li><li>☐ The date axis runs from <b>2004-03-10</b> to <b>2005-04-04</b>.</li><li>☐ Slicers filter every visual, and you can clear them back to the totals above.</li></ul>
+    <h2 class="t">6. Client Sign-Off Checklist</h2>
+    <ul class="task-list">
+      <li><label><input type="checkbox"> Clean row count is <b>9,357</b> (no <code>(Blank)</code> dates from trailing rows).</label></li>
+      <li><label><input type="checkbox"> Clean averages match: <b>CO(GT) = 2.15 mg/m³</b>, <b>NO2(GT) = 113.08 µg/m³</b>, <b>Benzene = 10.08 µg/m³</b>, <b>Temp = 18.32 °C</b>.</label></li>
+      <li><label><input type="checkbox"> Breach counts match: <b>388 hours</b> with <code>NO2(GT) &gt; 200</code> and <b>812 hours</b> with <code>CO(GT) &gt; 4.0</code>.</label></li>
+    </ul>
   </section>
+
+  <!-- 7. STRETCH -->
   <section id="stretch">
-    <h2 class="t">7. Stretch</h2>
+    <h2 class="t">7. Stretch Challenges</h2>
     <ul>
-      <li>A line of CO(GT) by hour of day, averaged, with a second line for one sensor.</li>
-      <li>Add a drill-through page that keeps the slicer filters and shows the underlying rows.</li>
-      <li>Sort a month-name column by the month number so the axis is not alphabetical.</li>
+      <li><b>Weekday vs. Weekend Diurnal Split:</b> Add a <code>DayType</code> column (<code>Weekday</code> vs <code>Weekend</code>) and drop it into the Legend of your 24-hour Line Chart — watch the <code>08:00–09:00</code> morning peak flatten out on Saturdays and Sundays!</li>
     </ul>
   </section>
-  <section id="mist">
-    <h2 class="t">8. Mistakes that hide the answer</h2>
-    <ul>
-      <li>Averaging -200 as if it were a real reading.</li><li>A line chart of every sensor on one axis when the scales differ by orders of magnitude.</li>
-      <li>Summing an ID column, or averaging a rate that was already a percent.</li>
-      <li>Leaving dates as text, then wondering why the axis sorts wrong.</li>
-    </ul>
+
+  <!-- 8. MISTAKES -->
+  <section id="mistakes">
+    <h2 class="t">8. Trainer's Troubleshooting: Common Beginner Mistakes</h2>
+    <div class="warn-box">
+      <b>Mistake 1 — Replacing <code>-200</code> with <code>0</code> instead of <code>null</code>:</b> Putting <code>0</code> tells Power BI that the street had 0.00 pollution for 1,683 hours, dragging <code>CO(GT)</code> down from <code>2.15</code> to <code>1.76 mg/m³</code>! Always use <code>null</code>.
+    </div>
+    <div class="warn-box">
+      <b>Mistake 2 — Typing <code>NULL</code> in uppercase in Power Query:</b> Power Query M is case-sensitive — always type lowercase <code>null</code>!
+    </div>
   </section>
+
 </div>
-<footer>UCI Air Quality. De Vito and others, 2008. https://archive.ics.uci.edu/dataset/360/air+quality</footer>
+
+<footer>
+  Source: UCI Machine Learning Repository (De Vito et al., 2008) · Manually verified against <code>data/AirQualityUCI.xlsx</code> · Works 100% offline.
+</footer>
+
+<script>
+(function(){
+  var KEY = 'pbi_guide_10_v2';
+  var boxes = document.querySelectorAll('input[type=checkbox]');
+  function update(){
+    var done = 0;
+    boxes.forEach(function(b){ if(b.checked) done++; });
+    var pct = boxes.length ? Math.round((done / boxes.length) * 100) : 0;
+    document.getElementById('progText').textContent = done + ' / ' + boxes.length + ' steps completed (' + pct + '%)';
+    document.getElementById('progFill').style.width = pct + '%';
+  }
+  function save(){
+    var state = [];
+    boxes.forEach(function(b){ state.push(b.checked ? 1 : 0); });
+    try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){}
+    update();
+  }
+  try{
+    var s = JSON.parse(localStorage.getItem(KEY) || '[]');
+    boxes.forEach(function(b, i){ if(s[i] !== undefined) b.checked = !!s[i]; });
+  }catch(e){}
+  boxes.forEach(function(b){ b.addEventListener('change', save); });
+  window.resetChecks = function(){
+    if(confirm('Reset all checkmarks for Practice Set 10?')){
+      boxes.forEach(function(b){ b.checked = false; });
+      save();
+    }
+  };
+  update();
+})();
+</script>
 </body>
 </html>

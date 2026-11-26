@@ -3,152 +3,336 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Practice · Hotel bookings</title>
+<title>15 · Hotel Bookings &amp; Revenue Management — Beginner to Advanced Excel &amp; Power BI Guide</title>
 <style>
-  :root{--calc:#1d6f42;--calc-soft:#e7f3ec;--pbi:#caa400;--pbi-soft:#fff8e0;--ink:#1f2430;--muted:#5b6472;--line:#e3e7ee;--bg:#f6f8fb;--accent:#0b3d63;}
+  :root{
+    --calc:#1d6f42; --calc-soft:#e7f3ec;
+    --pbi:#b78900; --pbi-soft:#fff8e0;
+    --ink:#1f2430; --muted:#5b6472; --line:#e3e7ee; --bg:#f6f8fb;
+    --accent:#0b3d63; --danger:#c0392b; --danger-soft:#fdeaea;
+  }
   *{box-sizing:border-box;}
-  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.6;}
-  header{background:linear-gradient(120deg,#1d6f42,#0b3d63);color:#fff;padding:28px 26px;}
-  header h1{margin:0 0 6px;font-size:24px;}
-  header p{margin:0;max-width:860px;font-size:14.5px;}
-  header a{color:#fff;}
-  .wrap{max-width:1080px;margin:22px auto 70px;padding:0 22px;}
-  .facts{background:#fff;border:1px solid var(--line);border-left:5px solid var(--calc);border-radius:12px;padding:16px 20px;margin-bottom:22px;}
-  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.62;}
+  header{background:linear-gradient(125deg,#1d6f42 0%,#0f5132 48%,#0b3d63 100%);color:#fff;padding:32px 26px 28px;}
+  header .kicker{font-size:12px;text-transform:uppercase;letter-spacing:.8px;opacity:.88;font-weight:700;margin-bottom:6px;}
+  header h1{margin:0 0 8px;font-size:26px;letter-spacing:.2px;}
+  header p{margin:0;max-width:880px;font-size:14.8px;opacity:.95;}
+  header a{color:#fff;text-decoration:underline;}
+  .top-nav{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;align-items:center;}
+  .pill{display:inline-block;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.32);padding:4px 12px;border-radius:20px;font-size:12.5px;text-decoration:none;color:#fff;}
+  .wrap{max-width:1120px;margin:20px auto 70px;padding:0 22px;}
+  .prog-bar{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 18px;margin-bottom:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;position:sticky;top:10px;z-index:20;box-shadow:0 2px 8px rgba(15,23,42,.05);}
+  .prog-track{flex:1;min-width:180px;height:10px;background:#eef2f7;border-radius:99px;overflow:hidden;}
+  .prog-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--calc),#caa400);transition:width .25s;}
+  .prog-text{font-size:13px;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums;}
+  .btn-sm{border:1px solid var(--line);background:#fff;color:var(--ink);padding:5px 11px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;}
+  .btn-sm:hover{background:#f1f5f9;}
+  .toc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:20px;font-size:13.5px;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;}
+  .toc a{color:var(--accent);text-decoration:none;font-weight:600;}
+  .toc a:hover{text-decoration:underline;}
+  section{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px 26px;margin-bottom:20px;box-shadow:0 1px 2px rgba(20,30,50,.03);}
+  h2.t{font-size:20px;margin:0 0 14px;border-bottom:2px solid var(--calc);padding-bottom:8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  h2.t.pbi-h{border-bottom-color:#caa400;}
+  h3{font-size:16px;margin:20px 0 8px;color:var(--accent);}
+  h4{font-size:14.5px;margin:14px 0 6px;color:var(--ink);}
+  p{margin:8px 0;}
+  .facts{background:#fff;border:1px solid var(--line);border-left:5px solid var(--calc);border-radius:12px;padding:16px 18px;margin-bottom:18px;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:10px;}
   .stat{background:var(--calc-soft);border-radius:9px;padding:10px 12px;}
   .stat b{display:block;font-size:18px;color:var(--calc);}
   .stat span{font-size:12px;color:var(--muted);}
-  section{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 24px;margin-bottom:20px;}
-  h2.t{font-size:20px;margin:0 0 12px;border-bottom:2px solid var(--calc);padding-bottom:6px;}
-  h3{font-size:16px;margin:18px 0 8px;color:var(--accent);}
-  code{background:#eef2f7;padding:1px 6px;border-radius:5px;font-size:13px;font-family:"SF Mono",Consolas,monospace;}
-  pre{background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:10px;overflow:auto;font-size:13px;font-family:"SF Mono",Consolas,monospace;line-height:1.5;}
-  table{border-collapse:collapse;width:100%;margin:10px 0;font-size:13.5px;}
-  th,td{border:1px solid var(--line);padding:7px 10px;text-align:left;}
-  th{background:#f1f5f9;}
-  .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;color:#fff;}
-  .g{background:#27ae60;} .y{background:#e0a800;} .r{background:#c0392b;}
-  .req{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px dashed var(--line);}
+  .stat.warn{background:var(--danger-soft);}
+  .stat.warn b{color:var(--danger);}
+  code{background:#eef2f7;padding:2px 6px;border-radius:5px;font-size:12.8px;font-family:"SF Mono",Consolas,monospace;color:#0f172a;}
+  pre{background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:10px;overflow:auto;font-size:13px;font-family:"SF Mono",Consolas,monospace;line-height:1.55;margin:10px 0;}
+  table{border-collapse:collapse;width:100%;margin:12px 0;font-size:13.3px;}
+  th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top;}
+  th{background:#f1f5f9;font-weight:700;}
+  .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;color:#fff;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap;}
+  .g{background:#1d6f42;} .y{background:#d99000;} .r{background:#c0392b;} .b{background:#0b3d63;}
+  .req{display:flex;gap:12px;align-items:flex-start;padding:9px 0;border-bottom:1px dashed var(--line);}
   .req:last-child{border-bottom:none;}
-  .step{background:var(--calc-soft);border-radius:8px;padding:12px 14px;margin:10px 0;}
+  .step{background:var(--calc-soft);border-radius:10px;border:1px solid #cde4d6;padding:14px 16px;margin:12px 0;}
   .step b{color:var(--calc);}
-  .pbi-box{background:var(--pbi-soft);border-radius:8px;padding:12px 14px;margin:10px 0;}
-  .pbi-box b{color:#8a6a00;}
+  .pbi-box{background:var(--pbi-soft);border:1px solid #f2df9d;border-radius:10px;padding:14px 16px;margin:12px 0;}
+  .pbi-box b{color:#7c5d00;}
+  .chart-card{border:1px solid var(--line);border-left:5px solid #caa400;border-radius:10px;padding:14px 16px;margin:14px 0;background:#fcfdff;}
+  .chart-card h4{margin:0 0 8px;font-size:15.5px;color:var(--accent);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .wells{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin:10px 0;}
+  .well{background:#f4f6fa;border:1px solid var(--line);border-radius:7px;padding:7px 10px;font-size:12.8px;}
+  .well strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-bottom:2px;}
   .note{background:#fffaf0;border-left:4px solid #e0a800;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
-  .chk li{margin:4px 0;}
-  .toc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:20px;font-size:14px;}
-  .toc a{color:var(--accent);text-decoration:none;}
-  footer{text-align:center;color:var(--muted);font-size:12px;padding:10px 20px 28px;}
+  .warn-box{background:var(--danger-soft);border-left:4px solid var(--danger);border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
+  .wireframe{display:grid;grid-template-columns:repeat(12,1fr);gap:8px;background:#eef2f7;padding:14px;border-radius:12px;margin:12px 0;font-size:12px;}
+  .wf-box{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:10px;text-align:center;font-weight:600;color:var(--accent);}
+  .wf-box small{display:block;font-weight:400;color:var(--muted);margin-top:3px;font-size:11px;}
+  ul.task-list{list-style:none;padding:0;margin:10px 0;}
+  ul.task-list li{padding:5px 0;}
+  ul.task-list label{display:flex;gap:9px;align-items:flex-start;cursor:pointer;font-size:13.8px;}
+  ul.task-list input{margin-top:4px;width:16px;height:16px;flex:none;accent-color:var(--calc);}
+  footer{text-align:center;color:var(--muted);font-size:12.5px;padding:10px 20px 28px;}
   footer a{color:#3d4a5c;}
+  @media(max-width:740px){
+    .wrap{padding:0 12px;}
+    section{padding:16px 16px;}
+    .wireframe{grid-template-columns:1fr 1fr;}
+    .wf-box{grid-column:span 2 !important;}
+  }
 </style>
 </head>
 <body>
+
 <header>
-  <h1>15 · Hotel bookings</h1>
-  <p>City and resort hotel reservations, including cancellations, lead time, and daily rate. Figures below were computed from the file in this folder. <a href="../index.html">All practice sets</a></p>
-</header>
-<div class="wrap">
-  <div class="toc"><b>Jump to:</b>
-    <a href="#profile">Profile</a> ·
-    <a href="#brief">Brief</a> ·
-    <a href="#req">Requirements</a> ·
-    <a href="#calc">Excel</a> ·
-    <a href="#pbi">Power BI</a> ·
-    <a href="#sign">Sign-off</a> ·
-    <a href="#stretch">Stretch</a>
+  <div class="kicker">Practice Set 15 of 20 · Hospitality Revenue Management, Cancellations &amp; Small Multiples</div>
+  <h1>15 · Hotel Bookings — Reconstructing Dates, Cancellation Leakage &amp; Small Multiples</h1>
+  <p>Analyze 119,390 City &amp; Resort hotel bookings (<code>2015–2017</code>) from Portugal! Fix 4 sneaky <code>"NA"</code> text strings in <code>children</code> and <code>"NULL"</code> codes in <code>country</code>, merge 3 split arrival columns into a real <code>ArrivalDate</code>, quantify <b>€16.73M in Cancelled Room Revenue</b>, and master Power BI <b>Small Multiples</b>!</p>
+  <div class="top-nav">
+    <a class="pill" href="../index.html">← All 20 Practice Sets</a>
+    <a class="pill" href="../../index.html">← Main Excel &amp; Power BI Outline</a>
+    <span class="pill">Charts Taught: Small Multiples Line · Lead-Time Risk Combo · Channel Cancellation Bar · Realized vs Lost Column</span>
   </div>
+</header>
+
+<div class="wrap">
+
+  <div class="prog-bar">
+    <span class="prog-text" id="progText">0 / 0 steps completed</span>
+    <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+    <button class="btn-sm" type="button" onclick="resetChecks()">Reset checklist</button>
+  </div>
+
+  <div class="toc">
+    <b>Step-by-Step Map:</b>
+    <a href="#profile">1. Data Profile &amp; PMS Quirks</a> ·
+    <a href="#brief">2. Client Brief</a> ·
+    <a href="#req">3. Requirements</a> ·
+    <a href="#excel">4. Phase A: Excel Step-by-Step</a> ·
+    <a href="#pbi">5. Phase B: Power BI &amp; Small Multiples</a> ·
+    <a href="#sign">6. Sign-Off</a> ·
+    <a href="#stretch">7. Stretch</a> ·
+    <a href="#mistakes">8. Common Mistakes</a>
+  </div>
+
+  <!-- 1. PROFILE -->
   <section id="profile">
-    <h2 class="t">1. Verified profile</h2>
-    <div class="facts"><div class="grid"><div class="stat"><b>119,390</b><span>Rows</span></div><div class="stat"><b>$26.00M</b><span>Total Revenue</span></div><div class="stat"><b>2014-10-17 → 2017-09-14</b><span>Dates</span></div><div class="stat"><b>City Hotel</b><span>Top hotel</span></div></div></div>
-    <p>File: <code>hotels.csv</code>. Fact table for the steps: <code>Bookings</code>, renamed to <code>Bookings</code> in Power BI.</p>
-    
-    
-        <h3>Biggest groups (check your pivot against this)</h3>
-        <table><tr><th>hotel</th><th>Revenue</th></tr><tr><td>City Hotel</td><td>$14.39M</td></tr><tr><td>Resort Hotel</td><td>$11.60M</td></tr></table>
-    <div class="note">adr is a daily rate. Revenue for a kept booking is adr times weekend nights plus week nights, and only when is_canceled is 0. A cancelled booking contributes 0 in the helper column.</div>
+    <h2 class="t">1. Verified Data Profile &amp; Hospitality PMS Quirks</h2>
+    <div class="facts">
+      <div class="grid">
+        <div class="stat"><b>119,390</b><span>Bookings (79,330 City · 40,060 Resort)</span></div>
+        <div class="stat warn"><b>37.04%</b><span>Cancelled (44,224 bookings!)</span></div>
+        <div class="stat"><b>€25,996,260</b><span>Realized Room Revenue</span></div>
+        <div class="stat warn"><b>€16,727,237</b><span>Revenue Lost to Cancellations!</span></div>
+        <div class="stat"><b>€101.83</b><span>Overall Avg Daily Rate (ADR)</span></div>
+        <div class="stat"><b>57.01%</b><span>Canc. Rate at 181+ Day Lead Time</span></div>
+      </div>
+    </div>
+
+    <div class="note">
+      <b>Three Data Cleaning Must-Knows in <code>hotels.csv</code> (32 Columns):</b><br>
+      1. <b>Literal <code>"NA"</code> &amp; <code>"NULL"</code> Strings:</b> Column <code>children</code> has 4 literal <code>"NA"</code> strings (replace with <code>0</code> before converting to Whole Number!), and <code>country</code> / <code>agent</code> / <code>company</code> store literal <code>"NULL"</code> strings.<br>
+      2. <b>Split Arrival Date:</b> Arrival date is split across <code>arrival_date_year</code> (<code>2015</code>), <code>arrival_date_month</code> (<code>"July"</code>), and <code>arrival_date_day_of_month</code> (<code>1</code>). Combine them into one clean <code>ArrivalDate</code>!<br>
+      3. <b>Booked vs. Realized Revenue:</b> Never report total <code>Nights * ADR</code> (<code>€42.72M</code>) as earned revenue — <b>37.04% of bookings cancelled</b>! Always separate <b>Realized Revenue (<code>is_canceled = 0</code> → €26.00M)</b> from <b>Cancelled Leakage (<code>is_canceled = 1</code> → €16.73M)</b>!
+    </div>
+
+    <h3>Verified Channel &amp; Lead-Time Cancellation Benchmarks</h3>
+    <table>
+      <tr><th>Market Segment</th><th>Bookings</th><th>Cancel %</th><th>Lead-Time Band</th><th>Bookings</th><th>Cancel %</th></tr>
+      <tr><td>Online TA</td><td>56,477</td><td>36.72%</td><td>1. 0–7d (Last Min)</td><td>19,746</td><td><b>9.63%</b></td></tr>
+      <tr><td>Offline TA/TO</td><td>24,219</td><td>34.32%</td><td>2. 8–30d</td><td>18,960</td><td>27.86%</td></tr>
+      <tr><td><b>Groups</b></td><td>19,811</td><td><b>61.06%</b></td><td>3. 31–90d</td><td>29,553</td><td>37.70%</td></tr>
+      <tr><td><b>Direct</b></td><td>12,606</td><td><b>15.34%</b></td><td>4. 91–180d</td><td>26,439</td><td>44.71%</td></tr>
+      <tr><td>Corporate</td><td>5,295</td><td>18.73%</td><td><b>5. 181d+ (6m+)</b></td><td>24,692</td><td><b>57.01%</b></td></tr>
+    </table>
   </section>
+
+  <!-- 2. BRIEF -->
   <section id="brief">
-    <h2 class="t">2. The client brief</h2>
-    <p><b>Who:</b> A hotel group revenue manager.</p>
-    <p><b>The ask:</b> <i>What share of bookings do we cancel, and what revenue is left after cancellations, by hotel and by month? ADR alone is not revenue.</i></p>
+    <h2 class="t">2. Real-World Client Brief</h2>
+    <p><b>Client:</b> Director of Revenue Management, Iberian Hospitality Group (Lisbon City Hotel + Algarve Resort Hotel).</p>
+    <p><b>The Ask:</b> <i>"Nearly 4 out of 10 reservations cancel before check-in, leaving €16.7M on the table! Show us how City vs. Resort seasonality differs side-by-side, prove how Lead Time drives cancellation risk so we can calibrate overbooking rules, and show why shifting bookings from Online Travel Agents &amp; Groups to Direct website bookings boosts net realized revenue."</i></p>
   </section>
+
+  <!-- 3. REQUIREMENTS -->
   <section id="req">
-    <h2 class="t">3. Requirements</h2>
-    <div class="req"><span class="tag g">Beginner</span><div>KPI strip — row count, Revenue.</div></div><div class="req"><span class="tag g">Beginner</span><div>Bar chart of <b>hotel</b>.</div></div><div class="req"><span class="tag g">Beginner</span><div>Trend by <b>reservation_status_date</b>.</div></div><div class="req"><span class="tag y">Inter.</span><div>Top 10 <b>country</b>.</div></div><div class="req"><span class="tag y">Inter.</span><div>Break the same number down by <b>is_canceled</b>.</div></div><div class="req"><span class="tag r">Advan.</span><div>A rate using <b>hotel</b> (two values). Use DIVIDE, not an average of a rate column.</div></div><div class="req"><span class="tag r">Advan.</span><div>Slicers that cross-filter every visual on the page.</div></div>
+    <h2 class="t">3. Project Requirements (Beginner → Advanced)</h2>
+    <div class="req"><span class="tag g">Beginner</span><div><b>Clean <code>"NA"</code>/<code>"NULL"</code> Strings + Reconstruct <code>ArrivalDate</code> + Compute <code>TotalNights</code>:</b> Sum <code>stays_in_weekend_nights + stays_in_week_nights</code>.</div></div>
+    <div class="req"><span class="tag g">Beginner</span><div><b>4-Card Revenue Management KPI Strip:</b> Total Bookings (<code>119,390</code>), Cancellation Rate % (<code>37.04%</code>), Realized Room Revenue (<code>€26.00M</code>), and Realized ADR (<code>€99.99</code> / overall <code>€101.83</code>).</div></div>
+    <div class="req"><span class="tag y">Inter.</span><div><b>Power BI Small Multiples Seasonality Chart:</b> Compare <code>City Hotel</code> vs. <code>Resort Hotel</code> monthly Realized Revenue &amp; ADR side-by-side!</div></div>
+    <div class="req"><span class="tag r">Advan.</span><div><b>Lead-Time Escalation Combo Chart + Market-Segment Leakage Stacked Bar:</b> Show cancellation % climbing from <code>9.6%</code> (0–7d) to <code>57.0%</code> (181d+)!</div></div>
   </section>
-  <section id="calc">
-    <h2 class="t">4. Phase A — Microsoft Excel</h2>
-    <p>Goal: open the file cleanly, add only the helper columns you need, and prove one total with a PivotTable before you touch Power BI.</p>
-    
-    <h3>Step 1 — Open it the right way</h3>
-    <div class="step"><b>Data → From Text/CSV</b> → <code>hotels.csv</code>. arrival_date_year, arrival_date_month, and arrival_date_day_of_month are separate. You can build a real date later; the month name is enough for the first chart.<br><b>Formats:</b> <code>reservation_status_date</code> → Date; <code>adr</code> → Number (2 decimals); <code>lead_time</code> → Number; <code>agent</code> → Number. Then <b>View → Freeze Panes → Freeze Top Row</b>.</div>
-    <h3>Step 2 — Look for dirt</h3>
-    <div class="step"><ul><li>children can be blank. Treat blank as 0 if you count guests.</li><li>reservation_status_date is a date. The arrival fields are parts, not a single date.</li><li>company and agent are ids and are often blank. Do not drop the row for that.</li></ul></div>
-    
-        <h3>Step 3 — Helper columns</h3>
-        <div class="step">Put these in the first empty columns and fill down (double-click the fill handle).<br>
-        <b>Revenue</b> &nbsp; <code>=IF(B2=0,AB2*(H2+I2),0)</code><br>
-<b>Year</b> &nbsp; <code>=YEAR(AF2)</code><br>
-<b>MonthNum</b> &nbsp; <code>=MONTH(AF2)</code><br>
-<b>MonthName</b> &nbsp; <code>=TEXT(AF2,&quot;MMM&quot;)</code>
-        <br><i>Excel on this machine uses a comma between arguments. If your Excel uses semicolons, swap them.</i></div>
-    <h3>Step 4 — Pivot check</h3>
-    <div class="step">Select the data → <b>Insert → PivotTable</b>. Rows = <code>hotel</code>. Put <code>arrival_date_year</code> in Columns.
-    Values = <b>Sum of Revenue</b>.
-    The grand total must be <b>$26.00M</b>. If it is not, the filter or the number format is wrong — fix that before Power BI.
+
+  <!-- 4. EXCEL -->
+  <section id="excel">
+    <h2 class="t">4. Phase A — Step-by-Step in Microsoft Excel</h2>
+
+    <h3>Step A1 — Import &amp; Reconstruct Arrival Date + Room Revenue</h3>
+    <div class="step">
+      Load <code>datasets/15-hotel-bookings/data/hotels.csv</code> via <b>Data → From Text/CSV</b>. Add 3 helper columns:<br>
+      • <code>AG2 (ArrivalDate)</code>: <code>=DATEVALUE(G2 &amp; "-" &amp; E2 &amp; "-" &amp; D2)</code> (format as <code>yyyy-mm-dd</code>)<br>
+      • <code>AH2 (TotalNights)</code>: <code>=H2+I2</code><br>
+      • <code>AI2 (RoomRevenue)</code>: <code>=AH2*AB2</code> (where <code>AB</code> is <code>adr</code>)<br>
+      Verify with <code>SUMIFS</code>: <code>is_canceled = 0</code> Realized Revenue = <b>€25,996,260.41</b>; <code>is_canceled = 1</code> Lost Revenue = <b>€16,727,237.12</b>!
     </div>
-    <h3>Step 5 — Save</h3>
-    <div class="step"><b>Save As</b> <code>15-hotel-bookings-clean.xlsx</code>. Power BI should read this file, not a half-filtered view you forgot to clear.</div>
+
+    <ul class="task-list">
+      <li><label><input type="checkbox"> Reconstructed <code>ArrivalDate</code> and verified €26.00M Realized vs €16.73M Cancelled Revenue in Excel.</label></li>
+    </ul>
   </section>
+
+  <!-- 5. POWER BI -->
   <section id="pbi">
-    <h2 class="t">5. Phase B — Power BI</h2>
-    <h3>Step 1 — Get data</h3>
-    <div class="pbi-box"><b>Get data → Text/CSV</b>. is_canceled is 0 or 1. adr is the daily rate.</div>
-    <h3>Step 2 — Power Query</h3>
-    <div class="pbi-box">Rename the main query to <code>Bookings</code>. Set the types from Step 1. Watch <b>Applied Steps</b>. Then <b>Close &amp; Apply</b>.
-    </div>
-    <h3>Step 3 — Model</h3>
-    <div class="pbi-box"><p>One table. A star schema is not required for this set.</p>
-    <p>Hide key columns you do not want on the report. A hidden column can still be used by a relationship.</p></div>
-    <h3>Step 4 — Measures</h3>
-    <p>Write these as <b>measures</b>, not calculated columns. Replace the placeholder filter with a real value from the column.</p>
-    <pre>Revenue = SUMX(FILTER(&#x27;Bookings&#x27;, &#x27;Bookings&#x27;[is_canceled] = 0),
-    &#x27;Bookings&#x27;[adr] * (&#x27;Bookings&#x27;[stays_in_weekend_nights] + &#x27;Bookings&#x27;[stays_in_week_nights]))
-Row Count = COUNTROWS(&#x27;Bookings&#x27;)
-adr = AVERAGE(&#x27;Bookings&#x27;[adr])
-Filtered rows = CALCULATE([Row Count], &#x27;Bookings&#x27;[hotel] = &lt;one of the two values&gt;)</pre>
-    <h3>Step 5 — Visuals</h3>
+    <h2 class="t pbi-h">5. Phase B — Complete Power BI &amp; Small Multiples Journey</h2>
+
+    <h3>Stage 1 &amp; 2 — Clean PMS Strings, Build <code>ArrivalDate</code> &amp; Lead-Time Bands in Power Query</h3>
     <div class="pbi-box">
-      <ul>
-        <li>Cards for the measures in Step 4.</li>
-        <li>Bar chart: axis <code>hotel</code>, value the main measure.</li>
-        <li>Line chart: axis <code>reservation_status_date</code>.</li>
-        <li>A slicer for each small category (hotel, is_canceled, is_repeated_guest).</li>
-        <li>Click a bar and confirm the other visuals filter. Use <b>Format → Edit interactions</b> if one visual should stay still.</li>
-      </ul>
+      <ol style="margin:0;padding-left:20px;">
+        <li>Import <code>data/hotels.csv</code> → <b>Transform Data</b> → rename query to <code>Bookings</code>.</li>
+        <li><b>Fix <code>"NA"</code> &amp; <code>"NULL"</code>:</b> On column <code>children</code>, <b>Replace Values</b> <code>NA → 0</code>, then set type = <b>Whole Number</b>. On <code>country</code>, replace <code>NULL → Unknown</code>.</li>
+        <li><b>Build <code>ArrivalDate</code>:</b> Click <b>Add Column → Custom Column</b> → Name: <code>ArrivalDate</code> → Formula:
+<pre>Date.FromText([arrival_date_month] &amp; " " &amp; Text.From([arrival_date_day_of_month]) &amp; ", " &amp; Text.From([arrival_date_year]), "en-US")</pre>
+        Set <code>ArrivalDate</code> Data Type = <b>Date</b>!</li>
+        <li><b>Add <code>TotalNights</code>:</b> Custom Column = <code>[stays_in_weekend_nights] + [stays_in_week_nights]</code> (<b>Whole Number</b>).</li>
+        <li><b>Add Ordered <code>LeadTimeBand</code> &amp; <code>LeadTimeSort</code>:</b>
+<pre>// LeadTimeBand:
+if [lead_time] &lt;= 7 then "0–7d (Last Min)"
+else if [lead_time] &lt;= 30 then "8–30d"
+else if [lead_time] &lt;= 90 then "31–90d"
+else if [lead_time] &lt;= 180 then "91–180d"
+else "181d+ (6m+)"</pre>
+        (Add matching <code>LeadTimeSort</code> 1..5!). Click <b>Home → Close &amp; Apply</b>.</li>
+      </ol>
+    </div>
+
+    <h3>Stage 3 &amp; 4 — Calendar Table &amp; Hospitality DAX Measures</h3>
+    <p>Create a <code>Calendar</code> table (<code>2015-07-01</code> to <code>2017-08-31</code>), relate <code>Calendar[Date] → Bookings[ArrivalDate]</code>, and sort <code>Bookings[LeadTimeBand]</code> by <code>LeadTimeSort</code>. Then write:</p>
+<pre>Total Bookings = COUNTROWS ( 'Bookings' )
+// Check: 119,390
+
+Cancelled Bookings =
+CALCULATE ( [Total Bookings], 'Bookings'[is_canceled] = 1 )
+// Check: 44,224
+
+Cancellation Rate % = DIVIDE ( [Cancelled Bookings], [Total Bookings] )
+// Check: 37.04% (City = 41.73%, Resort = 27.76%)
+
+Booked Room Revenue =
+SUMX ( 'Bookings', 'Bookings'[TotalNights] * 'Bookings'[adr] )
+// Check: €42,723,497.53
+
+Realized Revenue =
+CALCULATE ( [Booked Room Revenue], 'Bookings'[is_canceled] = 0 )
+// Check: €25,996,260.41
+
+Cancelled Revenue Leakage =
+CALCULATE ( [Booked Room Revenue], 'Bookings'[is_canceled] = 1 )
+// Check: €16,727,237.12
+
+Avg ADR = AVERAGE ( 'Bookings'[adr] )
+// Check: €101.83</pre>
+
+    <h3>Stage 5 — Power BI Charts Journey: Build the 5-Visual Revenue Management Suite</h3>
+
+    <div class="wireframe">
+      <div class="wf-box" style="grid-column:span 12;">Header + Slicers: Hotel Property (All / City / Resort) · Arrival Year · Market Segment</div>
+      <div class="wf-box" style="grid-column:span 3;">Card: Total Bookings<small>119,390</small></div>
+      <div class="wf-box" style="grid-column:span 3;">Card: Cancel Rate %<small>37.0% (44,224)</small></div>
+      <div class="wf-box" style="grid-column:span 3;">Card: Realized Revenue<small>€26.00M</small></div>
+      <div class="wf-box" style="grid-column:span 3;">Card: Lost to Cancels<small>€16.73M</small></div>
+      <div class="wf-box" style="grid-column:span 6;">Visual 2: Small Multiples Seasonality Line<small>City Hotel vs Resort Hotel Monthly ADR &amp; Revenue!</small></div>
+      <div class="wf-box" style="grid-column:span 6;">Visual 3: Lead-Time Risk Escalation Combo<small>0–7d (9.6%) → 31–90d (37.7%) → 181d+ (57.0%!)</small></div>
+      <div class="wf-box" style="grid-column:span 6;">Visual 4: Channel Realized vs Lost Revenue Bar<small>Online TA · Groups (61.1% Canc!) · Direct (15.3%!)</small></div>
+      <div class="wf-box" style="grid-column:span 6;">Visual 5: Top Guest Origin Countries Matrix<small>PRT · GBR · FRA · ESP · DEU</small></div>
+    </div>
+
+    <div class="chart-card">
+      <h4><span class="tag r">Visual 2</span> City vs. Resort Seasonality — Small Multiples Line Chart (First Time in This Course!)</h4>
+      <p><b>Why Small Multiples?</b> Instead of tangling multiple lines together, Power BI's <b>Small multiples</b> well splits one chart into a synchronized side-by-side trellis sharing the exact same Y-axis!</p>
+      <div class="wells">
+        <div class="well"><strong>X-axis</strong><code>Calendar[MonthShort]</code> (Jan–Dec)</div>
+        <div class="well"><strong>Y-axis</strong><code>[Realized Revenue]</code> (or <code>[Avg ADR]</code>)</div>
+        <div class="well"><strong>Small multiples</strong><code>Bookings[hotel]</code> (1 row × 2 columns grid in Format pane!)</div>
+      </div>
+      <p><b>Instant Insight:</b> Algarve <b>Resort Hotel</b> ADR &amp; revenue skyrocket in July–August beach vacation months, while Lisbon <b>City Hotel</b> stays steady Spring through Autumn!</p>
+    </div>
+
+    <div class="chart-card">
+      <h4><span class="tag y">Visual 3 &amp; 4</span> Lead-Time Cancellation Combo + Channel Leakage Stacked Bar</h4>
+      <p>1. <b>Line and clustered column chart:</b> X-axis = <code>Bookings[LeadTimeBand]</code>, Column Y-axis = <code>[Total Bookings]</code>, Line Y-axis = <code>[Cancellation Rate %]</code>. Recommend requiring deposits or controlled overbooking for <code>181d+</code> reservations (57.0% cancellation rate)!<br>
+      2. <b>Stacked bar chart:</b> Y-axis = <code>Bookings[market_segment]</code>, X-axis = <code>[Realized Revenue]</code> and <code>[Cancelled Revenue Leakage]</code>.</p>
+    </div>
+
+    <ul class="task-list">
+      <li><label><input type="checkbox"> Cleaned <code>"NA"</code>/<code>"NULL"</code> strings, built continuous <code>ArrivalDate</code>, and sorted <code>LeadTimeBand</code>.</label></li>
+      <li><label><input type="checkbox"> Built Small Multiples Seasonality Line, Lead-Time Combo, and Channel Leakage Stacked Bar.</label></li>
+    </ul>
+  </section>
+
+  <!-- 6. SIGN-OFF -->
+  <section id="sign">
+    <h2 class="t">6. Client Sign-Off Checklist</h2>
+    <ul class="task-list">
+      <li><label><input type="checkbox"> Total Bookings = <b>119,390</b>; Cancelled = <b>44,224 (37.04%)</b> (City = <code>41.73%</code>, Resort = <code>27.76%</code>).</label></li>
+      <li><label><input type="checkbox"> Realized Revenue = <b>€25,996,260.41</b> and Cancelled Revenue Leakage = <b>€16,727,237.12</b>.</label></li>
+      <li><label><input type="checkbox"> Lead-Time Cancellation % climbs monotonically from <b>9.63%</b> (0–7d) to <b>57.01%</b> (181d+).</label></li>
+    </ul>
+  </section>
+
+  <!-- 7. STRETCH -->
+  <section id="stretch">
+    <h2 class="t">7. Stretch Challenges</h2>
+    <ul>
+      <li><b>Outlier Audit on <code>adr</code>:</b> Spot the single cancelled City Hotel row with <code>adr = €5,400</code> and the single Resort row with <code>adr = -€6.38</code>, and add a clean filter toggle!</li>
+    </ul>
+  </section>
+
+  <!-- 8. MISTAKES -->
+  <section id="mistakes">
+    <h2 class="t">8. Trainer's Troubleshooting: Common Beginner Mistakes</h2>
+    <div class="warn-box">
+      <b>Mistake 1 — Reporting <code>Booked Room Revenue (€42.72M)</code> as Earned Revenue:</b> Overstates actual hotel revenue by 64% because 44,224 guests never checked in!
+    </div>
+    <div class="warn-box">
+      <b>Mistake 2 — Forgetting to replace <code>"NA"</code> in <code>children</code>:</b> Causes 4 row conversion errors when setting <code>children</code> to Whole Number.
     </div>
   </section>
-  <section id="sign">
-    <h2 class="t">6. Sign-off</h2>
-    <ul class="chk"><li>☐ Row count is <b>119,390</b> after the cleaning steps above.</li><li>☐ Total Revenue is <b>$26.00M</b>.</li><li>☐ The leading hotel is <b>City Hotel</b> at <b>$14.39M</b>.</li><li>☐ The date axis runs from <b>2014-10-17</b> to <b>2017-09-14</b>.</li><li>☐ Slicers filter every visual, and you can clear them back to the totals above.</li></ul>
-  </section>
-  <section id="stretch">
-    <h2 class="t">7. Stretch</h2>
-    <ul>
-      <li>Cancellation rate = DIVIDE(CALCULATE(COUNTROWS(Bookings), Bookings[is_canceled]=1), [Row Count]), by market_segment.</li>
-      <li>Add a drill-through page that keeps the slicer filters and shows the underlying rows.</li>
-      <li>Sort a month-name column by the month number so the axis is not alphabetical.</li>
-    </ul>
-  </section>
-  <section id="mist">
-    <h2 class="t">8. Mistakes that hide the answer</h2>
-    <ul>
-      <li>Summing adr and calling it revenue.</li><li>Including cancelled stays in the revenue helper.</li>
-      <li>Summing an ID column, or averaging a rate that was already a percent.</li>
-      <li>Leaving dates as text, then wondering why the axis sorts wrong.</li>
-    </ul>
-  </section>
+
 </div>
-<footer>Hotel booking demand (Antonio, Almeida, Nunes), via TidyTuesday 2020-02-11. https://github.com/rfordatascience/tidytuesday</footer>
+
+<footer>
+  Source: Antonio, Almeida &amp; Nunes (2019), <i>Data in Brief</i> · Manually verified against <code>data/hotels.csv</code> · Works 100% offline.
+</footer>
+
+<script>
+(function(){
+  var KEY = 'pbi_guide_15_v2';
+  var boxes = document.querySelectorAll('input[type=checkbox]');
+  function update(){
+    var done = 0;
+    boxes.forEach(function(b){ if(b.checked) done++; });
+    var pct = boxes.length ? Math.round((done / boxes.length) * 100) : 0;
+    document.getElementById('progText').textContent = done + ' / ' + boxes.length + ' steps completed (' + pct + '%)';
+    document.getElementById('progFill').style.width = pct + '%';
+  }
+  function save(){
+    var state = [];
+    boxes.forEach(function(b){ state.push(b.checked ? 1 : 0); });
+    try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){}
+    try{ update(); }catch(e){}
+  }
+  try{
+    var s = JSON.parse(localStorage.getItem(KEY) || '[]');
+    boxes.forEach(function(b, i){ if(s[i] !== undefined) b.checked = !!s[i]; });
+  }catch(e){}
+  boxes.forEach(function(b){ b.addEventListener('change', save); });
+  window.resetChecks = function(){
+    if(confirm('Reset all checkmarks for Practice Set 15?')){
+      boxes.forEach(function(b){ b.checked = false; });
+      save();
+    }
+  };
+  update();
+})();
+</script>
 </body>
 </html>

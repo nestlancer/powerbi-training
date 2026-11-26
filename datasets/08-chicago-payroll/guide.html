@@ -3,146 +3,371 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Practice · Chicago payroll</title>
+<title>08 · Chicago City Payroll — Beginner to Advanced Excel &amp; Power BI Guide</title>
 <style>
-  :root{--calc:#1d6f42;--calc-soft:#e7f3ec;--pbi:#caa400;--pbi-soft:#fff8e0;--ink:#1f2430;--muted:#5b6472;--line:#e3e7ee;--bg:#f6f8fb;--accent:#0b3d63;}
+  :root{
+    --calc:#1d6f42; --calc-soft:#e7f3ec;
+    --pbi:#b78900; --pbi-soft:#fff8e0;
+    --ink:#1f2430; --muted:#5b6472; --line:#e3e7ee; --bg:#f6f8fb;
+    --accent:#0b3d63; --danger:#c0392b; --danger-soft:#fdeaea;
+  }
   *{box-sizing:border-box;}
-  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.6;}
-  header{background:linear-gradient(120deg,#1d6f42,#0b3d63);color:#fff;padding:28px 26px;}
-  header h1{margin:0 0 6px;font-size:24px;}
-  header p{margin:0;max-width:860px;font-size:14.5px;}
-  header a{color:#fff;}
-  .wrap{max-width:1080px;margin:22px auto 70px;padding:0 22px;}
-  .facts{background:#fff;border:1px solid var(--line);border-left:5px solid var(--calc);border-radius:12px;padding:16px 20px;margin-bottom:22px;}
-  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.62;}
+  header{background:linear-gradient(125deg,#1d6f42 0%,#0f5132 48%,#0b3d63 100%);color:#fff;padding:32px 26px 28px;}
+  header .kicker{font-size:12px;text-transform:uppercase;letter-spacing:.8px;opacity:.88;font-weight:700;margin-bottom:6px;}
+  header h1{margin:0 0 8px;font-size:26px;letter-spacing:.2px;}
+  header p{margin:0;max-width:880px;font-size:14.8px;opacity:.95;}
+  header a{color:#fff;text-decoration:underline;}
+  .top-nav{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;align-items:center;}
+  .pill{display:inline-block;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.32);padding:4px 12px;border-radius:20px;font-size:12.5px;text-decoration:none;color:#fff;}
+  .wrap{max-width:1120px;margin:20px auto 70px;padding:0 22px;}
+  .prog-bar{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 18px;margin-bottom:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;position:sticky;top:10px;z-index:20;box-shadow:0 2px 8px rgba(15,23,42,.05);}
+  .prog-track{flex:1;min-width:180px;height:10px;background:#eef2f7;border-radius:99px;overflow:hidden;}
+  .prog-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--calc),#caa400);transition:width .25s;}
+  .prog-text{font-size:13px;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums;}
+  .btn-sm{border:1px solid var(--line);background:#fff;color:var(--ink);padding:5px 11px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;}
+  .btn-sm:hover{background:#f1f5f9;}
+  .toc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:20px;font-size:13.5px;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;}
+  .toc a{color:var(--accent);text-decoration:none;font-weight:600;}
+  .toc a:hover{text-decoration:underline;}
+  section{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px 26px;margin-bottom:20px;box-shadow:0 1px 2px rgba(20,30,50,.03);}
+  h2.t{font-size:20px;margin:0 0 14px;border-bottom:2px solid var(--calc);padding-bottom:8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  h2.t.pbi-h{border-bottom-color:#caa400;}
+  h3{font-size:16px;margin:20px 0 8px;color:var(--accent);}
+  h4{font-size:14.5px;margin:14px 0 6px;color:var(--ink);}
+  p{margin:8px 0;}
+  .facts{background:#fff;border:1px solid var(--line);border-left:5px solid var(--calc);border-radius:12px;padding:16px 18px;margin-bottom:18px;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:10px;}
   .stat{background:var(--calc-soft);border-radius:9px;padding:10px 12px;}
   .stat b{display:block;font-size:18px;color:var(--calc);}
   .stat span{font-size:12px;color:var(--muted);}
-  section{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 24px;margin-bottom:20px;}
-  h2.t{font-size:20px;margin:0 0 12px;border-bottom:2px solid var(--calc);padding-bottom:6px;}
-  h3{font-size:16px;margin:18px 0 8px;color:var(--accent);}
-  code{background:#eef2f7;padding:1px 6px;border-radius:5px;font-size:13px;font-family:"SF Mono",Consolas,monospace;}
-  pre{background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:10px;overflow:auto;font-size:13px;font-family:"SF Mono",Consolas,monospace;line-height:1.5;}
-  table{border-collapse:collapse;width:100%;margin:10px 0;font-size:13.5px;}
-  th,td{border:1px solid var(--line);padding:7px 10px;text-align:left;}
-  th{background:#f1f5f9;}
-  .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;color:#fff;}
-  .g{background:#27ae60;} .y{background:#e0a800;} .r{background:#c0392b;}
-  .req{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px dashed var(--line);}
+  .stat.warn{background:var(--danger-soft);}
+  .stat.warn b{color:var(--danger);}
+  code{background:#eef2f7;padding:2px 6px;border-radius:5px;font-size:12.8px;font-family:"SF Mono",Consolas,monospace;color:#0f172a;}
+  pre{background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:10px;overflow:auto;font-size:13px;font-family:"SF Mono",Consolas,monospace;line-height:1.55;margin:10px 0;}
+  table{border-collapse:collapse;width:100%;margin:12px 0;font-size:13.3px;}
+  th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top;}
+  th{background:#f1f5f9;font-weight:700;}
+  .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;color:#fff;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap;}
+  .g{background:#1d6f42;} .y{background:#d99000;} .r{background:#c0392b;} .b{background:#0b3d63;}
+  .req{display:flex;gap:12px;align-items:flex-start;padding:9px 0;border-bottom:1px dashed var(--line);}
   .req:last-child{border-bottom:none;}
-  .step{background:var(--calc-soft);border-radius:8px;padding:12px 14px;margin:10px 0;}
+  .step{background:var(--calc-soft);border:1px solid #cde4d6;border-radius:10px;padding:14px 16px;margin:12px 0;}
   .step b{color:var(--calc);}
-  .pbi-box{background:var(--pbi-soft);border-radius:8px;padding:12px 14px;margin:10px 0;}
-  .pbi-box b{color:#8a6a00;}
+  .pbi-box{background:var(--pbi-soft);border:1px solid #f2df9d;border-radius:10px;padding:14px 16px;margin:12px 0;}
+  .pbi-box b{color:#7c5d00;}
+  .chart-card{border:1px solid var(--line);border-left:5px solid #caa400;border-radius:10px;padding:14px 16px;margin:14px 0;background:#fcfdff;}
+  .chart-card h4{margin:0 0 8px;font-size:15.5px;color:var(--accent);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .wells{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin:10px 0;}
+  .well{background:#f4f6fa;border:1px solid var(--line);border-radius:7px;padding:7px 10px;font-size:12.8px;}
+  .well strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-bottom:2px;}
   .note{background:#fffaf0;border-left:4px solid #e0a800;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
-  .chk li{margin:4px 0;}
-  .toc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:20px;font-size:14px;}
-  .toc a{color:var(--accent);text-decoration:none;}
-  footer{text-align:center;color:var(--muted);font-size:12px;padding:10px 20px 28px;}
+  .warn-box{background:var(--danger-soft);border-left:4px solid var(--danger);border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
+  .wireframe{display:grid;grid-template-columns:repeat(12,1fr);gap:8px;background:#eef2f7;padding:14px;border-radius:12px;margin:12px 0;font-size:12px;}
+  .wf-box{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:10px;text-align:center;font-weight:600;color:var(--accent);}
+  .wf-box small{display:block;font-weight:400;color:var(--muted);margin-top:3px;font-size:11px;}
+  ul.task-list{list-style:none;padding:0;margin:10px 0;}
+  ul.task-list li{padding:5px 0;}
+  ul.task-list label{display:flex;gap:9px;align-items:flex-start;cursor:pointer;font-size:13.8px;}
+  ul.task-list input{margin-top:4px;width:16px;height:16px;flex:none;accent-color:var(--calc);}
+  footer{text-align:center;color:var(--muted);font-size:12.5px;padding:10px 20px 28px;}
   footer a{color:#3d4a5c;}
+  @media(max-width:740px){
+    .wrap{padding:0 12px;}
+    section{padding:16px 16px;}
+    .wireframe{grid-template-columns:1fr 1fr;}
+    .wf-box{grid-column:span 2 !important;}
+  }
 </style>
 </head>
 <body>
+
 <header>
-  <h1>08 · Chicago payroll</h1>
-  <p>City of Chicago employee payroll: department, job, annual salary, and hourly rate. Figures below were computed from the file in this folder. <a href="../index.html">All practice sets</a></p>
-</header>
-<div class="wrap">
-  <div class="toc"><b>Jump to:</b>
-    <a href="#profile">Profile</a> ·
-    <a href="#brief">Brief</a> ·
-    <a href="#req">Requirements</a> ·
-    <a href="#calc">Excel</a> ·
-    <a href="#pbi">Power BI</a> ·
-    <a href="#sign">Sign-off</a> ·
-    <a href="#stretch">Stretch</a>
+  <div class="kicker">Practice Set 08 of 20 · Public-Sector Compensation, Budget Treemaps &amp; Structural Nulls</div>
+  <h1>08 · Chicago City Payroll — Salaried vs. Hourly Budgets, Treemaps &amp; Pareto Bars</h1>
+  <p>Audit 32,226 City of Chicago employees across 39 municipal departments. Learn how to handle <b>structural nulls</b> (24,865 Salaried workers have blank Hourly Rates; 7,361 Hourly trade workers have blank Annual Salaries!), uncover <b>$710M in hidden hourly payroll</b>, and build Hierarchical Budget Treemaps and Stacked Compensation Bars.</p>
+  <div class="top-nav">
+    <a class="pill" href="../index.html">← All 20 Practice Sets</a>
+    <a class="pill" href="../../index.html">← Main Excel &amp; Power BI Outline</a>
+    <span class="pill">Charts Taught: Hierarchical Treemap · Stacked Salaried-vs-Hourly Bar · Pay Donut · Top Job Roles Table</span>
   </div>
+</header>
+
+<div class="wrap">
+
+  <div class="prog-bar">
+    <span class="prog-text" id="progText">0 / 0 steps completed</span>
+    <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+    <button class="btn-sm" type="button" onclick="resetChecks()">Reset checklist</button>
+  </div>
+
+  <div class="toc">
+    <b>Step-by-Step Map:</b>
+    <a href="#profile">1. Data Profile &amp; Columns</a> ·
+    <a href="#brief">2. Client Brief</a> ·
+    <a href="#req">3. Requirements</a> ·
+    <a href="#excel">4. Phase A: Excel Step-by-Step</a> ·
+    <a href="#pbi">5. Phase B: Power BI &amp; Charts Journey</a> ·
+    <a href="#sign">6. Sign-Off</a> ·
+    <a href="#stretch">7. Stretch</a> ·
+    <a href="#mistakes">8. Common Mistakes</a>
+  </div>
+
+  <!-- 1. PROFILE -->
   <section id="profile">
-    <h2 class="t">1. Verified profile</h2>
-    <div class="facts"><div class="grid"><div class="stat"><b>32,226</b><span>Rows</span></div><div class="stat"><b>$2.88B</b><span>Total Annual Salary</span></div><div class="stat"><b>CHICAGO POLICE DEPARTMENT</b><span>Top Department</span></div></div></div>
-    <p>File: <code>chicago-salaries.csv</code>. Fact table for the steps: <code>Payroll</code>, renamed to <code>Payroll</code> in Power BI.</p>
-    
-    
-        <h3>Biggest groups (check your pivot against this)</h3>
-        <table><tr><th>Department</th><th>Annual Salary</th></tr><tr><td>CHICAGO POLICE DEPARTMENT</td><td>$1.44B</td></tr><tr><td>CHICAGO FIRE DEPARTMENT</td><td>$605.79M</td></tr><tr><td>CHICAGO DEPARTMENT OF AVIATION</td><td>$97.24M</td></tr><tr><td>CHICAGO PUBLIC LIBRARY</td><td>$70.17M</td></tr><tr><td>CHICAGO DEPARTMENT OF PUBLIC HEALTH</td><td>$62.83M</td></tr><tr><td>OFFICE OF EMERGENCY MANAGEMENT AND COMMUNICATIONS</td><td>$62.29M</td></tr></table>
-    <div class="note">Annual Salary is blank for hourly workers. Hourly Rate is blank for salaried workers. Those blanks are the other pay type, not dirty data. Do not 'fill down'.</div>
+    <h2 class="t">1. Verified Data Profile &amp; The $710M Hidden-Payroll Insight</h2>
+    <div class="facts">
+      <div class="grid">
+        <div class="stat"><b>32,226</b><span>City employees (39 depts)</span></div>
+        <div class="stat"><b>$2.88B</b><span>Salaried Payroll ($2,882,248,082)</span></div>
+        <div class="stat warn"><b>+$710.02M</b><span>Est. Hourly Payroll (7,361 staff)</span></div>
+        <div class="stat"><b>$3.59B</b><span>Combined Annualized Payroll</span></div>
+        <div class="stat"><b>$115,916 / $48.06</b><span>Avg Salary / Avg Hourly Rate</span></div>
+        <div class="stat"><b>Police ($1.44B)</b><span>#1 Dept (50.0% of Salaried Bill!)</span></div>
+      </div>
+    </div>
+
+    <div class="note">
+      <b>Why Structural Blanks Matter in Real Finance Projects:</b><br>
+      • <code>24,865</code> workers (<b>77.2%</b>) have <code>Salary or Hourly = SALARY</code> → <code>Annual Salary</code> is filled (<code>$2.88B</code>), while <code>Typical Hours</code> and <code>Hourly Rate</code> are blank.<br>
+      • <code>7,361</code> workers (<b>22.8%</b>) have <code>Salary or Hourly = HOURLY</code> → <code>Annual Salary</code> is blank, while <code>Typical Hours</code> and <code>Hourly Rate</code> are filled!<br>
+      • <b>The Big Discovery:</b> If you only sum <code>Annual Salary</code>, <b>Water Management</b> looks like a small <code>$47.4M</code> department and <b>Streets &amp; Sanitation</b> looks tiny at <code>$34.6M</code> — because 80%+ of their union crews are paid hourly! Once you annualize hourly pay (<code>Typical Hours × Hourly Rate × 52</code> = <code>$710.0M</code>), Water Management jumps to the <b>#3 largest budget in Chicago ($238.8M)</b>!
+    </div>
+
+    <h3>Raw CSV Column Map (<code>data/chicago-salaries.csv</code>, Columns A–H)</h3>
+    <table>
+      <tr><th>Excel Col</th><th>Header</th><th>Type</th><th>Meaning &amp; Beginner Rule</th></tr>
+      <tr><td><code>A</code></td><td><code>Name</code></td><td>Text</td><td>Employee name (<code>LAST, FIRST M</code>). Note: names are NOT guaranteed unique in a 32K city workforce — always count rows with <code>COUNTROWS</code>, not <code>DISTINCTCOUNT(Name)</code>!</td></tr>
+      <tr><td><code>B</code>, <code>C</code></td><td><code>Job Titles</code>, <code>Department</code></td><td>Text</td><td>Role and 39 city agencies (ALL CAPS). Great two-level hierarchy for a Treemap!</td></tr>
+      <tr><td><code>D</code></td><td><code>Full or Part-Time</code></td><td>Text</td><td><code>F</code> = Full-Time (<code>31,186</code>, 96.8%) · <code>P</code> = Part-Time (<code>1,040</code>, 3.2%).</td></tr>
+      <tr><td><code>E</code></td><td><code>Salary or Hourly</code></td><td>Text</td><td><code>SALARY</code> (24,865) or <code>HOURLY</code> (7,361).</td></tr>
+      <tr><td><code>F</code></td><td><code>Typical Hours</code></td><td>Decimal (nullable)</td><td>Scheduled weekly hours (10, 20, 35, or 40) for Hourly workers only. Never sum!</td></tr>
+      <tr><td><code>G</code></td><td><code>Annual Salary</code></td><td>Currency (nullable)</td><td>Base annual salary for Salaried workers (Total = <code>$2,882,248,082.04</code>).</td></tr>
+      <tr><td><code>H</code></td><td><code>Hourly Rate</code></td><td>Currency (nullable)</td><td>Hourly wage for Hourly workers (Avg = <code>$48.06/hr</code>). Never sum raw hourly rates!</td></tr>
+    </table>
+
+    <h3>Verification Table: Top Departments (Salaried vs. Combined Budget)</h3>
+    <table>
+      <tr><th>Department</th><th>Total Staff</th><th>Hourly Staff</th><th>Salaried Bill Only</th><th>Combined Est. Budget</th></tr>
+      <tr><td>CHICAGO POLICE DEPARTMENT</td><td><b>12,265</b></td><td>45</td><td><b>$1,441,771,788</b></td><td><b>$1,443,161,436 (#1)</b></td></tr>
+      <tr><td>CHICAGO FIRE DEPARTMENT</td><td>4,676</td><td>0</td><td>$605,790,517</td><td>$605,790,517 (#2)</td></tr>
+      <tr><td>DEPARTMENT OF WATER MANAGEMENT</td><td>2,052</td><td>1,636 (80%)</td><td>$47,426,830</td><td style="color:#1d6f42"><b>$238,836,209 (#3!)</b></td></tr>
+      <tr><td>CHICAGO DEPARTMENT OF AVIATION</td><td>2,269</td><td>1,293 (57%)</td><td>$97,236,902</td><td>$228,619,728 (#4)</td></tr>
+      <tr><td>DEPARTMENT OF STREETS AND SANITATION</td><td>2,129</td><td><b>1,817 (85%)</b></td><td>$34,564,020</td><td style="color:#1d6f42"><b>$203,116,622 (#5!)</b></td></tr>
+      <tr><td>CHICAGO DEPARTMENT OF TRANSPORTATION</td><td>1,311</td><td>916 (70%)</td><td>$46,880,400</td><td>$150,949,248 (#6)</td></tr>
+      <tr><td>CHICAGO PUBLIC LIBRARY</td><td>1,070</td><td>300</td><td>$70,171,932</td><td>$77,867,776</td></tr>
+    </table>
   </section>
+
+  <!-- 2. BRIEF -->
   <section id="brief">
-    <h2 class="t">2. The client brief</h2>
-    <p><b>Who:</b> A city budget analyst.</p>
-    <p><b>The ask:</b> <i>What is the annual-salary bill by department, and how many people are hourly rather than salaried?</i></p>
+    <h2 class="t">2. Real-World Client Brief</h2>
+    <p><b>Client:</b> Municipal Budget Director preparing the annual Taxpayer Transparency Portal.</p>
+    <p><b>The Ask:</b> <i>"Citizens want to see where payroll tax dollars go across our 39 departments. Last year an intern only summed Annual Salary and claimed Streets &amp; Sanitation cost $35M, forgetting 1,817 hourly sanitation workers! Build a transparent Payroll &amp; Headcount Dashboard showing both Salaried Payroll ($2.88B) and Estimated Hourly Payroll ($710M), a drillable Department-to-Job-Title Treemap, and workforce breakdowns by Salaried/Hourly and Full/Part-Time."</i></p>
   </section>
+
+  <!-- 3. REQUIREMENTS -->
   <section id="req">
-    <h2 class="t">3. Requirements</h2>
-    <div class="req"><span class="tag g">Beginner</span><div>KPI strip — row count, Annual Salary.</div></div><div class="req"><span class="tag g">Beginner</span><div>Bar chart of <b>Department</b>.</div></div><div class="req"><span class="tag y">Inter.</span><div>Top 10 <b>Department</b>.</div></div><div class="req"><span class="tag y">Inter.</span><div>Break the same number down by <b>Salary or Hourly</b>.</div></div><div class="req"><span class="tag r">Advan.</span><div>A rate using <b>Full or Part-Time</b> (two values). Use DIVIDE, not an average of a rate column.</div></div><div class="req"><span class="tag r">Advan.</span><div>Slicers that cross-filter every visual on the page.</div></div>
+    <h2 class="t">3. Project Requirements (Beginner → Advanced)</h2>
+    <div class="req"><span class="tag g">Beginner</span><div><b>Preserve structural blanks &amp; compute Estimated Annual Pay:</b> Never delete blank rows on <code>Annual Salary</code>; compute <code>EstAnnualPay</code> in Excel and validate both <code>$2.88B</code> and <code>$3.59B</code> totals.</div></div>
+    <div class="req"><span class="tag g">Beginner</span><div><b>5-Metric KPI Strip + Pay-Type Donut:</b> Headcount (<code>32,226</code>), Salaried Bill (<code>$2.88B</code>), Est. Hourly Bill (<code>$710.0M</code>), Combined Payroll (<code>$3.59B</code>), and Salaried vs. Hourly Donut.</div></div>
+    <div class="req"><span class="tag y">Inter.</span><div><b>Top 10 Departments Stacked Bar (Salaried vs. Est. Hourly Payroll):</b> Visually reveal Water Management, Aviation, and Streets &amp; Sanitation's huge hourly trade bars!</div></div>
+    <div class="req"><span class="tag y">Inter.</span><div><b>Drillable Taxpayer Budget Treemap:</b> <code>Department → Job Titles</code> sized by <code>[Combined Payroll]</code> so users click Police or Aviation to drill into exact job titles!</div></div>
+    <div class="req"><span class="tag r">Advan.</span><div><b>Cumulative Budget Concentration (Pareto Combo Chart) + Job Role Table:</b> Show that Police + Fire + Water + Aviation + Sanitation account for over 75% of city payroll, paired with a searchable Job Title compensation table.</div></div>
   </section>
-  <section id="calc">
-    <h2 class="t">4. Phase A — Microsoft Excel</h2>
-    <p>Goal: open the file cleanly, add only the helper columns you need, and prove one total with a PivotTable before you touch Power BI.</p>
-    
-    <h3>Step 1 — Open it the right way</h3>
-    <div class="step"><b>Data → From Text/CSV</b> → <code>chicago-salaries.csv</code>. Annual Salary may arrive as text with commas. Convert it to a number.<br><b>Formats:</b> <code>Annual Salary</code> → Number (2 decimals); <code>Typical Hours</code> → Number; <code>Hourly Rate</code> → Number. Then <b>View → Freeze Panes → Freeze Top Row</b>.</div>
-    <h3>Step 2 — Look for dirt</h3>
-    <div class="step"><ul><li>Do not delete blank Annual Salary rows. Check Salary or Hourly first.</li><li>Name is an identifier. The report groups by Department and Job Titles.</li><li>Typical Hours is the scheduled week, not overtime.</li></ul></div>
-    
-        <h3>Step 3 — No extra formula required</h3>
-        <div class="step">The columns you need are already on the sheet. Use the pivot in the next step to prove the totals before you leave Excel.</div>
-    <h3>Step 4 — Pivot check</h3>
-    <div class="step">Select the data → <b>Insert → PivotTable</b>. Rows = <code>Department</code>.
-    Values = <b>Sum of Annual Salary</b>.
-    The grand total must be <b>$2.88B</b>. If it is not, the filter or the number format is wrong — fix that before Power BI.
+
+  <!-- 4. EXCEL -->
+  <section id="excel">
+    <h2 class="t">4. Phase A — Step-by-Step in Microsoft Excel</h2>
+
+    <h3>Step A1 — Import CSV &amp; Check Types</h3>
+    <div class="step">
+      Open Excel → <b>Data → From Text/CSV</b> → select <code>datasets/08-chicago-payroll/data/chicago-salaries.csv</code> → Delimiter = Comma → <b>Load</b>. Format columns <code>G</code> (<code>Annual Salary</code>) and <code>H</code> (<code>Hourly Rate</code>) as Currency <code>$#,##0.00</code>.
     </div>
-    <h3>Step 5 — Save</h3>
-    <div class="step"><b>Save As</b> <code>08-chicago-payroll-clean.xlsx</code>. Power BI should read this file, not a half-filtered view you forgot to clear.</div>
+
+    <h3>Step A2 — Add Helper Columns I &amp; J</h3>
+    <div class="step">
+      <ol style="margin:0;padding-left:20px;">
+        <li><b>Column I — <code>EstAnnualPay</code> (Unified Compensation Column):</b> In <code>I1</code> type <code>EstAnnualPay</code>, and in <code>I2</code> type:<br>
+        <code>=IF(E2="SALARY", G2, F2*H2*52)</code><br>
+        <i>Plain-English meaning:</i> If the worker is Salaried, use their exact <code>Annual Salary</code>; otherwise multiply <code>Typical Hours × Hourly Rate × 52 weeks</code>!</li>
+        <li><b>Column J — <code>EmploymentType</code>:</b> <code>=IF(D2="F", "Full-Time", "Part-Time")</code></li>
+      </ol>
+    </div>
+
+    <h3>Step A3 — PivotTable Check</h3>
+    <div class="step">
+      Insert a PivotTable: Rows = <code>Department</code>, Values = <code>Count of Name</code> (<b>32,226</b>), <code>Sum of Annual Salary</code> (<b>$2,882,248,082.04</b>), and <code>Sum of EstAnnualPay</code> (<b>$3,592,272,113.64</b>). Verify <b>CHICAGO POLICE DEPARTMENT = $1.44B</b> (#1) and save as <code>08-chicago-payroll-clean.xlsx</code>.
+    </div>
+
+    <ul class="task-list">
+      <li><label><input type="checkbox"> Loaded all 32,226 employees without deleting blank <code>Annual Salary</code> rows.</label></li>
+      <li><label><input type="checkbox"> Verified $2.88B Salaried Bill and $3.59B Combined Annualized Payroll in Excel PivotTable.</label></li>
+    </ul>
   </section>
+
+  <!-- 5. POWER BI -->
   <section id="pbi">
-    <h2 class="t">5. Phase B — Power BI</h2>
-    <h3>Step 1 — Get data</h3>
-    <div class="pbi-box"><b>Get data → Text/CSV</b>. Replace a leading $ or commas, then set Annual Salary and Hourly Rate to decimal.</div>
-    <h3>Step 2 — Power Query</h3>
-    <div class="pbi-box">Rename the main query to <code>Payroll</code>. Set the types from Step 1. Watch <b>Applied Steps</b>. Then <b>Close &amp; Apply</b>.
-    </div>
-    <h3>Step 3 — Model</h3>
-    <div class="pbi-box"><p>One table. A star schema is not required for this set.</p>
-    <p>Hide key columns you do not want on the report. A hidden column can still be used by a relationship.</p></div>
-    <h3>Step 4 — Measures</h3>
-    <p>Write these as <b>measures</b>, not calculated columns. Replace the placeholder filter with a real value from the column.</p>
-    <pre>AnnualSalary = SUM(&#x27;Payroll&#x27;[Annual Salary])
-Row Count = COUNTROWS(&#x27;Payroll&#x27;)
-TypicalHours = SUM(&#x27;Payroll&#x27;[Typical Hours])
-Filtered rows = CALCULATE([Row Count], &#x27;Payroll&#x27;[Full or Part-Time] = &lt;one of the two values&gt;)</pre>
-    <h3>Step 5 — Visuals</h3>
+    <h2 class="t pbi-h">5. Phase B — Complete Power BI &amp; Charts Journey</h2>
+
+    <h3>Stage 1 &amp; 2 — Clean &amp; Beautify Text in Power Query</h3>
     <div class="pbi-box">
-      <ul>
-        <li>Cards for the measures in Step 4.</li>
-        <li>Bar chart: axis <code>Department</code>, value the main measure.</li>
-        
-        <li>A slicer for each small category (Full or Part-Time, Salary or Hourly, Typical Hours).</li>
-        <li>Click a bar and confirm the other visuals filter. Use <b>Format → Edit interactions</b> if one visual should stay still.</li>
-      </ul>
+      <ol style="margin:0;padding-left:20px;">
+        <li>Click <b>Home → Text/CSV</b> → select <code>data/chicago-salaries.csv</code> → <b>Transform Data</b>. Rename query to <code>Payroll</code>.</li>
+        <li>Confirm <code>Typical Hours</code>, <code>Annual Salary</code>, and <code>Hourly Rate</code> are <b>1.2 (Decimal Number)</b> (blank cells become clean <i>null</i>!).</li>
+        <li>Optional readability polish: Duplicate <code>Department</code> as <code>DeptClean</code> → <b>Transform → Replace Values</b> (remove <code>"CHICAGO "</code> and <code>"DEPARTMENT OF "</code>) → <b>Format → Capitalize Each Word</b> so bar labels read <code>Police</code>, <code>Fire</code>, <code>Water Management</code> instead of 45-character uppercase strings!</li>
+        <li>Add Conditional Column <code>ScheduleType</code>: <code>Full or Part-Time = "F" → Full-Time</code>, Else → <code>Part-Time</code>. Click <b>Home → Close &amp; Apply</b>.</li>
+      </ol>
+    </div>
+
+    <h3>Stage 3 &amp; 4 — DAX Measures (Handling Salaried + Hourly Safely)</h3>
+<pre>Headcount = COUNTROWS ( 'Payroll' )
+// Check: 32,226 (Never use DISTINCTCOUNT(Name) because two workers can share a name!)
+
+Salaried Headcount = CALCULATE ( [Headcount], 'Payroll'[Salary or Hourly] = "SALARY" )
+// Check: 24,865
+
+Hourly Headcount = CALCULATE ( [Headcount], 'Payroll'[Salary or Hourly] = "HOURLY" )
+// Check: 7,361
+
+Hourly Share % = DIVIDE ( [Hourly Headcount], [Headcount], 0 )
+// Format: 0.0% -> Check: 22.8%
+
+Full Time Share % = DIVIDE ( CALCULATE ( [Headcount], 'Payroll'[Full or Part-Time] = "F" ), [Headcount], 0 )
+// Format: 0.0% -> Check: 96.8% (31,186 / 32,226)
+
+Salaried Payroll = SUM ( 'Payroll'[Annual Salary] )
+// Format: $#,0 -> Check: $2.88B ($2,882,248,082)
+
+Est Hourly Payroll =
+SUMX (
+    FILTER ( 'Payroll', 'Payroll'[Salary or Hourly] = "HOURLY" ),
+    'Payroll'[Typical Hours] * 'Payroll'[Hourly Rate] * 52
+)
+// Format: $#,0 -> Check: $710.02M ($710,024,032)
+
+Combined Payroll = [Salaried Payroll] + [Est Hourly Payroll]
+// Format: $#,0 -> Check: $3.59B ($3,592,272,114)
+
+Avg Base Salary = AVERAGE ( 'Payroll'[Annual Salary] )
+// Check: $115,916 (AVERAGEX/AVERAGE automatically ignores null hourly rows!)
+
+Avg Hourly Rate = AVERAGE ( 'Payroll'[Hourly Rate] )
+// Check: $48.06</pre>
+
+    <h3>Stage 5 — Power BI Charts Journey: Build the 5-Visual Municipal Budget Portal</h3>
+
+    <div class="wireframe">
+      <div class="wf-box" style="grid-column:span 12;">Header + Slicers: Salary or Hourly (Tile) · ScheduleType (Tile) · Department (Dropdown)</div>
+      <div class="wf-box" style="grid-column:span 3;">Card: Headcount<small>32,226 (96.8% FT)</small></div>
+      <div class="wf-box" style="grid-column:span 3;">Card: Salaried Bill<small>$2.88B</small></div>
+      <div class="wf-box" style="grid-column:span 3;">Card: Est. Hourly Bill<small>$710.02M</small></div>
+      <div class="wf-box" style="grid-column:span 3;">Card: Combined Budget<small>$3.59B</small></div>
+      <div class="wf-box" style="grid-column:span 7;">Visual 2: Top 10 Depts Stacked Bar<small>Salaried Payroll + Est. Hourly Payroll Side-by-Side</small></div>
+      <div class="wf-box" style="grid-column:span 5;">Visual 3: Drillable Taxpayer Treemap<small>Department → Job Titles Sized by Combined Payroll</small></div>
+      <div class="wf-box" style="grid-column:span 4;">Visual 4: Pay Mix Donut<small>77.2% Salaried · 22.8% Hourly</small></div>
+      <div class="wf-box" style="grid-column:span 8;">Visual 5: Job Title Compensation Table<small>Job Titles · Dept · Headcount · Avg Salary · Avg Hourly Rate · Combined Cost</small></div>
+    </div>
+
+    <div class="chart-card">
+      <h4><span class="tag y">Visual 2</span> Top 10 Departments: Salaried vs. Hourly Budget — Stacked Bar Chart</h4>
+      <div class="wells">
+        <div class="well"><strong>Y-axis</strong><code>Payroll[Department]</code> (Top N = 10 by <code>[Combined Payroll]</code>)</div>
+        <div class="well"><strong>X-axis (2 measures)</strong><code>[Salaried Payroll]</code>, <code>[Est Hourly Payroll]</code></div>
+        <div class="well"><strong>Tooltips</strong><code>[Headcount]</code>, <code>[Hourly Share %]</code></div>
+      </div>
+      <p>Color <code>[Salaried Payroll]</code> navy blue and <code>[Est Hourly Payroll]</code> gold. Look at <b>Water Management</b>, <b>Aviation</b>, and <b>Streets &amp; Sanitation</b>: huge gold bars appear that were completely invisible when looking only at <code>Annual Salary</code>!</p>
+    </div>
+
+    <div class="chart-card">
+      <h4><span class="tag y">Visual 3</span> Drillable Taxpayer Budget — Treemap Visual</h4>
+      <p><b>Why this chart?</b> A Treemap shows proportional budget share across 39 departments in a compact rectangle where area = dollars — and supports instant drill-down into Job Titles!</p>
+      <div class="wells">
+        <div class="well"><strong>Category (2 levels)</strong><code>Payroll[Department]</code>, then <code>Payroll[Job Titles]</code></div>
+        <div class="well"><strong>Values</strong><code>[Combined Payroll]</code></div>
+        <div class="well"><strong>Tooltips</strong><code>[Headcount]</code>, <code>[Avg Base Salary]</code></div>
+      </div>
+      <p>Turn <b>Drill down</b> (single downward arrow at top-right of the visual) ON, then click the giant <b>Police</b> rectangle to see exact budget blocks for Police Officer, Sergeant, Detective, and Lieutenant!</p>
+    </div>
+
+    <div class="chart-card">
+      <h4><span class="tag g">Visual 4 &amp; 5</span> Workforce Donut + Searchable Job Roles Table</h4>
+      <p>Add a 2-slice <b>Donut chart</b> (<code>Salary or Hourly</code> in Legend, <code>[Headcount]</code> in Values) and a <b>Table</b> of <code>Job Titles</code> sorted by <code>[Combined Payroll]</code> with Data Bars on headcount and payroll.</p>
+    </div>
+
+    <ul class="task-list">
+      <li><label><input type="checkbox"> Preserved all 32,226 rows and wrote <code>SUMX</code> measure for <code>[Est Hourly Payroll]</code> ($710.02M).</label></li>
+      <li><label><input type="checkbox"> Built Top-10 Stacked Bar, Drillable Budget Treemap, Workforce Donut, and Job Roles Table.</label></li>
+    </ul>
+  </section>
+
+  <!-- 6. SIGN-OFF -->
+  <section id="sign">
+    <h2 class="t">6. Client Sign-Off Checklist</h2>
+    <ul class="task-list">
+      <li><label><input type="checkbox"> Headcount = <b>32,226</b> (24,865 Salaried + 7,361 Hourly; 31,186 Full-Time + 1,040 Part-Time).</label></li>
+      <li><label><input type="checkbox"> Salaried Payroll = <b>$2.88B</b> ($2,882,248,082), Est. Hourly Payroll = <b>$710.02M</b>, Combined = <b>$3.59B</b>.</label></li>
+      <li><label><input type="checkbox"> Leading department is <b>Chicago Police Department</b> at <b>$1.44B</b> salaried ($1.443B combined).</label></li>
+      <li><label><input type="checkbox"> Water Management ($238.8M), Aviation ($228.6M), and Streets &amp; Sanitation ($203.1M) show their hourly workforce clearly.</label></li>
+    </ul>
+  </section>
+
+  <!-- 7. STRETCH -->
+  <section id="stretch">
+    <h2 class="t">7. Stretch Challenges</h2>
+    <ul>
+      <li><b>3% Union COLA What-If Slider:</b> Add a numeric parameter from <code>0%</code> to <code>6%</code> to simulate how much a Cost-of-Living Adjustment adds to Salaried vs Hourly budgets!</li>
+    </ul>
+  </section>
+
+  <!-- 8. MISTAKES -->
+  <section id="mistakes">
+    <h2 class="t">8. Trainer's Troubleshooting: Common Beginner Mistakes</h2>
+    <div class="warn-box">
+      <b>Mistake 1 — Replacing <i>null</i> in <code>Annual Salary</code> with <code>0</code>:</b> If you replace 7,361 hourly blanks with <code>0</code>, <code>AVERAGE('Payroll'[Annual Salary])</code> plunges from the true <b>$115,916</b> down to a fake <b>$89,439</b>! Keep structural blanks as <i>null</i> so <code>AVERAGE()</code> skips them automatically.
+    </div>
+    <div class="warn-box">
+      <b>Mistake 2 — Counting <code>DISTINCTCOUNT(Name)</code> instead of <code>COUNTROWS</code>:</b> Common names like "MICHAEL SMITH" belong to multiple real officers in a 32K workforce!
     </div>
   </section>
-  <section id="sign">
-    <h2 class="t">6. Sign-off</h2>
-    <ul class="chk"><li>☐ Row count is <b>32,226</b> after the cleaning steps above.</li><li>☐ Total Annual Salary is <b>$2.88B</b>.</li><li>☐ The leading Department is <b>CHICAGO POLICE DEPARTMENT</b> at <b>$1.44B</b>.</li><li>☐ Slicers filter every visual, and you can clear them back to the totals above.</li></ul>
-  </section>
-  <section id="stretch">
-    <h2 class="t">7. Stretch</h2>
-    <ul>
-      <li>Headcount and total annual salary on one bar chart, with a slicer for Full or Part-Time.</li>
-      <li>Add a drill-through page that keeps the slicer filters and shows the underlying rows.</li>
-      <li>Sort a month-name column by the month number so the axis is not alphabetical.</li>
-    </ul>
-  </section>
-  <section id="mist">
-    <h2 class="t">8. Mistakes that hide the answer</h2>
-    <ul>
-      <li>Summing Hourly Rate as if it were annual pay.</li><li>A pivot that drops hourly staff because Annual Salary is blank.</li>
-      <li>Summing an ID column, or averaging a rate that was already a percent.</li>
-      <li>Leaving dates as text, then wondering why the axis sorts wrong.</li>
-    </ul>
-  </section>
+
 </div>
-<footer>City of Chicago open data, Current Employee Names, Salaries, and Position Titles. https://data.cityofchicago.org/</footer>
+
+<footer>
+  Source: City of Chicago Open Data Portal · Manually verified against <code>data/chicago-salaries.csv</code> (32,226 rows) · Works 100% offline.
+</footer>
+
+<script>
+(function(){
+  var KEY = 'pbi_guide_08_v2';
+  var boxes = document.querySelectorAll('input[type=checkbox]');
+  function update(){
+    var done = 0;
+    boxes.forEach(function(b){ if(b.checked) done++; });
+    var pct = boxes.length ? Math.round((done / boxes.length) * 100) : 0;
+    document.getElementById('progText').textContent = done + ' / ' + boxes.length + ' steps completed (' + pct + '%)';
+    document.getElementById('progFill').style.width = pct + '%';
+  }
+  function save(){
+    var state = [];
+    boxes.forEach(function(b){ state.push(b.checked ? 1 : 0); });
+    try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){}
+    update();
+  }
+  try{
+    var s = JSON.parse(localStorage.getItem(KEY) || '[]');
+    boxes.forEach(function(b, i){ if(s[i] !== undefined) b.checked = !!s[i]; });
+  }catch(e){}
+  boxes.forEach(function(b){ b.addEventListener('change', save); });
+  window.resetChecks = function(){
+    if(confirm('Reset all checkmarks for Practice Set 08?')){
+      boxes.forEach(function(b){ b.checked = false; });
+      save();
+    }
+  };
+  update();
+})();
+</script>
 </body>
 </html>

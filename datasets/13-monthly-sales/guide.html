@@ -3,151 +3,343 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Practice · Twelve months of product sales</title>
+<title>13 · 12-Month Sales Folder Combine — Beginner to Advanced Excel &amp; Power BI Guide</title>
 <style>
-  :root{--calc:#1d6f42;--calc-soft:#e7f3ec;--pbi:#caa400;--pbi-soft:#fff8e0;--ink:#1f2430;--muted:#5b6472;--line:#e3e7ee;--bg:#f6f8fb;--accent:#0b3d63;}
+  :root{
+    --calc:#1d6f42; --calc-soft:#e7f3ec;
+    --pbi:#b78900; --pbi-soft:#fff8e0;
+    --ink:#1f2430; --muted:#5b6472; --line:#e3e7ee; --bg:#f6f8fb;
+    --accent:#0b3d63; --danger:#c0392b; --danger-soft:#fdeaea;
+  }
   *{box-sizing:border-box;}
-  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.6;}
-  header{background:linear-gradient(120deg,#1d6f42,#0b3d63);color:#fff;padding:28px 26px;}
-  header h1{margin:0 0 6px;font-size:24px;}
-  header p{margin:0;max-width:860px;font-size:14.5px;}
-  header a{color:#fff;}
-  .wrap{max-width:1080px;margin:22px auto 70px;padding:0 22px;}
-  .facts{background:#fff;border:1px solid var(--line);border-left:5px solid var(--calc);border-radius:12px;padding:16px 20px;margin-bottom:22px;}
-  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.62;}
+  header{background:linear-gradient(125deg,#1d6f42 0%,#0f5132 48%,#0b3d63 100%);color:#fff;padding:32px 26px 28px;}
+  header .kicker{font-size:12px;text-transform:uppercase;letter-spacing:.8px;opacity:.88;font-weight:700;margin-bottom:6px;}
+  header h1{margin:0 0 8px;font-size:26px;letter-spacing:.2px;}
+  header p{margin:0;max-width:880px;font-size:14.8px;opacity:.95;}
+  header a{color:#fff;text-decoration:underline;}
+  .top-nav{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;align-items:center;}
+  .pill{display:inline-block;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.32);padding:4px 12px;border-radius:20px;font-size:12.5px;text-decoration:none;color:#fff;}
+  .wrap{max-width:1120px;margin:20px auto 70px;padding:0 22px;}
+  .prog-bar{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 18px;margin-bottom:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;position:sticky;top:10px;z-index:20;box-shadow:0 2px 8px rgba(15,23,42,.05);}
+  .prog-track{flex:1;min-width:180px;height:10px;background:#eef2f7;border-radius:99px;overflow:hidden;}
+  .prog-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--calc),#caa400);transition:width .25s;}
+  .prog-text{font-size:13px;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums;}
+  .btn-sm{border:1px solid var(--line);background:#fff;color:var(--ink);padding:5px 11px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;}
+  .btn-sm:hover{background:#f1f5f9;}
+  .toc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:20px;font-size:13.5px;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;}
+  .toc a{color:var(--accent);text-decoration:none;font-weight:600;}
+  .toc a:hover{text-decoration:underline;}
+  section{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px 26px;margin-bottom:20px;box-shadow:0 1px 2px rgba(20,30,50,.03);}
+  h2.t{font-size:20px;margin:0 0 14px;border-bottom:2px solid var(--calc);padding-bottom:8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  h2.t.pbi-h{border-bottom-color:#caa400;}
+  h3{font-size:16px;margin:20px 0 8px;color:var(--accent);}
+  h4{font-size:14.5px;margin:14px 0 6px;color:var(--ink);}
+  p{margin:8px 0;}
+  .facts{background:#fff;border:1px solid var(--line);border-left:5px solid var(--calc);border-radius:12px;padding:16px 18px;margin-bottom:18px;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:10px;}
   .stat{background:var(--calc-soft);border-radius:9px;padding:10px 12px;}
   .stat b{display:block;font-size:18px;color:var(--calc);}
   .stat span{font-size:12px;color:var(--muted);}
-  section{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 24px;margin-bottom:20px;}
-  h2.t{font-size:20px;margin:0 0 12px;border-bottom:2px solid var(--calc);padding-bottom:6px;}
-  h3{font-size:16px;margin:18px 0 8px;color:var(--accent);}
-  code{background:#eef2f7;padding:1px 6px;border-radius:5px;font-size:13px;font-family:"SF Mono",Consolas,monospace;}
-  pre{background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:10px;overflow:auto;font-size:13px;font-family:"SF Mono",Consolas,monospace;line-height:1.5;}
-  table{border-collapse:collapse;width:100%;margin:10px 0;font-size:13.5px;}
-  th,td{border:1px solid var(--line);padding:7px 10px;text-align:left;}
-  th{background:#f1f5f9;}
-  .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;color:#fff;}
-  .g{background:#27ae60;} .y{background:#e0a800;} .r{background:#c0392b;}
-  .req{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px dashed var(--line);}
+  .stat.warn{background:var(--danger-soft);}
+  .stat.warn b{color:var(--danger);}
+  code{background:#eef2f7;padding:2px 6px;border-radius:5px;font-size:12.8px;font-family:"SF Mono",Consolas,monospace;color:#0f172a;}
+  pre{background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:10px;overflow:auto;font-size:13px;font-family:"SF Mono",Consolas,monospace;line-height:1.55;margin:10px 0;}
+  table{border-collapse:collapse;width:100%;margin:12px 0;font-size:13.3px;}
+  th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top;}
+  th{background:#f1f5f9;font-weight:700;}
+  .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;color:#fff;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap;}
+  .g{background:#1d6f42;} .y{background:#d99000;} .r{background:#c0392b;} .b{background:#0b3d63;}
+  .req{display:flex;gap:12px;align-items:flex-start;padding:9px 0;border-bottom:1px dashed var(--line);}
   .req:last-child{border-bottom:none;}
-  .step{background:var(--calc-soft);border-radius:8px;padding:12px 14px;margin:10px 0;}
+  .step{background:var(--calc-soft);border-radius:10px;border:1px solid #cde4d6;padding:14px 16px;margin:12px 0;}
   .step b{color:var(--calc);}
-  .pbi-box{background:var(--pbi-soft);border-radius:8px;padding:12px 14px;margin:10px 0;}
-  .pbi-box b{color:#8a6a00;}
+  .pbi-box{background:var(--pbi-soft);border:1px solid #f2df9d;border-radius:10px;padding:14px 16px;margin:12px 0;}
+  .pbi-box b{color:#7c5d00;}
+  .chart-card{border:1px solid var(--line);border-left:5px solid #caa400;border-radius:10px;padding:14px 16px;margin:14px 0;background:#fcfdff;}
+  .chart-card h4{margin:0 0 8px;font-size:15.5px;color:var(--accent);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .wells{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin:10px 0;}
+  .well{background:#f4f6fa;border:1px solid var(--line);border-radius:7px;padding:7px 10px;font-size:12.8px;}
+  .well strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-bottom:2px;}
   .note{background:#fffaf0;border-left:4px solid #e0a800;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
-  .chk li{margin:4px 0;}
-  .toc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:20px;font-size:14px;}
-  .toc a{color:var(--accent);text-decoration:none;}
-  footer{text-align:center;color:var(--muted);font-size:12px;padding:10px 20px 28px;}
+  .warn-box{background:var(--danger-soft);border-left:4px solid var(--danger);border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
+  .wireframe{display:grid;grid-template-columns:repeat(12,1fr);gap:8px;background:#eef2f7;padding:14px;border-radius:12px;margin:12px 0;font-size:12px;}
+  .wf-box{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:10px;text-align:center;font-weight:600;color:var(--accent);}
+  .wf-box small{display:block;font-weight:400;color:var(--muted);margin-top:3px;font-size:11px;}
+  ul.task-list{list-style:none;padding:0;margin:10px 0;}
+  ul.task-list li{padding:5px 0;}
+  ul.task-list label{display:flex;gap:9px;align-items:flex-start;cursor:pointer;font-size:13.8px;}
+  ul.task-list input{margin-top:4px;width:16px;height:16px;flex:none;accent-color:var(--calc);}
+  footer{text-align:center;color:var(--muted);font-size:12.5px;padding:10px 20px 28px;}
   footer a{color:#3d4a5c;}
+  @media(max-width:740px){
+    .wrap{padding:0 12px;}
+    section{padding:16px 16px;}
+    .wireframe{grid-template-columns:1fr 1fr;}
+    .wf-box{grid-column:span 2 !important;}
+  }
 </style>
 </head>
 <body>
+
 <header>
-  <h1>13 · Twelve months of product sales</h1>
-  <p>One CSV per month for 2019. The Excel practice is a single month. The Power BI practice is the folder. Figures below were computed from the file in this folder. <a href="../index.html">All practice sets</a></p>
-</header>
-<div class="wrap">
-  <div class="toc"><b>Jump to:</b>
-    <a href="#profile">Profile</a> ·
-    <a href="#brief">Brief</a> ·
-    <a href="#req">Requirements</a> ·
-    <a href="#calc">Excel</a> ·
-    <a href="#pbi">Power BI</a> ·
-    <a href="#sign">Sign-off</a> ·
-    <a href="#stretch">Stretch</a>
+  <div class="kicker">Practice Set 13 of 20 · Power Query Folder Combine, Dirty POS Exports &amp; E-Commerce Analytics</div>
+  <h1>13 · 12-Month Electronics Sales — Folder Combine, Address Parsing &amp; Ad-Timing Curves</h1>
+  <p>Automate stacking <b>12 monthly CSVs</b> (<code>Sales_January_2019.csv</code> … <code>Sales_December_2019.csv</code>) in one click using <b>Get Data → Folder</b>! Strip 545 blank rows and 355 mid-file repeated headers, solve the famous <b>Portland, OR vs. Portland, ME</b> city-collision trap, and pinpoint the exact hours of the day to run digital ads!</p>
+  <div class="top-nav">
+    <a class="pill" href="../index.html">← All 20 Practice Sets</a>
+    <a class="pill" href="../../index.html">← Main Excel &amp; Power BI Outline</a>
+    <span class="pill">Skills Taught: Folder Combine · Strip Repeated Headers · City+State Parsing · Revenue vs Volume Dual Combo</span>
   </div>
+</header>
+
+<div class="wrap">
+
+  <div class="prog-bar">
+    <span class="prog-text" id="progText">0 / 0 steps completed</span>
+    <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+    <button class="btn-sm" type="button" onclick="resetChecks()">Reset checklist</button>
+  </div>
+
+  <div class="toc">
+    <b>Step-by-Step Map:</b>
+    <a href="#profile">1. 12-File Audit &amp; 4 POS Traps</a> ·
+    <a href="#brief">2. Client Brief</a> ·
+    <a href="#req">3. Requirements</a> ·
+    <a href="#excel">4. Phase A: Excel Folder Combine</a> ·
+    <a href="#pbi">5. Phase B: Power BI &amp; Charts Journey</a> ·
+    <a href="#sign">6. Sign-Off</a> ·
+    <a href="#stretch">7. Stretch</a> ·
+    <a href="#mistakes">8. Common Mistakes</a>
+  </div>
+
+  <!-- 1. PROFILE -->
   <section id="profile">
-    <h2 class="t">1. Verified profile</h2>
-    <div class="facts"><div class="grid"><div class="stat"><b>185,950</b><span>Rows</span></div><div class="stat"><b>$34.49M</b><span>Total LineSales</span></div><div class="stat"><b>2019-01-01 → 2020-01-01</b><span>Dates</span></div><div class="stat"><b>Macbook Pro Laptop</b><span>Top Product</span></div></div></div>
-    <p>File: <code>Sales_January_2019.csv</code>. Fact table for the steps: <code>Orders</code>, renamed to <code>Orders</code> in Power BI.</p>
-    
-    
-        <h3>Biggest groups (check your pivot against this)</h3>
-        <table><tr><th>Product</th><th>LineSales</th></tr><tr><td>Macbook Pro Laptop</td><td>$8.04M</td></tr><tr><td>iPhone</td><td>$4.79M</td></tr><tr><td>ThinkPad Laptop</td><td>$4.13M</td></tr><tr><td>Google Phone</td><td>$3.32M</td></tr><tr><td>27in 4K Gaming Monitor</td><td>$2.44M</td></tr><tr><td>34in Ultrawide Monitor</td><td>$2.36M</td></tr></table>
-    <div class="note">Every monthly file repeats the header row inside the data. After you combine the folder, filter out rows where Order ID equals the text Order ID. Until you do that, Quantity and Price stay text and the total is wrong.</div>
+    <h2 class="t">1. Verified 12-File Audit &amp; Four Real-World POS Traps</h2>
+    <div class="facts">
+      <div class="grid">
+        <div class="stat"><b>12 CSVs</b><span>186,850 raw → 185,950 clean rows</span></div>
+        <div class="stat"><b>$34,492,036</b><span>Total Clean Revenue (209,079 units)</span></div>
+        <div class="stat"><b>178,437</b><span>Distinct Orders ($193.30 AOV)</span></div>
+        <div class="stat"><b>Dec ($4.61M)</b><span>#1 Holiday Month</span></div>
+        <div class="stat"><b>SF ($8.26M)</b><span>#1 of 10 US Markets</span></div>
+        <div class="stat warn"><b>900 Junk Rows!</b><span>545 blank + 355 repeated headers!</span></div>
+      </div>
+    </div>
+
+    <div class="note">
+      <b>Four Real-World E-Commerce Export Traps Hidden in <code>data/</code>:</b><br>
+      1. <b>545 Blank Rows + 355 Mid-File Repeated Headers:</b> Several rows literally say <code>Order ID, Product, Quantity Ordered...</code> right in the middle of a month! If you don't filter <code>Order ID &lt;&gt; "Order ID"</code> and <code>&lt;&gt; ""</code> BEFORE converting types, Power Query throws 355 <code>DataFormat.Error</code>s!<br>
+      2. <b>The Two-Portlands Trap:</b> <code>Purchase Address</code> (<code>"917 1st St, Dallas, TX 75001"</code>) serves <b>both</b> <code>Portland, OR</code> (<b>$1,870,732</b>) and <code>Portland, ME</code> (<b>$449,758</b>)! Always build <code>Market = City &amp; ", " &amp; State</code> so the two Portlands stay separate!<br>
+      3. <b>Midnight New Year Spillover:</b> <code>Sales_December_2019.csv</code> contains 34 orders placed just after midnight on <code>01/01/20</code> (<b>$8,670.29</b>). All clean rows = <b>$34,492,035.97</b>; strict 2019 = <b>$34,483,365.68</b>.<br>
+      4. <b>Order Line vs. Basket Order ID:</b> 185,950 line items belong to <b>178,437 distinct <code>Order ID</code>s</b> (multi-item baskets like iPhone + Lightning Cable!). Always compute AOV using <code>DISTINCTCOUNT('Sales'[Order ID])</code>!
+    </div>
+
+    <h3>Verified 10 US Markets &amp; Monthly Revenue Checkpoints</h3>
+    <table>
+      <tr><th>Rank</th><th>Market (City, State)</th><th>Clean Revenue</th><th>Month (2019)</th><th>Clean Revenue</th></tr>
+      <tr><td>1</td><td>San Francisco, CA</td><td><b>$8,262,203.91</b></td><td>January 2019</td><td>$1,813,586.44</td></tr>
+      <tr><td>2</td><td>Los Angeles, CA</td><td><b>$5,452,570.80</b></td><td>April 2019 (Spring Peak)</td><td>$3,390,670.24</td></tr>
+      <tr><td>3</td><td>New York City, NY</td><td><b>$4,664,317.43</b></td><td>September 2019 (Trough)</td><td>$2,097,560.13</td></tr>
+      <tr><td>4</td><td>Boston, MA</td><td>$3,661,642.01</td><td>October 2019</td><td>$3,736,726.88</td></tr>
+      <tr><td>5</td><td>Atlanta, GA</td><td>$2,795,498.58</td><td>December 2019 (#1 Peak)</td><td><b>$4,613,443.34</b></td></tr>
+      <tr><td>8 / 10</td><td><b>Portland, OR</b> / <b>Portland, ME</b></td><td><b>$1,870,732.34</b> / <b>$449,758.27</b></td><td>Jan 2020 Spillover</td><td>$8,670.29</td></tr>
+    </table>
   </section>
+
+  <!-- 2. BRIEF -->
   <section id="brief">
-    <h2 class="t">2. The client brief</h2>
-    <p><b>Who:</b> An electronics retailer.</p>
-    <p><b>The ask:</b> <i>Combine the year and show revenue by product and by month. Last time someone pasted the files by hand and the header row was copied into the middle of the data.</i></p>
+    <h2 class="t">2. Real-World Client Brief</h2>
+    <p><b>Client:</b> Head of E-Commerce Growth &amp; Performance Marketing.</p>
+    <p><b>The Ask:</b> <i>"Every month our POS dumps a separate CSV into a shared folder, and nobody wants to copy-paste 186,000 rows by hand! Build an automated Folder pipeline so dropping in next month's CSV refreshes the whole dashboard on click. Tell us our #1 revenue month, true 10-city breakdown (don't mix up Oregon and Maine!), best hours of the day to run Facebook/Google ads, and why our #1 unit seller makes tiny revenue."</i></p>
   </section>
+
+  <!-- 3. REQUIREMENTS -->
   <section id="req">
-    <h2 class="t">3. Requirements</h2>
-    <div class="req"><span class="tag g">Beginner</span><div>KPI strip — row count, LineSales.</div></div><div class="req"><span class="tag g">Beginner</span><div>Bar chart of <b>Product</b>.</div></div><div class="req"><span class="tag g">Beginner</span><div>Trend by <b>Order Date</b>.</div></div><div class="req"><span class="tag y">Inter.</span><div>Top 10 <b>Product</b>.</div></div><div class="req"><span class="tag y">Inter.</span><div>Break the same number down by <b>Product</b>.</div></div><div class="req"><span class="tag r">Advan.</span><div>Slicers that cross-filter every visual on the page.</div></div>
+    <h2 class="t">3. Project Requirements (Beginner → Advanced)</h2>
+    <div class="req"><span class="tag g">Beginner</span><div><b>Power Query Folder Combine + Junk-Row Filter:</b> Stack all 12 CSVs automatically and strip 545 blanks + 355 repeated headers cleanly (<code>185,950</code> rows).</div></div>
+    <div class="req"><span class="tag y">Inter.</span><div><b>Parse <code>Purchase Address</code> into <code>Street</code>, <code>City</code>, <code>State</code>, <code>ZIP</code> &amp; <code>Market</code>:</b> Keep <code>Portland, OR</code> and <code>Portland, ME</code> distinct.</div></div>
+    <div class="req"><span class="tag y">Inter.</span><div><b>Monthly Revenue Trend + Ad-Spend Hourly Line Chart:</b> Highlight twin order peaks at <code>12:00</code> (12,587) and <code>19:00</code> (12,905).</div></div>
+    <div class="req"><span class="tag r">Advan.</span><div><b>Product Revenue vs. Unit-Volume Dual-Axis Combo Chart:</b> Contrast <code>Macbook Pro Laptop</code> (<b>$8.04M</b> on 4,728 units) against <code>AAA Batteries (4-pack)</code> (<b>31,017 units</b>, only $92.7K)!</div></div>
   </section>
-  <section id="calc">
-    <h2 class="t">4. Phase A — Microsoft Excel</h2>
-    <p>Goal: open the file cleanly, add only the helper columns you need, and prove one total with a PivotTable before you touch Power BI.</p>
-    
-        <div class="note">This set is a <b>folder of files</b>, not one sheet. In Excel, open one month and check it.
-        In Power BI, use <b>Get data → Folder</b> and combine them. That is the point of this set.</div>
-    <h3>Step 1 — Open it the right way</h3>
-    <div class="step"><b>Excel:</b> open <code>Sales_January_2019.csv</code> only, and delete any row where Order ID is the words 'Order ID'. <b>Power BI:</b> combine the whole <code>data</code> folder.<br><b>Formats:</b> <code>Order Date</code> → Date. Then <b>View → Freeze Panes → Freeze Top Row</b>.</div>
-    <h3>Step 2 — Look for dirt</h3>
-    <div class="step"><ul><li>Remove the repeated header rows (Order ID = &#x27;Order ID&#x27;).</li><li>Order Date should be a date/time. Take the month from it.</li><li>Purchase Address can be split into street, city, and state. City is the useful slicer.</li></ul></div>
-    
-        <h3>Step 3 — Helper columns</h3>
-        <div class="step">Put these in the first empty columns and fill down (double-click the fill handle).<br>
-        <b>LineSales</b> &nbsp; <code>=C2*D2</code><br>
-<b>Year</b> &nbsp; <code>=YEAR(E2)</code><br>
-<b>MonthNum</b> &nbsp; <code>=MONTH(E2)</code><br>
-<b>MonthName</b> &nbsp; <code>=TEXT(E2,&quot;MMM&quot;)</code>
-        <br><i>Excel on this machine uses a comma between arguments. If your Excel uses semicolons, swap them.</i></div>
-    <h3>Step 4 — Pivot check</h3>
-    <div class="step">Select the data → <b>Insert → PivotTable</b>. Rows = <code>Product</code>. Group the date by years and put years in Columns.
-    Values = <b>Sum of LineSales</b>.
-    The grand total must be <b>$34.49M</b>. If it is not, the filter or the number format is wrong — fix that before Power BI.
-    <div class='note'>January file only, after you delete the repeated header row: LineSales grand total is <b>$1,815,335</b>. The sign-off number further down is the full year from all 12 files.</div></div>
-    <h3>Step 5 — Save</h3>
-    <div class="step"><b>Save As</b> <code>13-monthly-sales-clean.xlsx</code>. Power BI should read this file, not a half-filtered view you forgot to clear.</div>
+
+  <!-- 4. EXCEL -->
+  <section id="excel">
+    <h2 class="t">4. Phase A — Step-by-Step in Microsoft Excel (Power Query in Excel!)</h2>
+
+    <h3>Step A1 — Why You Should Use Excel's Built-In Folder Connector (Not Manual Copy-Paste)</h3>
+    <div class="step">
+      185,950 rows easily fit inside Excel's 1,048,576-row grid, <b>and</b> Excel has the exact same Power Query engine as Power BI!<br>
+      Click <b>Data → Get Data → From File → From Folder</b> → browse to <code>datasets/13-monthly-sales/data</code> → click <b>Combine → Combine &amp; Transform Data</b> → click <b>OK</b>.
+    </div>
+
+    <h3>Step A2 — Clean &amp; Load directly to an Excel PivotTable</h3>
+    <div class="step">
+      In Power Query, filter <code>Order ID</code> to uncheck <code>null</code>, <code>(blank)</code>, and <code>Order ID</code>. Change <code>Quantity Ordered</code> = Whole Number and <code>Price Each</code> = Currency. Add Custom Column <code>LineRevenue = [Quantity Ordered] * [Price Each]</code>. Click <b>Home → Close &amp; Load To… → PivotTable Report</b>! Verify Grand Total = <b>$34,492,035.97</b> across <b>185,950</b> rows!
+    </div>
+
+    <ul class="task-list">
+      <li><label><input type="checkbox"> Used <b>Data → Get Data → From Folder</b> in Excel to combine all 12 CSVs into a PivotTable totaling $34,492,035.97.</label></li>
+    </ul>
   </section>
+
+  <!-- 5. POWER BI -->
   <section id="pbi">
-    <h2 class="t">5. Phase B — Power BI</h2>
-    <h3>Step 1 — Get data</h3>
-    <div class="pbi-box"><b>Get data → Folder</b> → the <code>data</code> folder → Combine &amp; Transform. Filter <code>Order ID</code> so it is not equal to <code>Order ID</code>, and remove blank Order ID rows. Then set Quantity Ordered and Price Each to decimal numbers.</div>
-    <h3>Step 2 — Power Query</h3>
-    <div class="pbi-box">Rename the main query to <code>Orders</code>. Set the types from Step 1. Watch <b>Applied Steps</b>. Then <b>Close &amp; Apply</b>.
-    </div>
-    <h3>Step 3 — Model</h3>
-    <div class="pbi-box"><p>One table. A star schema is not required for this set.</p>
-    <p>Hide key columns you do not want on the report. A hidden column can still be used by a relationship.</p></div>
-    <h3>Step 4 — Measures</h3>
-    <p>Write these as <b>measures</b>, not calculated columns. Replace the placeholder filter with a real value from the column.</p>
-    <pre>Line Sales = SUMX(&#x27;Orders&#x27;, &#x27;Orders&#x27;[Quantity Ordered] * &#x27;Orders&#x27;[Price Each])
-Row Count = COUNTROWS(&#x27;Orders&#x27;)</pre>
-    <h3>Step 5 — Visuals</h3>
+    <h2 class="t pbi-h">5. Phase B — Complete Power BI Folder Pipeline &amp; Charts Journey</h2>
+
+    <h3>Stage 1 &amp; 2 — Folder Combine, Junk Removal &amp; Address Splitting in Power Query</h3>
     <div class="pbi-box">
-      <ul>
-        <li>Cards for the measures in Step 4.</li>
-        <li>Bar chart: axis <code>Product</code>, value the main measure.</li>
-        <li>Line chart: axis <code>Order Date</code>.</li>
-        <li>A slicer for each small category (Quantity Ordered, Product, Price Each).</li>
-        <li>Click a bar and confirm the other visuals filter. Use <b>Format → Edit interactions</b> if one visual should stay still.</li>
-      </ul>
+      <ol style="margin:0;padding-left:20px;">
+        <li>Click <b>Home → Get data → More… → Folder → Connect</b> → select <code>datasets/13-monthly-sales/data</code> → click <b>Combine &amp; Transform Data</b> → click <b>OK</b>. Rename the combined query to <code>Sales</code>.</li>
+        <li><b>CRITICAL ORDER OF OPERATIONS:</b> Look at <b>Applied Steps</b> on the right: if Power Query auto-inserted a <code>Changed Type</code> step that already turned repeated <code>"Order ID"</code> rows into <i>Error</i>, click the <code>X</code> next to <code>Changed Type</code> first!</li>
+        <li>Click the filter arrow on <code>Order ID</code> → uncheck <code>null</code>, <code>(blank)</code>, and <code>Order ID</code> → click <b>OK</b>. All 900 junk rows vanish cleanly!</li>
+        <li>Now set Data Types: <code>Order ID</code> = <b>Text</b>, <code>Quantity Ordered</code> = <b>Whole Number</b>, <code>Price Each</code> = <b>Fixed decimal number ($)</b>.</li>
+        <li><b>Parse <code>Order Date</code> (<code>MM/DD/YY HH:MM</code>):</b> Right-click <code>Order Date</code> → <b>Change Type → Using Locale</b> → Data Type: <b>Date/Time</b>, Locale: <b>English (United States)</b>. Then select <code>Order Date</code> → <b>Add Column → Date → Date Only</b> (<code>OrderDate</code>) and <b>Add Column → Time → Hour → Hour</b> (<code>OrderHour</code>, 0–23).</li>
+        <li><b>Parse <code>Purchase Address</code> (Solve the Two-Portlands Trap!):</b>
+          <ul>
+            <li>Select <code>Purchase Address</code> → <b>Transform → Split Column → By Delimiter</b> → Comma (Each occurrence) → produces 3 columns: <code>Street</code>, <code>City</code>, and <code>StateZip</code> (e.g. <code>" TX 75001"</code>).</li>
+            <li>Select <code>City</code> and <code>StateZip</code> → <b>Transform → Format → Trim</b>.</li>
+            <li>Select <code>StateZip</code> → <b>Transform → Split Column → By Delimiter</b> → Space → rename to <code>State</code> and <code>PostalCode</code> (<b>Text</b>!).</li>
+            <li>Click <b>Add Column → Custom Column</b> → Name: <code>Market</code> → Formula: <code>[City] &amp; ", " &amp; [State]</code>!</li>
+          </ul>
+        </li>
+        <li>Remove helper column <code>Source.Name</code> if not needed, then click <b>Home → Close &amp; Apply</b> (confirm <b>185,950 rows</b>!).</li>
+      </ol>
+    </div>
+
+    <h3>Stage 3 &amp; 4 — Calendar Table &amp; E-Commerce DAX Measures</h3>
+<pre>Calendar =
+VAR Base = CALENDAR ( DATE ( 2019, 1, 1 ), DATE ( 2020, 1, 1 ) )
+RETURN
+ADDCOLUMNS (
+    Base,
+    "Year", YEAR ( [Date] ),
+    "MonthNum", MONTH ( [Date] ),
+    "MonthShort", FORMAT ( [Date], "MMM" ),
+    "YearMonth", FORMAT ( [Date], "YYYY-MM" )
+)</pre>
+    <p>Relate <code>Calendar[Date] (1) → (*) Sales[OrderDate]</code>, mark as Date table, and sort <code>MonthShort</code> by <code>MonthNum</code>. Then write:</p>
+<pre>Total Revenue =
+SUMX ( 'Sales', 'Sales'[Quantity Ordered] * 'Sales'[Price Each] )
+// Check: $34,492,035.97 (2019 only = $34,483,365.68)
+
+Total Units = SUM ( 'Sales'[Quantity Ordered] )
+// Check: 209,079
+
+Distinct Orders = DISTINCTCOUNT ( 'Sales'[Order ID] )
+// Check: 178,437
+
+Avg Order Value (AOV) = DIVIDE ( [Total Revenue], [Distinct Orders] )
+// Check: $193.30
+
+Items per Basket = DIVIDE ( [Total Units], [Distinct Orders] )
+// Check: 1.17 units/order</pre>
+
+    <h3>Stage 5 — Power BI Charts Journey: Build the 5-Visual E-Commerce Growth Suite</h3>
+
+    <div class="wireframe">
+      <div class="wf-box" style="grid-column:span 12;">Header + Slicers: Calendar[Year] (Default 2019 or All) · Market (City, State) · Product</div>
+      <div class="wf-box" style="grid-column:span 3;">Card: Total Revenue<small>$34.49M</small></div>
+      <div class="wf-box" style="grid-column:span 3;">Card: Distinct Orders<small>178,437</small></div>
+      <div class="wf-box" style="grid-column:span 3;">Card: Avg Order Value<small>$193.30</small></div>
+      <div class="wf-box" style="grid-column:span 3;">Card: Total Units Sold<small>209,079</small></div>
+      <div class="wf-box" style="grid-column:span 6;">Visual 2: Monthly Revenue Column Chart<small>Apr ($3.39M) · Oct ($3.74M) · Dec Peak ($4.61M)</small></div>
+      <div class="wf-box" style="grid-column:span 6;">Visual 3: Best Ad-Spend Window — Hourly Line<small>Twin Peaks at 12:00 Lunch &amp; 19:00 Evening!</small></div>
+      <div class="wf-box" style="grid-column:span 7;">Visual 4: Product Revenue vs Units Combo Chart<small>Columns: Revenue ($8.04M Macbook) · Line: Units (31K AAA!)</small></div>
+      <div class="wf-box" style="grid-column:span 5;">Visual 5: 10 US Markets Bar Chart<small>SF $8.26M · Portland, OR $1.87M vs Portland, ME $450K!</small></div>
+    </div>
+
+    <div class="chart-card">
+      <h4><span class="tag y">Visual 3</span> Best Hours to Run Digital Ads — Hourly Order Line Chart</h4>
+      <div class="wells">
+        <div class="well"><strong>X-axis</strong><code>Sales[OrderHour]</code> (Continuous 0–23)</div>
+        <div class="well"><strong>Y-axis</strong><code>[Distinct Orders]</code></div>
+      </div>
+      <p><b>Marketing Action Recommendation:</b> Bid up ad budgets at <b>11:00–12:00</b> (lunchtime mobile browsing) and <b>18:00–20:00</b> (post-work desktop shopping, peaking at <code>19:00</code>)!</p>
+    </div>
+
+    <div class="chart-card">
+      <h4><span class="tag r">Visual 4</span> High-Ticket Heroes vs. Basket Add-Ons — Dual-Axis Combo Chart</h4>
+      <div class="wells">
+        <div class="well"><strong>X-axis</strong><code>Sales[Product]</code></div>
+        <div class="well"><strong>Column Y-axis</strong><code>[Total Revenue]</code></div>
+        <div class="well"><strong>Line Y-axis</strong><code>[Total Units]</code></div>
+      </div>
+      <p><b>Instant Insight:</b> <code>Macbook Pro Laptop</code> drives <b>$8,037,600</b> on just 4,728 units ($1,700 each), whereas <code>AAA Batteries (4-pack)</code> sells <b>31,017 packs</b> ($2.99 each = $92.7K) — cheap consumables act as traffic &amp; checkout add-ons!</p>
+    </div>
+
+    <ul class="task-list">
+      <li><label><input type="checkbox"> Automated 12-file Folder Combine and removed all 900 blank/repeated-header rows cleanly.</label></li>
+      <li><label><input type="checkbox"> Built Monthly Column, Hourly Ad-Window Line, Product Dual-Axis Combo, and 10-Market Bar separating both Portlands.</label></li>
+    </ul>
+  </section>
+
+  <!-- 6. SIGN-OFF -->
+  <section id="sign">
+    <h2 class="t">6. Client Sign-Off Checklist</h2>
+    <ul class="task-list">
+      <li><label><input type="checkbox"> Clean row count = <b>185,950</b>; Total Revenue = <b>$34,492,035.97</b>; Distinct Orders = <b>178,437</b>; AOV = <b>$193.30</b>.</label></li>
+      <li><label><input type="checkbox"> <code>Portland, OR</code> (<b>$1,870,732.34</b>) and <code>Portland, ME</code> (<b>$449,758.27</b>) appear as two separate markets.</label></li>
+      <li><label><input type="checkbox"> Peak month is <b>December 2019 ($4,613,443.34)</b> and peak shopping hour is <b>19:00</b>.</label></li>
+    </ul>
+  </section>
+
+  <!-- 7. STRETCH -->
+  <section id="stretch">
+    <h2 class="t">7. Stretch Challenges</h2>
+    <ul>
+      <li><b>Market Basket Affinity (Products Frequently Bought Together):</b> Filter to <code>Order ID</code>s having <code>COUNTROWS &gt;= 2</code> (7,136 multi-item orders!) to discover that <b>iPhone + Lightning Charging Cable</b> is the #1 product bundle!</li>
+    </ul>
+  </section>
+
+  <!-- 8. MISTAKES -->
+  <section id="mistakes">
+    <h2 class="t">8. Trainer's Troubleshooting: Common Beginner Mistakes</h2>
+    <div class="warn-box">
+      <b>Mistake 1 — Leaving Power Query's auto-<code>Changed Type</code> step BEFORE filtering out <code>"Order ID"</code>:</b> That turns 355 repeated headers into row errors! Always filter text junk BEFORE changing types.
+    </div>
+    <div class="warn-box">
+      <b>Mistake 2 — Dividing Revenue by <code>COUNTROWS('Sales')</code> instead of <code>DISTINCTCOUNT('Sales'[Order ID])</code>:</b> That gives <code>$185.49</code> (Average Line Value) instead of the true <code>$193.30</code> Average Order Value!
     </div>
   </section>
-  <section id="sign">
-    <h2 class="t">6. Sign-off</h2>
-    <ul class="chk"><li>☐ Row count is <b>185,950</b> after the cleaning steps above.</li><li>☐ Total LineSales is <b>$34.49M</b>.</li><li>☐ The leading Product is <b>Macbook Pro Laptop</b> at <b>$8.04M</b>.</li><li>☐ The date axis runs from <b>2019-01-01</b> to <b>2020-01-01</b>.</li><li>☐ Slicers filter every visual, and you can clear them back to the totals above.</li></ul>
-  </section>
-  <section id="stretch">
-    <h2 class="t">7. Stretch</h2>
-    <ul>
-      <li>Split Purchase Address and show revenue by city. A line of Line Sales by month for the full year.</li>
-      <li>Add a drill-through page that keeps the slicer filters and shows the underlying rows.</li>
-      <li>Sort a month-name column by the month number so the axis is not alphabetical.</li>
-    </ul>
-  </section>
-  <section id="mist">
-    <h2 class="t">8. Mistakes that hide the answer</h2>
-    <ul>
-      <li>Loading one month and comparing it to the full-year total in this guide.</li><li>Leaving Quantity as text, so Sum becomes Count.</li>
-      <li>Summing an ID column, or averaging a rate that was already a percent.</li>
-      <li>Leaving dates as text, then wondering why the axis sorts wrong.</li>
-    </ul>
-  </section>
+
 </div>
-<footer>Monthly 2019 sales files from Keith Galli&#x27;s public Pandas practice repository. https://github.com/KeithGalli/Pandas-Data-Science-Tasks</footer>
+
+<footer>
+  Source: Keith Galli / Public Domain POS Simulation · Manually verified against all 12 CSVs in <code>data/</code> · Works 100% offline.
+</footer>
+
+<script>
+(function(){
+  var KEY = 'pbi_guide_13_v2';
+  var boxes = document.querySelectorAll('input[type=checkbox]');
+  function update(){
+    var done = 0;
+    boxes.forEach(function(b){ if(b.checked) done++; });
+    var pct = boxes.length ? Math.round((done / boxes.length) * 100) : 0;
+    document.getElementById('progText').textContent = done + ' / ' + boxes.length + ' steps completed (' + pct + '%)';
+    document.getElementById('progFill').style.width = pct + '%';
+  }
+  function save(){
+    var state = [];
+    boxes.forEach(function(b){ state.push(b.checked ? 1 : 0); });
+    try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){}
+    update();
+  }
+  try{
+    var s = JSON.parse(localStorage.getItem(KEY) || '[]');
+    boxes.forEach(function(b, i){ if(s[i] !== undefined) b.checked = !!s[i]; });
+  }catch(e){}
+  boxes.forEach(function(b){ b.addEventListener('change', save); });
+  window.resetChecks = function(){
+    if(confirm('Reset all checkmarks for Practice Set 13?')){
+      boxes.forEach(function(b){ b.checked = false; });
+      save();
+    }
+  };
+  update();
+})();
+</script>
 </body>
 </html>

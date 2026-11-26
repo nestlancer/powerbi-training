@@ -3,300 +3,329 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Practice Guide 2 · TalentFirst HR — Workforce &amp; Attrition (Analysis-Based)</title>
+<title>20 · TalentFirst HR People-Analytics Capstone (220k Rows) — Power BI Guide</title>
 <style>
   :root{
     --calc:#1d6f42; --calc-soft:#e7f3ec;
-    --pbi:#caa400; --pbi-soft:#fff8e0;
-    --ink:#1f2430; --muted:#5b6472; --line:#e3e7ee; --bg:#f6f8fb; --accent:#0b3d63;
+    --pbi:#b78900; --pbi-soft:#fff8e0;
+    --ink:#1f2430; --muted:#5b6472; --line:#e3e7ee; --bg:#f6f8fb;
+    --accent:#0b3d63; --danger:#c0392b; --danger-soft:#fdeaea;
   }
   *{box-sizing:border-box;}
-  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    color:var(--ink);background:var(--bg);line-height:1.6;}
-  header{background:linear-gradient(120deg,#0b3d63,#7a1f4b);color:#fff;padding:30px 26px;}
-  header h1{margin:0 0 6px;font-size:24px;}
-  header p{margin:0;opacity:.92;max-width:820px;font-size:14.5px;}
-  .wrap{max-width:1080px;margin:22px auto 70px;padding:0 22px;}
-  .facts{background:#fff;border:1px solid var(--line);border-left:5px solid #7a1f4b;
-    border-radius:12px;padding:16px 20px;margin-bottom:22px;}
-  .facts h2{margin:0 0 10px;font-size:16px;}
-  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;}
-  .stat{background:#fbeef4;border-radius:9px;padding:10px 12px;}
-  .stat b{display:block;font-size:18px;color:#7a1f4b;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.62;}
+  header{background:linear-gradient(125deg,#0b3d63 0%,#1d6f42 52%,#7c5d00 100%);color:#fff;padding:34px 26px 28px;}
+  header .kicker{font-size:12px;text-transform:uppercase;letter-spacing:.8px;opacity:.92;font-weight:700;margin-bottom:6px;}
+  header h1{margin:0 0 8px;font-size:26px;letter-spacing:.2px;}
+  header p{margin:0;max-width:880px;font-size:14.8px;opacity:.95;}
+  header a{color:#fff;text-decoration:underline;}
+  .top-nav{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;align-items:center;}
+  .pill{display:inline-block;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.32);padding:4px 12px;border-radius:20px;font-size:12.5px;text-decoration:none;color:#fff;}
+  .wrap{max-width:1120px;margin:20px auto 70px;padding:0 22px;}
+  .prog-bar{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 18px;margin-bottom:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;position:sticky;top:10px;z-index:20;box-shadow:0 2px 8px rgba(15,23,42,.05);}
+  .prog-track{flex:1;min-width:180px;height:10px;background:#eef2f7;border-radius:99px;overflow:hidden;}
+  .prog-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--calc),#caa400);transition:width .25s;}
+  .prog-text{font-size:13px;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums;}
+  .btn-sm{border:1px solid var(--line);background:#fff;color:var(--ink);padding:5px 11px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;}
+  .btn-sm:hover{background:#f1f5f9;}
+  .toc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:20px;font-size:13.5px;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;}
+  .toc a{color:var(--accent);text-decoration:none;font-weight:600;}
+  .toc a:hover{text-decoration:underline;}
+  section{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px 26px;margin-bottom:20px;box-shadow:0 1px 2px rgba(20,30,50,.03);}
+  h2.t{font-size:20px;margin:0 0 14px;border-bottom:2px solid var(--calc);padding-bottom:8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  h2.t.pbi-h{border-bottom-color:#caa400;}
+  h3{font-size:16px;margin:20px 0 8px;color:var(--accent);}
+  h4{font-size:14.5px;margin:14px 0 6px;color:var(--ink);}
+  p{margin:8px 0;}
+  .facts{background:#fff;border:1px solid var(--line);border-left:5px solid var(--calc);border-radius:12px;padding:16px 18px;margin-bottom:18px;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:10px;}
+  .stat{background:var(--calc-soft);border-radius:9px;padding:10px 12px;}
+  .stat b{display:block;font-size:18px;color:var(--calc);}
   .stat span{font-size:12px;color:var(--muted);}
-  .warn{background:#fdeaea;} .warn b{color:#c0392b;}
-  section{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 24px;margin-bottom:20px;}
-  h2.t{font-size:20px;margin:0 0 12px;border-bottom:2px solid #7a1f4b;padding-bottom:6px;}
-  h3{font-size:16px;margin:18px 0 8px;color:var(--accent);}
-  code{background:#eef2f7;padding:1px 6px;border-radius:5px;font-size:13px;font-family:"SF Mono",Consolas,monospace;}
-  pre{background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:10px;overflow:auto;font-size:13px;
-    font-family:"SF Mono",Consolas,monospace;line-height:1.5;}
-  table{border-collapse:collapse;width:100%;margin:10px 0;font-size:13.5px;}
-  th,td{border:1px solid var(--line);padding:7px 10px;text-align:left;}
-  th{background:#f1f5f9;}
-  .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;color:#fff;}
-  .g{background:#27ae60;} .y{background:#e0a800;} .r{background:#c0392b;}
-  .req{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px dashed var(--line);}
+  .stat.warn{background:var(--danger-soft);}
+  .stat.warn b{color:var(--danger);}
+  code{background:#eef2f7;padding:2px 6px;border-radius:5px;font-size:12.8px;font-family:"SF Mono",Consolas,monospace;color:#0f172a;}
+  pre{background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:10px;overflow:auto;font-size:13px;font-family:"SF Mono",Consolas,monospace;line-height:1.55;margin:10px 0;}
+  table{border-collapse:collapse;width:100%;margin:12px 0;font-size:13.3px;}
+  th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top;}
+  th{background:#f1f5f9;font-weight:700;}
+  .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;color:#fff;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap;}
+  .g{background:#1d6f42;} .y{background:#d99000;} .r{background:#c0392b;} .b{background:#0b3d63;}
+  .req{display:flex;gap:12px;align-items:flex-start;padding:9px 0;border-bottom:1px dashed var(--line);}
   .req:last-child{border-bottom:none;}
-  .step{background:var(--calc-soft);border-radius:8px;padding:12px 14px;margin:10px 0;}
+  .step{background:var(--calc-soft);border-radius:10px;border:1px solid #cde4d6;padding:14px 16px;margin:12px 0;}
   .step b{color:var(--calc);}
-  .pbi-box{background:var(--pbi-soft);border-radius:8px;padding:12px 14px;margin:10px 0;}
-  .pbi-box b{color:var(--pbi);}
+  .pbi-box{background:var(--pbi-soft);border:1px solid #f2df9d;border-radius:10px;padding:14px 16px;margin:12px 0;}
+  .pbi-box b{color:#7c5d00;}
+  .chart-card{border:1px solid var(--line);border-left:5px solid #caa400;border-radius:10px;padding:14px 16px;margin:14px 0;background:#fcfdff;}
+  .chart-card h4{margin:0 0 8px;font-size:15.5px;color:var(--accent);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .wells{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin:10px 0;}
+  .well{background:#f4f6fa;border:1px solid var(--line);border-radius:7px;padding:7px 10px;font-size:12.8px;}
+  .well strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-bottom:2px;}
   .note{background:#fffaf0;border-left:4px solid #e0a800;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
-  .chk{font-size:14px;} .chk li{margin:4px 0;}
-  .toc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:20px;font-size:14px;}
-  .toc a{color:var(--accent);text-decoration:none;} .toc a:hover{text-decoration:underline;}
-  footer{text-align:center;color:var(--muted);font-size:12px;padding:20px;}
-  @media(max-width:640px){.wrap{padding:0 12px;}}
+  .warn-box{background:var(--danger-soft);border-left:4px solid var(--danger);border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
+  .wireframe{display:grid;grid-template-columns:repeat(12,1fr);gap:8px;background:#eef2f7;padding:14px;border-radius:12px;margin:12px 0;font-size:12px;}
+  .wf-box{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:10px;text-align:center;font-weight:600;color:var(--accent);}
+  .wf-box small{display:block;font-weight:400;color:var(--muted);margin-top:3px;font-size:11px;}
+  ul.task-list{list-style:none;padding:0;margin:10px 0;}
+  ul.task-list li{padding:5px 0;}
+  ul.task-list label{display:flex;gap:9px;align-items:flex-start;cursor:pointer;font-size:13.8px;}
+  ul.task-list input{margin-top:4px;width:16px;height:16px;flex:none;accent-color:var(--calc);}
+  footer{text-align:center;color:var(--muted);font-size:12.5px;padding:10px 20px 28px;}
+  footer a{color:#3d4a5c;}
+  @media(max-width:740px){
+    .wrap{padding:0 12px;}
+    section{padding:16px 16px;}
+    .wireframe{grid-template-columns:1fr 1fr;}
+    .wf-box{grid-column:span 2 !important;}
+  }
 </style>
 </head>
 <body>
+
 <header>
-  <h1>📘 Practice Guide 2 — TalentFirst HR</h1>
-  <p>Workforce &amp; Attrition Dashboard · <b>Analysis-based &amp; verified</b> against the actual 220,000-row dataset.
-  Every figure below was computed from <code>data/hr_workforce.csv</code>. Beginner → Advanced. Train offline. <a href="../index.html" style="color:#fff">All practice sets</a></p>
+  <div class="kicker">Capstone Case Study 20 of 20 · 220,000-Row People Analytics, Burnout Drivers &amp; Retention ROI</div>
+  <h1>20 · TalentFirst Global HR — 3-Page CHRO Workforce, Burnout Risk &amp; DEI Pay-Equity App</h1>
+  <p>Your grand-finale <b>220,000-employee People Analytics Capstone</b> across 8 Departments and 10 Global Hubs (Tokyo, Mumbai, Bengaluru, Austin, London, Singapore…)! Prove why <b>OverTime nearly doubles Attrition (33.71% vs. 17.58%)</b>, isolate the <b>281 Active Red-Alert Flight-Risk Employees</b> before they resign, audit DEI Pay Equity, and model <b>Turnover Replacement Cost ROI</b>!</p>
+  <div class="top-nav">
+    <a class="pill" href="../index.html">← All 20 Practice Sets</a>
+    <a class="pill" href="../../index.html">← Main Excel &amp; Power BI Outline</a>
+    <span class="pill">Capstone UX: 3-Page CHRO App · Burnout Heatmap Matrix · DEI Pay Equity · What-If Retention ROI · Flight-Risk Roster</span>
+  </div>
 </header>
 
 <div class="wrap">
 
+  <div class="prog-bar">
+    <span class="prog-text" id="progText">0 / 0 steps completed</span>
+    <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+    <button class="btn-sm" type="button" onclick="resetChecks()">Reset checklist</button>
+  </div>
+
   <div class="toc">
-    <b>Jump to:</b>
-    <a href="#profile">1. Verified Data Profile</a> ·
-    <a href="#brief">2. Client Brief</a> ·
-    <a href="#req">3. Requirements</a> ·
-    <a href="#calc">4. Phase A — Microsoft Excel</a> ·
-    <a href="#pbi">5. Phase B — Power BI</a> ·
-    <a href="#sign">6. Sign-off</a> ·
+    <b>Capstone Blueprint:</b>
+    <a href="#profile">1. 220k Workforce Audit</a> ·
+    <a href="#brief">2. CHRO Retention Brief</a> ·
+    <a href="#req">3. 3-Page CHRO App Spec</a> ·
+    <a href="#excel">4. Phase A: Excel Audit</a> ·
+    <a href="#pbi">5. Phase B: 3-Page Power BI Capstone</a> ·
+    <a href="#sign">6. Sign-Off</a> ·
     <a href="#stretch">7. Stretch</a> ·
-    <a href="#mist">8. Mistakes</a>
+    <a href="#mistakes">8. Common Mistakes</a>
   </div>
 
   <!-- 1. PROFILE -->
   <section id="profile">
-    <h2 class="t">1. Verified Data Profile (computed from the file)</h2>
+    <h2 class="t">1. Verified 220,000-Employee People-Analytics Audit (<code>hr_workforce.csv</code>)</h2>
     <div class="facts">
       <div class="grid">
-        <div class="stat"><b>220,000</b><span>employee records</span></div>
-        <div class="stat"><b>21.1%</b><span>overall attrition (46,474 left)</span></div>
-        <div class="stat warn"><b>33.7%</b><span>attrition if OverTime = Yes</span></div>
-        <div class="stat"><b>17.6%</b><span>attrition if OverTime = No</span></div>
-        <div class="stat"><b>$104,371</b><span>avg salary (median $94,061)</span></div>
-        <div class="stat warn"><b>5,848</b><span>"HIGH risk" staff (OT + low satisfaction)</span></div>
+        <div class="stat"><b>220,000</b><span>Total Records (173,526 Active)</span></div>
+        <div class="stat warn"><b>21.12%</b><span>Attrition Rate (46,474 Departed)</span></div>
+        <div class="stat warn"><b>33.71% vs 17.58%</b><span>OverTime Yes vs No Attrition!</span></div>
+        <div class="stat warn"><b>50.27% Quit!</b><span>Triple-Burnout Cohort (281 Active!)</span></div>
+        <div class="stat"><b>$104,371</b><span>Avg Annual Salary ($22.96B Total)</span></div>
+        <div class="stat warn"><b>$2.41B</b><span>Est. 50%-Salary Turnover Cost!</span></div>
       </div>
     </div>
 
-    <div class="note">🔎 <b>Trainer insight:</b> OverTime nearly <b>doubles</b> attrition (33.7% vs 17.6%). The youngest
-    (&lt;25) leave at <b>25.6%</b> and newest hires (0–2 yrs) at <b>23.0%</b>. Pay is NOT the main driver (attrition is
-    ~21% across all salary bands) — <b>workload and early-tenure experience</b> are. That's the story for HR.</div>
-
-    <h3>Attrition Rate by Department</h3>
+    <h3>Verified Burnout Drivers &amp; Department Benchmarks</h3>
     <table>
-      <tr><th>Dept</th><th>Headcount</th><th>Left</th><th>Rate</th></tr>
-      <tr><td>R&amp;D</td><td>27,628</td><td>5,917</td><td>21.4%</td></tr>
-      <tr><td>Finance</td><td>27,286</td><td>5,839</td><td>21.4%</td></tr>
-      <tr><td>HR</td><td>27,436</td><td>5,840</td><td>21.3%</td></tr>
-      <tr><td>Legal</td><td>27,516</td><td>5,822</td><td>21.2%</td></tr>
-      <tr><td>Marketing</td><td>27,600</td><td>5,837</td><td>21.1%</td></tr>
-      <tr><td>Sales</td><td>27,427</td><td>5,738</td><td>20.9%</td></tr>
-      <tr><td>IT</td><td>27,382</td><td>5,655</td><td>20.7%</td></tr>
-      <tr><td>Operations</td><td>27,725</td><td>5,826</td><td>21.0%</td></tr>
+      <tr><th>Risk Factor</th><th>Headcount</th><th>Attrition %</th><th>Department</th><th>Headcount</th><th>Avg Salary</th><th>Attrition %</th></tr>
+      <tr><td><code>OverTime = No</code></td><td>171,705</td><td><b>17.58%</b></td><td>R&amp;D</td><td>27,628</td><td>$115,683</td><td>21.42%</td></tr>
+      <tr><td style="color:#c0392b;font-weight:700;"><code>OverTime = Yes</code></td><td>48,295</td><td style="color:#c0392b;font-weight:700;"><b>33.71%</b></td><td>Finance</td><td>27,286</td><td>$117,402</td><td>21.40%</td></tr>
+      <tr><td><code>JobSatisfaction = 1</code></td><td>26,323</td><td><b>29.95%</b> (vs 19.6% at 4)</td><td>HR / Marketing</td><td>27,436 / 27,600</td><td>$91K / $93K</td><td>21.29% / 21.15%</td></tr>
+      <tr><td><code>WorkLifeBalance = 1</code></td><td>19,773</td><td><b>28.62%</b> (vs 20.5% at 4)</td><td>Legal (#1 Pay)</td><td>27,516</td><td><b>$127,020</b></td><td>21.16%</td></tr>
+      <tr><td><code>Promo Wait 5+ yrs</code></td><td>135,269</td><td><b>23.30%</b> (vs 17.64% 0–4y)</td><td>Operations / Sales</td><td>27,725 / 27,427</td><td>$84.5K / $86K</td><td>21.01% / 20.92%</td></tr>
+      <tr><td style="color:#c0392b;font-weight:700;">Triple Burnout (OT+Sat1+WLB1)</td><td>565</td><td style="color:#c0392b;font-weight:700;"><b>50.27% (281 Still Active!)</b></td><td>IT</td><td>27,382</td><td>$120,245</td><td>20.65%</td></tr>
     </table>
-    <p style="font-size:13px;color:var(--muted)">Attrition is evenly spread (~21%) — no single department is "the problem". The lever is OverTime + early tenure, not department.</p>
-
-    <h3>Attrition by Tenure &amp; Age (the real drivers)</h3>
-    <table>
-      <tr><th>Bucket</th><th>0–2 yrs</th><th>3–5 yrs</th><th>6–10 yrs</th><th>11+ yrs</th></tr>
-      <tr><td>Attrition rate</td><td style="color:#c0392b"><b>23.0%</b></td><td>21.2%</td><td>20.2%</td><td>20.4%</td></tr>
-      <tr><th>Age</th><th>&lt;25</th><th>25–34</th><th>35–44</th><th>45–54 / 55+</th></tr>
-      <tr><td>Attrition rate</td><td style="color:#c0392b"><b>25.6%</b></td><td>20.2%</td><td>20.2%</td><td>20.5%</td></tr>
-    </table>
-
-    <h3>Salary (avg by department) &amp; Distribution</h3>
-    <table>
-      <tr><th>Dept</th><th>Legal</th><th>IT</th><th>Finance</th><th>R&amp;D</th><th>Marketing</th><th>HR</th><th>Sales</th><th>Operations</th></tr>
-      <tr><td>Avg salary</td><td>$127,020</td><td>$120,245</td><td>$117,402</td><td>$115,683</td><td>$93,286</td><td>$91,048</td><td>$86,027</td><td>$84,484</td></tr>
-    </table>
-    <p style="font-size:13px;color:var(--muted)">Salary range: <b>$36,053 – $310,477</b>; average $104,371; median $94,061 (right-skewed toward senior roles).
-    Attrition is ~21% in every salary band, confirming pay is not the differentiator.</p>
-
-    <h3>Workforce Composition</h3>
-    <p style="font-size:13.5px">
-      • <b>Gender:</b> Male 73,496 · Non-binary 73,369 · Female 73,135 (balanced).<br>
-      • <b>Education:</b> Bachelor 121,293 · Master 61,246 · High School 22,064 · PhD 15,397.<br>
-      • <b>Offices:</b> 10 global (Hyderabad, Bengaluru, Mumbai, Delhi, Austin, London, Berlin, Singapore, Tokyo, Sydney).<br>
-      • <b>Engagement:</b> avg Job Satisfaction 2.72/4 · Work-Life Balance 2.83/4 · avg Training 60 hrs · avg Tenure 10.3 yrs · avg Age 39.
-    </p>
   </section>
 
   <!-- 2. BRIEF -->
   <section id="brief">
-    <h2 class="t">2. The Client Brief (real-style)</h2>
-    <p><b>Who:</b> TalentFirst HR — 220,000 employee records across 8 departments and 10 global offices.</p>
-    <p><b>The ask:</b> <i>"Attrition is creeping up and leadership wants answers. Which departments lose the most people?
-    Is it pay, overwork, or lack of promotion? I need a dashboard my HR business partners can filter by office, gender
-    and education — and I need to <b>see</b> the salary gap and the risk groups, not just a number."</i></p>
-    <p>You receive <code>hr_workforce.csv</code> (220,000 rows). Translate the vague ask into the requirements in §3.</p>
+    <h2 class="t">2. Chief Human Resources Officer (CHRO) Brief</h2>
+    <p><b>Client:</b> CHRO &amp; Global People-Analytics Leadership, TalentFirst Corp (10 Global Hubs: Tokyo, Mumbai, Bengaluru, Delhi, Austin, Sydney, Berlin, Hyderabad, London, Singapore).</p>
+    <p><b>The Ask:</b> <i>"We lost 46,474 people (21.12% attrition) representing $4.83B in departed payroll — costing ~$2.41B in recruiting and onboarding replacement costs! Build a 3-page People-Analytics App: (1) Executive Workforce &amp; Turnover Cost Overview, (2) Burnout Drivers &amp; DEI Compensation Equity Lab, and (3) a Proactive HR Business Partner Flight-Risk Roster highlighting the exact 281 active employees at imminent risk of resigning!"</i></p>
   </section>
 
   <!-- 3. REQUIREMENTS -->
   <section id="req">
-    <h2 class="t">3. Client Requirements (with difficulty)</h2>
-    <div class="req"><span class="tag g">Beginner</span><div><b>KPI strip</b> — Headcount, Attrition Count, <b>Attrition Rate %</b>, Average Salary.</div></div>
-    <div class="req"><span class="tag g">Beginner</span><div><b>Headcount by Department</b> — bar chart.</div></div>
-    <div class="req"><span class="tag g">Beginner</span><div><b>Attrition Rate by Department</b> — bar, sorted desc.</div></div>
-    <div class="req"><span class="tag y">Inter.</span><div><b>Attrition by Tenure bucket</b> (0–2 / 3–5 / 6–10 / 11+) — new hires worst?</div></div>
-    <div class="req"><span class="tag y">Inter.</span><div><b>Salary distribution</b> — histogram by SalaryBand.</div></div>
-    <div class="req"><span class="tag y">Inter.</span><div><b>Attrition by OverTime</b> — Yes vs No (expect 33.7% vs 17.6%).</div></div>
-    <div class="req"><span class="tag y">Inter.</span><div><b>Demographic slicers:</b> Office, Gender, Education, Marital Status.</div></div>
-    <div class="req"><span class="tag r">Advan.</span><div><b>Attrition drivers matrix:</b> Department × (OverTime / JobSatisfaction / WorkLifeBalance) with Rate %.</div></div>
-    <div class="req"><span class="tag r">Advan.</span><div><b>Age / Tenure distribution</b> (bins) vs attrition.</div></div>
-    <div class="req"><span class="tag r">Advan.</span><div><b>"Risk list"</b>: flag OverTime=Yes AND JobSatisfaction=1 (the 5,848), export for HR.</div></div>
-    <div class="req"><span class="tag r">Advan.</span><div><b>What-if:</b> salary-raise simulator — "if we raise salary by X%, show new avg pay by dept."</div></div>
+    <h2 class="t">3. Capstone 3-Page CHRO App Specification</h2>
+    <div class="req"><span class="tag g">Page 1</span><div><b>Workforce &amp; Turnover Cost Cockpit:</b> Active (`173,526`), Attrition % (`21.12%`), OverTime % (`21.95%`), What-If Replacement-Cost Multiplier (`30%..100%`, default `50% = $2.41B`), Dept/Office Bars, and Tenure Attrition Curve (`0–1 yr = 23.13%` onboarding dip!).</div></div>
+    <div class="req"><span class="tag y">Page 2</span><div><b>Burnout Heatmap &amp; DEI Pay-Equity Lab:</b> `JobSatisfaction × WorkLifeBalance × OverTime` Heatmap Matrix, Promotion Stagnation Combo (`23.30%` at `5+ yrs`), and Gender × Department Pay-Equity Clustered Bar (`Female $104,541` · `Non-binary $104,323` · `Male $104,250`).</div></div>
+    <div class="req"><span class="tag r">Page 3</span><div><b>Proactive HRBP Flight-Risk Action Roster + Row-Level Security:</b> Filterable table of the <b>281 Active Red-Alert Employees</b> (`Attrition = "No"`, `OverTime = "Yes"`, `JobSatisfaction = 1`, `WorkLifeBalance = 1`) + What-If Retention-Bonus ROI Calculator!</div></div>
   </section>
 
-  <!-- 4. CALC -->
-  <section id="calc">
-    <h2 class="t">4. Phase A — Organize &amp; Clean in Microsoft Excel</h2>
-    <p>Goal: profile the workforce, build tenure/age/salary <b>bins</b>, compute risk flags, validate with a Pivot, then export a clean <code>.xlsx</code>.</p>
+  <!-- 4. EXCEL -->
+  <section id="excel">
+    <h2 class="t">4. Phase A — Step-by-Step in Microsoft Excel (220k-Row Audit)</h2>
 
-    <h3>Step 1 — Open correctly</h3>
+    <h3>Step A1 — Load via Excel Data Model PivotTable</h3>
     <div class="step">
-      <b>Open the file:</b> <code>data/hr_workforce.csv</code>, in the folder next to this guide (Excel auto-splits columns by comma).
-      For full control of types use <b>Data ▸ Get Data ▸ From Text/CSV</b> → choose the file → set Delimiter = Comma → <b>Load</b>.<br>
-      <b>Set formats:</b> <code>HireDate, TerminationDate</code> → <b>Home ▸ Number ▸ Date</b>;
-      <code>AnnualSalary, MonthlyIncome</code> → <b>Number</b>; <code>Attrition, OverTime, Gender</code> → Text; scores/ages → Whole Number.
-      Then <b>View ▸ Freeze Panes ▸ Freeze Top Row</b>.
+      Use <b>Data → From Text/CSV → Load To… → PivotTable Report (Add to Data Model)</b> on <code>datasets/20-talentfirst-hr/data/hr_workforce.csv</code>. Put <code>OverTime</code> in Rows and <code>Attrition</code> in Columns (% of Row Total): verify <b><code>OverTime = Yes</code> → 33.71% Attrition</b> vs. <b><code>No</code> → 17.58%</b>!
     </div>
 
-    <h3>Step 2 — Profile &amp; find dirt</h3>
-    <div class="step">
-      File is clean, but on a real client file: <b>Data ▸ Filter</b> → check <code>Attrition="Yes"</code> has a TerminationDate,
-      and <code>AnnualSalary &lt; 30000</code> or blanks. Use <b>Data ▸ Data Analysis ▸ Descriptive Statistics</b> on AnnualSalary
-      to see the skew (min $36,053, max $310,477, median $94,061).
-    </div>
-
-    <h3>Step 3 — Add helper columns (X–AB, after TerminationDate in W)</h3>
-    <div class="step">
-      <b>X TenureBucket</b> &nbsp; <code>=IF(L2&lt;=2,"0-2",IF(L2&lt;=5,"3-5",IF(L2&lt;=10,"6-10","11+")))</code><br>
-      <b>Y AgeBucket</b> &nbsp; <code>=IF(F2&lt;25,"&lt;25",IF(F2&lt;=34,"25-34",IF(F2&lt;=44,"35-44",IF(F2&lt;=54,"45-54","55+"))))</code><br>
-      <b>Z SalaryBand</b> &nbsp; <code>=IF(O2&lt;50000,"&lt;50K",IF(O2&lt;80000,"50-80K",IF(O2&lt;120000,"80-120K","120K+")))</code><br>
-      <b>AA RiskFlag</b> &nbsp; <code>=IF(AND(S2="Yes",Q2=1),"HIGH","OK")</code><br>
-      <b>AB IsAttrited</b> &nbsp; <code>=IF(V2="Yes",1,0)</code><br>
-      <i>(Excel uses <code>,</code> as the argument separator, as shown. If your regional setting uses <code>;</code>, swap commas for semicolons.)</i> Fill down.
-    </div>
-
-    <h3>Step 4 — Validate with a PivotTable</h3>
-    <div class="step">
-      Select data → <b>Insert ▸ PivotTable</b>. Rows = <code>Department</code>,
-      Values = <code>Average of AnnualSalary</code> and <code>Count of IsAttrited</code>.
-      Confirm Legal ~$127K, Operations ~$84K, and attrition ≈ 21% per dept (matches §1).
-    </div>
-
-    <h3>Step 5 — Format &amp; export</h3>
-    <div class="step">
-      AnnualSalary/MonthlyIncome → <code>#,##0</code>; rates → <code>0.0%</code>.
-      <b>Save As</b> <code>hr_workforce_clean.xlsx</code> — keep this as your working copy;
-      Power BI reads the typed Excel file most reliably (better than the raw CSV).
-    </div>
+    <ul class="task-list">
+      <li><label><input type="checkbox"> Verified 220,000 employee records, 21.12% Attrition, and 33.71% OverTime Attrition in Excel PivotTable.</label></li>
+    </ul>
   </section>
 
   <!-- 5. POWER BI -->
   <section id="pbi">
-    <h2 class="t">5. Phase B — Build the Dashboard in Power BI</h2>
+    <h2 class="t pbi-h">5. Phase B — Complete 3-Page Power BI People-Analytics Build</h2>
 
-    <h3>Step 1 — Get Data</h3>
-    <div class="pbi-box"><b>Get Data ▸ Excel</b> → <code>hr_workforce_clean.xlsx</code> → Load. (Or <b>Text/CSV</b> → comma → Transform → Load.)</div>
-
-    <h3>Step 2 — Power Query</h3>
+    <h3>Stage 1 &amp; 2 — Power Query Banding &amp; Flight-Risk Flagging</h3>
     <div class="pbi-box">
-      <b>Transform Data</b>: HireDate/TerminationDate = <b>Date</b>; AnnualSalary = <b>Whole Number</b>;
-      Attrition/OverTime/Gender = <b>Text</b>; scores = <b>Whole Number</b>. Fix any mis-typed column, watch <b>Applied Steps</b>.
-      <b>Close &amp; Apply.</b>
+      <ol style="margin:0;padding-left:20px;">
+        <li>Import <code>data/hr_workforce.csv</code> → <b>Transform Data</b> → rename to <code>Workforce</code>.</li>
+        <li>Set <code>HireDate</code> and <code>TerminationDate</code> = <b>Date</b> (blank <code>TerminationDate</code> becomes <code>null</code> cleanly for the 173,526 active staff!). Set <code>MonthlyIncome</code> &amp; <code>AnnualSalary</code> = <b>Currency ($)</b>, and survey/tenure fields = <b>Whole Number</b>.</li>
+        <li>Add ordered <code>TenureBand</code> (<code>0–1 yr</code>, <code>2–4 yrs</code>, <code>5–9 yrs</code>, <code>10+ yrs</code>) + <code>TenureSort</code> (1..4).</li>
+        <li>Add Custom Column <code>FlightRiskTier</code> for Active Employees:
+<pre>if [Attrition] = "Yes" then "Departed"
+else if [OverTime] = "Yes" and [JobSatisfaction] = 1 and [WorkLifeBalance] = 1 then "1 - Critical Red Alert"
+else if [OverTime] = "Yes" and ([JobSatisfaction] = 1 or [WorkLifeBalance] = 1 or [YearsSinceLastPromotion] &gt;= 5) then "2 - High Risk"
+else "3 - Normal"</pre>
+        </li>
+        <li>Click <b>Home → Close &amp; Apply</b>.</li>
+      </ol>
     </div>
 
-    <h3>Step 3 — Data Modeling</h3>
-    <div class="pbi-box">
-      Single flat table here — fine for learning. Build a small Date table for hire trends:<br>
-      <code>HireCalendar = CALENDAR(DATE(2000,1,1), DATE(2024,12,31))</code><br>
-      Relationship: <code>HireCalendar[Date] → hr_workforce[HireDate]</code>.<br>
-      <i>Next level: split DimEmployee + FactAttrition + DimDepartment into a star schema.</i>
+    <h3>Stage 3 &amp; 4 — People-Analytics &amp; Financial ROI DAX + What-If Parameter</h3>
+    <p>Create Numeric Range What-If Parameter <code>Replacement Cost %</code> (`Min 0.30`, `Max 1.00`, `Increment 0.10`, `Default 0.50`). Then write:</p>
+<pre>Total Workforce = COUNTROWS ( 'Workforce' )
+// Check: 220,000
+
+Active Headcount =
+CALCULATE ( [Total Workforce], 'Workforce'[Attrition] = "No" )
+// Check: 173,526
+
+Departed Headcount =
+CALCULATE ( [Total Workforce], 'Workforce'[Attrition] = "Yes" )
+// Check: 46,474
+
+Attrition Rate % = DIVIDE ( [Departed Headcount], [Total Workforce] )
+// Check: 21.12%
+
+OverTime Share % =
+DIVIDE (
+    CALCULATE ( [Total Workforce], 'Workforce'[OverTime] = "Yes" ),
+    [Total Workforce]
+)
+// Check: 21.95%
+
+Avg Annual Salary = AVERAGE ( 'Workforce'[AnnualSalary] )
+// Check: $104,371
+
+Estimated Turnover Cost =
+VAR Mult = 'Replacement Cost %'[Replacement Cost % Value]
+VAR DepartedPayroll =
+    CALCULATE ( SUM ( 'Workforce'[AnnualSalary] ), 'Workforce'[Attrition] = "Yes" )
+RETURN
+    DepartedPayroll * Mult
+// Check at default 50% (0.50): $2,413,178,590 ($2.41B!)
+
+Critical Flight-Risk Active =
+CALCULATE (
+    [Total Workforce],
+    'Workforce'[FlightRiskTier] = "1 - Critical Red Alert"
+)
+// Check: Exactly 281 active employees!</pre>
+
+    <h3>Stage 5 — Build All 3 Pages of the CHRO App</h3>
+
+    <div class="wireframe">
+      <div class="wf-box" style="grid-column:span 12;">PAGE 1 (Workforce &amp; Turnover Cost) · Slicers: Department · OfficeLocation (10 Hubs) · Replacement Cost % Slider</div>
+      <div class="wf-box" style="grid-column:span 3;">Card: Active Staff<small>173,526 (of 220K)</small></div>
+      <div class="wf-box" style="grid-column:span 3;">Card: Attrition Rate<small>21.12% (46,474)</small></div>
+      <div class="wf-box" style="grid-column:span 3;">Card: Est. Turnover Cost<small>$2.41B (at 50% Salary)</small></div>
+      <div class="wf-box" style="grid-column:span 3;">Card: Red-Alert Active<small>281 Imminent Risks!</small></div>
+      <div class="wf-box" style="grid-column:span 6;">OverTime Attrition Shock Bar<small>OverTime Yes: 33.71% vs OverTime No: 17.58%!</small></div>
+      <div class="wf-box" style="grid-column:span 6;">Tenure-Band Onboarding Attrition Combo<small>0–1 yr Peak (23.13%) → 10+ yrs (20.35%)</small></div>
     </div>
 
-    <h3>Step 4 — DAX Measures</h3>
-    <pre>Headcount        = DISTINCTCOUNT(hr_workforce[EmployeeID])
-Attrition Count  = CALCULATE(COUNTROWS(hr_workforce), hr_workforce[Attrition]="Yes")
-Attrition Rate % = DIVIDE([Attrition Count], [Headcount])   -- ≈ 21.1%
-Avg Salary       = AVERAGE(hr_workforce[AnnualSalary])
-Avg Tenure       = AVERAGE(hr_workforce[YearsAtCompany])
-Avg Satisfaction = AVERAGE(hr_workforce[JobSatisfaction])
-
-OverTime Attrition % = CALCULATE([Attrition Rate %], hr_workforce[OverTime]="Yes")   -- 33.7%
-NoOT Attrition %     = CALCULATE([Attrition Rate %], hr_workforce[OverTime]="No")     -- 17.6%
-
-High Risk Count  = CALCULATE(COUNTROWS(hr_workforce),
-                    hr_workforce[OverTime]="Yes", hr_workforce[JobSatisfaction]=1)   -- 5,848</pre>
-
-    <h3>Step 5 — Visuals (map each to a requirement)</h3>
-    <table>
-      <tr><th>Req</th><th>Visual</th><th>Fields</th></tr>
-      <tr><td>KPIs</td><td>Card ×4</td><td>Headcount, Attrition Count, Attrition Rate %, Avg Salary</td></tr>
-      <tr><td>Headcount</td><td>Bar</td><td>Axis Department, Value Headcount</td></tr>
-      <tr><td>Attr by Dept</td><td>Bar (sorted desc)</td><td>Axis Department, Value Attrition Rate %</td></tr>
-      <tr><td>Tenure</td><td>Bar/Column</td><td>Axis TenureBucket, Value Attrition Rate %</td></tr>
-      <tr><td>Salary dist</td><td>Histogram (Column)</td><td>Axis SalaryBand, Value Headcount</td></tr>
-      <tr><td>OverTime</td><td>Card / Bar</td><td>OverTime Attrition % vs NoOT Attrition %</td></tr>
-      <tr><td>Slicers</td><td>Slicer ×4</td><td>OfficeLocation, Gender, Education, MaritalStatus</td></tr>
-      <tr><td>Drivers</td><td>Matrix</td><td>Rows Department, Columns OverTime, Values Attrition Rate %</td></tr>
-      <tr><td>Age/Tenure</td><td>Bar</td><td>Axis AgeBucket / TenureBucket, Value Attrition Rate %</td></tr>
-      <tr><td>Risk list</td><td>Table (filter RiskFlag=HIGH)</td><td>EmployeeID, Department, Office → Export CSV for HR</td></tr>
-    </table>
-
-    <h3>Step 6 — What-if &amp; polish (advanced)</h3>
-    <div class="pbi-box">
-      <b>Modeling ▸ New Parameter ▸ Numeric</b> → <code>Salary Raise %</code> (0 to 0.20, step 0.01). Measure:<br>
-      <code>Adj Avg Salary = [Avg Salary] * (1 + [Salary Raise % Value])</code><br>
-      Add a card/slicer so HR drags the raise and watches avg pay by department. Use conditional formatting to flag
-      departments above the overall attrition average, and add a drill-through "Employee Detail" page.
+    <div class="chart-card">
+      <h4><span class="tag y">Page 2</span> Burnout Heatmap Matrix &amp; DEI Compensation Equity Lab</h4>
+      <p>1. <b>Heatmap Matrix:</b> Rows = <code>JobSatisfaction</code> (1..4), Columns = <code>WorkLifeBalance</code> (1..4), Values = <code>[Attrition Rate %]</code> (enable Background color gradient!), plus an <code>OverTime</code> toggle button — watch cell <code>(Sat=1, WLB=1)</code> glow bright crimson at <b>50.27% attrition</b> when <code>OverTime = Yes</code>!<br>
+      2. <b>DEI Pay-Equity Clustered Bar:</b> Y = <code>Department</code>, X = <code>[Avg Annual Salary]</code>, Legend = <code>Gender</code> (`Female $104,541` · `Non-binary $104,323` · `Male $104,250`) — verifying compensation parity across all 8 departments!</p>
     </div>
+
+    <div class="chart-card">
+      <h4><span class="tag r">Page 3</span> Proactive HRBP Flight-Risk Roster (281 Critical Employees) + RLS</h4>
+      <p>1. Filter Page 3 to <code>Attrition = "No"</code> and add a Slicer on <code>FlightRiskTier</code> defaulted to <code>1 - Critical Red Alert</code> (<b>281 employees</b>!). Display <code>EmployeeID</code>, <code>Name</code>, <code>Department</code>, <code>JobRole</code>, <code>OfficeLocation</code>, <code>AnnualSalary</code>, <code>YearsSinceLastPromotion</code>, and <code>TrainingHours</code> so HR Business Partners can schedule immediate stay-interviews and workload relief!<br>
+      2. <b>Configure Row-Level Security (RLS) for Privacy:</b> Click <b>Modeling → Manage roles</b> → create role <code>IndiaHRBP</code> with DAX filter <code>'Workforce'[OfficeLocation] IN {"Mumbai", "Bengaluru", "Delhi", "Hyderabad"}</code> so regional HR managers only view PII in their assigned country!</p>
+    </div>
+
+    <ul class="task-list">
+      <li><label><input type="checkbox"> Built Page 1 Workforce &amp; What-If Turnover Cost Cockpit ($2.41B at 50%).</label></li>
+      <li><label><input type="checkbox"> Built Page 2 Burnout Heatmap Matrix (50.27% Triple-Burnout cell) + DEI Pay-Equity Bar.</label></li>
+      <li><label><input type="checkbox"> Built Page 3 Flight-Risk Action Roster isolating the exact 281 Critical Active Employees + RLS role.</label></li>
+    </ul>
   </section>
 
   <!-- 6. SIGN-OFF -->
   <section id="sign">
-    <h2 class="t">6. Client Sign-off Checklist</h2>
-    <ul class="chk">
-      <li>☐ KPIs show Headcount <b>220,000</b>, Attrition Rate <b>21.1%</b> (46,474 left), Avg Salary <b>$104,371</b>.</li>
-      <li>☐ Department headcount + attrition-rate bars present and cross-filter.</li>
-      <li>☐ Tenure bucket chart shows <b>0–2 yrs highest at 23.0%</b>.</li>
-      <li>☐ OverTime comparison shows <b>33.7% vs 17.6%</b> (the headline insight).</li>
-      <li>☐ Salary histogram (SalaryBand) and demographic slicers work.</li>
-      <li>☐ Drivers matrix (Dept × OverTime) built.</li>
-      <li>☐ High-risk employee list (5,848) exported for HR follow-up.</li>
-      <li>☐ Salary-raise what-if simulator works.</li>
+    <h2 class="t">6. Capstone Sign-Off Checklist</h2>
+    <ul class="task-list">
+      <li><label><input type="checkbox"> Total Workforce = <b>220,000</b>; Active = <b>173,526</b>; Departed = <b>46,474 (21.12%)</b>.</label></li>
+      <li><label><input type="checkbox"> <code>OverTime = Yes</code> Attrition = <b>33.71%</b> vs. <code>No</code> = <b>17.58%</b>.</label></li>
+      <li><label><input type="checkbox"> Critical Red-Alert Active Roster contains exactly <b>281 employees</b>, and 50% Turnover Cost = <b>$2,413,178,590</b>.</label></li>
     </ul>
   </section>
 
   <!-- 7. STRETCH -->
   <section id="stretch">
-    <h2 class="t">7. Stretch (after sign-off)</h2>
+    <h2 class="t">7. Stretch Challenges</h2>
     <ul>
-      <li>Build a proper <b>star schema</b>: split dimensions (Employee, Department, Date) from a fact table.</li>
-      <li>Add <b>cohort retention</b>: of people hired in 2018, what % remain each year.</li>
-      <li>Use <b>Power Query</b> to unpivot satisfaction/balance scores into one "Score Type vs Attrition" visual.</li>
+      <li><b>Hiring Cohort vs. Termination Cohort (`USERELATIONSHIP`):</b> Connect a <code>Calendar</code> table actively to <code>HireDate</code> and inactively to <code>TerminationDate</code> to plot monthly 2024 Hires vs. Terminations!</li>
     </ul>
   </section>
 
   <!-- 8. MISTAKES -->
-  <section id="mist">
-    <h2 class="t">8. Trainer's Common Mistakes</h2>
-    <ul>
-      <li>Averaging <code>Attrition Rate %</code> across departments → wrong. Use <code>DIVIDE(SUM attrited, SUM headcount)</code> as a measure.</li>
-      <li>Storing Attrition Rate % as a <b>column</b> → totals break; always a measure with DIVIDE.</li>
-      <li>Salary histogram with too many tiny bins → use the <b>SalaryBand</b> helper for clean buckets.</li>
-      <li>Forgetting <code>OverTime</code> is text "Yes"/"No" → filter with quotes inside CALCULATE.</li>
-    </ul>
+  <section id="mistakes">
+    <h2 class="t">8. Trainer's Troubleshooting: Common Beginner Mistakes</h2>
+    <div class="warn-box">
+      <b>Mistake 1 — Deleting rows where <code>TerminationDate</code> is blank:</b> Blank <code>TerminationDate</code> means the employee STILL WORKS HERE (`173,526` active staff)! Deleting blanks makes Attrition look like 100%!
+    </div>
+    <div class="warn-box">
+      <b>Mistake 2 — Exposing Employee Names without Row-Level Security (RLS):</b> Always protect compensation &amp; employee PII with RLS roles before publishing HR reports to the Power BI Service!
+    </div>
   </section>
 
 </div>
-<footer>Analysis-verified training guide · built from hr_workforce.csv (220,000 rows) · open offline, no internet needed.</footer>
+
+<footer>
+  Source: Synthetic Enterprise HRIS Capstone (IBM HR Schema Scaled to 220k) · Manually verified against <code>data/hr_workforce.csv</code> · Works 100% offline.
+</footer>
+
+<script>
+(function(){
+  var KEY = 'pbi_guide_20_v2';
+  var boxes = document.querySelectorAll('input[type=checkbox]');
+  function update(){
+    var done = 0;
+    boxes.forEach(function(b){ if(b.checked) done++; });
+    var pct = boxes.length ? Math.round((done / boxes.length) * 100) : 0;
+    document.getElementById('progText').textContent = done + ' / ' + boxes.length + ' steps completed (' + pct + '%)';
+    document.getElementById('progFill').style.width = pct + '%';
+  }
+  function save(){
+    var state = [];
+    boxes.forEach(function(b){ state.push(b.checked ? 1 : 0); });
+    try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){}
+    update();
+  }
+  try{
+    var s = JSON.parse(localStorage.getItem(KEY) || '[]');
+    boxes.forEach(function(b, i){ if(s[i] !== undefined) b.checked = !!s[i]; });
+  }catch(e){}
+  boxes.forEach(function(b){ b.addEventListener('change', save); });
+  window.resetChecks = function(){
+    if(confirm('Reset all checkmarks for Practice Set 20?')){
+      boxes.forEach(function(b){ b.checked = false; });
+      save();
+    }
+  };
+  update();
+})();
+</script>
 </body>
 </html>
