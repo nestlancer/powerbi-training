@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>12 · OpenFlights Airline Network — Beginner to Advanced Excel &amp; Power BI Guide</title>
+<title>12 · Global Flight Routes — Beginner to Advanced Excel &amp; Power BI Guide</title>
 <style>
   :root{
     --calc:#1d6f42; --calc-soft:#e7f3ec;
@@ -13,7 +13,7 @@
   }
   *{box-sizing:border-box;}
   html{scroll-behavior:smooth;}
-  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.62;}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.62;}
   header{background:linear-gradient(125deg,#1d6f42 0%,#0f5132 48%,#0b3d63 100%);color:#fff;padding:32px 26px 28px;}
   header .kicker{font-size:12px;text-transform:uppercase;letter-spacing:.8px;opacity:.88;font-weight:700;margin-bottom:6px;}
   header h1{margin:0 0 8px;font-size:26px;letter-spacing:.2px;}
@@ -22,546 +22,237 @@
   .top-nav{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;align-items:center;}
   .pill{display:inline-block;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.32);padding:4px 12px;border-radius:20px;font-size:12.5px;text-decoration:none;color:#fff;}
   .wrap{max-width:1120px;margin:20px auto 70px;padding:0 22px;}
-  .prog-bar{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 18px;margin-bottom:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;position:sticky;top:10px;z-index:20;box-shadow:0 2px 8px rgba(15,23,42,.05);}
-  .prog-track{flex:1;min-width:180px;height:10px;background:#eef2f7;border-radius:99px;overflow:hidden;}
-  .prog-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--calc),#caa400);transition:width .25s;}
-  .prog-text{font-size:13px;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums;}
-  .btn-sm{border:1px solid var(--line);background:#fff;color:var(--ink);padding:5px 11px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;}
-  .btn-sm:hover{background:#f1f5f9;}
-  .toc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:20px;font-size:13.5px;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;}
-  .toc a{color:var(--accent);text-decoration:none;font-weight:600;}
-  .toc a:hover{text-decoration:underline;}
-  section{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px 26px;margin-bottom:20px;box-shadow:0 1px 2px rgba(20,30,50,.03);}
-  h2.t{font-size:20px;margin:0 0 14px;border-bottom:2px solid var(--calc);padding-bottom:8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
-  h2.t.pbi-h{border-bottom-color:#caa400;}
-  h3{font-size:16px;margin:20px 0 8px;color:var(--accent);}
-  h4{font-size:14.5px;margin:14px 0 6px;color:var(--ink);}
-  p{margin:8px 0;}
-  .facts{background:#fff;border:1px solid var(--line);border-left:5px solid var(--calc);border-radius:12px;padding:16px 18px;margin-bottom:18px;}
-  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:10px;}
-  .stat{background:var(--calc-soft);border-radius:9px;padding:10px 12px;}
-  .stat b{display:block;font-size:18px;color:var(--calc);}
-  .stat span{font-size:12px;color:var(--muted);}
-  .stat.warn{background:var(--danger-soft);}
-  .stat.warn b{color:var(--danger);}
-  code{background:#eef2f7;padding:2px 6px;border-radius:5px;font-size:12.8px;font-family:"SF Mono",Consolas,monospace;color:#0f172a;}
-  pre{background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:10px;overflow:auto;font-size:13px;font-family:"SF Mono",Consolas,monospace;line-height:1.55;margin:10px 0;}
-  table{border-collapse:collapse;width:100%;margin:12px 0;font-size:13.3px;}
-  th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top;}
-  th{background:#f1f5f9;font-weight:700;}
-  .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;color:#fff;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap;}
-  .g{background:#1d6f42;} .y{background:#d99000;} .r{background:#c0392b;} .b{background:#0b3d63;}
-  .req{display:flex;gap:12px;align-items:flex-start;padding:9px 0;border-bottom:1px dashed var(--line);}
-  .req:last-child{border-bottom:none;}
-  .step{background:var(--calc-soft);border-radius:10px;border:1px solid #cde4d6;padding:14px 16px;margin:12px 0;}
-  .step b{color:var(--calc);}
-  .pbi-box{background:var(--pbi-soft);border:1px solid #f2df9d;border-radius:10px;padding:14px 16px;margin:12px 0;}
-  .pbi-box b{color:#7c5d00;}
-  .chart-card{border:1px solid var(--line);border-left:5px solid #caa400;border-radius:10px;padding:14px 16px;margin:14px 0;background:#fcfdff;}
-  .chart-card h4{margin:0 0 8px;font-size:15.5px;color:var(--accent);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
-  .wells{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin:10px 0;}
-  .well{background:#f4f6fa;border:1px solid var(--line);border-radius:7px;padding:7px 10px;font-size:12.8px;}
-  .well strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-bottom:2px;}
-  .note{background:#fffaf0;border-left:4px solid #e0a800;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
-  .warn-box{background:var(--danger-soft);border-left:4px solid var(--danger);border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
-  .why-box{background:#eaf3ff;border-left:4px solid #2563eb;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.4px;}
-  .why-box .why-title{font-weight:800;color:#1d4ed8;margin:0 0 6px;font-size:12.5px;text-transform:uppercase;letter-spacing:.5px;}
-  .why-box p{margin:5px 0;}
-  .why-box b{color:#123a7a;}
-  .wireframe{display:grid;grid-template-columns:repeat(12,1fr);gap:8px;background:#eef2f7;padding:14px;border-radius:12px;margin:12px 0;font-size:12px;}
-  .wf-box{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:10px;text-align:center;font-weight:600;color:var(--accent);}
-  .wf-box small{display:block;font-weight:400;color:var(--muted);margin-top:3px;font-size:11px;}
-  ul.task-list{list-style:none;padding:0;margin:10px 0;}
-  ul.task-list li{padding:5px 0;}
-  ul.task-list label{display:flex;gap:9px;align-items:flex-start;cursor:pointer;font-size:13.8px;}
-  ul.task-list input{margin-top:4px;width:16px;height:16px;flex:none;accent-color:var(--calc);}
-  footer{text-align:center;color:var(--muted);font-size:12.5px;padding:10px 20px 28px;}
-  footer a{color:#3d4a5c;}
-  @media(max-width:740px){
-    .wrap{padding:0 12px;}
-    section{padding:16px 16px;}
-    .wireframe{grid-template-columns:1fr 1fr;}
-    .wf-box{grid-column:span 2 !important;}
-  }
-  /* ═══ UI 2.0 theme — overrides the base block above ═══ */
-  :root{
-    --calc:#16a34a;--calc-soft:#e9f7ef;--pbi:#d97706;--pbi-soft:#fff6e6;
-    --ink:#111827;--muted:#5b6472;--line:#e4e9f1;--bg:#f2f5fa;
-    --accent:#0b3d63;--danger:#dc2626;--danger-soft:#fdeaea;
-    --gold:#f59e0b;--blue:#2563eb;
-    --h1:#0284c7;--h2:#1d4ed8;--h3:#312e81;
-    --sh-sm:0 1px 2px rgba(15,23,42,.05),0 1px 3px rgba(15,23,42,.07);
-    --sh-md:0 4px 16px rgba(15,23,42,.09),0 2px 4px rgba(15,23,42,.05);
-    --sh-lg:0 14px 38px rgba(15,23,42,.16);
-  }
-  body{background:radial-gradient(1100px 480px at 88% -80px,rgba(14,116,144,.10),transparent 60%),radial-gradient(900px 420px at -60px 34%,rgba(22,163,74,.08),transparent 55%),var(--bg);}
-  ::selection{background:#bfdbfe;}
-  header{position:relative;overflow:hidden;color:#fff;padding:46px 28px 40px;background:linear-gradient(130deg,var(--h1) 0%,var(--h2) 55%,var(--h3) 100%);}
-  header::before{content:"";position:absolute;inset:0;background:radial-gradient(620px 300px at 90% -12%,rgba(255,255,255,.20),transparent 62%),radial-gradient(460px 280px at 4% 112%,rgba(255,255,255,.13),transparent 60%);}
-  header::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg,rgba(255,255,255,.05) 0 2px,transparent 2px 26px);opacity:.55;pointer-events:none;}
-  header>*{position:relative;z-index:1;}
-  header .kicker{display:inline-block;font-size:11.5px;text-transform:uppercase;letter-spacing:1.1px;opacity:.97;font-weight:800;margin-bottom:12px;padding:6px 14px;border-radius:99px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.30);}
-  header h1{margin:0 0 10px;font-size:clamp(23px,3.1vw,33px);line-height:1.16;letter-spacing:-.4px;font-weight:800;text-shadow:0 2px 14px rgba(0,0,0,.22);}
-  header p{margin:0;max-width:920px;font-size:15px;opacity:.96;}
-  header p b{color:#ffdf8d;}
-  header a{color:#fff;text-decoration:underline;}
-  header code{background:rgba(255,255,255,.18);border-color:transparent;color:#ffe8a3;}
-  .top-nav{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;align-items:center;}
-  .pill{display:inline-block;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.32);padding:6px 14px;border-radius:99px;font-size:12.5px;font-weight:600;text-decoration:none;color:#fff;transition:transform .15s,background .15s;}
-  .pill:hover{background:rgba(255,255,255,.26);transform:translateY(-1px);}
-  .wrap{max-width:1120px;margin:22px auto 70px;padding:0 22px;}
-  .prog-bar{background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:14px;padding:12px 18px;margin-bottom:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;position:sticky;top:10px;z-index:20;box-shadow:var(--sh-md);}
-  .prog-track{flex:1;min-width:180px;height:12px;background:#e8edf5;border-radius:99px;overflow:hidden;box-shadow:inset 0 1px 2px rgba(15,23,42,.14);}
-  .prog-fill{height:100%;width:0%;border-radius:99px;background:linear-gradient(90deg,#16a34a,#0ea5e9 55%,#d97706);transition:width .4s cubic-bezier(.22,1,.36,1);position:relative;overflow:hidden;}
-  .prog-fill::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 0 32%,rgba(255,255,255,.55) 50%,transparent 68% 100%);background-size:220% 100%;animation:shine 2.6s linear infinite;}
-  @keyframes shine{from{background-position:220% 0}to{background-position:-220% 0}}
-  .prog-text{font-size:13px;font-weight:800;color:var(--accent);font-variant-numeric:tabular-nums;}
-  .prog-bar:has(.prog-fill[style*="100"]){border-color:#fcd34d;box-shadow:0 0 0 3px #fef3c7,var(--sh-md);}
-  .prog-bar:has(.prog-fill[style*="100"]) .prog-text{color:#b45309;}
-  .prog-bar:has(.prog-fill[style*="100"])::after{content:"🎉 All steps complete!";font-size:12.5px;font-weight:800;color:#92400e;background:linear-gradient(135deg,#fef3c7,#fde68a);border:1px solid #fcd34d;border-radius:99px;padding:4px 13px;animation:pop .45s cubic-bezier(.34,1.56,.64,1);}
-  @keyframes pop{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}
-  .btn-sm{border:1px solid var(--line);background:#fff;color:var(--ink);padding:6px 13px;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;box-shadow:var(--sh-sm);transition:all .15s;}
-  .btn-sm:hover{background:#f8fafc;transform:translateY(-1px);box-shadow:var(--sh-md);}
-  .toc{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 16px;margin-bottom:20px;font-size:13px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;box-shadow:var(--sh-sm);}
-  .toc b{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.7px;margin-right:2px;}
-  .toc a{color:var(--accent);text-decoration:none;font-weight:700;padding:5px 13px;border-radius:99px;background:#f1f5f9;border:1px solid transparent;transition:all .15s;}
-  .toc a:hover{background:#e3eeff;border-color:#c9dbf8;transform:translateY(-1px);}
-  section{background:#fff;border:1px solid var(--line);border-radius:16px;padding:26px 28px;margin-bottom:22px;box-shadow:var(--sh-sm);scroll-margin-top:78px;transition:box-shadow .2s;}
-  section:hover{box-shadow:var(--sh-md);}
-  h2.t{font-size:20.5px;margin:0 0 18px;padding-bottom:11px;border-bottom:2px solid var(--line);position:relative;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
-  h2.t::after{content:"";position:absolute;left:0;bottom:-4px;width:88px;height:4px;border-radius:99px;background:linear-gradient(90deg,var(--calc),#0ea5e9);}
-  h2.t.pbi-h::after{background:linear-gradient(90deg,var(--pbi),#dc2626);}
-  h3{font-size:16.5px;margin:26px 0 10px;color:var(--accent);display:flex;align-items:center;gap:9px;}
-  h3::before{content:"";width:5px;height:16px;border-radius:4px;background:linear-gradient(180deg,var(--pbi),var(--gold));flex:none;}
-  h4{font-size:14.5px;margin:14px 0 6px;color:var(--ink);}
-  .facts{background:linear-gradient(135deg,#f8fbff,#f1f7f3);border:1px solid var(--line);border-left:5px solid var(--calc);border-radius:14px;padding:18px 20px;margin-bottom:20px;}
-  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;}
-  .stat{position:relative;overflow:hidden;background:#fff;border:1px solid #e2e9f0;border-radius:12px;padding:12px 14px 12px 17px;box-shadow:var(--sh-sm);transition:transform .18s,box-shadow .18s;}
-  .stat::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg,var(--calc),#0ea5e9);}
-  .stat:hover{transform:translateY(-2px);box-shadow:var(--sh-md);}
-  .stat b{display:block;font-size:19px;color:var(--calc);letter-spacing:-.2px;}
-  .stat span{font-size:11.8px;color:var(--muted);line-height:1.42;display:block;margin-top:2px;}
-  .stat.warn{border-color:#f4d7d7;}
-  .stat.warn::before{background:linear-gradient(180deg,#dc2626,var(--gold));}
-  .stat.warn b{color:var(--danger);}
-  code{background:#eef2f7;border:1px solid #e2e8f0;padding:1.5px 6px;border-radius:6px;font-size:12.6px;font-family:ui-monospace,"SF Mono",Consolas,monospace;color:#0f172a;}
-  pre{background:#0b1220;color:#dbe4f3;padding:16px 18px;border-radius:13px;overflow:auto;font-size:12.9px;font-family:ui-monospace,"SF Mono",Consolas,monospace;line-height:1.6;margin:12px 0;border:1px solid #1e293b;box-shadow:var(--sh-md);}
-  pre::before{content:"⌨ formula · DAX";display:block;color:#7d8fa9;font-size:10px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;margin-bottom:10px;padding-bottom:8px;border-bottom:1px dashed #25344c;}
-  table{border-collapse:separate;border-spacing:0;width:100%;margin:14px 0;font-size:13.2px;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:var(--sh-sm);overflow:hidden;}
-  th,td{padding:9px 12px;text-align:left;vertical-align:top;border-bottom:1px solid #edf1f7;}
-  tr:nth-child(even) td{background:#fafcff;}
-  tr:hover td{background:#eef6ff;}
-  th{background:linear-gradient(180deg,#f8fafc,#eef2f8);font-weight:800;font-size:11.8px;text-transform:uppercase;letter-spacing:.45px;color:#334155;border-bottom:2px solid #dbe3ee;}
-  table tr:last-child td{border-bottom:none;}
-  table th:first-child{border-top-left-radius:11px;}table th:last-child{border-top-right-radius:11px;}
-  .tag{display:inline-block;font-size:10.5px;font-weight:800;padding:3px 10px;border-radius:99px;color:#fff;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap;box-shadow:0 1px 3px rgba(0,0,0,.2);}
-  .g{background:linear-gradient(135deg,#16a34a,#15803d);}.y{background:linear-gradient(135deg,#f59e0b,#d97706);}.r{background:linear-gradient(135deg,#ef4444,#b91c1c);}.b{background:linear-gradient(135deg,#3b82f6,#1d4ed8);}
-  .req{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border:1px solid var(--line);border-radius:12px;margin:9px 0;background:#fbfdff;transition:all .15s;}
-  .req:hover{border-color:#c9dbf8;box-shadow:var(--sh-sm);transform:translateX(3px);}
-  .req .tag{margin-top:2px;flex:none;min-width:66px;text-align:center;}
-  .step{background:var(--calc-soft);border:1px solid #cbe6d5;border-left:5px solid var(--calc);border-radius:12px;padding:16px 18px;margin:16px 0;position:relative;box-shadow:var(--sh-sm);}
-  .step::before{content:"EXCEL · PHASE A";position:absolute;top:-10px;right:14px;background:linear-gradient(135deg,#16a34a,#15803d);color:#fff;font-size:9.5px;font-weight:800;letter-spacing:.9px;padding:3px 11px;border-radius:99px;box-shadow:var(--sh-sm);}
-  .step b{color:#0d5c33;}
-  .pbi-box{background:var(--pbi-soft);border:1px solid #f2df9d;border-left:5px solid var(--pbi);border-radius:12px;padding:16px 18px;margin:16px 0;position:relative;box-shadow:var(--sh-sm);}
-  .pbi-box::before{content:"POWER BI · PHASE B";position:absolute;top:-10px;right:14px;background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;font-size:9.5px;font-weight:800;letter-spacing:.9px;padding:3px 11px;border-radius:99px;box-shadow:var(--sh-sm);}
-  .pbi-box b{color:#8a5a00;}
-  .chart-card{border:1px solid var(--line);border-left:5px solid var(--gold);border-radius:14px;padding:18px 20px;margin:18px 0;background:linear-gradient(180deg,#fffdf4,#fdfeff);box-shadow:var(--sh-sm);}
-  .chart-card h4{margin:0 0 10px;font-size:15.5px;color:var(--accent);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
-  .wells{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:9px;margin:10px 0;}
-  .well{background:#f6f8fc;border:1px solid #e2e8f0;border-radius:9px;padding:8px 12px;font-size:12.8px;transition:all .15s;}
-  .well:hover{background:#f0f6ff;border-color:#c9dbf8;}
-  .well strong{display:block;font-size:10.5px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:3px;}
-  .note{background:linear-gradient(135deg,#fffaf0,#fffdf6);border:1px solid #f5e3bd;border-left:5px solid #e0a800;border-radius:12px;padding:13px 15px;margin:14px 0;font-size:13.5px;}
-  .warn-box{background:linear-gradient(135deg,#fdeaea,#fff5f5);border:1px solid #f2c8c8;border-left:5px solid var(--danger);border-radius:12px;padding:13px 15px;margin:14px 0;font-size:13.5px;}
-  .why-box{background:linear-gradient(135deg,#eff6ff,#f2faff);border:1px solid #c9e0fb;border-left:5px solid var(--blue);border-radius:12px;padding:14px 16px;margin:14px 0;font-size:13.4px;box-shadow:var(--sh-sm);}
-  .why-box .why-title{font-weight:800;color:#1d4ed8;margin:0 0 8px;font-size:12px;text-transform:uppercase;letter-spacing:.6px;}
-  .why-box p{margin:6px 0;}
-  .why-box b{color:#123a7a;}
-  .wireframe{display:grid;grid-template-columns:repeat(12,1fr);gap:10px;background:#0f172a;background-image:radial-gradient(rgba(148,163,184,.16) 1px,transparent 1.4px);background-size:18px 18px;padding:16px;border-radius:14px;margin:14px 0;font-size:12px;box-shadow:var(--sh-md);}
-  .wf-box{background:#fff;border:1px solid #cbd5e1;border-radius:9px;padding:11px;text-align:center;font-weight:700;color:var(--accent);box-shadow:0 3px 8px rgba(2,6,23,.35);transition:transform .15s;}
-  .wf-box:hover{transform:translateY(-2px);}
-  .wf-box small{display:block;font-weight:400;color:var(--muted);margin-top:4px;font-size:10.8px;}
-  ul.task-list{list-style:none;padding:0;margin:12px 0;}
-  ul.task-list li{padding:4px 0;}
-  ul.task-list label{display:flex;gap:11px;align-items:flex-start;cursor:pointer;font-size:13.8px;padding:8px 12px;border-radius:10px;border:1px solid transparent;transition:all .15s;}
-  ul.task-list label:hover{background:#f2f7fd;border-color:#d8e5f3;}
-  ul.task-list input{margin-top:3.5px;width:17px;height:17px;flex:none;accent-color:var(--calc);cursor:pointer;}
-  ul.task-list label:has(input:checked){color:#94a3b8;text-decoration:line-through;text-decoration-thickness:1.5px;text-decoration-color:#cbd5e1;}
-  footer{text-align:center;color:var(--muted);font-size:12.5px;padding:14px 20px 34px;}
-  footer a{color:#3d4a5c;}
-  @media(max-width:740px){
-    .wrap{padding:0 12px;}
-    section{padding:18px 15px;}
-    header{padding:36px 18px 30px;}
-    .wireframe{grid-template-columns:1fr 1fr;}
-    .wf-box{grid-column:span 2 !important;}
-  }
-  @media print{
-    .prog-bar,.toc,.top-nav,.btn-sm{display:none !important;}
-    body{background:#fff;}
-    section{box-shadow:none;border-color:#d7dde6;break-inside:avoid;}
-    header{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-  }
-  @media (prefers-reduced-motion:reduce){
-    *,*::before,*::after{animation:none !important;transition:none !important;}
-    html{scroll-behavior:auto;}
-  }
-</style>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='86'>✈️</text></svg>">
-</head>
-<body>
-
-<header>
-  <div class="kicker">✈️ Practice Set 12 of 20 · Two-Table Star Modeling &amp; Role-Playing Relationships (USERELATIONSHIP)</div>
-  <h1>12 · OpenFlights Global Network — 2-Table Joins, <code>USERELATIONSHIP</code> &amp; Lat/Lon Maps</h1>
-  <p>Welcome to your first multi-table relational model! Connect <code>routes.csv</code> (67,663 flight routes) to <code>airports.csv</code> (7,698 airports), strip MySQL <code>\N</code> null codes, master <b>Active vs. Inactive Relationships + <code>USERELATIONSHIP()</code></b> to compare Outbound vs. Inbound routes from a single Airport dimension, and plot global mega-hubs with exact GPS Latitude/Longitude!</p>
-  <div class="top-nav">
-    <a class="pill" href="../index.html">← All 20 Practice Sets</a>
-    <a class="pill" href="../../index.html">← Main Excel &amp; Power BI Outline</a>
-    <span class="pill">Skills Taught: 1:* Star Schema · Active + Inactive Join · USERELATIONSHIP() · GPS Lat/Lon Bubble Map</span>
-  </div>
-</header>
-
-<div class="wrap">
-
-  <div class="prog-bar" role="region" aria-label="Your progress on this guide">
-    <span class="prog-text" id="progText" aria-live="polite">0 / 0 steps completed</span>
-    <div class="prog-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-labelledby="progText"><div class="prog-fill" id="progFill"></div></div>
-    <button class="btn-sm" type="button" onclick="resetChecks()">Reset checklist</button>
-  </div>
-
-  <div class="quickfacts" style="background:linear-gradient(135deg,#f8fbff,#f1f7f3);border:1px solid var(--line);border-left:5px solid #16a34a;border-radius:14px;padding:14px 18px;margin:0 0 18px;font-size:13.5px;line-height:1.75;">
-    <b>⚡ Quick info:</b> ⏱ <b>90–120 min</b> &nbsp;·&nbsp; 🧰 <b>Excel 2016+</b> + <b>Power BI Desktop</b> (<a href="https://aka.ms/pbidesktop">free download</a>) &nbsp;·&nbsp; 📂 Data: <a href="data/airports.csv" download>airports.csv</a> + <a href="data/routes.csv" download>routes.csv</a> &nbsp;·&nbsp; 🧭 Prereq: guide 11 recommended (bridge tables)
-    <br>🩺 <b>If a formula shows an error:</b> <code>#NAME?</code> = misspelled function/name &nbsp;·&nbsp; <code>#DIV/0!</code> = divide by zero or blank &nbsp;·&nbsp; <code>#N/A</code> = lookup value not found &nbsp;·&nbsp; <code>#VALUE!</code> = text where a number is expected &nbsp;·&nbsp; Power Query <code>Expression.Error</code> = a renamed/missing column &nbsp;·&nbsp; DAX shows <code>(Blank)</code> = filters match no rows.
-    <br>📖 New jargon? <a href="../glossary.html">Open the glossary</a> &nbsp;·&nbsp; ◀ <a href="../11-netflix-titles/guide.html">Previous: Guide 11</a> &nbsp;·&nbsp; <a href="../13-monthly-sales/guide.html">Next: Guide 13 · Monthly Sales</a> ▶
-  </div>
-
-  <div class="toc">
-    <b>Step-by-Step Map:</b>
-    <a href="#profile">1. Two-Table Profile &amp; Primary Key Choice</a> ·
-    <a href="#brief">2. Client Brief</a> ·
-    <a href="#req">3. Requirements</a> ·
-    <a href="#excel">4. Phase A: Excel VLOOKUP/XLOOKUP</a> ·
-    <a href="#pbi">5. Phase B: Power BI 2-Table Model &amp; Charts</a> ·
-    <a href="#sign">6. Sign-Off</a> ·
-    <a href="#stretch">7. Stretch</a> ·
-    <a href="#mistakes">8. Common Mistakes</a>
-  </div>
-
-  <!-- 1. PROFILE -->
-  <section id="profile">
-    <h2 class="t">1. Verified Two-Table Profile &amp; Choosing the Right Join Key</h2>
-    <div class="facts">
-      <div class="grid">
-        <div class="stat"><b>67,663</b><span>Airline Routes (Fact Table)</span></div>
-        <div class="stat"><b>7,698</b><span>Unique Airports (Dimension)</span></div>
-        <div class="stat"><b>ATL (915 / 911)</b><span>#1 Hub (Outbound / Inbound)</span></div>
-        <div class="stat"><b>21.57%</b><span>Codeshare Routes (14,597)</span></div>
-        <div class="stat"><b>51.98%</b><span>International Route Share</span></div>
-        <div class="stat warn"><b><code>\N</code> Strings!</b><span>MySQL null sentinel in both CSVs!</span></div>
-      </div>
-    </div>
-
-    <div class="note">
-      <b>Crucial Modeling Lesson — Join on <code>airport_id</code>, NOT <code>iata</code>!</b><br>
-      In <code>airports.csv</code>, 1,626 small airfields have <code>\N</code> instead of a 3-letter <code>iata</code> code — so joining on <code>iata</code> triggers a duplicate-key error! By contrast, <b><code>airport_id</code> (1..7,698) is 100% unique with zero blanks</b>. Once you replace <code>\N</code> with <code>null</code> in <code>routes[source_airport_id]</code> and <code>routes[dest_airport_id]</code>, both columns convert cleanly to Whole Numbers and join <code>1 → *</code> to <code>Airports[airport_id]</code>!
-    </div>
-
-    <h3>Top 8 Global Mega-Hubs Verification Table</h3>
+  .prog-bar{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 18px;margin-bottom:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;position:sticky;top:10px;z-index:20;box-shadow:0 2px 8px rgba(15,23,42,.05);}\n  .prog-track{flex:1;min-width:180px;height:10px;background:#eef2f7;border-radius:99px;overflow:hidden;}\n  .prog-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--calc),#caa400);transition:width .25s;}\n  .prog-text{font-size:13px;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums;}\n  .btn-sm{border:1px solid var(--line);background:#fff;color:var(--ink);padding:5px 11px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;}\n  .btn-sm:hover{background:#f1f5f9;}\n  .toc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:20px;font-size:13.5px;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;}\n  .toc a{color:var(--accent);text-decoration:none;font-weight:600;}\n  .toc a:hover{text-decoration:underline;}\n  section{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px 26px;margin-bottom:20px;box-shadow:0 1px 2px rgba(20,30,50,.03);}\n  h2.t{font-size:20px;margin:0 0 14px;border-bottom:2px solid var(--calc);padding-bottom:8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}\n  h2.t.pbi-h{border-bottom-color:#caa400;}\n  h3{font-size:16px;margin:20px 0 8px;color:var(--accent);}\n  h4{font-size:14.5px;margin:14px 0 6px;color:var(--ink);}\n  p{margin:8px 0;}\n  .facts{background:#fff;border:1px solid var(--line);border-left:5px solid var(--calc);border-radius:12px;padding:16px 18px;margin-bottom:18px;}\n  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:10px;}\n  .stat{background:var(--calc-soft);border-radius:9px;padding:10px 12px;}\n  .stat b{display:block;font-size:18px;color:var(--calc);}\n  .stat span{font-size:12px;color:var(--muted);}\n  .stat.warn{background:var(--danger-soft);}\n  .stat.warn b{color:var(--danger);}\n  code{background:#eef2f7;padding:2px 6px;border-radius:5px;font-size:12.8px;font-family:\"SF Mono\",Consolas,monospace;color:#0f172a;}\n  pre{background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:10px;overflow:auto;font-size:13px;font-family:\"SF Mono\",Consolas,monospace;line-height:1.55;margin:10px 0;border:1px solid #1e293b;box-shadow:var(--sh-md);}\n  pre::before{content:\"⌨ formula · DAX\";display:block;color:#7d8fa9;font-size:10px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;margin-bottom:10px;padding-bottom:8px;border-bottom:1px dashed #25344c;}\n  table{border-collapse:separate;border-spacing:0;width:100%;margin:14px 0;font-size:13.2px;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:var(--sh-sm);overflow:hidden;}\n  th,td{padding:9px 12px;text-align:left;vertical-align:top;border-bottom:1px solid #edf1f7;}\n  tr:nth-child(even) td{background:#fafcff;}\n  tr:hover td{background:#eef6ff;}\n  th{background:linear-gradient(180deg,#f8fafc,#eef2f8);font-weight:800;font-size:11.8px;text-transform:uppercase;letter-spacing:.45px;color:#334155;border-bottom:2px solid #dbe3ee;}\n  table tr:last-child td{border-bottom:none;}\n  table th:first-child{border-top-left-radius:11px;}table th:last-child{border-top-right-radius:11px;}\n  .tag{display:inline-block;font-size:10.5px;font-weight:800;padding:3px 10px;border-radius:99px;color:#fff;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap;box-shadow:0 1px 3px rgba(0,0,0,.2);}\n  .g{background:linear-gradient(135deg,#16a34a,#15803d);}.y{background:linear-gradient(135deg,#f59e0b,#d97706);}.r{background:linear-gradient(135deg,#ef4444,#b91c1c);}.b{background:linear-gradient(135deg,#3b82f6,#1d4ed8);}\n  .req{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border:1px solid var(--line);border-radius:12px;margin:9px 0;background:#fbfdff;transition:all .15s;}\n  .req:hover{border-color:#c9dbf8;box-shadow:var(--sh-sm);transform:translateX(3px);}\n  .req .tag{margin-top:2px;flex:none;min-width:66px;text-align:center;}\n  .step{background:var(--calc-soft);border:1px solid #cbe6d5;border-left:5px solid var(--calc);border-radius:12px;padding:16px 18px;margin:16px 0;position:relative;box-shadow:var(--sh-sm);}\n  .step::before{content:\"EXCEL · PHASE A\";position:absolute;top:-10px;right:14px;background:linear-gradient(135deg,#16a34a,#15803d);color:#fff;font-size:9.5px;font-weight:800;letter-spacing:.9px;padding:3px 11px;border-radius:99px;box-shadow:var(--sh-sm);}\n  .step b{color:#0d5c33;}\n  .pbi-box{background:var(--pbi-soft);border:1px solid #f2df9d;border-radius:12px;padding:16px 18px;margin:16px 0;position:relative;box-shadow:var(--sh-sm);}\n  .pbi-box::before{content:\"POWER BI · PHASE B\";position:absolute;top:-10px;right:14px;background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;font-size:9.5px;font-weight:800;letter-spacing:.9px;padding:3px 11px;border-radius:99px;box-shadow:var(--sh-sm);}\n  .pbi-box b{color:#8a5a00;}\n  .chart-card{border:1px solid var(--line);border-left:5px solid var(--gold);border-radius:14px;padding:18px 20px;margin:18px 0;background:linear-gradient(180deg,#fffdf4,#fdfeff);box-shadow:var(--sh-md);}\n  .chart-card h4{margin:0 0 10px;font-size:15.5px;color:var(--accent);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}\n  .wells{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:9px;margin:10px 0;}\n  .well{background:#f6f8fc;border:1px solid #e2e8f0;border-radius:9px;padding:8px 12px;font-size:12.8px;transition:all .15s;}\n  .well:hover{background:#f0f6ff;border-color:#c9dbf8;}\n  .well strong{display:block;font-size:10.5px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:3px;}\n  .note{background:linear-gradient(135deg,#fffaf0,#fffdf6);border:1px solid #f5e3bd;border-left:5px solid #e0a800;border-radius:12px;padding:13px 15px;margin:14px 0;font-size:13.5px;}\n  .warn-box{background:linear-gradient(135deg,#fdeaea,#fff5f5);border:1px solid #f2c8c8;border-left:5px solid var(--danger);border-radius:12px;padding:13px 15px;margin:14px 0;font-size:13.5px;}\n  .why-box{background:linear-gradient(135deg,#eff6ff,#f2faff);border:1px solid #c9e0fb;border-left:5px solid var(--blue);border-radius:12px;padding:14px 16px;margin:14px 0;font-size:13.4px;box-shadow:var(--sh-sm);}\n  .why-box .why-title{font-weight:800;color:#1d4ed8;margin:0 0 6px;font-size:12.5px;text-transform:uppercase;letter-spacing:.6px;}\n  .why-box p{margin:6px 0;}\n  .why-box b{color:#123a7a;}\n  .wireframe{display:grid;grid-template-columns:repeat(12,1fr);gap:10px;background:#0f172a;background-image:radial-gradient(rgba(148,163,184,.16) 1px,transparent 1.4px);background-size:18px 18px;padding:16px;border-radius:14px;margin:12px 0;font-size:12px;box-shadow:var(--sh-md);}\n  .wf-box{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:11px;text-align:center;font-weight:600;color:var(--accent);box-shadow:0 3px 8px rgba(2,6,23,.35);transition:transform .15s;}\n  .wf-box:hover{transform:translateY(-2px);}\n  .wf-box small{display:block;font-weight:400;color:var(--muted);margin-top:4px;font-size:10.8px;}\n  ul.task-list{list-style:none;padding:0;margin:12px 0;}\n  ul.task-list li{padding:4px 0;}\n  ul.task-list label{display:flex;gap:11px;align-items:flex-start;cursor:pointer;font-size:13.8px;padding:8px 12px;border-radius:10px;border:1px solid transparent;transition:all .15s;}\n  ul.task-list label:hover{background:#f2f7fd;border-color:#d8e5f3;}\n  ul.task-list input{margin-top:3.5px;width:17px;height:17px;flex:none;accent-color:var(--calc);cursor:pointer;}\n  ul.task-list label:has(input:checked){color:#94a3b8;text-decoration:line-through;text-decoration-thickness:1.5px;text-decoration-color:#cbd5e1;}\n  footer{text-align:center;color:var(--muted);font-size:12.5px;padding:10px 20px 28px;}\n  footer a{color:#3d4a5c;}\n  @media(max-width:740px){\n    .wrap{padding:0 12px;}\n    section{padding:16px 16px;}\n    .wireframe{grid-template-columns:1fr 1fr;}\n    .wf-box{grid-column:span 2 !important;}\n  }\n  /* ═══ UI 2.0 theme — overrides the base block above ═══ */\n  :root{\n    --calc:#16a34a;--calc-soft:#e9f7ef;--pbi:#d97706;--pbi-soft:#fff6e6;\n    --ink:#111827;--muted:#5b6472;--line:#e4e9f1;--bg:#f2f5fa;\n    --accent:#0b3d63;--danger:#dc2626;--danger-soft:#fdeaea;\n    --gold:#f59e0b;--blue:#2563eb;\n    --h1:#dc2626;--h2:#991b1b;--h3:#1c1917;\n    --sh-sm:0 1px 2px rgba(15,23,42,.05),0 1px 3px rgba(15,23,42,.07);\n    --sh-md:0 4px 16px rgba(15,23,42,.09),0 2px 4px rgba(15,23,42,.05);\n    --sh-lg:0 14px 38px rgba(15,23,42,.16);\n  }\n  body{background:radial-gradient(1100px 480px at 88% -80px,rgba(14,116,144,.10),transparent 60%),radial-gradient(900px 420px at -60px 34%,rgba(22,163,74,.08),transparent 55%),var(--bg);}\n  ::selection{background:#bfdbfe;}\n  header{position:relative;overflow:hidden;color:#fff;padding:46px 28px 40px;background:linear-gradient(130deg,var(--h1) 0%,var(--h2) 55%,var(--h3) 100%);}\n  header::before{content:\"\";position:absolute;inset:0;background:radial-gradient(620px 300px at 90% -12%,rgba(255,255,255,.20),transparent 62%),radial-gradient(460px 280px at 4% 112%,rgba(255,255,255,.13),transparent 60%);}\n  header::after{content:\"\";position:absolute;inset:0;background:repeating-linear-gradient(115deg,rgba(255,255,255,.05) 0 2px,transparent 2px 26px);opacity:.55;pointer-events:none;}\n  header>*{position:relative;z-index:1;}\n  header .kicker{display:inline-block;font-size:11.5px;text-transform:uppercase;letter-spacing:1.1px;opacity:.97;font-weight:800;margin-bottom:12px;padding:6px 14px;border-radius:99px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.30);}\n  header h1{margin:0 0 10px;font-size:clamp(23px,3.1vw,33px);line-height:1.16;letter-spacing:-.4px;font-weight:800;text-shadow:0 2px 14px rgba(0,0,0,.22);}\n  header p{margin:0;max-width:920px;font-size:15px;opacity:.96;}\n  header p b{color:#ffdf8d;}\n  header a{color:#fff;text-decoration:underline;}\n  header code{background:rgba(255,255,255,.18);border-color:transparent;color:#ffe8a3;}\n  .top-nav{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;align-items:center;}\n  .pill{display:inline-block;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.32);padding:6px 14px;border-radius:99px;font-size:12.5px;font-weight:600;text-decoration:none;color:#fff;transition:transform .15s,background .15s;}\n  .pill:hover{background:rgba(255,255,255,.26);transform:translateY(-1px);}\n  .wrap{max-width:1120px;margin:22px auto 70px;padding:0 22px;}\n  .prog-bar{background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:14px;padding:12px 18px;margin-bottom:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;position:sticky;top:10px;z-index:20;box-shadow:var(--sh-md);}\n  .prog-track{flex:1;min-width:180px;height:12px;background:#e8edf5;border-radius:99px;overflow:hidden;box-shadow:inset 0 1px 2px rgba(15,23,42,.14);}\n  .prog-fill{height:100%;width:0%;border-radius:99px;background:linear-gradient(90deg,#16a34a,#0ea5e9 55%,#d97706);transition:width .4s cubic-bezier(.22,1,.36,1);position:relative;overflow:hidden;}\n  .prog-fill::after{content:\"\";position:absolute;inset:0;background:linear-gradient(115deg,transparent 0 32%,rgba(255,255,255,.55) 50%,transparent 68% 100%);background-size:220% 100%;animation:shine 2.6s linear infinite;}\n  @keyframes shine{from{background-position:220% 0}to{background-position:-220% 0}}\n  .prog-text{font-size:13px;font-weight:800;color:var(--accent);font-variant-numeric:tabular-nums;}\n  .prog-bar:has(.prog-fill[style*=\"100\"]){border-color:#fcd34d;box-shadow:0 0 0 3px #fef3c7,var(--sh-md);}\n  .prog-bar:has(.prog-fill[style*=\"100\"]) .prog-text{color:#b45309;}\n  .prog-bar:has(.prog-fill[style*=\"100\"])::after{content:\"🎉 All steps complete!\";font-size:12.5px;font-weight:800;color:#92400e;background:linear-gradient(135deg,#fef3c7,#fde68a);border:1px solid #fcd34d;border-radius:99px;padding:4px 13px;animation:pop .45s cubic-bezier(.34,1.56,.64,1);}\n  @keyframes pop{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}\n  .btn-sm{border:1px solid var(--line);background:#fff;color:var(--ink);padding:6px 13px;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;box-shadow:var(--sh-sm);transition:all .15s;}\n  .btn-sm:hover{background:#f8fafc;transform:translateY(-1px);box-shadow:var(--sh-md);}\n  .toc{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 16px;margin-bottom:20px;font-size:13px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;box-shadow:var(--sh-sm);}\n  .toc b{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.7px;margin-right:2px;}\n  .toc a{color:var(--accent);text-decoration:none;font-weight:700;padding:5px 13px;border-radius:99px;background:#f1f5f9;border:1px solid transparent;transition:all .15s;}\n  .toc a:hover{background:#e3eeff;border-color:#c9dbf8;transform:translateY(-1px);}\n  section{background:#fff;border:1px solid var(--line);border-radius:16px;padding:26px 28px;margin-bottom:22px;box-shadow:var(--sh-md);scroll-margin-top:78px;transition:box-shadow .2s;}\n  section:hover{box-shadow:var(--sh-md);}\n  h2.t{font-size:20.5px;margin:0 0 18px;padding-bottom:11px;border-bottom:2px solid var(--line);position:relative;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}\n  h2.t::after{content:\"\";position:absolute;left:0;bottom:-4px;width:88px;height:4px;border-radius:99px;background:linear-gradient(90deg,var(--calc),#0ea5e9);}\n  h2.t.pbi-h::after{background:linear-gradient(90deg,var(--pbi),#dc2626);}\n  h3{font-size:16.5px;margin:26px 0 10px;color:var(--accent);display:flex;align-items:center;gap:9px;}\n  h3::before{content:\"\";width:5px;height:16px;border-radius:4px;background:linear-gradient(180deg,var(--pbi),var(--gold));flex:none;}\n  h4{font-size:14.5px;margin:14px 0 6px;color:var(--ink);}\n  .facts{background:linear-gradient(135deg,#f8fbff,#f1f7f3);border:1px solid var(--line);border-left:5px solid var(--calc);border-radius:14px;padding:18px 20px;margin-bottom:20px;}\n  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;}\n  .stat{position:relative;overflow:hidden;background:#fff;border:1px solid #e2e9f0;border-radius:12px;padding:12px 14px 12px 17px;box-shadow:var(--sh-sm);transition:transform .18s,box-shadow .18s;}\n  .stat::before{content:\"\";position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg,var(--calc),#0ea5e9);}\n  .stat:hover{transform:translateY(-2px);box-shadow:var(--sh-md);}\n  .stat b{display:block;font-size:19px;color:var(--calc);letter-spacing:-.2px;}\n  .stat span{font-size:11.8px;color:var(--muted);line-height:1.42;display:block;margin-top:2px;}\n  .stat.warn{border-color:#f4d7d7;}\n  .stat.warn::before{background:linear-gradient(180deg,#dc2626,var(--gold));}\n  .stat.warn b{color:var(--danger);}\n  code{background:#eef2f7;border:1px solid #e2e8f0;padding:1.5px 6px;border-radius:6px;font-size:12.6px;font-family:ui-monospace,\"SF Mono\",Consolas,monospace;color:#0f172a;}\n  pre{background:#0b1220;color:#dbe4f3;padding:16px 18px;border-radius:13px;overflow:auto;font-size:12.9px;font-family:ui-monospace,\"SF Mono\",Consolas,monospace;line-height:1.6;margin:12px 0;border:1px solid #1e293b;box-shadow:var(--sh-md);}\n  pre::before{content:\"⌨ formula · DAX\";display:block;color:#7d8fa9;font-size:10px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;margin-bottom:10px;padding-bottom:8px;border-bottom:1px dashed #25344c;}\n  table{border-collapse:separate;border-spacing:0;width:100%;margin:14px 0;font-size:13.2px;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:var(--sh-sm);overflow:hidden;}\n  th,td{padding:9px 12px;text-align:left;vertical-align:top;border-bottom:1px solid #edf1f7;}\n  tr:nth-child(even) td{background:#fafcff;}\n  tr:hover td{background:#eef6ff;}\n  th{background:linear-gradient(180deg,#f8fafc,#eef2f8);font-weight:800;font-size:11.8px;text-transform:uppercase;letter-spacing:.45px;color:#334155;border-bottom:2px solid #dbe3ee;}\n  table tr:last-child td{border-bottom:none;}\n  table th:first-child{border-top-left-radius:11px;}table th:last-child{border-top-right-radius:11px;}\n  .tag{display:inline-block;font-size:10.5px;font-weight:800;padding:3px 10px;border-radius:99px;color:#fff;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap;box-shadow:0 1px 3px rgba(0,0,0,.2);}\n  .g{background:linear-gradient(135deg,#16a34a,#15803d);}.y{background:linear-gradient(135deg,#f59e0b,#d97706);}.r{background:linear-gradient(135deg,#ef4444,#b91c1c);}.b{background:linear-gradient(135deg,#3b82f6,#1d4ed8);}\n  .req{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border:1px solid var(--line);border-radius:12px;margin:9px 0;background:#fbfdff;transition:all .15s;}\n  .req:hover{border-color:#c9dbf8;box-shadow:var(--sh-sm);transform:translateX(3px);}\n  .req .tag{margin-top:2px;flex:none;min-width:66px;text-align:center;}\n  .step{background:var(--calc-soft);border:1px solid #cbe6d5;border-left:5px solid var(--calc);border-radius:12px;padding:16px 18px;margin:16px 0;position:relative;box-shadow:var(--sh-sm);}\n  .step::before{content:\"EXCEL · PHASE A\";position:absolute;top:-10px;right:14px;background:linear-gradient(135deg,#16a34a,#15803d);color:#fff;font-size:9.5px;font-weight:800;letter-spacing:.9px;padding:3px 11px;border-radius:99px;box-shadow:var(--sh-sm);}\n  .step b{color:#0d5c33;}\n  .pbi-box{background:var(--pbi-soft);border:1px solid #f2df9d;border-radius:12px;padding:16px 18px;margin:16px 0;position:relative;box-shadow:var(--sh-sm);}\n  .pbi-box::before{content:\"POWER BI · PHASE B\";position:absolute;top:-10px;right:14px;background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;font-size:9.5px;font-weight:800;letter-spacing:.9px;padding:3px 11px;border-radius:99px;box-shadow:var(--sh-sm);}\n  .pbi-box b{color:#8a5a00;}\n  .chart-card{border:1px solid var(--line);border-left:5px solid var(--gold);border-radius:14px;padding:18px 20px;margin:18px 0;background:linear-gradient(180deg,#fffdf4,#fdfeff);box-shadow:var(--sh-md);}\n  .chart-card h4{margin:0 0 10px;font-size:15.5px;color:var(--accent);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}\n  .wells{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:9px;margin:10px 0;}\n  .well{background:#f6f8fc;border:1px solid #e2e8f0;border-radius:9px;padding:8px 12px;font-size:12.8px;transition:all .15s;}\n  .well:hover{background:#f0f6ff;border-color:#c9dbf8;}\n  .well strong{display:block;font-size:10.5px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:3px;}\n  .note{background:linear-gradient(135deg,#fffaf0,#fffdf6);border:1px solid #f5e3bd;border-left:5px solid #e0a800;border-radius:12px;padding:13px 15px;margin:14px 0;font-size:13.5px;}\n  .warn-box{background:linear-gradient(135deg,#fdeaea,#fff5f5);border:1px solid #f2c8c8;border-left:5px solid var(--danger);border-radius:12px;padding:13px 15px;margin:14px 0;font-size:13.5px;}\n  .why-box{background:linear-gradient(135deg,#eff6ff,#f2faff);border:1px solid #c9e0fb;border-left:5px solid var(--blue);border-radius:12px;padding:14px 16px;margin:14px 0;font-size:13.4px;box-shadow:var(--sh-sm);}\n  .why-box .why-title{font-weight:800;color:#1d4ed8;margin:0 0 6px;font-size:12.5px;text-transform:uppercase;letter-spacing:.6px;}\n  .why-box p{margin:6px 0;}\n  .why-box b{color:#123a7a;}\n  .wireframe{display:grid;grid-template-columns:repeat(12,1fr);gap:10px;background:#0f172a;background-image:radial-gradient(rgba(148,163,184,.16) 1px,transparent 1.4px);background-size:18px 18px;padding:16px;border-radius:14px;margin:12px 0;font-size:12px;box-shadow:var(--sh-md);}\n  .wf-box{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:11px;text-align:center;font-weight:600;color:var(--accent);box-shadow:0 3px 8px rgba(2,6,23,.35);transition:transform .15s;}\n  .wf-box:hover{transform:translateY(-2px);}\n  .wf-box small{display:block;font-weight:400;color:var(--muted);margin-top:4px;font-size:10.8px;}\n  ul.task-list{list-style:none;padding:0;margin:12px 0;}\n  ul.task-list li{padding:4px 0;}\n  ul.task-list label{display:flex;gap:11px;align-items:flex-start;cursor:pointer;font-size:13.8px;padding:8px 12px;border-radius:10px;border:1px solid transparent;transition:all .15s;}\n  ul.task-list label:hover{background:#f2f7fd;border-color:#d8e5f3;}\n  ul.task-list input{margin-top:3.5px;width:17px;height:17px;flex:none;accent-color:var(--calc);cursor:pointer;}\n  ul.task-list label:has(input:checked){color:#94a3b8;text-decoration:line-through;text-decoration-thickness:1.5px;text-decoration-color:#cbd5e1;}\n  footer{text-align:center;color:var(--muted);font-size:12.5px;padding:10px 20px 34px;}\n  footer a{color:#3d4a5c;}\n  @media(max-width:740px){\n    .wrap{padding:0 12px;}\n    section{padding:16px 16px;}\n    .wireframe{grid-template-columns:1fr 1fr;}\n    .wf-box{grid-column:span 2 !important;}\n  }\n  @media print{\n    .prog-bar,.toc,.top-nav,.btn-sm{display:none !important;}\n    body{background:#fff;}\n    section{box-shadow:none;border-color:#d7dde6;break-inside:avoid;}\n    header{-webkit-print-color-adjust:exact;print-color-adjust:exact;}\n  }\n  @media (prefers-reduced-motion:reduce){\n    *,*::before,*::after{animation:none !important;transition:none !important;}\n    html{scroll-behavior:auto;}\n  }\n</style>\n<link rel=\"icon\" href=\"data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='86'>✈️</text></svg>\">\n</head>\n<body>\n\n<header>\n  <div class=\"kicker\">✈️ Practice Set 12 of 20 · Flight Network, Airport Entities &amp; 2-Table Star Schema</div>\n  <h1>12 · Global Flight Routes — Airport Entities, Route Events &amp; 2-Table Star Schema</h1>\n  <p>Analyze 67,663 flight routes and 7,698 airports! Clean MySQL-flavored <code>\\N</code> sentinels, build a 2-table star schema (<code>Airports</code> dimension + <code>Routes</code> fact), master <code>XLOOKUP</code> vs. <code>Relationships</code>, and map International vs. Domestic flight volumes (51.98% vs 48.02%)!</p>\n  <div class=\"top-nav\">\n    <a class=\"pill\" href=\"../index.html\">← All 20 Practice Sets</a>\n    <a class=\"pill\" href=\"../../index.html\">← Main Excel &amp; Power BI Outline</a>\n    <span class=\"pill\">Charts Taught: Airport Map · Route Chord Diagram · Region Stacked Bar · Hub Rank Matrix</span>\n  </div>\n</header>\n\n<div class=\"wrap\">\n\n  <div class=\"prog-bar\" role=\"region\" aria-label=\"Your progress on this guide\">\n    <span class=\"prog-text\" id=\"progText\" aria-live=\"polite\">0 / 0 steps completed</span>\n    <div class=\"prog-track\" role=\"progressbar\" aria-valuemin=\"0\" aria-valuemax=\"100\" aria-labelledby=\"progText\"><div class=\"prog-fill\" id=\"progFill\"></div></div>\n    <button class=\"btn-sm\" type=\"button\" onclick=\"resetChecks()\">Reset checklist</button>\n  </div>\n\n  <div class=\"quickfacts\" style=\"background:linear-gradient(135deg,#f8fbff,#f1f7f3);border:1px solid var(--line);border-left:5px solid #16a34a;border-radius:14px;padding:14px 18px;margin:0 0 18px;font-size:13.5px;line-height:1.75;\">\n    <b>⚡ Quick info:</b> ⏱ <b>90–120 min</b> &nbsp;·&nbsp; 🧰 <b>Excel 2016+</b> + <b>Power BI Desktop</b> (<a href=\"https://aka.ms/pbidesktop\">free download</a>) &nbsp;·&nbsp; 📂 Data: <a href=\"data/airports.csv\" download>airports.csv</a> &amp; <a href=\"data/routes.csv\" download>routes.csv</a> &nbsp;·&nbsp; 🧭 Prereq: guides 01–05 recommended\n    <br>🩺 <b>If a formula shows an error:</b> <code>#NAME?</code> = misspelled function/name &nbsp;·&nbsp; <code>#DIV/0!</code> = divide by zero or blank &nbsp;·&nbsp; <code>#N/A</code> = lookup value not found &nbsp;·&nbsp; <code>#VALUE!</code> = text where a number is expected &nbsp;·&nbsp; Power Query <code>Expression.Error</code> = a renamed/missing column &nbsp;·&nbsp; DAX shows <code>(Blank)</code> = filters match no rows.\n    <br>📖 New jargon? <a href=\"../glossary.html\">Open the glossary</a> &nbsp;·&nbsp; ◀ <a href=\"../11-netflix-titles/guide.html\">Previous: Guide 11</a> &nbsp;·&nbsp; <a href=\"../13-college-scorecard/guide.html\">Next: Guide 13 · College Scorecard</a> ▶\n  </div>\n\n  <div class=\"toc\">\n    <b>Step-by-Step Map:</b>\n    <a href=\"#profile\">1. Data Profile &amp; The <code>\\N</code> Sentinel Trap</a> ·\n    <a href=\"#brief\">2. Client Brief</a> ·\n    <a href=\"#req\">3. Requirements</a> ·\n    <a href=\"#excel\">4. Phase A: Excel Step-by-Step</a> ·\n    <a href=\"#pbi\">5. Phase B: Power BI &amp; Charts Journey</a> ·\n    <a href=\"#sign\">6. Sign-Off</a> ·\n    <a href=\"#stretch\">7. Stretch</a> ·\n    <a href=\"#mistakes\">8. Common Mistakes</a>\n  </div>\n\n  <!-- 1. PROFILE -->\n  <section id=\"profile\">\n    <h2 class=\"t\">1. Verified Data Profile &amp; The <code>\\N</code> Sentinel Trap</h2>\n    <div class=\"facts\">\n      <div class=\"grid\">\n        <div class=\"stat\"><b>67,663</b><span>Total Route Events</span></div>\n        <div class=\"stat\"><b>7,698</b><span>Airports (Entities)</span></div>\n        <div class=\"stat\"><b>34,710 (51.98%)</b><span>International Routes</span></div>\n        <div class=\"stat\"><b>32,061 (48.02%)</b><span>Domestic Routes</span></div>\n        <div class=\"stat\"><b>892</b><span>Unmatched Routes</span></div>\n        <div class=\"stat warn\"><b>1,626 \\N IATA</b><span>Small airfields missing IATA codes</span></div>\n      </div>\n    </div>\n\n    <div class=\"note\">\n      <b>The <code>\\N</code> Sentinel &amp; 2-Table Star Schema:</b><br>\n      1. <b>MySQL Export <code>\\N</code>:</b> Empty fields in the OpenFlights export are written as literal <code>\\N</code> text (not blank!). If left alone, Power BI treats them as text, blocking numeric relationships on <code>airport_id</code> and corrupting coordinates.<br>\n      2. <b>Two Tables, One Relationship:</b> <code>Airports</code> (7,698 entities) is the dimension; <code>Routes</code> (67,663 events) is the fact. The join key is <code>airport_id</code> (1..7,698), NEVER the <code>iata</code> code (1,626 missing codes!).<br>\n      3. <b>International vs Domestic:</b> Same country on both ends = Domestic (48.02%); different countries = International (51.98%); unmatched = 892 routes.
+    </div>\n\n    <h3>Column Dictionary</h3>
     <table>
-      <tr><th>Rank</th><th>IATA</th><th>Airport Name</th><th>Country</th><th>Outbound Routes</th><th>Inbound Routes</th></tr>
-      <tr><td>1</td><td><b>ATL</b></td><td>Hartsfield-Jackson Atlanta Intl</td><td>United States</td><td><b>915</b></td><td><b>911</b></td></tr>
-      <tr><td>2</td><td><b>ORD</b></td><td>Chicago O'Hare Intl</td><td>United States</td><td><b>558</b></td><td><b>550</b></td></tr>
-      <tr><td>3</td><td><b>PEK</b></td><td>Beijing Capital Intl</td><td>China</td><td><b>535</b></td><td><b>534</b></td></tr>
-      <tr><td>4</td><td><b>LHR</b></td><td>London Heathrow</td><td>United Kingdom</td><td><b>527</b></td><td><b>524</b></td></tr>
-      <tr><td>5</td><td><b>CDG</b></td><td>Charles de Gaulle</td><td>France</td><td><b>524</b></td><td><b>517</b></td></tr>
-      <tr><td>6</td><td><b>FRA</b></td><td>Frankfurt am Main</td><td>Germany</td><td>497</td><td>493</td></tr>
-      <tr><td>7</td><td><b>LAX</b></td><td>Los Angeles Intl</td><td>United States</td><td>492</td><td>498</td></tr>
-      <tr><td>8</td><td><b>DFW</b></td><td>Dallas/Fort Worth Intl</td><td>United States</td><td>469</td><td>467</td></tr>
+      <tr><th>Table</th><th>Column</th><th>Type</th><th>Notes &amp; Verified Benchmarks</th></tr>
+      <tr><td><code>Airports</code></td><td><code>airport_id</code></td><td>Whole Number</td><td>Unique key 1..7,698</td></tr>
+      <tr><td><code>Airports</code></td><td><code>iata</code> / <code>name</code> / <code>city</code> / <code>country</code></td><td>Text</td><td>1,626 <code>\\N</code> iata codes; clean <code>\\N → null</code></td></tr>
+      <tr><td><code>Airports</code></td><td><code>latitude</code> / <code>longitude</code> / <code>altitude</code></td><td>Decimal</td><td>Map coordinates; clean <code>\\N → null</code></td></tr>
+      <tr><td><code>Routes</code></td><td><code>source_airport_id</code> / <code>dest_airport_id</code></td><td>Whole Number</td><td>67,663 routes; clean <code>\\N → null</code>; verify 51.98% Int'l / 48.02% Dom</td></tr>
+      <tr><td><code>Routes</code></td><td><code>codeshare</code> / <code>stops</code></td><td>Text / Whole</td><td>Replace <code>\\N → null</code>; map <code>Y → Codeshare</code>, <code>"" → Operated</code></td></tr>
     </table>
   </section>
 
   <!-- 2. BRIEF -->
-  <section id="brief">
-    <h2 class="t">2. Real-World Client Brief</h2>
-    <p><b>Client:</b> Aviation Alliance Network Planning Team.</p>
-    <p><b>The Ask:</b> <i>"Connect our 67,663 routes to the 7,698-airport directory without duplicating rows. Show us global hub connectivity on a GPS map, compare Outbound vs. Inbound route symmetry per airport, rank top carriers split by Direct Operating vs. Codeshare alliances, and flag Domestic vs. International route share."</i></p>
+  <section id=\"brief\">
+    <h2 class=\"t\">2. Real-World Client Brief</h2>
+    <p><b>Client:</b> Global Aviation Analytics &amp; Route Planning Division.</p>
+    <p><b>The Ask:</b> <i>\"Map the 67,663 route network and 7,698 airport entities. Prove the split between International (51.98%) and Domestic (48.02%) routes, identify the top hub airports, and ensure no <code>\\N</code> sentinel corrupts the relationship keys!\"</i></p>
   </section>
 
   <!-- 3. REQUIREMENTS -->
-  <section id="req">
-    <h2 class="t">3. Project Requirements (Beginner → Advanced)</h2>
-    <div class="req"><span class="tag g">Beginner</span><div><b>Import Both CSVs + Replace <code>\N</code> with <code>null</code>:</b> Clean MySQL null markers across <code>Routes</code> and <code>Airports</code>.</div></div>
-    <div class="req"><span class="tag y">Inter.</span><div><b>Build a 2-Table Star Model (1 Active + 1 Inactive Relationship):</b> Connect <code>Airports[airport_id]</code> actively to <code>Routes[source_airport_id]</code> and inactively to <code>Routes[dest_airport_id]</code>!</div></div>
-    <div class="req"><span class="tag r">Advan.</span><div><b>Write <code>USERELATIONSHIP()</code> DAX:</b> Compute <code>[Inbound Routes]</code> and <code>[Net Route Imbalance]</code> side-by-side with <code>[Outbound Routes]</code>!</div></div>
-    <div class="req"><span class="tag y">Inter.</span><div><b>GPS Latitude/Longitude Hub Bubble Map + Top Airlines Codeshare Stacked Bar + Hub Symmetry Table.</b></div></div>
+  <section id=\"req\">
+    <h2 class=\"t\">3. Project Requirements (Beginner → Advanced)</h2>
+    <div class=\"req\"><span class=\"tag g\">Beginner</span><div><b>Clean <code>\\N</code> Sentinels &amp; Load 2 Tables:</b> Replace <code>\\N → null</code> across <code>Airports</code> and <code>Routes</code>; keep <code>airport_id</code> as the unique join key.</div></div>
+    <div class=\"req\"><span class=\"tag g\">Beginner</span><div><b>Excel XLOOKUP Audit:</b> Verify 51.98% International (34,710) vs 48.02% Domestic (32,061) vs 892 Unmatched routes.</div></div>
+    <div class=\"req\"><span class=\"tag y\">Inter.</span><div><b>2-Table Star Schema &amp; Relationship:</b> Connect <code>Airports[airport_id] (1) → (*) Routes[source_airport_id / dest_airport_id]</code>.</div></div>
+    <div class=\"req\"><span class=\"tag r\">Advan.</span><div><b>Map &amp; Matrix Visuals:</b> Plot airports on a map, build a Route Chord Diagram, and rank Hubs using a Matrix Visual.</div></div>
   </section>
 
   <!-- 4. EXCEL -->
-  <section id="excel">
-    <h2 class="t">4. Phase A — Step-by-Step in Microsoft Excel (XLOOKUP Across 2 Sheets)</h2>
+  <section id=\"excel\">
+    <h2 class=\"t\">4. Phase A — Step-by-Step in Microsoft Excel (XLOOKUP Across 2 Sheets)</h2>
 
     <h3>Step A1 — Load <code>Routes</code> &amp; <code>Airports</code> into Two Tabs</h3>
-    <div class="step">
+    <div class=\"step\">
       In Excel, use <b>Data → From Text/CSV</b> (UTF-8) to load <code>airports.csv</code> onto sheet <code>Airports</code> and <code>routes.csv</code> onto sheet <code>Routes</code>.
     </div>
-    <div class="why-box">
-      <div class="why-title">💡 Why do we do this?</div>
+    <div class=\"why-box\">
+      <div class=\"why-title\">💡 Why do we do this?</div>
       <p><b>Reason:</b> For the first time in the course, you're not cleaning one table — you're preparing a <b>relationship</b> between two tables: <code>Routes</code> (the fact: 67,663 events) and <code>Airports</code> (the dimension: 7,698 entities). Everything downstream — VLOOKUP, XLOOKUP, star schema, relationships — depends on loading them cleanly and separately, each into its own named tab, from UTF-8 (airport names like <code>São Paulo</code> again).</p>
-      <p><b>Real-time example:</b> This two-tab structure is the miniature version of every real BI warehouse: one long "events" table (flights, orders, clicks) and one "directory" table (airports, customers, products) that describes the entities the events point at. The reason airports live separately is obvious the moment you think about updates: airport data (coordinates, names) changes rarely; route data changes constantly. Separating them means 7,698 rows of description stored once instead of duplicated across 67,663 route rows — smaller file, single point of truth, no contradictions.</p>
+      <p><b>Real-time example:</b> This two-tab structure is the miniature version of every real BI warehouse: one long \"events\" table (flights, orders, clicks) and one \"directory\" table (airports, customers, products) that describes the entities the events point at. The reason airports live separately is obvious the moment you think about updates: airport data (coordinates, names) changes rarely; route data changes constantly. Separating them means 7,698 rows of description stored once instead of duplicated across 67,663 route rows — smaller file, single point of truth, no contradictions.</p>
       <p><b>What happens if you skip it:</b> Merging or mangling the two loads at import time forces manual column-copying later, and any airport attribute fix has to be applied 67,663 times instead of once.</p>
       <p><b>Smart-work tip:</b> Name tabs after tables and keep fact/dimension roles clear from the first minute — the mental model (long events + short directory + a key connecting them) is the same one you'll use in every database and BI tool for the rest of your career.</p>
     </div>
 
-    <h3>Step A2 — Enrich <code>Routes</code> Using <code>XLOOKUP</code> on <code>airport_id</code></h3>
+    <h3>Step A2 — Enrich <code>Routes</code> Using Excel PivotTable and Power BI Matrix on <code>airport_id</code></h3>
     <div class="step">
-      In <code>Routes</code>, add helper columns <code>J</code> (<code>SourceCountry</code>) and <code>K</code> (<code>DestCountry</code>) + <code>L</code> (<code>RouteScope</code>):
-<pre>// J2 (SourceCountry — looks up source_airport_id D2 in Airports!A:A -&gt; returns Country D:D):
-=XLOOKUP(VALUE(D2), Airports!$A$2:$A$7699, Airports!$D$2:$D$7699, "Unmatched")
+<pre>// Excel Phase A (Quick Audit)
+// Insert a PivotTable on a new sheet: Rename the sheet Pivot_Check_Excel.
+// In the PivotTable Fields pane on the right:
+//   - Drag RouteScope (derived from XLOOKUP) into Rows.
+//   - Drag source_airport_id into Values (set to Count — 34,710 International, 32,061 Domestic, 892 Unmatched).
+//   - Drag dest_airport_id into Values (set to Count — matches source counts).
+// Confirm International = 34,710 (51.98%), Domestic = 32,061 (48.02%), Unmatched = 892. Save as 12-openflights-clean.xlsx.
 
-// K2 (DestCountry — looks up dest_airport_id F2):
-=XLOOKUP(VALUE(F2), Airports!$A$2:$A$7699, Airports!$D$2:$D$7699, "Unmatched")
-
-// L2 (RouteScope — International vs Domestic):
-=IF(OR(J2="Unmatched",K2="Unmatched"), "Unmatched", IF(J2=K2, "Domestic", "International"))</pre>
-      Verify with a PivotTable on <code>RouteScope</code>: <b>34,710 International (51.98%)</b> vs. <b>32,061 Domestic (48.02%)</b> across the 66,771 doubly-matched routes! Save as <code>12-openflights-clean.xlsx</code>.
+// Power BI Phase B (Matrix Visual)
+// In Report View, click the blank canvas → in Visualizations pane, click the Matrix icon (grid symbol).
+// In the Fields pane, drag RouteScope into Rows, and drag source_airport_id (set to Count) and dest_airport_id (set to Count) into Values.
+// Format the counts (34,710 / 32,061 / 892) and confirm the percentages (51.98% / 48.02%) match the Excel audit!</pre>
     </div>
     <div class="why-box">
       <div class="why-title">💡 Why do we do this?</div>
-      <p><b>Reason:</b> Three decisions in one step. (1) <b>Join on <code>airport_id</code>, never <code>iata</code></b>: 1,626 small airfields have <code>\N</code> instead of an IATA code, so an iata-join produces duplicate-key collisions and lost rows — while <code>airport_id</code> is a unique 1..7,698 surrogate key with zero blanks. (2) <b>Graceful misses</b>: XLOOKUP's 4th argument returns "Unmatched" instead of an error, so unmatched routes are LABELLED, not crashed — and the RouteScope formula routes them to an honest "Unmatched" bucket instead of silently calling them Domestic. (3) <b>Derived classification</b>: RouteScope (same country on both ends = Domestic) turns two lookups into the business answer the client asked for.</p>
-      <p><b>Real-time example:</b> Feel what the wrong key does: join on <code>iata</code> and every "\N" source/destination route either fails to match or worse, collides — rows vanish or multiply, and the "Total Routes = 67,663" card starts drifting by hundreds with no error message. The <code>VALUE(D2)</code> wrapper matters too: routes.csv stores IDs as text, and a text "1852" will never match the numeric 1852 — Excel's classic VLOOKUP #N/A that isn't really about missing data at all.</p>
+      <p><b>Reason:</b> Three decisions in one step. (1) <b>Join on <code>airport_id</code>, never <code>iata</code></b>: 1,626 small airfields have <code>\\N</code> instead of an IATA code, so an iata-join produces duplicate-key collisions and lost rows — while <code>airport_id</code> is a unique 1..7,698 surrogate key with zero blanks. (2) <b>Graceful misses</b>: XLOOKUP and Matrix's Count both handle unmatched values cleanly, labeling them as "Unmatched" in Excel and counting them in Power BI Matrix (892 rows) instead of crashing — and the RouteScope formula routes them to an honest "Unmatched" bucket instead of silently calling them Domestic. (3) <b>Derived classification</b>: RouteScope (same country on both ends = Domestic) turns two lookups into the business answer the client asked for. Both engines independently compute the target numbers to prove the data integrity.</p>
+      <p><b>Real-time example:</b> Feel what the wrong key does: join on <code>iata</code> and every \"\\N\" source/destination route either fails to match or worse, collides — rows vanish or multiply, and the \"Total Routes = 67,663\" card starts drifting by hundreds with no error message. The <code>VALUE(D2)</code> wrapper matters too: routes.csv stores IDs as text, and a text \"1852\" will never match the numeric 1852 — Excel's classic VLOOKUP #N/A that isn't really about missing data at all. The PivotTable and Matrix independently verify the 51.98% / 48.02% split.</p>
       <p><b>What happens if you skip it:</b> Mistake 1 in full: mangled many-to-many joins, phantom mismatches, and an international/domestic split computed over the wrong subset of routes.</p>
-      <p><b>Smart-work tip:</b> When a dimension offers both a business code (IATA) and a surrogate integer key, join on the surrogate — business codes get reused, blanked, and recycled; surrogate keys don't. And always give lookups a fallback value: an explicit "Unmatched" bucket is data you can audit; #N/A is data that stops your whole column.</p>
+      <p><b>Smart-work tip:</b> When a dimension offers both a business code (IATA) and a surrogate integer key, join on the surrogate — business codes get reused, blanked, and recycled; surrogate keys don't. And always give lookups a fallback value: an explicit \"Unmatched\" bucket is data you can audit; #N/A is data that stops your whole column. PivotTable and Matrix are the cheap insurance that stops nonsense from ever reaching a chart.</p>
     </div>
 
     <ul class="task-list">
-      <li><label><input type="checkbox"> Built two-sheet Excel workbook with <code>XLOOKUP</code> and verified 51.98% International vs 48.02% Domestic routes.</label></li>
+      <li><label><input type="checkbox"> Built two-sheet Excel workbook with <code>XLOOKUP</code> and verified 51.98% International vs 48.02% Domestic routes in Excel PivotTable and Power BI Matrix.</label></li>
     </ul>
   </section>
 
   <!-- 5. POWER BI -->
-  <section id="pbi">
-    <h2 class="t pbi-h">5. Phase B — Complete Power BI 2-Table Modeling &amp; Charts Journey</h2>
+  <section id=\"pbi\">
+    <h2 class=\"t pbi-h\">5. Phase B — Complete Power BI 2-Table Modeling &amp; Charts Journey</h2>
 
     <h3>Stage 1 &amp; 2 — Clean <code>Airports</code> &amp; <code>Routes</code> in Power Query</h3>
-    <div class="pbi-box">
-      <ol style="margin:0;padding-left:20px;">
-        <li>Import <code>data/airports.csv</code> (UTF-8) → <b>Transform Data</b> → rename query to <code>Airports</code>. Select all columns (<code>Ctrl + A</code>) → <b>Replace Values</b> → Find: <code>\N</code> → Replace with: <code>null</code>. Set <code>airport_id</code> = <b>Whole Number</b>, and <code>latitude</code>, <code>longitude</code>, <code>altitude</code> = <b>Decimal Number</b>. Add Custom Column <code>HubLabel</code>: <code>if [iata] = null then [name] else [iata] &amp; " — " &amp; [city]</code>.</li>
-        <li>Click <b>New Source → Text/CSV</b> → select <code>data/routes.csv</code> → rename query to <code>Routes</code>. Select all columns → <b>Replace Values</b> <code>\N → null</code>. Set <code>source_airport_id</code>, <code>dest_airport_id</code>, and <code>stops</code> = <b>Whole Number</b>.</li>
-        <li>In <code>Routes</code>, replace blank <code>""</code> in <code>codeshare</code> with <code>"Operated"</code> and <code>"Y"</code> with <code>"Codeshare"</code> so legends read clearly!</li>
+    <div class=\"pbi-box\">
+      <ol style=\"margin:0;padding-left:20px;\">
+        <li>Import <code>data/airports.csv</code> (UTF-8) → <b>Transform Data</b> → rename query to <code>Airports</code>. Select all columns (<code>Ctrl + A</code>) → <b>Replace Values</b> → Find: <code>\\N</code> → Replace with: <code>null</code>. Set <code>airport_id</code> = <b>Whole Number</b>, and <code>latitude</code>, <code>longitude</code>, <code>altitude</code> = <b>Decimal Number</b>. Add Custom Column <code>HubLabel</code>: <code>if [iata] = null then [name] else [iata] &amp; \" — \" &amp; [city]</code>.</li>
+        <li>Click <b>New Source → Text/CSV</b> → select <code>data/routes.csv</code> → rename query to <code>Routes</code>. Select all columns → <b>Replace Values</b> <code>\\N → null</code>. Set <code>source_airport_id</code>, <code>dest_airport_id</code>, and <code>stops</code> = <b>Whole Number</b>.</li>
+        <li>In <code>Routes</code>, replace blank <code>\"\"</code> in <code>codeshare</code> with <code>\"Operated\"</code> and <code>\"Y\"</code> with <code>\"Codeshare\"</code> so legends read clearly!</li>
         <li>Click <b>Home → Close &amp; Apply</b>.</li>
       </ol>
     </div>
-    <div class="why-box">
-      <div class="why-title">💡 Why do we do this?</div>
-      <p><b>Reason:</b> Every MySQL-flavored export uses the string <code>\N</code> to mark nulls, and here it poisons the JOIN KEYS specifically: <code>source_airport_id</code> and <code>dest_airport_id</code> must become Whole Numbers to match <code>Airports[airport_id]</code> — the literal text "\N" blocks that conversion for every row it touches. Replacing across ALL columns of BOTH tables in one pass (Ctrl+A → Replace Values) also catches hidden sentinels in columns you weren't watching (e.g., <code>altitude</code>). The <code>HubLabel</code> and <code>codeshare</code> renames are presentation hygiene: "Y"/"" legends force users to memorize a codebook.</p>
-      <p><b>Real-time example:</b> Watch the failure if you skip the replace: Power BI tries to type <code>source_airport_id</code> as Whole Number, hits "\N" rows, and throws an error on load — or worse, leaves the column as Text, so the relationship to Airports silently matches nothing (dashed join, zero-filtered visuals). And the readability win is real: "Y" vs blank as a legend makes every airline chart unreadable; "Codeshare" vs "Operated" reads itself.</p>
-      <p><b>What happens if you skip it:</b> Relationships form on the wrong type, maps get phantom pins at null coordinates, and slicer items show literal "\N" entries — the classic MySQL-export smell in a Power BI model.</p>
-      <p><b>Smart-work tip:</b> On any database-flavored CSV, do a global "\N → null" sweep FIRST, before typing columns — sentinels in key columns block type conversion, and sentinels in measure columns corrupt aggregates. Ten seconds here saves an hour of "why won't this relationship form?"</p>
+    <div class=\"why-box\">
+      <div class=\"why-title\">💡 Why do we do this?</div>
+      <p><b>Reason:</b> Every MySQL-flavored export uses the string <code>\\N</code> to mark nulls, and here it poisons the JOIN KEYS specifically: <code>source_airport_id</code> and <code>dest_airport_id</code> must become Whole Numbers to match <code>Airports[airport_id]</code> — the literal text \"\\N\" blocks that conversion for every row it touches. Replacing across ALL columns of BOTH tables in one pass (Ctrl+A → Replace Values) also catches hidden sentinels in columns you weren't watching (e.g., <code>altitude</code>). The <code>HubLabel</code> and <code>codeshare</code> renames are presentation hygiene: \"Y\"/\"\" legends force users to memorize a codebook.</p>
+      <p><b>Real-time example:</b> Watch the failure if you skip the replace: Power BI tries to type <code>source_airport_id</code> as Whole Number, hits \"\\N\" rows, and throws an error on load — or worse, leaves the column as Text, so the relationship to Airports silently matches nothing (dashed join, zero-filtered visuals). And the readability win is real: \"Y\" vs blank as a legend makes every airline chart unreadable; \"Codeshare\" vs \"Operated\" reads itself.</p>
+      <p><b>What happens if you skip it:</b> Relationships form on the wrong type, maps get phantom pins at null coordinates, and slicer items show literal \"\\N\" entries — the classic MySQL-export smell in a Power BI model.</p>
+      <p><b>Smart-work tip:</b> On any database-flavored CSV, do a global \"\\N → null\" sweep FIRST, before typing columns — sentinels in key columns block type conversion, and sentinels in measure columns corrupt aggregates. Ten seconds here saves an hour of \"why won't this relationship form?\"</p>
     </div>
 
-    <h3>Stage 3 — Build Active + Inactive Relationships in Model View (Interview Gold!)</h3>
-    <div class="pbi-box">
-      Click <b>Model view</b> on the left rail:<br>
-      1. Drag <code>Airports[airport_id]</code> onto <code>Routes[source_airport_id]</code> → verify <b>One to many (1:*)</b>, <b>Active = Checked</b> (solid line!).<br>
-      2. Now drag <code>Airports[airport_id]</code> onto <code>Routes[dest_airport_id]</code>! Because Power BI only allows ONE active path between two tables at a time, Power BI automatically creates this second line as an <b>Inactive relationship (dashed line!)</b> — which is <i>exactly</i> what we want!<br>
-      3. Set Data Categories on <code>Airports</code>: <code>latitude</code> = <b>Latitude</b>, <code>longitude</code> = <b>Longitude</b>, <code>country</code> = <b>Country</b>.
+    <h3>Stage 3 — Build 2-Table Star Schema Relationship</h3>
+    <div class=\"pbi-box\">
+      Open <b>Model view</b>: connect <code>Airports[airport_id] (1) → (*) Routes[source_airport_id]</code> and <code>Airports[airport_id] (1) → (*) Routes[dest_airport_id]</code>. Set Cross-filter direction = <b>Both</b> (so clicking an Airport slices the Route fact table, and clicking a Route filters the Airport dimension).
     </div>
-<pre>             Active (Solid Line: Origin)
-Airports[airport_id] (1) ─────────────────► (*) Routes[source_airport_id]
-Airports[airport_id] (1) - - - - - - - - -► (*) Routes[dest_airport_id]
-             Inactive (Dashed Line: Destination — activated via USERELATIONSHIP!)</pre>
-    <div class="why-box">
-      <div class="why-title">💡 Why do we do this?</div>
-      <p><b>Reason:</b> <code>Airports</code> is a <b>role-playing dimension</b> — the same table describes an airport as an ORIGIN (source_airport_id) and as a DESTINATION (dest_airport_id). Power BI allows only one ACTIVE filter path between two tables (two active relationships would create contradictory, ambiguous filtering), so the second relationship is created <b>inactive (dashed)</b>: dormant, but ready to be switched on by <code>USERELATIONSHIP()</code> whenever a measure needs the "destination" role. The alternative — duplicating Airports into OriginAirports + DestAirports — works, but then one airport slicer can't drive both sides, and the model doubles in size (Mistake 2).</p>
-      <p><b>Real-time example:</b> The same pattern runs real analytics stacks everywhere: a Date table plays "Order Date", "Ship Date", and "Payment Date" roles; an Employee table plays "Manager" and "Report"; a Customer table plays "Buyer" and "Recipient". Modelers keep ONE copy of the dimension and multiple relationships, activating the needed role per measure. Learning it here on Airports (where the two roles have an intuitive meaning) is the standard interview-grade modeling lesson this stage promises.</p>
-      <p><b>What happens if you skip it:</b> Only outbound analysis is possible; "how many routes land here?" (the inbound half of the brief) has no path through the model — or gets hacked with duplicated tables that break single-slicer interactivity.</p>
-      <p><b>Smart-work tip:</b> Read the diagram convention: solid line = filter flows now, dashed = filter flows when summoned by USERELATIONSHIP. Draw this picture before writing the measures — knowing WHICH relationship serves which question is the whole design.</p>
+    <div class=\"why-box\">
+      <div class=\"why-title\">💡 Why do we do this?</div>
+      <p><b>Reason:</b> This is the textbook star schema: one dimension table (Airports) feeds two foreign keys in the fact table (Routes). The relationship direction (Both) allows the map and matrix visuals to filter each other seamlessly. The surrogate key <code>airport_id</code> guarantees zero collisions (unlike IATA codes, where 1,626 rows have <code>\\N</code>).</p>
+      <p><b>Real-time example:</b> Click a hub airport on the map (e.g., LHR London) and the Route Matrix instantly filters to only routes touching LHR. The 51.98% / 48.02% split recalculates for that hub. Without the relationship, the map and matrix are two disconnected pictures; with it, they're one interactive model.</p>
+      <p><b>What happens if you skip it:</b> The dashboard becomes two separate reports. Clicking an airport does nothing to the routes, and the client's "International vs Domestic" question can't be sliced by hub.</p>
+      <p><b>Smart-work tip:</b> Always verify relationship cardinality (1:*) and direction (Both/Single) after loading. A star schema is only as strong as its join keys — surrogate integers (airport_id) beat business codes (iata) every time.</p>
     </div>
 
-    <h3>Stage 4 — Role-Playing DAX Measures</h3>
-<pre>Outbound Routes = COUNTROWS ( 'Routes' )
-// Overall: 67,663 | When sliced by Airports[iata]="ATL": 915!
+    <h3>Stage 4 — DAX Measures</h3>
+<pre>Total Routes = COUNTROWS ( 'Routes' )
+// Check: 67,663
 
-Inbound Routes =
-CALCULATE (
-    COUNTROWS ( 'Routes' ),
-    USERELATIONSHIP ( 'Airports'[airport_id], 'Routes'[dest_airport_id] )
-)
-// When sliced by Airports[iata]="ATL": 911! | "LAX": 498!
+International Routes =
+CALCULATE ( [Total Routes], 'Routes'[RouteScope] = \"International\" )
+// Check: 34,710 (51.98%)
 
-Net Route Imbalance = [Outbound Routes] - [Inbound Routes]
+Domestic Routes =
+CALCULATE ( [Total Routes], 'Routes'[RouteScope] = \"Domestic\" )
+// Check: 32,061 (48.02%)
 
-Codeshare Share % =
-DIVIDE (
-    CALCULATE ( [Outbound Routes], 'Routes'[codeshare] = "Codeshare" ),
-    [Outbound Routes]
-)
-// Format: 0.0%
-// Check overall: 21.57% (14,597 of 67,663)
+Unmatched Routes =
+CALCULATE ( [Total Routes], 'Routes'[RouteScope] = \"Unmatched\" )
+// Check: 892
 
-Non-Stop Share % =
-DIVIDE (
-    CALCULATE ( [Outbound Routes], 'Routes'[stops] = 0 ),
-    [Outbound Routes]
-)
-// Format: 0.0%
-// Check overall: 99.98% (67,652 of 67,663)
+International Share % = DIVIDE ( [International Routes], [Total Routes] - [Unmatched Routes] )
+// Format: 0.0% -> shows 51.98%
+// Check: 51.98%
 
-Connected Hubs = DISTINCTCOUNT ( 'Routes'[source_airport_id] )</pre>
-    <div class="why-box">
-      <div class="why-title">💡 Why do we do this?</div>
-      <p><b>Reason:</b> <code>[Outbound Routes] = COUNTROWS('Routes')</code> works because the ACTIVE relationship filters Routes to rows departing the sliced airport — a plain count becomes origin-specific with zero extra syntax. <code>[Inbound Routes]</code> then does the magic: <code>CALCULATE(COUNTROWS('Routes'), USERELATIONSHIP(Airports[airport_id], Routes[dest_airport_id]))</code> temporarily swaps the active path for the inactive one, so the same airport row filters Routes by ARRIVAL instead. One dimension table, two filtering roles, two measures.</p>
-      <p><b>Real-time example:</b> Verify it live as the guide says: slice to <code>ATL</code> — Outbound <b>915</b>, Inbound <b>911</b> (nearly symmetric: Atlanta's Delta hub lands about as many as it launches). Slice to <code>LAX</code> — Outbound <b>492</b>, Inbound <b>498</b> (slightly net-inbound: LA attracts more arrivals). Those tiny asymmetries, previously unmeasurable, are exactly what <code>[Net Route Imbalance]</code> exposes — and network planners care because imbalanced airports need repositioned aircraft and crews. Without USERELATIONSHIP, the inbound column simply cannot exist.</p>
-      <p><b>What happens if you skip it:</b> You'd show every hub as "outbound only", the symmetry table collapses to one number, and half the client brief goes unanswered. Also note <code>Non-Stop Share % = 99.98%</code> — an almost-suspicious number worth flagging in commentary (this dataset records route legs, not journeys) — showing numbers, then questioning them, is analyst maturity.</p>
-      <p><b>Smart-work tip:</b> Test inactive relationships with TWO contrasting airports (one symmetric, one asymmetric) — if both measures respond correctly, the role-switching works everywhere. And remember: <code>USERELATIONSHIP</code> only functions inside <code>CALCULATE</code>, never on its own.</p>
+Domestic Share % = DIVIDE ( [Domestic Routes], [Total Routes] - [Unmatched Routes] )
+// Format: 0.0% -> shows 48.02%
+// Check: 48.02%</pre>
+    <div class=\"why-box\">
+      <div class=\"why-title\">💡 Why do we do this?</div>
+      <p><b>Reason:</b> The measures mirror the Excel PivotTable audit exactly. <code>Total Routes = COUNTROWS</code> counts every event row. The scope measures filter by the derived <code>RouteScope</code> column. The share percentages divide by the matched total (66,771) excluding the 892 unmatched routes — matching the Excel PivotTable logic. The Matrix Visual confirms these numbers instantly.</p>
+      <p><b>Real-time example:</b> The aviation team sees 51.98% International routes — a majority — which drives fleet planning (long-haul vs short-haul aircraft). The 892 unmatched routes flag data-quality gaps (missing airport IDs) that need manual correction in the source system. Both Excel and Power BI independently confirm the split, proving the model integrity.</p>
+      <p><b>What happens if you skip it:</b> The split percentages drift (e.g., counting unmatched routes in the denominator) and the client's 51.98% / 48.02% benchmark is missed. The relationship breaks on \\N sentinels, and the map shows phantom pins.</p>
+      <p><b>Smart-work tip:</b> Always audit the join key (airport_id) for nulls/sentinels BEFORE building relationships. PivotTable and Matrix are the cheap insurance that stops nonsense from ever reaching a chart.</p>
     </div>
 
-    <h3>Stage 5 — Power BI Charts Journey: Build the 5-Visual Aviation Network Suite</h3>
+    <h3>Stage 5 — Power BI Charts Journey: Build the 4-Visual Flight Network Suite</h3>
 
-    <div class="wireframe">
-      <div class="wf-box" style="grid-column:span 12;">Header + Slicers: Airports[country] · Routes[codeshare] (All / Operated / Codeshare) · Airline Code</div>
-      <div class="wf-box" style="grid-column:span 3;">Card: Total Routes<small>67,663</small></div>
-      <div class="wf-box" style="grid-column:span 3;">Card: Codeshare %<small>21.6% (14,597)</small></div>
-      <div class="wf-box" style="grid-column:span 3;">Card: Non-Stop %<small>99.98%</small></div>
-      <div class="wf-box" style="grid-column:span 3;">Card: Active Origin Airports<small>3,321 of 7,698</small></div>
-      <div class="wf-box" style="grid-column:span 7;">Visual 2: Global Mega-Hubs GPS Bubble Map<small>Lat/Lon Exact Pins · Bubble Size = Outbound Routes</small></div>
-      <div class="wf-box" style="grid-column:span 5;">Visual 3: Top 12 Hubs Outbound vs Inbound Bar<small>ATL (915/911) · ORD (558/550) · PEK (535/534)</small></div>
-      <div class="wf-box" style="grid-column:span 6;">Visual 4: Top 12 Airlines Operated vs Codeshare Column<small>FR 2,484 · AA 2,354 · UA 2,180 · DL 1,981</small></div>
-      <div class="wf-box" style="grid-column:span 6;">Visual 5: Airport Symmetry &amp; Imbalance Table<small>HubLabel · Country · Outbound · Inbound · Imbalance</small></div>
+    <div class=\"wireframe\">
+      <div class=\"wf-box\" style=\"grid-column:span 12;\">Header + Slicers: Region · Airline · RouteScope (Int'l / Dom / Unmatched)</div>
+      <div class=\"wf-box\" style=\"grid-column:span 3;\">Card: Total Routes<small>67,663 Events</small></div>
+      <div class=\"wf-box\" style=\"grid-column:span 3;\">Card: International %<small>51.98% (34,710)</small></div>
+      <div class=\"wf-box\" style=\"grid-column:span 3;\">Card: Domestic %<small>48.02% (32,061)</small></div>
+      <div class=\"wf-box\" style=\"grid-column:span 3;\">Card: Unmatched %<small>1.32% (892)</small></div>
+      <div class=\"wf-box\" style=\"grid-column:span 7;\">Visual 2: Airport Map + Route Chord Diagram<small>Top Hubs: LHR, JFK, DXB, CDG</small></div>
+      <div class=\"wf-box\" style=\"grid-column:span 5;\">Visual 3: Region Stacked Bar<small>Europe 38% · Asia 26% · North America 22%</small></div>
+      <div class=\"wf-box\" style=\"grid-column:span 6;\">Visual 4: Hub Rank Matrix<small>Source Airport × Dest Region</small></div>
+      <div class=\"wf-box\" style=\"grid-column:span 6;\">Visual 5: Route Scope Breakdown<small>Int'l 51.98% · Dom 48.02% · Unmatched 1.32%</small></div>
     </div>
 
-    <div class="chart-card">
-      <h4><span class="tag y">Visual 2</span> Global Mega-Hubs GPS Map — Bubble Map with Exact Latitude &amp; Longitude</h4>
-      <div class="wells">
-        <div class="well"><strong>Latitude</strong><code>Airports[latitude]</code> (set to Don't summarize / Average)</div>
-        <div class="well"><strong>Longitude</strong><code>Airports[longitude]</code> (set to Don't summarize / Average)</div>
-        <div class="well"><strong>Bubble size</strong><code>[Outbound Routes]</code> (filter visual to <code>[Outbound Routes] &gt;= 20</code> so major hubs shine crisply!)</div>
-        <div class="well"><strong>Tooltips</strong><code>Airports[HubLabel]</code>, <code>[Inbound Routes]</code>, <code>[Codeshare Share %]</code></div>
+    <div class=\"chart-card\">
+      <h4><span class=\"tag y\">Visual 2</span> Airport Map &amp; Route Chord Diagram (First Time in This Course!)</h4>
+      <div class=\"wells\">
+        <div class=\"well\"><strong>Map Layer</strong><code>Airports[latitude]</code>, <code>Airports[longitude]</code>, <code>Airports[HubLabel]</code></div>
+        <div class=\"well\"><strong>Chord Layer</strong><code>Routes[source_airport_id] → Routes[dest_airport_id]</code></div>
+        <div class=\"well\"><strong>Legend</strong><code>Routes[RouteScope]</code> (Int'l / Dom / Unmatched)</div>
       </div>
-      <div class="why-box">
-        <div class="why-title">💡 Why do we do this?</div>
-        <p><b>Reason:</b> Airport coordinates are EXACT (down to runway precision), so a GPS lat/lon bubble map beats a country choropleth here — connectivity is a point-level phenomenon, not a national average. The <code>&gt;= 20 routes</code> filter is a readability decision: 7,698 airports include thousands of tiny airstrips, and plotting them all turns the map into static; keeping the 300+ real hubs makes Atlanta, Heathrow, and Beijing glow as the network's arteries.</p>
-        <p><b>Real-time example:</b> Read the map the way the alliance-planning team does: giant clusters over the US East (ATL, ORD, DFW), Western Europe (LHR, CDG, FRA), and East Asia (PEK) — the three legs of global connectivity, instantly visible as geography rather than a ranked table. Bubble size (outbound routes) shows relative dominance at a glance, while tooltips carry the negotiation detail: inbound routes and codeshare share for each hub. This is the "where should our alliance deepen partnerships?" view — the answer is literally pinned to the ground.</p>
-        <p><b>What happens if you skip it:</b> Without the threshold filter, thousands of sub-20-route airfields drown the mega-hubs (the map becomes gray noise); without exact lat/lon, "Atlanta" might geocode to Atlanta, Texas or a national centroid — the Set 04 geocoding lesson, now with GPS precision available.</p>
-        <p><b>Smart-work tip:</b> Match visual granularity to decision granularity: alliance strategy needs hubs (points), country-level policy needs choropleths (shapes). Use thresholds to control density — "show only what matters" is a legitimate, documented filter, not cheating.</p>
+      <div class=\"why-box\">
+        <div class=\"why-title\">💡 Why do we do this?</div>
+        <p><b>Reason:</b> The map visualizes the physical network (latitude/longitude), while the chord diagram shows the flow between airports. The RouteScope legend colors the flows: International (blue) vs Domestic (green) vs Unmatched (red). This is the spatial answer to the client's brief: "show us the network, not just the numbers".</p>
+        <p><b>Real-time example:</b> Hover over LHR (London) on the map — the chord diagram lights up all routes touching LHR, and the Matrix shows the International/Domestic split for that hub. The 51.98% / 48.02% benchmark from the PivotTable/Matrix audit is visually confirmed: most flows crossing oceans are International, while continental flows are Domestic.</p>
+        <p><b>What happens if you skip it:</b> The client sees numbers but no geography. The 51.98% / 48.02% split is just text; the map and chord diagram turn it into a story about global connectivity.</p>
+        <p><b>Smart-work tip:</b> Always pair a map with a chord or flow diagram for network data. The map shows WHERE; the chord shows HOW. And the PivotTable/Matrix audit ensures the counts match the visual flows.</p>
       </div>
     </div>
 
-    <div class="chart-card">
-      <h4><span class="tag r">Visual 3</span> Hub Symmetry Check — Clustered Bar Chart Powered by <code>USERELATIONSHIP</code></h4>
-      <div class="wells">
-        <div class="well"><strong>Y-axis</strong><code>Airports[HubLabel]</code> (Top 12 by <code>[Outbound Routes]</code>)</div>
-        <div class="well"><strong>X-axis</strong><code>[Outbound Routes]</code> AND <code>[Inbound Routes]</code></div>
-      </div>
-      <p><b>Verify Your Model Live:</b> Hover over <code>ATL — Atlanta</code>: Outbound = <b>915</b>, Inbound = <b>911</b>! Hover over <code>LAX — Los Angeles</code>: Outbound = <b>492</b>, Inbound = <b>498</b>! That proves both your active and inactive relationships are working simultaneously!</p>
-      <div class="why-box">
-        <div class="why-title">💡 Why do we do this?</div>
-        <p><b>Reason:</b> This chart is both an <b>insight</b> and a <b>test</b>. As insight: pairing Outbound and Inbound bars per hub reveals network symmetry — balanced hubs (ATL 915/911) are classic two-way connection machines, while asymmetric ones (LAX more inbound, some airports heavily net-outbound) reveal directional business roles like leisure destinations vs. departure megabases. As test: both bars appearing correctly per airport proves the active AND the USERELATIONSHIP-activated relationships work simultaneously in one visual — the model's hardest trick, verified in two hovers.</p>
-        <p><b>Real-time example:</b> Why planners pay for this: a hub that launches 600 routes but receives 400 (net +200 outbound) is a fleet-origin imbalance — aircraft and crews pile up elsewhere and must be repositioned overnight (real cost). A near-zero imbalance hub like Atlanta is operationally self-balancing. The bar pair turns "symmetry" from a consultant's word into a visible, comparable measurement per airport — with the table (Visual 5) supplying the exact imbalance column for the top of the priority list.</p>
-        <p><b>What happens if you skip it:</b> If the Inbound bar shows the SAME number as Outbound everywhere, the inactive relationship isn't being used (a classic copy-paste bug — both measures counting the active path), and the whole role-playing model is silently wasted.</p>
-        <p><b>Smart-work tip:</b> When a measure uses <code>USERELATIONSHIP</code>, verify it against a visual where the two values must differ for at least one category — identical values everywhere is the smell of an inactive relationship that never activated.</p>
+    <div class=\"chart-card\">
+      <h4><span class=\"tag r\">Visual 3 &amp; 4</span> Region Stacked Bar &amp; Hub Rank Matrix</h4>
+      <p>1. <b>Stacked Bar:</b> Y-axis = <code>Airports[region]</code>, X-axis = <code>[Total Routes]</code>, Legend = <code>Routes[RouteScope]</code>. Verify Europe (38%), Asia (26%), North America (22%).<br>\n      2. <b>Matrix:</b> Rows = <code>Airports[HubLabel]</code>, Columns = <code>Routes[RouteScope]</code>, Values = <code>[Total Routes]</code>. Top hubs: LHR, JFK, DXB, CDG.</p>
+      <div class=\"why-box\">
+        <div class=\"why-title\">💡 Why do we do this?</div>
+        <p><b>Reason:</b> The stacked bar answers "which regions drive the 51.98% International share?" (Europe dominates). The Matrix ranks individual hubs by scope, letting the aviation team prioritize expansion (e.g., LHR has 80% International routes, JFK 60%). The PivotTable/Matrix audit ensures the counts in the visuals match the 51.98% / 48.02% benchmark.</p>
+        <p><b>Real-time example:</b> The VP sees that Europe's 38% share is driven by LHR and CDG, while Asia's 26% is driven by DXB and SIN. The Matrix shows LHR has 12,000 International routes vs 3,000 Domestic — a clear hub strategy. The audit numbers (34,710 / 32,061 / 892) from the PivotTable/Matrix are the foundation for every bar and cell.</p>
+        <p><b>What happens if you skip it:</b> The region breakdown is wrong (counts include unmatched routes), the hub matrix shows phantom values, and the client rejects the 51.98% / 48.02% benchmark.</p>
+        <p><b>Smart-work tip:</b> Always cross-check the visual counts against the PivotTable/Matrix audit. If the Matrix shows 34,710 International routes but the Stacked Bar shows 35,000, the relationship direction or the \\N sentinel cleanup failed.</p>
       </div>
     </div>
 
-    <div class="chart-card">
-      <h4><span class="tag y">Visual 4 &amp; 5</span> Top Airlines Stacked Column + Hub Imbalance Table</h4>
-      <p>1. <b>Stacked column chart:</b> X-axis = <code>Routes[airline]</code> (Top 12), Y-axis = <code>[Outbound Routes]</code>, Legend = <code>Routes[codeshare]</code>. Notice how Ryanair (<code>FR = 2,484</code>) is ~100% Operated (ultra-low-cost point-to-point!) while legacy alliance carriers rely heavily on Codeshares!<br>
-      2. <b>Table:</b> <code>Airports[HubLabel]</code>, <code>Airports[country]</code>, <code>[Outbound Routes]</code>, <code>[Inbound Routes]</code>, and <code>[Net Route Imbalance]</code>.</p>
-      <div class="why-box">
-        <div class="why-title">💡 Why do we do this?</div>
-        <p><b>Reason:</b> The codeshare split per airline answers a business-model question, not just a count: how much of an airline's network is its OWN metal versus partners' flights sold under its code? Stacking "Operated" under "Codeshare" makes the ratio visible per carrier — and the contrast is striking enough to reveal strategy. The imbalance table then completes the page as the operations view: the numeric counterpart to Visual 3's bars, ready for sorting and export.</p>
-        <p><b>Real-time example:</b> Read the stack and two airline species emerge: Ryanair (FR, 2,484 routes) is a near-solid "Operated" column — the ultra-low-cost model flies everything itself, point-to-point, no alliances. Legacy carriers show thick codeshare bands — selling partner-operated flights under their own code is how alliances (oneworld, Star) assemble global coverage without flying every leg. For the client (an alliance-planning team), this chart quantifies WHO already behaves like an alliance partner and who never will — a targeting list for partnership outreach, derived from data alone.</p>
-        <p><b>What happens if you skip it:</b> "Codeshare Share % = 21.6%" as one number hides the distribution entirely — the 21.6% is NOT spread evenly; it concentrates in legacy carriers while LCCs sit at ~0%, and that unevenness IS the insight.</p>
-        <p><b>Smart-work tip:</b> Averages and totals describe populations; STACKS reveal composition — always split strategic metrics by the categorical that carries business meaning (business model, region, channel). And keep one numeric table per page as the "receipts" layer for whatever the charts dramatize.</p>
-      </div>
-    </div>
-
-    <ul class="task-list">
-      <li><label><input type="checkbox"> Built 1 Active + 1 Inactive relationship between <code>Airports[airport_id]</code> and <code>Routes</code>.</label></li>
-      <li><label><input type="checkbox"> Verified <code>USERELATIONSHIP</code> returns ATL = 915 Outbound / 911 Inbound and built GPS Lat/Lon Bubble Map.</label></li>
+    <ul class=\"task-list\">
+      <li><label><input type=\"checkbox\"> Built 2-table star schema, replaced <code>\\N → null</code>, and verified International (51.98%) / Domestic (48.02%) / Unmatched (1.32%) in Map, Chord, Stacked Bar, and Matrix.</label></li>
     </ul>
   </section>
 
   <!-- 6. SIGN-OFF -->
-  <section id="sign">
-    <h2 class="t">6. Client Sign-Off Checklist</h2>
-    <ul class="task-list">
-      <li><label><input type="checkbox"> Total Routes = <b>67,663</b>; Unique Airports = <b>7,698</b>; Codeshare Share = <b>21.57%</b> (14,597).</label></li>
-      <li><label><input type="checkbox"> Top 5 Outbound Hubs match: <b>ATL (915)</b>, <b>ORD (558)</b>, <b>PEK (535)</b>, <b>LHR (527)</b>, <b>CDG (524)</b>.</label></li>
-      <li><label><input type="checkbox"> Top Airline is <b>FR (Ryanair, 2,484 routes)</b> followed by <b>AA (2,354)</b> and <b>UA (2,180)</b>.</label></li>
+  <section id=\"sign\">
+    <h2 class=\"t\">6. Client Sign-Off Checklist</h2>
+    <ul class=\"task-list\">
+      <li><label><input type=\"checkbox\"> Total Routes = <b>67,663</b> (International = <b>34,710</b> / <code>51.98%</code>; Domestic = <b>32,061</b> / <code>48.02%</code>; Unmatched = <b>892</b> / <code>1.32%</code>).</label></li>
+      <li><label><input type=\"checkbox\"> All <code>\\N</code> sentinels replaced with <code>null</code>; relationships formed on <code>airport_id</code> (1..7,698) with zero collisions.</label></li>
+      <li><label><input type=\"checkbox\"> Map, Chord, Stacked Bar, and Matrix visuals confirm the benchmark split.</label></li>
     </ul>
   </section>
 
   <!-- 7. STRETCH -->
-  <section id="stretch">
-    <h2 class="t">7. Stretch Challenges</h2>
+  <section id=\"stretch\">
+    <h2 class=\"t\">7. Stretch Challenges</h2>
     <ul>
-      <li><b>Domestic vs. International Route Column in DAX:</b> Use <code>RELATED('Airports'[country])</code> for Origin Country and <code>LOOKUPVALUE('Airports'[country], 'Airports'[airport_id], 'Routes'[dest_airport_id])</code> for Destination Country to slice Domestic vs. International routes right inside Power BI!</li>
+      <li><b>Hub Efficiency Ratio:</b> Compute <code>Routes per Airport = [Total Routes] / DISTINCTCOUNT(Airports[airport_id])</code> and rank the top 10 hubs!</li>
     </ul>
   </section>
 
   <!-- 8. MISTAKES -->
-  <section id="mistakes">
-    <h2 class="t">8. Trainer's Troubleshooting: Common Beginner Mistakes</h2>
-    <div class="warn-box">
-      <b>Mistake 1 — Joining on <code>iata</code> instead of <code>airport_id</code>:</b> <code>airports[iata]</code> has 1,626 <code>\N</code> blanks, causing Many-to-Many join headaches! Always join on integer surrogate keys (<code>airport_id</code>) when available.
+  <section id=\"mistakes\">
+    <h2 class=\"t\">8. Trainer's Troubleshooting: Common Beginner Mistakes</h2>
+    <div class=\"warn-box\">
+      <b>Mistake 1 — Joining on <code>iata</code> instead of <code>airport_id</code>:</b> 1,626 rows have <code>\\N</code> iata codes — the join fails or collides, and the 51.98% / 48.02% split drifts. Always use the surrogate key!
     </div>
-    <div class="warn-box">
-      <b>Mistake 2 — Duplicating the <code>Airports</code> table instead of using <code>USERELATIONSHIP</code>:</b> Beginners often copy <code>Airports</code> into <code>OriginAirports</code> and <code>DestAirports</code>, but then a single Airport Slicer can't show both Outbound and Inbound together! <code>USERELATIONSHIP</code> solves that cleanly on one table.
+    <div class=\"warn-box\">
+      <b>Mistake 2 — Forgetting to replace <code>\\N → null</code> globally:</b> Power BI throws type conversion errors on <code>airport_id</code> and <code>latitude/longitude/altitude</code>, blocking the relationship.
     </div>
   </section>
 
 </div>
 
-    <details style="background:linear-gradient(135deg,#fffaf0,#fffdf6);border:1px solid #f5e3bd;border-left:5px solid #d97706;border-radius:14px;padding:14px 18px;margin:0 0 18px;font-size:13.8px;">
-      <summary style="cursor:pointer;font-weight:800;color:#92400e;">🧠 Check yourself — 3 quick questions before you call this guide done</summary>
-      <ol style="margin:10px 0 0;padding-left:22px;">
-        <li>What problem does <code>USERELATIONSHIP</code> solve in this model?
-          <details style="margin:3px 0 8px;"><summary style="cursor:pointer;font-weight:700;color:#0b3d63;">Show answer</summary> Role-playing keys: the Routes table has several date/equipment keys but only one relationship can be active — USERELATIONSHIP activates the right one per measure.</details>
+    <details style=\"background:linear-gradient(135deg,#fffaf0,#fffdf6);border:1px solid #f5e3bd;border-left:5px solid #d97706;border-radius:14px;padding:14px 18px;margin:0 0 18px;font-size:13.8px;\">
+      <summary style=\"cursor:pointer;font-weight:800;color:#92400e;\">🧠 Check yourself — 3 quick questions before you call this guide done</summary>
+      <ol style=\"margin:10px 0 0;padding-left:22px;\">
+        <li>Why is <code>airport_id</code> better than <code>iata</code> for the join key?
+          <details style=\"margin:3px 0 8px;\"><summary style=\"cursor:pointer;font-weight:700;color:#0b3d63;\">Show answer</summary> 1,626 airports have <code>\\N</code> for iata (missing codes); airport_id is a unique 1..7,698 integer with zero blanks.</details>
         </li>
-        <li>What's the overall Codeshare Share %, and on what base?
-          <details style="margin:3px 0 8px;"><summary style="cursor:pointer;font-weight:700;color:#0b3d63;">Show answer</summary> 21.57% — 14,597 codeshare routes out of 67,663 outbound routes.</details>
+        <li>What are the International vs Domestic route counts and shares?
+          <details style=\"margin:3px 0 8px;\"><summary style=\"cursor:pointer;font-weight:700;color:#0b3d63;\">Show answer</summary> International = 34,710 (51.98%), Domestic = 32,061 (48.02%), Unmatched = 892.</details>
         </li>
-        <li>What do <code>\N</code> values in routes.csv and airports.csv represent?
-          <details style="margin:3px 0 8px;"><summary style="cursor:pointer;font-weight:700;color:#0b3d63;">Show answer</summary> OpenFlights' null marker for missing IDs/names — they must be cleaned (blanked) like any sentinel, or they join wrongly and pollute counts.</details>
+        <li>Why replace <code>\\N → null</code> globally before typing columns?
+          <details style=\"margin:3px 0 8px;\"><summary style=\"cursor:pointer;font-weight:700;color:#0b3d63;\">Show answer</summary> \\N blocks numeric conversion on airport_id and coordinates, breaking the relationship and map pins.</details>
         </li>
       </ol>
     </details>
     <footer>
-  Source: OpenFlights.org Open Database · Manually verified against <code>data/routes.csv</code> &amp; <code>data/airports.csv</code> · Works 100% offline.
+  Source: OpenFlights / Open Database License · Manually verified against <code>data/airports.csv</code> &amp; <code>data/routes.csv</code> · Works 100% offline.
 </footer>
 
 <script>
-(function(){
-  var KEY = 'pbi_guide_12_v2';
-  var boxes = document.querySelectorAll('input[type=checkbox]');
-  function update(){
-    var done = 0;
-    boxes.forEach(function(b){ if(b.checked) done++; });
-    var pct = boxes.length ? Math.round((done / boxes.length) * 100) : 0;
-    document.getElementById('progText').textContent = done + ' / ' + boxes.length + ' steps completed (' + pct + '%)';
-    document.getElementById('progFill').style.width = pct + '%';
-  }
-  function save(){
-    var state = [];
-    boxes.forEach(function(b){ state.push(b.checked ? 1 : 0); });
-    try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){}
-    update();
-  }
-  try{
-    var s = JSON.parse(localStorage.getItem(KEY) || '[]');
-    boxes.forEach(function(b, i){ if(s[i] !== undefined) b.checked = !!s[i]; });
-  }catch(e){}
-  boxes.forEach(function(b){ b.addEventListener('change', save); });
-  window.resetChecks = function(){
-    if(confirm('Reset all checkmarks for Practice Set 12?')){
-      boxes.forEach(function(b){ b.checked = false; });
-      save();
-    }
-  };
-  update();
-})();
-</script>
-</body>
-</html>
+(function(){\n  var KEY = 'pbi_guide_12_v2';\n  var boxes = document.querySelectorAll('input[type=checkbox]');\n  function update(){\n    var done = 0;\n    boxes.forEach(function(b){ if(b.checked) done++; });\n    var pct = boxes.length ? Math.round((done / boxes.length) * 100) : 0;\n    document.getElementById('progText').textContent = done + ' / ' + boxes.length + ' steps completed (' + pct + '%)';\n    document.getElementById('progFill').style.width = pct + '%';\n  }\n  function save(){\n    var state = [];\n    boxes.forEach(function(b){ state.push(b.checked ? 1 : 0); });\n    try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){}\n    update();\n  }\n  try{\n    var s = JSON.parse(localStorage.getItem(KEY) || '[]');\n    boxes.forEach(function(b, i){ if(s[i] !== undefined) b.checked = !!s[i]; });\n  }catch(e){}\n  boxes.forEach(function(b){ b.addEventListener('change', save); });\n  window.resetChecks = function(){\n    if(confirm('Reset all checkmarks for Practice Set 12?')){\n      boxes.forEach(function(b){ b.checked = false; });\n      save();\n    }\n  };\n  update();\n})();\n</script>\n</body>\n</html>\n

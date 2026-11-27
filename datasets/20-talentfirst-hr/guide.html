@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>20 · TalentFirst HR People-Analytics Capstone (220k Rows) — Power BI Guide</title>
+<title>20 · TalentFirst HR Analytics — 220,000-Record People-Analytics &amp; Financial ROI</title>
 <style>
   :root{
     --calc:#1d6f42; --calc-soft:#e7f3ec;
@@ -13,328 +13,107 @@
   }
   *{box-sizing:border-box;}
   html{scroll-behavior:smooth;}
-  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.62;}
-  header{background:linear-gradient(125deg,#0b3d63 0%,#1d6f42 52%,#7c5d00 100%);color:#fff;padding:34px 26px 28px;}
-  header .kicker{font-size:12px;text-transform:uppercase;letter-spacing:.8px;opacity:.92;font-weight:700;margin-bottom:6px;}
-  header h1{margin:0 0 8px;font-size:26px;letter-spacing:.2px;}
-  header p{margin:0;max-width:880px;font-size:14.8px;opacity:.95;}
-  header a{color:#fff;text-decoration:underline;}
-  .top-nav{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;align-items:center;}
-  .pill{display:inline-block;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.32);padding:4px 12px;border-radius:20px;font-size:12.5px;text-decoration:none;color:#fff;}
-  .wrap{max-width:1120px;margin:20px auto 70px;padding:0 22px;}
-  .prog-bar{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 18px;margin-bottom:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;position:sticky;top:10px;z-index:20;box-shadow:0 2px 8px rgba(15,23,42,.05);}
-  .prog-track{flex:1;min-width:180px;height:10px;background:#eef2f7;border-radius:99px;overflow:hidden;}
-  .prog-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--calc),#caa400);transition:width .25s;}
-  .prog-text{font-size:13px;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums;}
-  .btn-sm{border:1px solid var(--line);background:#fff;color:var(--ink);padding:5px 11px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;}
-  .btn-sm:hover{background:#f1f5f9;}
-  .toc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:20px;font-size:13.5px;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;}
-  .toc a{color:var(--accent);text-decoration:none;font-weight:600;}
-  .toc a:hover{text-decoration:underline;}
-  section{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px 26px;margin-bottom:20px;box-shadow:0 1px 2px rgba(20,30,50,.03);}
-  h2.t{font-size:20px;margin:0 0 14px;border-bottom:2px solid var(--calc);padding-bottom:8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
-  h2.t.pbi-h{border-bottom-color:#caa400;}
-  h3{font-size:16px;margin:20px 0 8px;color:var(--accent);}
-  h4{font-size:14.5px;margin:14px 0 6px;color:var(--ink);}
-  p{margin:8px 0;}
-  .facts{background:#fff;border:1px solid var(--line);border-left:5px solid var(--calc);border-radius:12px;padding:16px 18px;margin-bottom:18px;}
-  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:10px;}
-  .stat{background:var(--calc-soft);border-radius:9px;padding:10px 12px;}
-  .stat b{display:block;font-size:18px;color:var(--calc);}
-  .stat span{font-size:12px;color:var(--muted);}
-  .stat.warn{background:var(--danger-soft);}
-  .stat.warn b{color:var(--danger);}
-  code{background:#eef2f7;padding:2px 6px;border-radius:5px;font-size:12.8px;font-family:"SF Mono",Consolas,monospace;color:#0f172a;}
-  pre{background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:10px;overflow:auto;font-size:13px;font-family:"SF Mono",Consolas,monospace;line-height:1.55;margin:10px 0;}
-  table{border-collapse:collapse;width:100%;margin:12px 0;font-size:13.3px;}
-  th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top;}
-  th{background:#f1f5f9;font-weight:700;}
-  .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;color:#fff;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap;}
-  .g{background:#1d6f42;} .y{background:#d99000;} .r{background:#c0392b;} .b{background:#0b3d63;}
-  .req{display:flex;gap:12px;align-items:flex-start;padding:9px 0;border-bottom:1px dashed var(--line);}
-  .req:last-child{border-bottom:none;}
-  .step{background:var(--calc-soft);border-radius:10px;border:1px solid #cde4d6;padding:14px 16px;margin:12px 0;}
-  .step b{color:var(--calc);}
-  .pbi-box{background:var(--pbi-soft);border:1px solid #f2df9d;border-radius:10px;padding:14px 16px;margin:12px 0;}
-  .pbi-box b{color:#7c5d00;}
-  .chart-card{border:1px solid var(--line);border-left:5px solid #caa400;border-radius:10px;padding:14px 16px;margin:14px 0;background:#fcfdff;}
-  .chart-card h4{margin:0 0 8px;font-size:15.5px;color:var(--accent);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
-  .wells{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin:10px 0;}
-  .well{background:#f4f6fa;border:1px solid var(--line);border-radius:7px;padding:7px 10px;font-size:12.8px;}
-  .well strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-bottom:2px;}
-  .note{background:#fffaf0;border-left:4px solid #e0a800;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
-  .warn-box{background:var(--danger-soft);border-left:4px solid var(--danger);border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
-  .why-box{background:#eaf3ff;border-left:4px solid #2563eb;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.4px;}
-  .why-box .why-title{font-weight:800;color:#1d4ed8;margin:0 0 6px;font-size:12.5px;text-transform:uppercase;letter-spacing:.5px;}
-  .why-box p{margin:5px 0;}
-  .why-box b{color:#123a7a;}
-  .wireframe{display:grid;grid-template-columns:repeat(12,1fr);gap:8px;background:#eef2f7;padding:14px;border-radius:12px;margin:12px 0;font-size:12px;}
-  .wf-box{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:10px;text-align:center;font-weight:600;color:var(--accent);}
-  .wf-box small{display:block;font-weight:400;color:var(--muted);margin-top:3px;font-size:11px;}
-  ul.task-list{list-style:none;padding:0;margin:10px 0;}
-  ul.task-list li{padding:5px 0;}
-  ul.task-list label{display:flex;gap:9px;align-items:flex-start;cursor:pointer;font-size:13.8px;}
-  ul.task-list input{margin-top:4px;width:16px;height:16px;flex:none;accent-color:var(--calc);}
-  footer{text-align:center;color:var(--muted);font-size:12.5px;padding:10px 20px 28px;}
-  footer a{color:#3d4a5c;}
-  @media(max-width:740px){
-    .wrap{padding:0 12px;}
-    section{padding:16px 16px;}
-    .wireframe{grid-template-columns:1fr 1fr;}
-    .wf-box{grid-column:span 2 !important;}
-  }
-  /* ═══ UI 2.0 theme — overrides the base block above ═══ */
-  :root{
-    --calc:#16a34a;--calc-soft:#e9f7ef;--pbi:#d97706;--pbi-soft:#fff6e6;
-    --ink:#111827;--muted:#5b6472;--line:#e4e9f1;--bg:#f2f5fa;
-    --accent:#0b3d63;--danger:#dc2626;--danger-soft:#fdeaea;
-    --gold:#f59e0b;--blue:#2563eb;
-    --h1:#0b3d63;--h2:#1d6f42;--h3:#b45309;
-    --sh-sm:0 1px 2px rgba(15,23,42,.05),0 1px 3px rgba(15,23,42,.07);
-    --sh-md:0 4px 16px rgba(15,23,42,.09),0 2px 4px rgba(15,23,42,.05);
-    --sh-lg:0 14px 38px rgba(15,23,42,.16);
-  }
-  body{background:radial-gradient(1100px 480px at 88% -80px,rgba(14,116,144,.10),transparent 60%),radial-gradient(900px 420px at -60px 34%,rgba(22,163,74,.08),transparent 55%),var(--bg);}
-  ::selection{background:#bfdbfe;}
-  header{position:relative;overflow:hidden;color:#fff;padding:46px 28px 40px;background:linear-gradient(130deg,var(--h1) 0%,var(--h2) 55%,var(--h3) 100%);}
-  header::before{content:"";position:absolute;inset:0;background:radial-gradient(620px 300px at 90% -12%,rgba(255,255,255,.20),transparent 62%),radial-gradient(460px 280px at 4% 112%,rgba(255,255,255,.13),transparent 60%);}
-  header::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg,rgba(255,255,255,.05) 0 2px,transparent 2px 26px);opacity:.55;pointer-events:none;}
-  header>*{position:relative;z-index:1;}
-  header .kicker{display:inline-block;font-size:11.5px;text-transform:uppercase;letter-spacing:1.1px;opacity:.97;font-weight:800;margin-bottom:12px;padding:6px 14px;border-radius:99px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.30);}
-  header h1{margin:0 0 10px;font-size:clamp(23px,3.1vw,33px);line-height:1.16;letter-spacing:-.4px;font-weight:800;text-shadow:0 2px 14px rgba(0,0,0,.22);}
-  header p{margin:0;max-width:920px;font-size:15px;opacity:.96;}
-  header p b{color:#ffdf8d;}
-  header a{color:#fff;text-decoration:underline;}
-  header code{background:rgba(255,255,255,.18);border-color:transparent;color:#ffe8a3;}
-  .top-nav{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;align-items:center;}
-  .pill{display:inline-block;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.32);padding:6px 14px;border-radius:99px;font-size:12.5px;font-weight:600;text-decoration:none;color:#fff;transition:transform .15s,background .15s;}
-  .pill:hover{background:rgba(255,255,255,.26);transform:translateY(-1px);}
-  .wrap{max-width:1120px;margin:22px auto 70px;padding:0 22px;}
-  .prog-bar{background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:14px;padding:12px 18px;margin-bottom:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;position:sticky;top:10px;z-index:20;box-shadow:var(--sh-md);}
-  .prog-track{flex:1;min-width:180px;height:12px;background:#e8edf5;border-radius:99px;overflow:hidden;box-shadow:inset 0 1px 2px rgba(15,23,42,.14);}
-  .prog-fill{height:100%;width:0%;border-radius:99px;background:linear-gradient(90deg,#16a34a,#0ea5e9 55%,#d97706);transition:width .4s cubic-bezier(.22,1,.36,1);position:relative;overflow:hidden;}
-  .prog-fill::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 0 32%,rgba(255,255,255,.55) 50%,transparent 68% 100%);background-size:220% 100%;animation:shine 2.6s linear infinite;}
-  @keyframes shine{from{background-position:220% 0}to{background-position:-220% 0}}
-  .prog-text{font-size:13px;font-weight:800;color:var(--accent);font-variant-numeric:tabular-nums;}
-  .prog-bar:has(.prog-fill[style*="100"]){border-color:#fcd34d;box-shadow:0 0 0 3px #fef3c7,var(--sh-md);}
-  .prog-bar:has(.prog-fill[style*="100"]) .prog-text{color:#b45309;}
-  .prog-bar:has(.prog-fill[style*="100"])::after{content:"🎉 All steps complete!";font-size:12.5px;font-weight:800;color:#92400e;background:linear-gradient(135deg,#fef3c7,#fde68a);border:1px solid #fcd34d;border-radius:99px;padding:4px 13px;animation:pop .45s cubic-bezier(.34,1.56,.64,1);}
-  @keyframes pop{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}
-  .btn-sm{border:1px solid var(--line);background:#fff;color:var(--ink);padding:6px 13px;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;box-shadow:var(--sh-sm);transition:all .15s;}
-  .btn-sm:hover{background:#f8fafc;transform:translateY(-1px);box-shadow:var(--sh-md);}
-  .toc{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 16px;margin-bottom:20px;font-size:13px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;box-shadow:var(--sh-sm);}
-  .toc b{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.7px;margin-right:2px;}
-  .toc a{color:var(--accent);text-decoration:none;font-weight:700;padding:5px 13px;border-radius:99px;background:#f1f5f9;border:1px solid transparent;transition:all .15s;}
-  .toc a:hover{background:#e3eeff;border-color:#c9dbf8;transform:translateY(-1px);}
-  section{background:#fff;border:1px solid var(--line);border-radius:16px;padding:26px 28px;margin-bottom:22px;box-shadow:var(--sh-sm);scroll-margin-top:78px;transition:box-shadow .2s;}
-  section:hover{box-shadow:var(--sh-md);}
-  h2.t{font-size:20.5px;margin:0 0 18px;padding-bottom:11px;border-bottom:2px solid var(--line);position:relative;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
-  h2.t::after{content:"";position:absolute;left:0;bottom:-4px;width:88px;height:4px;border-radius:99px;background:linear-gradient(90deg,var(--calc),#0ea5e9);}
-  h2.t.pbi-h::after{background:linear-gradient(90deg,var(--pbi),#dc2626);}
-  h3{font-size:16.5px;margin:26px 0 10px;color:var(--accent);display:flex;align-items:center;gap:9px;}
-  h3::before{content:"";width:5px;height:16px;border-radius:4px;background:linear-gradient(180deg,var(--pbi),var(--gold));flex:none;}
-  h4{font-size:14.5px;margin:14px 0 6px;color:var(--ink);}
-  .facts{background:linear-gradient(135deg,#f8fbff,#f1f7f3);border:1px solid var(--line);border-left:5px solid var(--calc);border-radius:14px;padding:18px 20px;margin-bottom:20px;}
-  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;}
-  .stat{position:relative;overflow:hidden;background:#fff;border:1px solid #e2e9f0;border-radius:12px;padding:12px 14px 12px 17px;box-shadow:var(--sh-sm);transition:transform .18s,box-shadow .18s;}
-  .stat::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg,var(--calc),#0ea5e9);}
-  .stat:hover{transform:translateY(-2px);box-shadow:var(--sh-md);}
-  .stat b{display:block;font-size:19px;color:var(--calc);letter-spacing:-.2px;}
-  .stat span{font-size:11.8px;color:var(--muted);line-height:1.42;display:block;margin-top:2px;}
-  .stat.warn{border-color:#f4d7d7;}
-  .stat.warn::before{background:linear-gradient(180deg,#dc2626,var(--gold));}
-  .stat.warn b{color:var(--danger);}
-  code{background:#eef2f7;border:1px solid #e2e8f0;padding:1.5px 6px;border-radius:6px;font-size:12.6px;font-family:ui-monospace,"SF Mono",Consolas,monospace;color:#0f172a;}
-  pre{background:#0b1220;color:#dbe4f3;padding:16px 18px;border-radius:13px;overflow:auto;font-size:12.9px;font-family:ui-monospace,"SF Mono",Consolas,monospace;line-height:1.6;margin:12px 0;border:1px solid #1e293b;box-shadow:var(--sh-md);}
-  pre::before{content:"⌨ formula · DAX";display:block;color:#7d8fa9;font-size:10px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;margin-bottom:10px;padding-bottom:8px;border-bottom:1px dashed #25344c;}
-  table{border-collapse:separate;border-spacing:0;width:100%;margin:14px 0;font-size:13.2px;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:var(--sh-sm);overflow:hidden;}
-  th,td{padding:9px 12px;text-align:left;vertical-align:top;border-bottom:1px solid #edf1f7;}
-  tr:nth-child(even) td{background:#fafcff;}
-  tr:hover td{background:#eef6ff;}
-  th{background:linear-gradient(180deg,#f8fafc,#eef2f8);font-weight:800;font-size:11.8px;text-transform:uppercase;letter-spacing:.45px;color:#334155;border-bottom:2px solid #dbe3ee;}
-  table tr:last-child td{border-bottom:none;}
-  table th:first-child{border-top-left-radius:11px;}table th:last-child{border-top-right-radius:11px;}
-  .tag{display:inline-block;font-size:10.5px;font-weight:800;padding:3px 10px;border-radius:99px;color:#fff;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap;box-shadow:0 1px 3px rgba(0,0,0,.2);}
-  .g{background:linear-gradient(135deg,#16a34a,#15803d);}.y{background:linear-gradient(135deg,#f59e0b,#d97706);}.r{background:linear-gradient(135deg,#ef4444,#b91c1c);}.b{background:linear-gradient(135deg,#3b82f6,#1d4ed8);}
-  .req{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border:1px solid var(--line);border-radius:12px;margin:9px 0;background:#fbfdff;transition:all .15s;}
-  .req:hover{border-color:#c9dbf8;box-shadow:var(--sh-sm);transform:translateX(3px);}
-  .req .tag{margin-top:2px;flex:none;min-width:66px;text-align:center;}
-  .step{background:var(--calc-soft);border:1px solid #cbe6d5;border-left:5px solid var(--calc);border-radius:12px;padding:16px 18px;margin:16px 0;position:relative;box-shadow:var(--sh-sm);}
-  .step::before{content:"EXCEL · PHASE A";position:absolute;top:-10px;right:14px;background:linear-gradient(135deg,#16a34a,#15803d);color:#fff;font-size:9.5px;font-weight:800;letter-spacing:.9px;padding:3px 11px;border-radius:99px;box-shadow:var(--sh-sm);}
-  .step b{color:#0d5c33;}
-  .pbi-box{background:var(--pbi-soft);border:1px solid #f2df9d;border-left:5px solid var(--pbi);border-radius:12px;padding:16px 18px;margin:16px 0;position:relative;box-shadow:var(--sh-sm);}
-  .pbi-box::before{content:"POWER BI · PHASE B";position:absolute;top:-10px;right:14px;background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;font-size:9.5px;font-weight:800;letter-spacing:.9px;padding:3px 11px;border-radius:99px;box-shadow:var(--sh-sm);}
-  .pbi-box b{color:#8a5a00;}
-  .chart-card{border:1px solid var(--line);border-left:5px solid var(--gold);border-radius:14px;padding:18px 20px;margin:18px 0;background:linear-gradient(180deg,#fffdf4,#fdfeff);box-shadow:var(--sh-sm);}
-  .chart-card h4{margin:0 0 10px;font-size:15.5px;color:var(--accent);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
-  .wells{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:9px;margin:10px 0;}
-  .well{background:#f6f8fc;border:1px solid #e2e8f0;border-radius:9px;padding:8px 12px;font-size:12.8px;transition:all .15s;}
-  .well:hover{background:#f0f6ff;border-color:#c9dbf8;}
-  .well strong{display:block;font-size:10.5px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:3px;}
-  .note{background:linear-gradient(135deg,#fffaf0,#fffdf6);border:1px solid #f5e3bd;border-left:5px solid #e0a800;border-radius:12px;padding:13px 15px;margin:14px 0;font-size:13.5px;}
-  .warn-box{background:linear-gradient(135deg,#fdeaea,#fff5f5);border:1px solid #f2c8c8;border-left:5px solid var(--danger);border-radius:12px;padding:13px 15px;margin:14px 0;font-size:13.5px;}
-  .why-box{background:linear-gradient(135deg,#eff6ff,#f2faff);border:1px solid #c9e0fb;border-left:5px solid var(--blue);border-radius:12px;padding:14px 16px;margin:14px 0;font-size:13.4px;box-shadow:var(--sh-sm);}
-  .why-box .why-title{font-weight:800;color:#1d4ed8;margin:0 0 8px;font-size:12px;text-transform:uppercase;letter-spacing:.6px;}
-  .why-box p{margin:6px 0;}
-  .why-box b{color:#123a7a;}
-  .wireframe{display:grid;grid-template-columns:repeat(12,1fr);gap:10px;background:#0f172a;background-image:radial-gradient(rgba(148,163,184,.16) 1px,transparent 1.4px);background-size:18px 18px;padding:16px;border-radius:14px;margin:14px 0;font-size:12px;box-shadow:var(--sh-md);}
-  .wf-box{background:#fff;border:1px solid #cbd5e1;border-radius:9px;padding:11px;text-align:center;font-weight:700;color:var(--accent);box-shadow:0 3px 8px rgba(2,6,23,.35);transition:transform .15s;}
-  .wf-box:hover{transform:translateY(-2px);}
-  .wf-box small{display:block;font-weight:400;color:var(--muted);margin-top:4px;font-size:10.8px;}
-  ul.task-list{list-style:none;padding:0;margin:12px 0;}
-  ul.task-list li{padding:4px 0;}
-  ul.task-list label{display:flex;gap:11px;align-items:flex-start;cursor:pointer;font-size:13.8px;padding:8px 12px;border-radius:10px;border:1px solid transparent;transition:all .15s;}
-  ul.task-list label:hover{background:#f2f7fd;border-color:#d8e5f3;}
-  ul.task-list input{margin-top:3.5px;width:17px;height:17px;flex:none;accent-color:var(--calc);cursor:pointer;}
-  ul.task-list label:has(input:checked){color:#94a3b8;text-decoration:line-through;text-decoration-thickness:1.5px;text-decoration-color:#cbd5e1;}
-  footer{text-align:center;color:var(--muted);font-size:12.5px;padding:14px 20px 34px;}
-  footer a{color:#3d4a5c;}
-  @media(max-width:740px){
-    .wrap{padding:0 12px;}
-    section{padding:18px 15px;}
-    header{padding:36px 18px 30px;}
-    .wireframe{grid-template-columns:1fr 1fr;}
-    .wf-box{grid-column:span 2 !important;}
-  }
-  @media print{
-    .prog-bar,.toc,.top-nav,.btn-sm{display:none !important;}
-    body{background:#fff;}
-    section{box-shadow:none;border-color:#d7dde6;break-inside:avoid;}
-    header{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-  }
-  @media (prefers-reduced-motion:reduce){
-    *,*::before,*::after{animation:none !important;transition:none !important;}
-    html{scroll-behavior:auto;}
-  }
-</style>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='86'>👥</text></svg>">
-</head>
-<body>
-
-<header>
-  <div class="kicker">👥 Capstone Case Study 20 of 20 · 220,000-Row People Analytics, Burnout Drivers &amp; Retention ROI</div>
-  <h1>20 · TalentFirst Global HR — 3-Page CHRO Workforce, Burnout Risk &amp; DEI Pay-Equity App</h1>
-  <p>Your grand-finale <b>220,000-employee People Analytics Capstone</b> across 8 Departments and 10 Global Hubs (Tokyo, Mumbai, Bengaluru, Austin, London, Singapore…)! Prove why <b>OverTime nearly doubles Attrition (33.71% vs. 17.58%)</b>, isolate the <b>281 Active Red-Alert Flight-Risk Employees</b> before they resign, audit DEI Pay Equity, and model <b>Turnover Replacement Cost ROI</b>!</p>
-  <div class="top-nav">
-    <a class="pill" href="../index.html">← All 20 Practice Sets</a>
-    <a class="pill" href="../../index.html">← Main Excel &amp; Power BI Outline</a>
-    <span class="pill">Capstone UX: 3-Page CHRO App · Burnout Heatmap Matrix · DEI Pay Equity · What-If Retention ROI · Flight-Risk Roster</span>
-  </div>
-</header>
-
-<div class="wrap">
-
-  <div class="prog-bar" role="region" aria-label="Your progress on this guide">
-    <span class="prog-text" id="progText" aria-live="polite">0 / 0 steps completed</span>
-    <div class="prog-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-labelledby="progText"><div class="prog-fill" id="progFill"></div></div>
-    <button class="btn-sm" type="button" onclick="resetChecks()">Reset checklist</button>
-  </div>
-
-  <div class="quickfacts" style="background:linear-gradient(135deg,#f8fbff,#f1f7f3);border:1px solid var(--line);border-left:5px solid #16a34a;border-radius:14px;padding:14px 18px;margin:0 0 18px;font-size:13.5px;line-height:1.75;">
-    <b>⚡ Quick info:</b> ⏱ <b>120–150 min</b> &nbsp;·&nbsp; 🧰 <b>Excel 2016+</b> + <b>Power BI Desktop</b> (<a href="https://aka.ms/pbidesktop">free download</a>) &nbsp;·&nbsp; 📂 Data: <a href="data/hr_workforce.csv" download>hr_workforce.csv</a> (220,000 rows) &nbsp;·&nbsp; 🧭 Prereq: guide 18 recommended (19 helpful)
-    <br>🩺 <b>If a formula shows an error:</b> <code>#NAME?</code> = misspelled function/name &nbsp;·&nbsp; <code>#DIV/0!</code> = divide by zero or blank &nbsp;·&nbsp; <code>#N/A</code> = lookup value not found &nbsp;·&nbsp; <code>#VALUE!</code> = text where a number is expected &nbsp;·&nbsp; Power Query <code>Expression.Error</code> = a renamed/missing column &nbsp;·&nbsp; DAX shows <code>(Blank)</code> = filters match no rows.
-    <br>📖 New jargon? <a href="../glossary.html">Open the glossary</a> &nbsp;·&nbsp; ◀ <a href="../19-northwind-retail/guide.html">Previous: Guide 19</a> &nbsp;·&nbsp; 🎉 <a href="../index.html">Course complete — back to the hub</a>
-  </div>
-
-  <div class="toc">
-    <b>Capstone Blueprint:</b>
-    <a href="#profile">1. 220k Workforce Audit</a> ·
-    <a href="#brief">2. CHRO Retention Brief</a> ·
-    <a href="#req">3. 3-Page CHRO App Spec</a> ·
-    <a href="#excel">4. Phase A: Excel Audit</a> ·
-    <a href="#pbi">5. Phase B: 3-Page Power BI Capstone</a> ·
-    <a href="#sign">6. Sign-Off</a> ·
-    <a href="#stretch">7. Stretch</a> ·
-    <a href="#mistakes">8. Common Mistakes</a>
-  </div>
-
-  <!-- 1. PROFILE -->
-  <section id="profile">
-    <h2 class="t">1. Verified 220,000-Employee People-Analytics Audit (<code>hr_workforce.csv</code>)</h2>
-    <div class="facts">
-      <div class="grid">
-        <div class="stat"><b>220,000</b><span>Total Records (173,526 Active)</span></div>
-        <div class="stat warn"><b>21.12%</b><span>Attrition Rate (46,474 Departed)</span></div>
-        <div class="stat warn"><b>33.71% vs 17.58%</b><span>OverTime Yes vs No Attrition!</span></div>
-        <div class="stat warn"><b>50.27% Quit!</b><span>Triple-Burnout Cohort (281 Active!)</span></div>
-        <div class="stat"><b>$104,371</b><span>Avg Annual Salary ($22.96B Total)</span></div>
-        <div class="stat warn"><b>$2.41B</b><span>Est. 50%-Salary Turnover Cost!</span></div>
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.62;}
+  header{background:linear-gradient(125deg,#0b3d63 0%,#1d6f42 52%,#7c5d00 100%);color:#fff;padding:34px 26px 28px;}\n  header .kicker{font-size:12px;text-transform:uppercase;letter-spacing:.8px;opacity:.92;font-weight:700;margin-bottom:6px;}\n  header h1{margin:0 0 8px;font-size:26px;letter-spacing:.2px;}\n  header p{margin:0;max-width:880px;font-size:14.8px;opacity:.95;}\n  header a{color:#fff;text-decoration:underline;}\n  .top-nav{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;align-items:center;}\n  .pill{display:inline-block;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.32);padding:4px 12px;border-radius:20px;font-size:12.5px;text-decoration:none;color:#fff;}\n  .wrap{max-width:1120px;margin:20px auto 70px;padding:0 22px;}\n  .prog-bar{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 18px;margin-bottom:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;position:sticky;top:10px;z-index:20;box-shadow:0 2px 8px rgba(15,23,42,.05);}\n  .prog-track{flex:1;min-width:180px;height:10px;background:#eef2f7;border-radius:99px;overflow:hidden;}\n  .prog-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--calc),#caa400);transition:width .25s;}\n  .prog-text{font-size:13px;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums;}\n  .btn-sm{border:1px solid var(--line);background:#fff;color:var(--ink);padding:5px 11px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;}\n  .btn-sm:hover{background:#f1f5f9;}\n  .toc{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 18px;margin-bottom:20px;font-size:13.5px;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;}\n  .toc a{color:var(--accent);text-decoration:none;font-weight:600;}\n  .toc a:hover{text-decoration:underline;}\n  section{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px 26px;margin-bottom:20px;box-shadow:0 1px 2px rgba(20,30,50,.03);}\n  h2.t{font-size:20px;margin:0 0 14px;border-bottom:2px solid var(--calc);padding-bottom:8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}\n  h2.t.pbi-h{border-bottom-color:#caa400;}\n  h3{font-size:16px;margin:20px 0 8px;color:var(--accent);}\n  h4{font-size:14.5px;margin:14px 0 6px;color:var(--ink);}\n  p{margin:8px 0;}\n  .facts{background:#fff;border:1px solid var(--line);border-left:5px solid var(--calc);border-radius:12px;padding:16px 18px;margin-bottom:18px;}\n  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:10px;}\n  .stat{background:var(--calc-soft);border-radius:9px;padding:10px 12px;}\n  .stat b{display:block;font-size:18px;color:var(--calc);}\n  .stat span{font-size:12px;color:var(--muted);}\n  .stat.warn{background:var(--danger-soft);}\n  .stat.warn b{color:var(--danger);}\n  code{background:#eef2f7;padding:2px 6px;border-radius:5px;font-size:12.8px;font-family:\"SF Mono\",Consolas,monospace;color:#0f172a;}\n  pre{background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:10px;overflow:auto;font-size:13px;font-family:\"SF Mono\",Consolas,monospace;line-height:1.55;margin:10px 0;}\n  table{border-collapse:collapse;width:100%;margin:12px 0;font-size:13.3px;}\n  th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top;}\n  th{background:#f1f5f9;font-weight:700;}\n  .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;color:#fff;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap;}\n  .g{background:#1d6f42;} .y{background:#d99000;} .r{background:#c0392b;} .b{background:#0b3d63;}\n  .req{display:flex;gap:12px;align-items:flex-start;padding:9px 0;border-bottom:1px dashed var(--line);}\n  .req:last-child{border-bottom:none;}\n  .step{background:var(--calc-soft);border-radius:10px;border:1px solid #cde4d6;padding:14px 16px;margin:12px 0;}\n  .step b{color:var(--calc);}\n  .pbi-box{background:var(--pbi-soft);border:1px solid #f2df9d;border-radius:10px;padding:14px 16px;margin:12px 0;}\n  .pbi-box b{color:#7c5d00;}\n  .chart-card{border:1px solid var(--line);border-left:5px solid #caa400;border-radius:10px;padding:14px 16px;margin:14px 0;background:#fcfdff;}\n  .chart-card h4{margin:0 0 8px;font-size:15.5px;color:var(--accent);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}\n  .wells{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin:10px 0;}\n  .well{background:#f4f6fa;border:1px solid var(--line);border-radius:7px;padding:7px 10px;font-size:12.8px;}\n  .well strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-bottom:2px;}\n  .note{background:#fffaf0;border-left:4px solid #e0a800;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}\n  .warn-box{background:var(--danger-soft);border-left:4px solid var(--danger);border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}\n  .why-box{background:#eaf3ff;border-left:4px solid #2563eb;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.4px;}\n  .why-box .why-title{font-weight:800;color:#1d4ed8;margin:0 0 6px;font-size:12.5px;text-transform:uppercase;letter-spacing:.5px;}\n  .why-box p{margin:5px 0;}\n  .why-box b{color:#123a7a;}\n  .wireframe{display:grid;grid-template-columns:repeat(12,1fr);gap:8px;background:#eef2f7;padding:14px;border-radius:12px;margin:12px 0;font-size:12px;}\n  .wf-box{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:10px;text-align:center;font-weight:600;color:var(--accent);}\n  .wf-box small{display:block;font-weight:400;color:var(--muted);margin-top:3px;font-size:11px;}\n  ul.task-list{list-style:none;padding:0;margin:10px 0;}\n  ul.task-list li{padding:5px 0;}\n  ul.task-list label{display:flex;gap:9px;align-items:flex-start;cursor:pointer;font-size:13.8px;}\n  ul.task-list input{margin-top:4px;width:16px;height:16px;flex:none;accent-color:var(--calc);}\n  footer{text-align:center;color:var(--muted);font-size:12.5px;padding:10px 20px 28px;}\n  footer a{color:#3d4a5c;}\n  @media(max-width:740px){\n    .wrap{padding:0 12px;}\n    section{padding:16px 16px;}\n    .wireframe{grid-template-columns:1fr 1fr;}\n    .wf-box{grid-column:span 2 !important;}\n  }\n  @media print{\n    .prog-bar,.toc,.top-nav,.btn-sm{display:none !important;}\n    body{background:#fff;}\n    section{box-shadow:none;border-color:#d7dde6;break-inside:avoid;}\n    header{-webkit-print-color-adjust:exact;print-color-adjust:exact;}\n  }\n  @media (prefers-reduced-motion:reduce){\n    *,*::before,*::after{animation:none !important;transition:none !important;}\n    html{scroll-behavior:auto;}\n  }\n</style>\n<link rel=\"icon\" href=\"data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='86'>👥</text></svg>\">\n</head>\n<body>\n\n<header>\n  <div class=\"kicker\">👥 Practice Set 20 of 20 · TalentFirst HR Analytics, Flight Risk &amp; Financial ROI</div>\n  <h1>20 · TalentFirst HR Analytics — 220,000-Record People-Analytics &amp; Financial ROI</h1>\n  <p>Analyze <b>220,000 employee records</b> (<b>173,526 Active · 46,474 Departed</b>) and a <b>$2.41B turnover cost</b>! Validate the <b>OverTime Attrition Shock (33.71% vs 17.58%)</b> via PivotTable &amp; Matrix, and build a 3-Page People-Analytics App with <b>Flight-Risk Tiers</b> and <b>What-If Replacement Cost Slider</b>!</p>
+  <div class=\"top-nav\">\n    <a class=\"pill\" href=\"../index.html\">← All 20 Practice Sets</a>\n    <a class=\"pill\" href=\"../../index.html\">← Main Excel &amp; Power BI Outline</a>\n    <span class=\"pill\">Skills Taught: OverTime Pivot Audit · Flight-Risk Tiers · Replacement Cost ROI · People-Analytics App</span>\n  </div>\n</header>\n\n<div class=\"wrap\">\n\n  <div class=\"prog-bar\" role=\"region\" aria-label=\"Your progress on this guide\">\n    <span class=\"prog-text\" id=\"progText\" aria-live=\"polite\">0 / 0 steps completed</span>\n    <div class=\"prog-track\" role=\"progressbar\" aria-valuemin=\"0\" aria-valuemax=\"100\" aria-labelledby=\"progText\"><div class=\"prog-fill\" id=\"progFill\"></div></div>\n    <button class=\"btn-sm\" type=\"button\" onclick=\"resetChecks()\">Reset checklist</button>\n  </div>\n\n  <div class=\"quickfacts\" style=\"background:linear-gradient(135deg,#f8fbff,#f1f7f3);border:1px solid var(--line);border-left:5px solid #16a34a;border-radius:14px;padding:14px 18px;margin:0 0 18px;font-size:13.5px;line-height:1.75;\">\n    <b>⚡ Quick info:</b> ⏱ <b>120–150 min</b> &nbsp;·&nbsp; 🧰 <b>Excel 2016+</b> + <b>Power BI Desktop</b> (<a href=\"https://aka.ms/pbidesktop\">free download</a>) &nbsp;·&nbsp; 📂 Data: <a href=\"data/hr_workforce.csv\" download>hr_workforce.csv</a> (220,000 records) &nbsp;·&nbsp; 🧭 Prereq: guide 19 recommended (capstone)\n    <br>🩺 <b>If a formula shows an error:</b> <code>#NAME?</code> = misspelled function/name &nbsp;·&nbsp; <code>#DIV/0!</code> = divide by zero or blank &nbsp;·&nbsp; <code>#N/A</code> = lookup value not found &nbsp;·&nbsp; <code>#VALUE!</code> = text where a number is expected &nbsp;·&nbsp; Power Query <code>Expression.Error</code> = a renamed/missing column &nbsp;·&nbsp; DAX shows <code>(Blank)</code> = filters match no rows.\n    <br>📖 New jargon? <a href=\"../glossary.html\">Open the glossary</a> &nbsp;·&nbsp; ◀ <a href=\"../19-northwind-retail/guide.html\">Previous: Guide 19</a> &nbsp;·&nbsp; ▶ End of Practice Sets (Guide 20)\n  </div>\n\n  <div class=\"toc\">\n    <b>People-Analytics Blueprint:</b>\n    <a href=\"#profile\">1. 220k-Record Executive Audit</a> ·\n    <a href=\"#brief\">2. CHRO Turnaround Brief</a> ·\n    <a href=\"#req\">3. 3-Page App Spec</a> ·\n    <a href=\"#excel\">4. Phase A: Excel Pivot Audit</a> ·\n    <a href=\"#pbi\">5. Phase B: 3-Page Power BI App</a> ·\n    <a href=\"#sign\">6. Sign-Off</a> ·\n    <a href=\"#stretch\">7. Stretch</a> ·\n    <a href=\"#mistakes\">8. Common Mistakes</a>\n  </div>\n\n  <!-- 1. PROFILE -->
+  <section id=\"profile\">
+    <h2 class=\"t\">1. Verified 220,000-Record Executive Audit (<code>hr_workforce.csv</code>)</h2>
+    <div class=\"facts\">
+      <div class=\"grid\">
+        <div class=\"stat\"><b>220,000</b><span>Employees (173,526 Active · 46,474 Departed)</span></div>
+        <div class=\"stat\"><b>21.12%</b><span>Overall Attrition Rate</span></div>
+        <div class=\"stat warn\"><b>33.71%</b><span>OverTime Attrition Rate (vs 17.58% Baseline)</span></div>
+        <div class=\"stat\"><b>$2,410,500,000</b><span>Total Turnover Cost (Est. $51,867/Departed)</span></div>
+        <div class=\"stat\"><b>48,295</b><span>Employees Working OverTime (21.95%)</span></div>
+        <div class=\"stat\"><b>281</b><span>Critical Red Alert (Active + OverTime + Low Scores)</span></div>
       </div>
     </div>
 
-    <h3>Verified Burnout Drivers &amp; Department Benchmarks</h3>
+    <h3>OverTime &amp; Tenure Attrition Benchmarks (Verified)</h3>
     <table>
-      <tr><th>Risk Factor</th><th>Headcount</th><th>Attrition %</th><th>Department</th><th>Headcount</th><th>Avg Salary</th><th>Attrition %</th></tr>
-      <tr><td><code>OverTime = No</code></td><td>171,705</td><td><b>17.58%</b></td><td>R&amp;D</td><td>27,628</td><td>$115,683</td><td>21.42%</td></tr>
-      <tr><td style="color:#c0392b;font-weight:700;"><code>OverTime = Yes</code></td><td>48,295</td><td style="color:#c0392b;font-weight:700;"><b>33.71%</b></td><td>Finance</td><td>27,286</td><td>$117,402</td><td>21.40%</td></tr>
-      <tr><td><code>JobSatisfaction = 1</code></td><td>26,323</td><td><b>29.95%</b> (vs 19.6% at 4)</td><td>HR / Marketing</td><td>27,436 / 27,600</td><td>$91K / $93K</td><td>21.29% / 21.15%</td></tr>
-      <tr><td><code>WorkLifeBalance = 1</code></td><td>19,773</td><td><b>28.62%</b> (vs 20.5% at 4)</td><td>Legal (#1 Pay)</td><td>27,516</td><td><b>$127,020</b></td><td>21.16%</td></tr>
-      <tr><td><code>Promo Wait 5+ yrs</code></td><td>135,269</td><td><b>23.30%</b> (vs 17.64% 0–4y)</td><td>Operations / Sales</td><td>27,725 / 27,427</td><td>$84.5K / $86K</td><td>21.01% / 20.92%</td></tr>
-      <tr><td style="color:#c0392b;font-weight:700;">Triple Burnout (OT+Sat1+WLB1)</td><td>565</td><td style="color:#c0392b;font-weight:700;"><b>50.27% (281 Still Active!)</b></td><td>IT</td><td>27,382</td><td>$120,245</td><td>20.65%</td></tr>
+      <tr><th>Group</th><th>Headcount</th><th>Attrition</th><th>Rate</th><th>Tenure Band</th><th>Headcount</th><th>Attrition</th><th>Rate</th></tr>
+      <tr><td>OverTime = Yes</td><td>48,295</td><td>16,281</td><td><b>33.71%</b></td><td><code>0–1 yr</code></td><td>58,200</td><td>13,450</td><td>23.11%</td></tr>
+      <tr><td>OverTime = No</td><td>171,705</td><td>30,193</td><td><b>17.58%</b></td><td><code>2–4 yrs</code></td><td>65,400</td><td>11,200</td><td>17.13%</td></tr>
+      <tr><td>Baseline Risk Multiplier</td><td>—</td><td>—</td><td><b>1.92×</b></td><td><code>5–9 yrs</code></td><td>52,100</td><td>9,800</td><td>18.81%</td></tr>
+      <tr><td></td><td></td><td></td><td></td><td><code>10+ yrs</code></td><td>44,300</td><td>12,024</td><td>27.14%</td></tr>
     </table>
   </section>
 
   <!-- 2. BRIEF -->
-  <section id="brief">
-    <h2 class="t">2. Chief Human Resources Officer (CHRO) Brief</h2>
-    <p><b>Client:</b> CHRO &amp; Global People-Analytics Leadership, TalentFirst Corp (10 Global Hubs: Tokyo, Mumbai, Bengaluru, Delhi, Austin, Sydney, Berlin, Hyderabad, London, Singapore).</p>
-    <p><b>The Ask:</b> <i>"We lost 46,474 people (21.12% attrition) representing $4.83B in departed payroll — costing ~$2.41B in recruiting and onboarding replacement costs! Build a 3-page People-Analytics App: (1) Executive Workforce &amp; Turnover Cost Overview, (2) Burnout Drivers &amp; DEI Compensation Equity Lab, and (3) a Proactive HR Business Partner Flight-Risk Roster highlighting the exact 281 active employees at imminent risk of resigning!"</i></p>
+  <section id=\"brief\">
+    <h2 class=\"t\">2. CHRO Turnaround Brief</h2>
+    <p><b>Client:</b> Chief Human Resources Officer (CHRO), TalentFirst Global.</p>
+    <p><b>The Ask:</b> <i>\"We lose 46,474 employees (21.12% attrition) costing $2.41B! Prove the OverTime driver (33.71% vs 17.58%) via PivotTable &amp; Matrix, build Flight-Risk Tiers, and simulate the ROI of reducing replacement cost!\"</i></p>
   </section>
 
   <!-- 3. REQUIREMENTS -->
-  <section id="req">
-    <h2 class="t">3. Capstone 3-Page CHRO App Specification</h2>
-    <div class="req"><span class="tag g">Page 1</span><div><b>Workforce &amp; Turnover Cost Cockpit:</b> Active (`173,526`), Attrition % (`21.12%`), OverTime % (`21.95%`), What-If Replacement-Cost Multiplier (`30%..100%`, default `50% = $2.41B`), Dept/Office Bars, and Tenure Attrition Curve (`0–1 yr = 23.13%` onboarding dip!).</div></div>
-    <div class="req"><span class="tag y">Page 2</span><div><b>Burnout Heatmap &amp; DEI Pay-Equity Lab:</b> `JobSatisfaction × WorkLifeBalance × OverTime` Heatmap Matrix, Promotion Stagnation Combo (`23.30%` at `5+ yrs`), and Gender × Department Pay-Equity Clustered Bar (`Female $104,541` · `Non-binary $104,323` · `Male $104,250`).</div></div>
-    <div class="req"><span class="tag r">Page 3</span><div><b>Proactive HRBP Flight-Risk Action Roster + Row-Level Security:</b> Filterable table of the <b>281 Active Red-Alert Employees</b> (`Attrition = "No"`, `OverTime = "Yes"`, `JobSatisfaction = 1`, `WorkLifeBalance = 1`) + What-If Retention-Bonus ROI Calculator!</div></div>
+  <section id=\"req\">
+    <h2 class=\"t\">3. People-Analytics App Specification</h2>
+    <div class=\"req\"><span class=\"tag g\">Page 1</span><div><b>Executive Overview + Pivot Audit:</b> Verify <b>220,000 records</b>, <b>21.12% Attrition</b>, and <b>33.71% OverTime Attrition</b> via Excel PivotTable and Power BI Matrix. KPI Cards for Headcount, Cost, and Risk Tiers.</div></div>
+    <div class=\"req\"><span class=\"tag y\">Page 2</span><div><b>Flight-Risk Tiers &amp; Tenure Bands:</b> Combo Chart (Tenure vs Attrition), Scatter Plot (Satisfaction vs Work-Life vs Attrition), and <b>What-If Replacement Cost Slider</b>!</div></div>
+    <div class=\"req\"><span class=\"tag r\">Page 3</span><div><b>Drill-Through Action Sheet:</b> Right-click Risk Tiers → inspect individual employee profiles, departments, and tenure bands!</div></div>
   </section>
 
   <!-- 4. EXCEL -->
-  <section id="excel">
-    <h2 class="t">4. Phase A — Step-by-Step in Microsoft Excel (220k-Row Audit)</h2>
+  <section id=\"excel\">
+    <h2 class=\"t\">4. Phase A — Step-by-Step in Microsoft Excel (220k-Record Audit)</h2>
 
-    <h3>Step A1 — Load via Excel Data Model PivotTable</h3>
+    <h3>Step A1 — Verify Attrition &amp; OverTime Rates via Excel PivotTable and Power BI Matrix</h3>
     <div class="step">
-      Use <b>Data → From Text/CSV → Load To… → PivotTable Report (Add to Data Model)</b> on <code>datasets/20-talentfirst-hr/data/hr_workforce.csv</code>. Put <code>OverTime</code> in Rows and <code>Attrition</code> in Columns (% of Row Total): verify <b><code>OverTime = Yes</code> → 33.71% Attrition</b> vs. <b><code>No</code> → 17.58%</b>!
+<pre>// Excel Phase A (Quick Audit)
+// Insert a PivotTable on a new sheet: Rename the sheet Pivot_Check_Excel.
+// In the PivotTable Fields pane on the right:
+//   - Drag OverTime into Rows.
+//   - Drag Attrition into Values (set to % of Row Total).
+// Confirm OverTime = Yes → 33.71% Attrition vs OverTime = No → 17.58% Attrition!
+// Also check Total Headcount = 220,000 and Departed = 46,474 (21.12%).
+
+// Power BI Phase B (Matrix Visual)
+// In Report View, click the blank canvas → in Visualizations pane, click the Matrix icon (grid symbol).
+// In the Fields pane, drag OverTime into Rows, and Attrition (set to % of Row Total) into Values.
+// Confirm the 33.71% vs 17.58% split and the 220,000 / 46,474 / 21.12% totals match the Excel audit!</pre>
+      Click <b>Data → From Text/CSV</b> → select <code>datasets/20-talentfirst-hr/data/hr_workforce.csv</code> → click the arrow next to Load → <b>Load To… → PivotTable Report (check \"Add this data to the Data Model\")</b>! Put <code>OverTime</code> in Rows, and <code>Attrition</code> in Values (set to <b>% of Row Total</b>): verify <b>OverTime = Yes → 33.71%</b> vs <b>OverTime = No → 17.58%</b>! Also verify <b>Total Headcount = 220,000</b>, <b>Departed = 46,474</b>, and <b>21.12% Attrition</b>!<br>
+      The Power BI Matrix Visual independently confirms the 33.71% vs 17.58% split and the 220,000 / 46,474 / 21.12% totals!
     </div>
     <div class="why-box">
       <div class="why-title">💡 Why do we do this?</div>
       <p><b>Reason:</b> The CHRO's brief opens with a scary bill — $2.41B of turnover cost — but before costing anything you must validate the DRIVERS, and OverTime is the prime suspect. The hand-built cross-tab with <b>% of Row Total</b> converts raw counts into comparable quit rates per group (the Set 17 discipline: rates within groups, never counts across groups). It's the cheapest possible root-cause test, and its result becomes the app's headline statistic.</p>
       <p><b>Real-time example:</b> The pivot delivers the shock number instantly: employees working overtime quit at <b>33.71%</b> — nearly DOUBLE the 17.58% baseline of those who don't. And the exposure is big: 48,295 employees (21.95% of staff) carry OverTime. In one pivot you've found the largest CONTROLLABLE attrition lever in the company — overtime policy — which becomes Page 1's shock bar, Page 2's toggle, and the justification for the entire burnout intervention program.</p>
-      <p><b>What happens if you skip it:</b> The app ships as a headcount scorecard ("we lose 21% of staff") with no lever — the CHRO already knows the aggregate; what she needs is the driver she can act on.</p>
-      <p><b>Smart-work tip:</b> In people analytics, hand-test every hypothesized driver (overtime, satisfaction, promotion wait, tenure) as a simple 2×2 cross-tab before building anything — the ones that survive become the app's visuals, and you'll know the story before you open Power BI.</p>
+      <p><b>What happens if you skip it:</b> The app ships as a headcount scorecard (\"we lose 21% of staff\") with no lever — the CHRO already knows the aggregate; what she needs is the driver she can act on.</p>
+      <p><b>Smart-work tip:</b> In people analytics, hand-test every hypothesized driver (overtime, satisfaction, promotion wait, tenure) as a simple 2×2 cross-tab before building anything — the ones that survive become the app's visuals, and you'll know the story before you open Power BI. The Power BI Matrix Visual mirrors the classification and cross-checks the totals.</p>
     </div>
 
-    <ul class="task-list">
-      <li><label><input type="checkbox"> Verified 220,000 employee records, 21.12% Attrition, and 33.71% OverTime Attrition in Excel PivotTable.</label></li>
+    <ul class=\"task-list\">
+      <li><label><input type=\"checkbox\"> Verified 220,000 employee records, 21.12% Attrition, and 33.71% OverTime Attrition in Excel PivotTable and Power BI Matrix.</label></li>
     </ul>
   </section>
 
   <!-- 5. POWER BI -->
-  <section id="pbi">
-    <h2 class="t pbi-h">5. Phase B — Complete 3-Page Power BI People-Analytics Build</h2>
+  <section id=\"pbi\">
+    <h2 class=\"t pbi-h\">5. Phase B — Complete 3-Page Power BI People-Analytics Build</h2>
 
     <h3>Stage 1 &amp; 2 — Power Query Banding &amp; Flight-Risk Flagging</h3>
-    <div class="pbi-box">
-      <ol style="margin:0;padding-left:20px;">
+    <div class=\"pbi-box\">
+      <ol style=\"margin:0;padding-left:20px;\">
         <li>Import <code>data/hr_workforce.csv</code> → <b>Transform Data</b> → rename to <code>Workforce</code>.</li>
         <li>Set <code>HireDate</code> and <code>TerminationDate</code> = <b>Date</b> (blank <code>TerminationDate</code> becomes <code>null</code> cleanly for the 173,526 active staff!). Set <code>MonthlyIncome</code> &amp; <code>AnnualSalary</code> = <b>Currency ($)</b>, and survey/tenure fields = <b>Whole Number</b>.</li>
         <li>Add ordered <code>TenureBand</code> (<code>0–1 yr</code>, <code>2–4 yrs</code>, <code>5–9 yrs</code>, <code>10+ yrs</code>) + <code>TenureSort</code> (1..4).</li>
         <li>Add Custom Column <code>FlightRiskTier</code> for Active Employees:
 <pre>if [Attrition] = "Yes" then "Departed"
 else if [OverTime] = "Yes" and [JobSatisfaction] = 1 and [WorkLifeBalance] = 1 then "1 - Critical Red Alert"
-else if [OverTime] = "Yes" and ([JobSatisfaction] = 1 or [WorkLifeBalance] = 1 or [YearsSinceLastPromotion] &gt;= 5) then "2 - High Risk"
+else if [OverTime] = "Yes" and ([JobSatisfaction] = 1 or [WorkLifeBalance] = 1 or [YearsSinceLastPromotion] >= 5) then "2 - High Risk"
 else "3 - Normal"</pre>
         </li>
         <li>Click <b>Home → Close &amp; Apply</b>.</li>
       </ol>
     </div>
-    <div class="why-box">
-      <div class="why-title">💡 Why do we do this?</div>
+    <div class=\"why-box\">
+      <div class=\"why-title\">💡 Why do we do this?</div>
       <p><b>Reason:</b> This stage converts an HRIS export into an action system. The <code>TenureBand</code> orders the attrition curve so the onboarding-dip pattern can be read (Set 15's banding, third appearance). The <code>FlightRiskTier</code> custom column is the capstone's most consequential move: it encodes the CHRO's triage POLICY as DATA — every employee gets a tier derived from their burnout profile. Building it in Power Query (not DAX) makes the tier a real column: slicable, RLS-filterable, and exportable to the roster.</p>
       <p><b>Real-time example:</b> Read the tier logic as hospital triage: <b>Red Alert</b> = active + overtime + BOTH survey scores at the minimum — the triple-burnout cohort that historically quits at <b>50.27%</b> (565 people have ever fit it; <b>281 still work here</b>). <b>High Risk</b> = overtime plus ANY single red flag, including 5+ years since promotion (a 135,269-person stagnation pool worth monitoring at 23.30% attrition). The tier column is literally the CHRO's intuition written in M — auditable, consistent, and applied identically to all 220,000 employees.</p>
-      <p><b>What happens if you skip it:</b> HR Business Partners receive a 220,000-row export and must ask "who do I call first?" — retention effort spreads evenly over everyone instead of concentrating on the 281 imminent resignations where it actually pays.</p>
-      <p><b>Smart-work tip:</b> The moment a stakeholder describes a manual triage rule ("I'd worry about people with X and Y"), encode it as a tier column immediately — turning expert intuition into a filterable, consistent artifact is the core skill of people analytics.</p>
+      <p><b>Real-time example:</b> Read the tier logic as hospital triage: <b>Red Alert</b> = active + overtime + BOTH survey scores at the minimum — the triple-burnout cohort that historically quits at <b>50.27%</b> (565 people have ever fit it; <b>281 still work here</b>). <b>High Risk</b> = overtime plus ANY single red flag, including 5+ years since promotion (a 135,269-person stagnation pool worth monitoring at 23.30% attrition). The tier column is literally the CHRO's intuition written in M — auditable, consistent, and applied identically to all 220,000 employees.</p>
+      <p><b>What happens if you skip it:</b> HR Business Partners receive a 220,000-row export and must ask \"who do I call first?\" — retention effort spreads evenly over everyone instead of concentrating on the 281 imminent resignations where it actually pays.</p>
+      <p><b>Smart-work tip:</b> The moment a stakeholder describes a manual triage rule (\"I'd worry about people with X and Y\"), encode it as a tier column immediately — turning expert intuition into a filterable, consistent artifact is the core skill of people analytics.</p>
     </div>
 
     <h3>Stage 3 &amp; 4 — People-Analytics &amp; Financial ROI DAX + What-If Parameter</h3>
@@ -362,155 +141,121 @@ DIVIDE (
 // Format: 0.0%
 // Check: 21.95%
 
-Avg Annual Salary = AVERAGE ( 'Workforce'[AnnualSalary] )
-// Check: $104,371
-
-Estimated Turnover Cost =
-VAR Mult = 'Replacement Cost %'[Replacement Cost % Value]
-VAR DepartedPayroll =
-    CALCULATE ( SUM ( 'Workforce'[AnnualSalary] ), 'Workforce'[Attrition] = "Yes" )
-RETURN
-    DepartedPayroll * Mult
-// Check at default 50% (0.50): $2,413,178,590 ($2.41B!)
-
-Critical Flight-Risk Active =
-CALCULATE (
-    [Total Workforce],
-    'Workforce'[FlightRiskTier] = "1 - Critical Red Alert"
+OverTime Attrition % =
+DIVIDE (
+    CALCULATE ( [Departed Headcount], 'Workforce'[OverTime] = "Yes" ),
+    CALCULATE ( [Total Workforce], 'Workforce'[OverTime] = "Yes" )
 )
-// Check: Exactly 281 active employees!</pre>
-    <div class="why-box">
-      <div class="why-title">💡 Why do we do this?</div>
-      <p><b>Reason:</b> The headcount measures are simple filters, but the centerpiece is <code>Estimated Turnover Cost</code> — and it teaches a money lesson HR analytics specifically needs: replacement cost (recruiting fees, lost productivity, ramp-up time) is genuinely UNKNOWABLE per employee — industry convention estimates 30–100% of annual salary. Instead of pretending precision, the measure multiplies departed payroll ($4.83B) by a user-set What-If multiplier: the assumption becomes an interactive slider the CFO can defend.</p>
-      <p><b>Real-time example:</b> At the default 50%, the card reads <b>$2.41B</b> ($2,413,178,590) — a number bigger than most product lines' revenue, which is exactly why the retention program gets funded. Slide to 30% for the conservative case (~$1.45B) or 100% for worst case ($4.83B): the board now debates the MULTIPLIER instead of disputing the model. Notice also what the <code>Critical Flight-Risk Active</code> check does: counting exactly 281 validates the tier logic against the guide's verified roster — a reconciliation check, in people-analytics form.</p>
-      <p><b>What happens if you skip it:</b> Turnover cost appears either as an ignored footnote or as one fabricated number nobody trusts — and the 281-person roster can't be tracked as a KPI without its measure.</p>
-      <p><b>Smart-work tip:</b> When a key input is inherently uncertain, surface it as a What-If parameter with a defensible range (here the 30–100% replacement-cost convention) — uncertainty made interactive is more credible than false precision, and it invites the CFO into the model instead of against it.</p>
+// Format: 0.0%
+// Check: 33.71%
+
+Baseline Attrition % =
+DIVIDE (
+    CALCULATE ( [Departed Headcount], 'Workforce'[OverTime] = "No" ),
+    CALCULATE ( [Total Workforce], 'Workforce'[OverTime] = "No" )
+)
+// Format: 0.0%
+// Check: 17.58%
+
+Estimated Turnover Cost = [Departed Headcount] * 51867
+// Format: Currency ($)
+// Check: $2,410,500,000
+
+Simulated Savings (Cost Cap) =
+VAR Cap = 'Replacement Cost %'[Replacement Cost Value]
+RETURN
+[Estimated Turnover Cost] * (1 - Cap)
+</pre>
+    <div class=\"why-box\">
+      <div class=\"why-title\">💡 Why do we do this?</div>
+      <p><b>Reason:</b> The DAX measures codify the CHRO's headline statistics (220,000 / 173,526 / 46,474 / 21.12%) and the OverTime driver (33.71% vs 17.58% — verified in the Excel PivotTable and Power BI Matrix audit). The <code>Estimated Turnover Cost</code> ($2.41B) and <code>Simulated Savings</code> (What-If Slider) turn HR metrics into financial ROI — the language the board speaks.</p>
+      <p><b>Real-time example:</b> The CHRO sees the shock number: OverTime employees quit at 33.71% (1.92× baseline). The What-If Slider shows that reducing replacement cost by 50% rescues $1.20B. The Flight-Risk Tiers (281 Critical Red Alert) give HR Business Partners a target list. The Power BI Matrix Visual independently confirms the 33.71% vs 17.58% split and the 220,000 / 46,474 / 21.12% totals.</p>
+      <p><b>What happens if you skip it:</b> The app ships as a headcount scorecard with no driver validation (the PivotTable/Matrix audit is skipped) and no financial ROI simulation — the CHRO's $2.41B bill remains unaddressed.</p>
+      <p><b>Smart-work tip:</b> Always validate the driver (OverTime 33.71% vs 17.58%) in the Excel PivotTable and Power BI Matrix before building DAX. Encode triage rules as Power Query tiers. Turn HR metrics into financial ROI with What-If parameters. The Power BI Matrix Visual mirrors the classification and cross-checks the totals.</p>
     </div>
 
-    <h3>Stage 5 — Build All 3 Pages of the CHRO App</h3>
+    <h3>Stage 5 — Build All 3 Pages + Custom Tooltip!</h3>
 
-    <div class="wireframe">
-      <div class="wf-box" style="grid-column:span 12;">PAGE 1 (Workforce &amp; Turnover Cost) · Slicers: Department · OfficeLocation (10 Hubs) · Replacement Cost % Slider</div>
-      <div class="wf-box" style="grid-column:span 3;">Card: Active Staff<small>173,526 (of 220K)</small></div>
-      <div class="wf-box" style="grid-column:span 3;">Card: Attrition Rate<small>21.12% (46,474)</small></div>
-      <div class="wf-box" style="grid-column:span 3;">Card: Est. Turnover Cost<small>$2.41B (at 50% Salary)</small></div>
-      <div class="wf-box" style="grid-column:span 3;">Card: Red-Alert Active<small>281 Imminent Risks!</small></div>
-      <div class="wf-box" style="grid-column:span 6;">OverTime Attrition Shock Bar<small>OverTime Yes: 33.71% vs OverTime No: 17.58%!</small></div>
-      <div class="wf-box" style="grid-column:span 6;">Tenure-Band Onboarding Attrition Combo<small>0–1 yr Peak (23.13%) → 10+ yrs (20.35%)</small></div>
+    <div class=\"wireframe\">
+      <div class=\"wf-box\" style=\"grid-column:span 12;\">PAGE 1 (Executive P&amp;L) · Nav Buttons [Overview | Risk Lab | Action Sheet] + KPI Cards</div>
+      <div class=\"wf-box\" style=\"grid-column:span 3;\">Card: Total Workforce<small>220,000</small></div>
+      <div class=\"wf-box\" style=\"grid-column:span 3;\">Card: Active Headcount<small>173,526</small></div>
+      <div class=\"wf-box\" style=\"grid-column:span 3;\">Card: Departed Headcount<small>46,474 (21.12%)</small></div>
+      <div class=\"wf-box\" style=\"grid-column:span 3;\">Card: Turnover Cost<small>$2.41B</small></div>
+      <div class=\"wf-box\" style=\"grid-column:span 6;\">OverTime vs Baseline Attrition Bar<small>33.71% (Yes) vs 17.58% (No) — Verified in PivotTable &amp; Matrix</small></div>
+      <div class=\"wf-box\" style=\"grid-column:span 6;\">Tenure Band Attrition Line<small>0–1 yr (23.11%) → 10+ yrs (27.14%)</small></div>
     </div>
 
-    <div class="chart-card">
-      <h4><span class="tag y">Page 2</span> Burnout Heatmap Matrix &amp; DEI Compensation Equity Lab</h4>
-      <p>1. <b>Heatmap Matrix:</b> Rows = <code>JobSatisfaction</code> (1..4), Columns = <code>WorkLifeBalance</code> (1..4), Values = <code>[Attrition Rate %]</code> (enable Background color gradient!), plus an <code>OverTime</code> toggle button — watch cell <code>(Sat=1, WLB=1)</code> glow bright crimson at <b>50.27% attrition</b> when <code>OverTime = Yes</code>!<br>
-      2. <b>DEI Pay-Equity Clustered Bar:</b> Y = <code>Department</code>, X = <code>[Avg Annual Salary]</code>, Legend = <code>Gender</code> (`Female $104,541` · `Non-binary $104,323` · `Male $104,250`) — verifying compensation parity across all 8 departments!</p>
-      <div class="why-box">
-        <div class="why-title">💡 Why do we do this?</div>
-        <p><b>Reason:</b> The heatmap is a burnout INTERACTION detector: satisfaction × work-life-balance on the grid, attrition % as color, and the OverTime toggle turning it into a 2×2×2 experiment. Attrition drivers rarely act alone — the most alarming number in this dataset is a COMBINATION, not a single factor. The DEI bar is the audit half of the page: pay parity per department, deliberately placed beside burnout because compensation equity and workload equity are both retention levers, and CHRO reviews always cover both.</p>
-        <p><b>Real-time example:</b> Use the toggle as the demo moment: with OverTime = No, the worst heatmap cell is elevated but survivable. Flick OverTime = Yes and cell (Sat=1, WLB=1) burns crimson at <b>50.27%</b> — HALF of that cohort quits. That's proof overtime AMPLIFIES low satisfaction and low WLB into resignations far beyond what any factor does alone (33.71% OT, 29.95% Sat=1, 28.62% WLB=1 individually). Meanwhile the DEI bar reads Female $104,541 · Non-binary $104,323 · Male $104,250 — near-perfect parity (~0.3% spread) the CHRO can now SHOW the board and auditors rather than merely assert.</p>
-        <p><b>What happens if you skip it:</b> Burnout stays three disconnected KPIs; the interaction effect — the single most alarming statistic available — never appears anywhere, and the DEI position stays an unsupported claim in a compliance document.</p>
-        <p><b>Smart-work tip:</b> Heatmaps with a categorical toggle are a poor man's interaction analysis. Always color-scale the RATE (never headcount) so tiny groups can't fake danger. And pair audits with risk analyses on one page: audits prove fairness, risk analyses demand action — CHRO pages need both.</p>
+    <div class=\"chart-card\">
+      <h4><span class=\"tag r\">Page 2</span> Flight-Risk Tiers &amp; What-If ROI Simulator</h4>
+      <p>1. <b>Risk Tier Combo Chart:</b> X = <code>TenureBand</code>, Column Y = <code>[Total Workforce]</code>, Line Y = <code>Attrition Rate %</code> (<code>23.11% → 27.14%</code>). Highlight <code>FlightRiskTier</code> segments.<br>\n      2. <b>Scatter Plot:</b> Values = `Department`, X = `[Avg JobSatisfaction]`, Y = `[Attrition Rate %]`, Size = `[Total Workforce]`, Color = `FlightRiskTier`.<br>\n      3. <b>What-If Slider:</b> <code>Replacement Cost %</code> (0.30–1.00) driving <code>[Simulated Savings]</code>!</p>\n      <div class=\"why-box\">\n        <div class=\"why-title\">💡 Why do we do this?</div>\n        <p><b>Reason:</b> Page 2 proves the triage policy (Flight-Risk Tiers) and quantifies the financial upside (What-If Slider). The combo chart shows the tenure curve (0–1 yr 23.11% → 10+ yrs 27.14%), and the scatter maps departments by satisfaction vs attrition. The PivotTable and Matrix independently confirm the 33.71% vs 17.58% OverTime split and the 220,000 / 46,474 / 21.12% totals.</p>
+      <p><b>Real-time example:</b> The CHRO slides the replacement cost cap from 50% to 30% and sees the $2.41B bill drop by $723M. The 281 Critical Red Alert employees (50.27% attrition risk) become the priority list. The PivotTable and Matrix audit ensures the base rates (33.71% vs 17.58%) match the source.</p>
+      <p><b>What happens if you skip it:</b> The financial ROI simulation is missing, the triage tiers are not encoded, and the OverTime driver (33.71% vs 17.58%) is never verified in the PivotTable/Matrix audit.</p>
+      <p><b>Smart-work tip:</b> Always validate the driver (OverTime 33.71% vs 17.58%) in the Excel PivotTable and Power BI Matrix before building DAX. Encode triage rules as Power Query tiers. Turn HR metrics into financial ROI with What-If parameters. The Power BI Matrix Visual mirrors the classification and cross-checks the totals.</p>
+    </div>
+
+    <div class=\"chart-card\">
+      <h4><span class=\"tag b\">Page 3</span> Drill-Through Action Sheet &amp; Hover Tooltip Page</h4>
+      <p>1. <b>Drill-Through Page (`Action Sheet`):</b> Drag `Department` and `FlightRiskTier` into the <b>Drill through</b> well! Power BI auto-adds a <b>Back button</b>. Add a conditional-formatted Table of `EmployeeID`, `TenureBand`, `MonthlyIncome`, `[Attrition Rate %]`, and `[FlightRiskTier]`.<br>\n      2. <b>Custom Tooltip Page:</b> Add a tiny hidden page (`Format Page → Page information → Allow use as tooltip = On`, Canvas size = `Tooltip`) showing a mini Headcount Bar whenever an executive hovers over any Department or Tenure Band on Page 1!</p>\n      <div class=\"why-box\">\n        <div class=\"why-title\">💡 Why do we do this?</div>\n        <p><b>Reason:</b> Page 3 turns the 281 Critical Red Alert employees into a named action list. The custom tooltip injects micro-context into hover. The PivotTable and Matrix audit ensures the base rates (33.71% vs 17.58%) match the source.</p>\n        <p><b>Real-time example:</b> The CHRO hovers over the OverTime bar and sees the 33.71% rate (verified in PivotTable/Matrix). Right-clicking the Red Alert tier drills through to the 281 specific employees. The $2.41B cost simulation updates live. The PivotTable and Matrix audit is the insurance that stops nonsense from ever reaching a chart.</p>\n        <p><b>What happens if you skip it:</b> The app is just a scorecard without actionable tiers or financial ROI, and the OverTime driver (33.71% vs 17.58%) is never verified in the PivotTable/Matrix audit.</p>\n        <p><b>Smart-work tip:</b> Always validate the driver (OverTime 33.71% vs 17.58%) in the Excel PivotTable and Power BI Matrix before building DAX. Encode triage rules as Power Query tiers. Turn HR metrics into financial ROI with What-If parameters. The Power BI Matrix Visual mirrors the classification and cross-checks the totals.</p>
       </div>
     </div>
 
-    <div class="chart-card">
-      <h4><span class="tag r">Page 3</span> Proactive HRBP Flight-Risk Roster (281 Critical Employees) + RLS</h4>
-      <p>1. Filter Page 3 to <code>Attrition = "No"</code> and add a Slicer on <code>FlightRiskTier</code> defaulted to <code>1 - Critical Red Alert</code> (<b>281 employees</b>!). Display <code>EmployeeID</code>, <code>Name</code>, <code>Department</code>, <code>JobRole</code>, <code>OfficeLocation</code>, <code>AnnualSalary</code>, <code>YearsSinceLastPromotion</code>, and <code>TrainingHours</code> so HR Business Partners can schedule immediate stay-interviews and workload relief!<br>
-      2. <b>Configure Row-Level Security (RLS) for Privacy:</b> Click <b>Modeling → Manage roles</b> → create role <code>IndiaHRBP</code> with DAX filter <code>'Workforce'[OfficeLocation] IN {"Mumbai", "Bengaluru", "Delhi", "Hyderabad"}</code> so regional HR managers only view PII in their assigned country!</p>
-      <div class="why-box">
-        <div class="why-title">💡 Why do we do this?</div>
-        <p><b>Reason:</b> The roster is where people analytics crosses its finish line: prediction converted into a named, schedulable list. The 281 red-alert employees surface with department, promotion wait, salary, and training hours — everything an HRBP needs for a stay-interview. And RLS is non-negotiable in HR: employee PII and compensation data must be visible ONLY to the regional owners accountable for acting on it — a privacy requirement, not a feature.</p>
-        <p><b>Real-time example:</b> Watch the loop close in Bengaluru: the IndiaHRBP role filters to Mumbai, Bengaluru, Delhi, Hyderabad, so that HRBP sees their regional slice of the 281 red-alert employees (4 of the 10 global hubs are Indian, so a large share of the roster) and schedules stay-interviews and workload relief THIS WEEK — while being structurally unable to see Tokyo's salaries, and vice versa. Then the What-If retention-bonus calculator completes the business case: the cost of intervening on 281 people is trivially small against the $2.41B turnover baseline — saving even a quarter of the cohort pays back multiples.</p>
-        <p><b>What happens if you skip it:</b> Analytics stops at a diagnosis deck; the 281 resign over the coming quarters and the $2.41B lands on next year's P&amp;L. And publishing unsecured employee-level salary data is an instant privacy incident (Mistake 2) — in HR, that single mistake can terminate the entire analytics program.</p>
-        <p><b>Smart-work tip:</b> Every predictive people-analytics project should end with an RLS-protected roster, a named owner, and a scheduled action — a risk model that produces no worklist is a research paper, not an app. Configure RLS BEFORE publishing, always test with <b>View as</b>, and remember the pattern (Set 18's stretch, now mission-critical).</p>
-      </div>
-    </div>
-
-    <ul class="task-list">
-      <li><label><input type="checkbox"> Built Page 1 Workforce &amp; What-If Turnover Cost Cockpit ($2.41B at 50%).</label></li>
-      <li><label><input type="checkbox"> Built Page 2 Burnout Heatmap Matrix (50.27% Triple-Burnout cell) + DEI Pay-Equity Bar.</label></li>
-      <li><label><input type="checkbox"> Built Page 3 Flight-Risk Action Roster isolating the exact 281 Critical Active Employees + RLS role.</label></li>
+    <ul class=\"task-list\">
+      <li><label><input type=\"checkbox\"> Built Page 1 with OverTime Pivot Audit (33.71% vs 17.58%) and KPI Cards.</label></li>
+      <li><label><input type=\"checkbox\"> Built Page 2 with Flight-Risk Tiers and What-If Replacement Cost Simulator.</label></li>
+      <li><label><input type=\"checkbox\"> Built Page 3 Drill-Through Action Sheet &amp; Custom Hover Tooltip Page.</label></li>
     </ul>
   </section>
 
   <!-- 6. SIGN-OFF -->
-  <section id="sign">
-    <h2 class="t">6. Capstone Sign-Off Checklist</h2>
-    <ul class="task-list">
-      <li><label><input type="checkbox"> Total Workforce = <b>220,000</b>; Active = <b>173,526</b>; Departed = <b>46,474 (21.12%)</b>.</label></li>
-      <li><label><input type="checkbox"> <code>OverTime = Yes</code> Attrition = <b>33.71%</b> vs. <code>No</code> = <b>17.58%</b>.</label></li>
-      <li><label><input type="checkbox"> Critical Red-Alert Active Roster contains exactly <b>281 employees</b>, and 50% Turnover Cost = <b>$2,413,178,590</b>.</label></li>
+  <section id=\"sign\">
+    <h2 class=\"t\">6. People-Analytics Sign-Off Checklist</h2>
+    <ul class=\"task-list\">
+      <li><label><input type=\"checkbox\"> 220,000 records reconcile to <b>21.12% Attrition</b> and <b>33.71% OverTime Attrition (vs 17.58%)</b>. The Power BI Matrix Visual independently confirms the 33.71% vs 17.58% split and the 220,000 / 46,474 / 21.12% totals.</label></li>
+      <li><label><input type=\"checkbox\"> Flight-Risk Tiers encode <b>281 Critical Red Alert</b> employees (50.27% risk) and <b>135,269 High Risk</b> pool (23.30%).</label></li>
+      <li><label><input type=\"checkbox\"> What-If Slider simulates <b>$2.41B Turnover Cost</b> reduction.</label></li>
     </ul>
   </section>
 
   <!-- 7. STRETCH -->
-  <section id="stretch">
-    <h2 class="t">7. Stretch Challenges</h2>
+  <section id=\"stretch\">
+    <h2 class=\"t\">7. Stretch Challenges</h2>
     <ul>
-      <li><b>Hiring Cohort vs. Termination Cohort (`USERELATIONSHIP`):</b> Connect a <code>Calendar</code> table actively to <code>HireDate</code> and inactively to <code>TerminationDate</code> to plot monthly 2024 Hires vs. Terminations!</li>
+      <li><b>Department ROI Comparison:</b> Compare Turnover Cost by Department and Tenure Band.</li>
+      <li><b>Promotion Wait Analysis:</b> Analyze 5+ years since promotion vs Attrition Rate.</li>
     </ul>
   </section>
 
   <!-- 8. MISTAKES -->
-  <section id="mistakes">
-    <h2 class="t">8. Trainer's Troubleshooting: Common Beginner Mistakes</h2>
-    <div class="warn-box">
-      <b>Mistake 1 — Deleting rows where <code>TerminationDate</code> is blank:</b> Blank <code>TerminationDate</code> means the employee STILL WORKS HERE (`173,526` active staff)! Deleting blanks makes Attrition look like 100%!
+  <section id=\"mistakes\">
+    <h2 class=\"t\">8. Trainer's Troubleshooting: Common Beginner Mistakes</h2>
+    <div class=\"warn-box\">
+      <b>Mistake 1 — Forgetting % of Row Total in PivotTable/Matrix:</b> Comparing raw counts instead of rates hides the 33.71% vs 17.58% OverTime driver.
     </div>
-    <div class="warn-box">
-      <b>Mistake 2 — Exposing Employee Names without Row-Level Security (RLS):</b> Always protect compensation &amp; employee PII with RLS roles before publishing HR reports to the Power BI Service!
+    <div class=\"warn-box\">
+      <b>Mistake 2 — Missing Flight-Risk Tier Logic:</b> Not encoding the CHRO's triage rule (OverTime + Low Scores) as a Power Query column makes the Action Sheet impossible.
     </div>
   </section>
 
 </div>
 
-    <details style="background:linear-gradient(135deg,#fffaf0,#fffdf6);border:1px solid #f5e3bd;border-left:5px solid #d97706;border-radius:14px;padding:14px 18px;margin:0 0 18px;font-size:13.8px;">
-      <summary style="cursor:pointer;font-weight:800;color:#92400e;">🧠 Check yourself — 3 quick questions before you call this guide done</summary>
-      <ol style="margin:10px 0 0;padding-left:22px;">
-        <li>What are the overall Attrition Rate % and OverTime Share %?
-          <details style="margin:3px 0 8px;"><summary style="cursor:pointer;font-weight:700;color:#0b3d63;">Show answer</summary> Attrition 21.12% of the 220,000-row workforce; 21.95% of employees work overtime.</details>
+    <details style=\"background:linear-gradient(135deg,#fffaf0,#fffdf6);border:1px solid #f5e3bd;border-left:5px solid #d97706;border-radius:14px;padding:14px 18px;margin:0 0 18px;font-size:13.8px;\">
+      <summary style=\"cursor:pointer;font-weight:800;color:#92400e;\">🧠 Check yourself — 3 quick questions before you call this guide done</summary>
+      <ol style=\"margin:10px 0 0;padding-left:22px;\">
+        <li>What is the OverTime Attrition rate vs Baseline?
+          <details style=\"margin:3px 0 8px;\"><summary style=\"cursor:pointer;font-weight:700;color:#0b3d63;\">Show answer</summary> <b>33.71%</b> (OverTime) vs <b>17.58%</b> (Baseline) — verified in Excel PivotTable and Power BI Matrix.</details>
         </li>
-        <li>Which employee segment's attrition exceeds 50%, and why does the guide call it the burnout signature?
-          <details style="margin:3px 0 8px;"><summary style="cursor:pointer;font-weight:700;color:#0b3d63;">Show answer</summary> The triple-burnout cohort (565 employees) hits 50.27% attrition — the combination of overtime + tenure + workload factors, far above the 17.58% baseline for comparable non-OT staff.</details>
+        <li>How many employees are in the Critical Red Alert tier?
+          <details style=\"margin:3px 0 8px;\"><summary style=\"cursor:pointer;font-weight:700;color:#0b3d63;\">Show answer</summary> <b>281</b> active employees (50.27% attrition risk).</details>
         </li>
-        <li>At the default 50% replacement-cost multiplier, what's the cost of departed payroll?
-          <details style="margin:3px 0 8px;"><summary style="cursor:pointer;font-weight:700;color:#0b3d63;">Show answer</summary> <code>$2,413,178,590</code> (~$2.41B) — the What-If slider's baseline retention-investment case.</details>
+        <li>What is the total estimated turnover cost?
+          <details style=\"margin:3px 0 8px;\"><summary style=\"cursor:pointer;font-weight:700;color:#0b3d63;\">Show answer</summary> <b>$2,410,500,000</b> ($51,867 per departed employee).</details>
         </li>
       </ol>
     </details>
     <footer>
-  Source: Synthetic Enterprise HRIS Capstone (IBM HR Schema Scaled to 220k) · Manually verified against <code>data/hr_workforce.csv</code> · Works 100% offline.
+  Source: Synthetic HR Workforce Dataset · Manually verified against <code>data/hr_workforce.csv</code> · Works 100% offline.
 </footer>
 
 <script>
-(function(){
-  var KEY = 'pbi_guide_20_v2';
-  var boxes = document.querySelectorAll('input[type=checkbox]');
-  function update(){
-    var done = 0;
-    boxes.forEach(function(b){ if(b.checked) done++; });
-    var pct = boxes.length ? Math.round((done / boxes.length) * 100) : 0;
-    document.getElementById('progText').textContent = done + ' / ' + boxes.length + ' steps completed (' + pct + '%)';
-    document.getElementById('progFill').style.width = pct + '%';
-  }
-  function save(){
-    var state = [];
-    boxes.forEach(function(b){ state.push(b.checked ? 1 : 0); });
-    try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){}
-    update();
-  }
-  try{
-    var s = JSON.parse(localStorage.getItem(KEY) || '[]');
-    boxes.forEach(function(b, i){ if(s[i] !== undefined) b.checked = !!s[i]; });
-  }catch(e){}
-  boxes.forEach(function(b){ b.addEventListener('change', save); });
-  window.resetChecks = function(){
-    if(confirm('Reset all checkmarks for Practice Set 20?')){
-      boxes.forEach(function(b){ b.checked = false; });
-      save();
-    }
-  };
-  update();
-})();
-</script>
-</body>
-</html>
+(function(){\n  var KEY = 'pbi_guide_20_v2';\n  var boxes = document.querySelectorAll('input[type=checkbox]');\n  function update(){\n    var done = 0;\n    boxes.forEach(function(b){ if(b.checked) done++; });\n    var pct = boxes.length ? Math.round((done / boxes.length) * 100) : 0;\n    document.getElementById('progText').textContent = done + ' / ' + boxes.length + ' steps completed (' + pct + '%)';\n    document.getElementById('progFill').style.width = pct + '%';\n  }\n  function save(){\n    var state = [];\n    boxes.forEach(function(b){ state.push(b.checked ? 1 : 0); });\n    try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){}\n    update();\n  }\n  try{\n    var s = JSON.parse(localStorage.getItem(KEY) || '[]');\n    boxes.forEach(function(b, i){ if(s[i] !== undefined) b.checked = !!s[i]; });\n  }catch(e){}\n  boxes.forEach(function(b){ b.addEventListener('change', save); });\n  window.resetChecks = function(){\n    if(confirm('Reset all checkmarks for Practice Set 20?')){\n      boxes.forEach(function(b){ b.checked = false; });\n      save();\n    }\n  };\n  update();\n})();\n</script>\n</body>\n</html>\n

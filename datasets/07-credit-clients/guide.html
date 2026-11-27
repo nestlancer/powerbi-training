@@ -341,21 +341,42 @@
       <p><b>Smart-work tip:</b> Always click a coded column's filter dropdown and compare its values against the data dictionary — <code>0, 5, 6</code> hiding in EDUCATION is how you find undocumented codes BEFORE the meeting. Then fold them into an honest "Other" bucket instead of pretending they don't exist.</p>
     </div>
 
-    <h3>Step A3 — PivotTable Check</h3>
+    <h3>Step A3 — PivotTable Check and Power BI Matrix</h3>
     <div class="step">
-      Insert a PivotTable: Rows = <code>DelinquencyTier</code>, Columns = <code>LimitBand</code>, Values = <code>Average of default payment next month</code> (formatted as <code>0.0%</code>). Confirm overall Grand Total = <b>22.1% (22.12%)</b>, <code>3. 2+ Months Late</code> = <b>69.6%</b>, and <b>Save As</b> <code>07-credit-clients-clean.xlsx</code> (saving as modern <code>.xlsx</code> is also much faster for Power BI than legacy 97–2003 <code>.xls</code>!).
+      <ol style="margin:0;padding-left:20px;">
+        <li><b>Excel Phase A (Quick Audit)</b>
+          <ul>
+            <li>Insert a PivotTable on a new sheet: Rename the sheet <code>Pivot_Check_Excel</code>.</li>
+            <li>In the <b>PivotTable Fields</b> pane on the right:
+              <ul>
+                <li>Drag <code>DelinquencyTier</code> into <b>Rows</b>.</li>
+                <li>Drag <code>LimitBand</code> into <b>Columns</b>.</li>
+                <li>Drag <code>default payment next month</code> into <b>Values</b> (automatically becomes <code>Average of default payment next month</code> — formatted as <code>0.0%</code>).</li>
+              </ul>
+            </li>
+            <li>Confirm overall Grand Total = <b>22.1% (22.12%)</b>, <code>3. 2+ Months Late</code> = <b>69.6%</b>, and <b>Save As</b> <code>07-credit-clients-clean.xlsx</code> (saving as modern <code>.xlsx</code> is also much faster for Power BI than legacy 97–2003 <code>.xls</code>!).</li>
+          </ul>
+        </li>
+        <li><b>Power BI Phase B (Matrix Visual)</b>
+          <ul>
+            <li>In <b>Report View</b>, click the blank canvas → in <b>Visualizations</b> pane, click the <b>Matrix</b> icon (grid symbol).</li>
+            <li>In the <b>Fields</b> pane, drag <code>DelinquencyTier</code> into <b>Rows</b>, drag <code>LimitBand</code> into <b>Columns</b>, and drag <code>DefaultFlag</code> (from Power Query) into <b>Values</b> (set to <b>Average</b> and format as <b>0.0%</b>).</li>
+            <li>Confirm overall Grand Total = <b>22.1% (22.12%)</b>, <code>3. 2+ Months Late</code> = <b>69.6%</b>, and the Excel/Power BI engines match!</li>
+          </ul>
+        </li>
+      </ol>
     </div>
     <div class="why-box">
       <div class="why-title">💡 Why do we do this?</div>
-      <p><b>Reason:</b> Because <code>default payment next month</code> is already a 0/1 flag, <b>Average of the flag IS the default rate</b> — the pivot computes 6,636 ÷ 30,000 = 22.12% with no formula at all. The Tier × Band cross-tab previews the dashboard's most important interaction: does late-payment risk <i>compound</i> with low credit limit? And the .xlsx save matters for speed: Power BI's .xls connector is legacy and slower.</p>
-      <p><b>Real-time example:</b> Read the cross-tab the way a credit committee would: the "2+ Months Late × ≤50K" cell is the portfolio's furnace — severely delinquent borrowers with tiny limits, where default rates spike toward 70%+. Low limits aren't just an exposure size question; they're a <i>who got approved</i> question, and the cross-tab shows the two risk factors stacking. That cell is precisely what Visual 4's red traffic-light icon will flag for the collections team — you've now seen the story in Excel before designing it in Power BI.</p>
-      <p><b>What happens if you skip it:</b> You lose the compounding insight (tier and band interact), and the dashboard gets built around two separate bar charts that answer less than the cross-tab did in five minutes.</p>
-      <p><b>Smart-work tip:</b> 0/1 flags make pivots into instant rate calculators — remember this property (Average of flag = rate) for churn, fraud, late-pay, or any binary outcome. It replaces COUNTIF chains everywhere.</p>
+      <p><b>Reason:</b> Because <code>default payment next month</code> (or <code>DefaultFlag</code> in Power BI) is already a 0/1 flag, <b>Average of the flag IS the default rate</b> — the pivot and matrix compute 6,636 ÷ 30,000 = 22.12% with no formula at all. The Tier × Band cross-tab previews the dashboard's most important interaction: does late-payment risk <i>compound</i> with low credit limit? And the .xlsx save matters for speed: Power BI's .xls connector is legacy and slower. Both engines independently compute the target numbers to prove the data integrity.</p>
+      <p><b>Real-time example:</b> Read the cross-tab the way a credit committee would: the "2+ Months Late × ≤50K" cell is the portfolio's furnace — severely delinquent borrowers with tiny limits, where default rates spike toward 70%+. Low limits aren't just an exposure size question; they're a <i>who got approved</i> question, and the cross-tab shows the two risk factors stacking. That cell is precisely what Visual 4's red traffic-light icon will flag for the collections team — you've now seen the story in Excel and Power BI before designing it in Power BI.</p>
+      <p><b>What happens if you skip it:</b> You lose the compounding insight (tier and band interact), and the dashboard gets built around two separate bar charts that answer less than the cross-tab did in five minutes. If the engines disagree, the data import might have hidden type errors.</p>
+      <p><b>Smart-work tip:</b> 0/1 flags make pivots and matrices into instant rate calculators — remember this property (Average of flag = rate) for churn, fraud, late-pay, or any binary outcome. It replaces COUNTIF chains everywhere. Screenshot the verified PivotTable and Matrix and keep them beside you as your dashboard's acceptance test.</p>
     </div>
 
     <ul class="task-list">
       <li><label><input type="checkbox"> Deleted dummy Row 1 (<code>X1..Y</code>) so Row 1 holds <code>ID..default payment next month</code>.</label></li>
-      <li><label><input type="checkbox"> Added <code>EduLabel</code>, <code>DelinquencyTier</code>, and <code>LimitBand</code> and verified 22.12% default rate in PivotTable.</label></li>
+      <li><label><input type="checkbox"> Added <code>EduLabel</code>, <code>DelinquencyTier</code>, and <code>LimitBand</code> and verified 22.12% default rate in Excel PivotTable and Power BI Matrix.</label></li>
     </ul>
   </section>
 

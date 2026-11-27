@@ -389,29 +389,43 @@
       <p><b>Smart-work tip:</b> Build the logic ONCE as a column and reuse it forever. Inside an Excel Table, typing the formula in row 2 auto-fills all 700 rows <i>and every future row</i> — that is the "smart work" the Table gives you for free.</p>
     </div>
 
-    <h3>Step A4 — Prove the Numbers with Two Quick PivotTables</h3>
+    <h3>Step A4 — Prove the Numbers with Two Quick PivotTables (Excel & Power BI)</h3>
     <div class="step">
       <ol style="margin:0;padding-left:20px;">
-        <li>Click any cell inside the table → click <b>Insert → PivotTable</b> → leave <b>New Worksheet</b> selected → click <b>OK</b>.</li>
-        <li>Double-click the new sheet tab at the bottom and rename it <code>Pivot_Check</code>.</li>
-        <li>In the <b>PivotTable Fields</b> pane on the right:
+        <li><b>Excel Phase A (Quick Audit)</b>
           <ul>
-            <li>Drag <code>Country</code> into <b>Rows</b>.</li>
-            <li>Drag <code>Net Sales</code> into <b>Values</b>, and drag <code>Profit</code> into <b>Values</b>.</li>
-            <li>Right-click any number in <code>Sum of Net Sales</code> → <b>Number Format → Currency → 2 decimals → OK</b>. Do the same for <code>Sum of Profit</code>.</li>
-            <li>Right-click any number in <code>Sum of Profit</code> → <b>Sort → Sort Largest to Smallest</b>.</li>
+            <li>Click any cell inside the table → click <b>Insert → PivotTable</b> → leave <b>New Worksheet</b> selected → click <b>OK</b>.</li>
+            <li>Double-click the new sheet tab at the bottom and rename it <code>Pivot_Check_Excel</code>.</li>
+            <li>In the <b>PivotTable Fields</b> pane on the right:
+              <ul>
+                <li>Drag <code>Country</code> into <b>Rows</b>.</li>
+                <li>Drag <code>Net Sales</code> into <b>Values</b>, and drag <code>Profit</code> into <b>Values</b>.</li>
+                <li>Right-click any number in <code>Sum of Net Sales</code> → <b>Number Format → Currency → 2 decimals → OK</b>. Do the same for <code>Sum of Profit</code>.</li>
+                <li>Right-click any number in <code>Sum of Profit</code> → <b>Sort → Sort Largest to Smallest</b>.</li>
+              </ul>
+            </li>
+            <li><b>Verify against Section 1:</b> Confirm Grand Total Net Sales = <b>$118,726,350.26</b>, Grand Total Profit = <b>$16,893,702.26</b>, France is #1 in Profit (<b>$3,781,020.78</b>), and USA is #1 in Net Sales (<b>$25,029,830.17</b>).</li>
+            <li>Now test Segment: drag <code>Country</code> out of Rows and drag <code>Segment</code> into <b>Rows</b>. Confirm <code>Enterprise</code> shows <b>-$614,545.62</b>!</li>
           </ul>
         </li>
-        <li><b>Verify against Section 1:</b> Confirm Grand Total Net Sales = <b>$118,726,350.26</b>, Grand Total Profit = <b>$16,893,702.26</b>, France is #1 in Profit (<b>$3,781,020.78</b>), and USA is #1 in Net Sales (<b>$25,029,830.17</b>).</li>
-        <li>Now test Segment: drag <code>Country</code> out of Rows and drag <code>Segment</code> into <b>Rows</b>. Confirm <code>Enterprise</code> shows <b>-$614,545.62</b>!</li>
+        <li><b>Power BI Phase B (Matrix Visual)</b>
+          <ul>
+            <li>In <b>Report View</b>, click the blank canvas → in <b>Visualizations</b> pane, click the <b>Matrix</b> icon (grid symbol).</li>
+            <li>In the <b>Fields</b> pane, drag <code>Country</code> into <b>Rows</b>, <code>Net Sales</code> and <code>Profit</code> into <b>Values</b>.</li>
+            <li>In <b>Format visual</b> → <b>Values</b>, set <code>Sum of Net Sales</code> and <code>Sum of Profit</code> to <b>Currency</b> with <b>2 decimals</b>.</li>
+            <li>Right-click <code>Sum of Profit</code> in the visual → <b>Sort → Sort descending</b>.</li>
+            <li><b>Verify:</b> Confirm Grand Total Net Sales = <b>$118,726,350.26</b>, Grand Total Profit = <b>$16,893,702.26</b>, France is #1 in Profit (<b>$3,781,020.78</b>), and USA is #1 in Net Sales (<b>$25,029,830.17</b>).</li>
+            <li>Drag <code>Country</code> out of Rows and drag <code>Segment</code> into <b>Rows</b>. Confirm <code>Enterprise</code> shows <b>-$614,545.62</b>!</li>
+          </ul>
+        </li>
       </ol>
     </div>
     <div class="why-box">
       <div class="why-title">💡 Why do we do this?</div>
-      <p><b>Reason:</b> Golden audit rule — <i>know your target numbers BEFORE building the dashboard</i>. A PivotTable computes totals through a completely different engine than Power BI. If both engines agree, your data is clean; if they disagree, you have a bug to find — and you want to find it now, not during a client demo.</p>
-      <p><b>Real-time example:</b> Later in Power BI, your Net Sales card will show <b>$118.73M</b>. Because your PivotTable Grand Total already said <b>$118,726,350.26</b>, you can trust that number and move on. And when a stakeholder challenges you — <i>"Why do you claim France out-earns the USA?"</i> — you answer instantly with verified figures: France profit <b>$3,781,020.78</b> vs USA <b>$2,995,540.66</b>, because USA discounts <b>$2.24M</b> away. Confidence like that only comes from independent verification.</p>
-      <p><b>What happens if you skip it:</b> You present the dashboard, someone opens the raw file in Excel, the numbers don't match (for example, because the dataset got double-loaded — 1,400 rows instead of 700), and your credibility takes a hit that no pretty chart can repair.</p>
-      <p><b>Smart-work tip:</b> Screenshot the verified PivotTable and keep it beside you as your dashboard's <i>acceptance test</i>. Professional testers call this a "golden dataset" — you are doing real QA, not just clicking buttons.</p>
+      <p><b>Reason:</b> Golden audit rule — <i>know your target numbers BEFORE building the dashboard</i>. Both Excel PivotTable and Power BI Matrix compute totals through independent engines. If both engines agree with the raw data, your data is clean; if they disagree, you have a bug to find — and you want to find it now, not during a client demo.</p>
+      <p><b>Real-time example:</b> Later in Power BI, your Net Sales card will show <b>$118.73M</b>. Because your PivotTable Grand Total already said <b>$118,726,350.26</b>, and your Power BI Matrix agrees, you can trust that number and move on. And when a stakeholder challenges you — <i>"Why do you claim France out-earns the USA?"</i> — you answer instantly with verified figures: France profit <b>$3,781,020.78</b> vs USA <b>$2,995,540.66</b>, because USA discounts <b>$2.24M</b> away. Confidence like that only comes from independent verification.</p>
+      <p><b>What happens if you skip it:</b> You present the dashboard, someone opens the raw file in Excel, the numbers don't match (for example, because the dataset got double-loaded — 1,400 rows instead of 700), and your credibility takes a hit that no pretty chart can repair. Also, students often get confused between Excel PivotTables and Power BI Matrix visuals — showing both side-by-side clarifies the workflow.</p>
+      <p><b>Smart-work tip:</b> Screenshot the verified PivotTable and Matrix and keep them beside you as your dashboard's <i>acceptance test</i>. Professional testers call this a "golden dataset" — you are doing real QA, not just clicking buttons.</p>
     </div>
 
     <h3>Step A5 — Save Your Clean Workbook</h3>
