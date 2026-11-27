@@ -331,20 +331,42 @@
       <p><b>Smart-work tip:</b> Memorize the pattern <code>ISNUMBER(FIND(","&amp;code&amp;",", ",list,"))</code> — an exact-match membership test with zero helper columns. The general lesson: whenever a file mixes entities and aggregates, build ONE auditable flag column rather than hand-maintained exclusions.</p>
     </div>
 
-    <h3>Step A3 — PivotTable Check (2024 = 8,117,484,624)</h3>
+    <h3>Step A3 — PivotTable Check and Power BI Matrix (2024 = 8,117,484,624)</h3>
     <div class="step">
-      Insert a PivotTable: Drag <code>IsAggregate</code> to <b>Filters</b> → choose <code>FALSE</code>. Drag <code>Year</code> to <b>Filters</b> → choose <code>2024</code>. Drag <code>Country Name</code> to <b>Rows</b> and <code>Population</code> to <b>Values</b>. Sort Largest to Smallest: confirm <b>217 rows</b>, <b>India = 1,450,935,791</b>, <b>China = 1,408,975,000</b>, and Grand Total = <b>8,117,484,624</b>! Save as <code>09-world-population-clean.xlsx</code>.
+      <ol style="margin:0;padding-left:20px;">
+        <li><b>Excel Phase A (Quick Audit)</b>
+          <ul>
+            <li>Insert a PivotTable on a new sheet: Rename the sheet <code>Pivot_Check_Excel</code>.</li>
+            <li>In the <b>PivotTable Fields</b> pane on the right:
+              <ul>
+                <li>Drag <code>IsAggregate</code> into <b>Filters</b> → uncheck all and choose <b>FALSE</b>.</li>
+                <li>Drag <code>Year</code> into <b>Filters</b> → uncheck all and choose <b>2024</b>.</li>
+                <li>Drag <code>Country Name</code> into <b>Rows</b>.</li>
+                <li>Drag <code>Population</code> into <b>Values</b>.</li>
+              </ul>
+            </li>
+            <li>Sort Largest to Smallest: confirm <b>217 rows</b>, <b>India = 1,450,935,791</b>, <b>China = 1,408,975,000</b>, and Grand Total = <b>8,117,484,624</b>! Save as <code>09-world-population-clean.xlsx</code>.</li>
+          </ul>
+        </li>
+        <li><b>Power BI Phase B (Matrix Visual)</b>
+          <ul>
+            <li>In <b>Report View</b>, click the blank canvas → in <b>Visualizations</b> pane, click the <b>Matrix</b> icon (grid symbol).</li>
+            <li>In the <b>Fields</b> pane, drag <code>IsAggregate</code> into <b>Filters</b> (select <b>FALSE</b>), drag <code>Year</code> into <b>Filters</b> (select <b>2024</b>), drag <code>Country Name</code> into <b>Rows</b>, and drag <code>Population</code> into <b>Values</b>.</li>
+            <li>Sort by <b>Population</b> Largest to Smallest: confirm <b>217 rows</b>, <b>India = 1,450,935,791</b>, <b>China = 1,408,975,000</b>, and Grand Total = <b>8,117,484,624</b>!</li>
+          </ul>
+        </li>
+      </ol>
     </div>
     <div class="why-box">
       <div class="why-title">💡 Why do we do this?</div>
-      <p><b>Reason:</b> Two filter conditions in one pivot (clean countries + single year) define exactly the number the strategy team needs: an accurate single-year global headcount. The pivot is the first proof that the aggregate-stripping worked — if Grand Total reads ~8.12B instead of ~88B, the 47 rollups are truly gone; if it reads anything else, the flag formula caught too much or too little.</p>
+      <p><b>Reason:</b> Two filter conditions in one pivot and matrix (clean countries + single year) define exactly the number the strategy team needs: an accurate single-year global headcount. The pivot and matrix are the first proof that the aggregate-stripping worked — if Grand Total reads ~8.12B instead of ~88B, the 47 rollups are truly gone; if it reads anything else, the flag formula caught too much or too little. Both engines independently compute the target numbers to prove the data integrity.</p>
       <p><b>Real-time example:</b> Every check here validates a fact the expansion team will repeat in boardrooms: <b>217 economies</b> (the market universe), <b>India #1 at 1.45B</b> (India passed China in 2021 — a fact investors still get wrong), <b>China at 1.41B and shrinking</b>. Grand total 8,117,484,624 for 2024 cross-checks against UN figures, meaning your pipeline (import → flag → filter) hasn't distorted a single country. When the Power BI card later shows the same 8,117,484,624, you've verified the whole chain end-to-end.</p>
-      <p><b>What happens if you skip it:</b> A silent error — say, one aggregate code left in — inflates some regional share percentage by a few percent, and market-prioritization decisions get made on a subtly wrong ranking.</p>
-      <p><b>Smart-work tip:</b> Row-count checks (217) plus anchor-value checks (India, China) plus a total check (8.12B) form a three-point verification triangle — if all three match expectations, the pipeline is almost certainly clean. Cheap, fast, and persuasive in front of skeptics.</p>
+      <p><b>What happens if you skip it:</b> A silent error — say, one aggregate code left in — inflates some regional share percentage by a few percent, and market-prioritization decisions get made on a subtly wrong ranking. If the engines disagree, the data import might have hidden type errors.</p>
+      <p><b>Smart-work tip:</b> Row-count checks (217) plus anchor-value checks (India, China) plus a total check (8.12B) form a three-point verification triangle — if all three match expectations, the pipeline is almost certainly clean. Cheap, fast, and persuasive in front of skeptics. Screenshot the verified PivotTable and Matrix and keep them beside you as your dashboard's acceptance test.</p>
     </div>
 
     <ul class="task-list">
-      <li><label><input type="checkbox"> Added 1-line <code>IsAggregate</code> formula in Excel and verified 217 countries totaling 8,117,484,624 in 2024.</label></li>
+      <li><label><input type="checkbox"> Added 1-line <code>IsAggregate</code> formula in Excel and verified 217 countries totaling 8,117,484,624 in 2024 in Excel PivotTable and Power BI Matrix.</label></li>
     </ul>
   </section>
 

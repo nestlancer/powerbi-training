@@ -13,252 +13,19 @@
   }
   *{box-sizing:border-box;}
   html{scroll-behavior:smooth;}
-  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.62;}
-  header{background:linear-gradient(125deg,#0b3d63 0%,#1d6f42 52%,#7c5d00 100%);color:#fff;padding:34px 26px 28px;}
-  header .kicker{font-size:12px;text-transform:uppercase;letter-spacing:.8px;opacity:.92;font-weight:700;margin-bottom:6px;}
-  header h1{margin:0 0 8px;font-size:26px;letter-spacing:.2px;}
-  header p{margin:0;max-width:880px;font-size:14.8px;opacity:.95;}
-  header a{color:#fff;text-decoration:underline;}
-  .top-nav{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;align-items:center;}
-  .pill{display:inline-block;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.32);padding:4px 12px;border-radius:20px;font-size:12.5px;text-decoration:none;color:#fff;}
-  .wrap{max-width:1120px;margin:20px auto 70px;padding:0 22px;}
-  .prog-bar{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 18px;margin-bottom:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;position:sticky;top:10px;z-index:20;box-shadow:0 2px 8px rgba(15,23,42,.05);}
-  .prog-track{flex:1;min-width:180px;height:10px;background:#eef2f7;border-radius:99px;overflow:hidden;}
-  .prog-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--calc),#caa400);transition:width .25s;}
-  .prog-text{font-size:13px;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums;}
-  .btn-sm{border:1px solid var(--line);background:#fff;color:var(--ink);padding:5px 11px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;}
-  .btn-sm:hover{background:#f1f5f9;}
-  .toc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:20px;font-size:13.5px;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;}
-  .toc a{color:var(--accent);text-decoration:none;font-weight:600;}
-  .toc a:hover{text-decoration:underline;}
-  section{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px 26px;margin-bottom:20px;box-shadow:0 1px 2px rgba(20,30,50,.03);}
-  h2.t{font-size:20px;margin:0 0 14px;border-bottom:2px solid var(--calc);padding-bottom:8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
-  h2.t.pbi-h{border-bottom-color:#caa400;}
-  h3{font-size:16px;margin:20px 0 8px;color:var(--accent);}
-  h4{font-size:14.5px;margin:14px 0 6px;color:var(--ink);}
-  p{margin:8px 0;}
-  .facts{background:#fff;border:1px solid var(--line);border-left:5px solid var(--calc);border-radius:12px;padding:16px 18px;margin-bottom:18px;}
-  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:10px;}
-  .stat{background:var(--calc-soft);border-radius:9px;padding:10px 12px;}
-  .stat b{display:block;font-size:18px;color:var(--calc);}
-  .stat span{font-size:12px;color:var(--muted);}
-  .stat.warn{background:var(--danger-soft);}
-  .stat.warn b{color:var(--danger);}
-  code{background:#eef2f7;padding:2px 6px;border-radius:5px;font-size:12.8px;font-family:"SF Mono",Consolas,monospace;color:#0f172a;}
-  pre{background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:10px;overflow:auto;font-size:13px;font-family:"SF Mono",Consolas,monospace;line-height:1.55;margin:10px 0;}
-  table{border-collapse:collapse;width:100%;margin:12px 0;font-size:13.3px;}
-  th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top;}
-  th{background:#f1f5f9;font-weight:700;}
-  .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;color:#fff;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap;}
-  .g{background:#1d6f42;} .y{background:#d99000;} .r{background:#c0392b;} .b{background:#0b3d63;}
-  .req{display:flex;gap:12px;align-items:flex-start;padding:9px 0;border-bottom:1px dashed var(--line);}
-  .req:last-child{border-bottom:none;}
-  .step{background:var(--calc-soft);border-radius:10px;border:1px solid #cde4d6;padding:14px 16px;margin:12px 0;}
-  .step b{color:var(--calc);}
-  .pbi-box{background:var(--pbi-soft);border:1px solid #f2df9d;border-radius:10px;padding:14px 16px;margin:12px 0;}
-  .pbi-box b{color:#7c5d00;}
-  .chart-card{border:1px solid var(--line);border-left:5px solid #caa400;border-radius:10px;padding:14px 16px;margin:14px 0;background:#fcfdff;}
-  .chart-card h4{margin:0 0 8px;font-size:15.5px;color:var(--accent);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
-  .wells{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin:10px 0;}
-  .well{background:#f4f6fa;border:1px solid var(--line);border-radius:7px;padding:7px 10px;font-size:12.8px;}
-  .well strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-bottom:2px;}
-  .note{background:#fffaf0;border-left:4px solid #e0a800;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
-  .warn-box{background:var(--danger-soft);border-left:4px solid var(--danger);border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
-  .why-box{background:#eaf3ff;border-left:4px solid #2563eb;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.4px;}
-  .why-box .why-title{font-weight:800;color:#1d4ed8;margin:0 0 6px;font-size:12.5px;text-transform:uppercase;letter-spacing:.5px;}
-  .why-box p{margin:5px 0;}
-  .why-box b{color:#123a7a;}
-  .wireframe{display:grid;grid-template-columns:repeat(12,1fr);gap:8px;background:#eef2f7;padding:14px;border-radius:12px;margin:12px 0;font-size:12px;}
-  .wf-box{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:10px;text-align:center;font-weight:600;color:var(--accent);}
-  .wf-box small{display:block;font-weight:400;color:var(--muted);margin-top:3px;font-size:11px;}
-  ul.task-list{list-style:none;padding:0;margin:10px 0;}
-  ul.task-list li{padding:5px 0;}
-  ul.task-list label{display:flex;gap:9px;align-items:flex-start;cursor:pointer;font-size:13.8px;}
-  ul.task-list input{margin-top:4px;width:16px;height:16px;flex:none;accent-color:var(--calc);}
-  footer{text-align:center;color:var(--muted);font-size:12.5px;padding:10px 20px 28px;}
-  footer a{color:#3d4a5c;}
-  @media(max-width:740px){
-    .wrap{padding:0 12px;}
-    section{padding:16px 16px;}
-    .wireframe{grid-template-columns:1fr 1fr;}
-    .wf-box{grid-column:span 2 !important;}
-  }
-  /* ═══ UI 2.0 theme — overrides the base block above ═══ */
-  :root{
-    --calc:#16a34a;--calc-soft:#e9f7ef;--pbi:#d97706;--pbi-soft:#fff6e6;
-    --ink:#111827;--muted:#5b6472;--line:#e4e9f1;--bg:#f2f5fa;
-    --accent:#0b3d63;--danger:#dc2626;--danger-soft:#fdeaea;
-    --gold:#f59e0b;--blue:#2563eb;
-    --h1:#0b3d63;--h2:#1d6f42;--h3:#a16207;
-    --sh-sm:0 1px 2px rgba(15,23,42,.05),0 1px 3px rgba(15,23,42,.07);
-    --sh-md:0 4px 16px rgba(15,23,42,.09),0 2px 4px rgba(15,23,42,.05);
-    --sh-lg:0 14px 38px rgba(15,23,42,.16);
-  }
-  body{background:radial-gradient(1100px 480px at 88% -80px,rgba(14,116,144,.10),transparent 60%),radial-gradient(900px 420px at -60px 34%,rgba(22,163,74,.08),transparent 55%),var(--bg);}
-  ::selection{background:#bfdbfe;}
-  header{position:relative;overflow:hidden;color:#fff;padding:46px 28px 40px;background:linear-gradient(130deg,var(--h1) 0%,var(--h2) 55%,var(--h3) 100%);}
-  header::before{content:"";position:absolute;inset:0;background:radial-gradient(620px 300px at 90% -12%,rgba(255,255,255,.20),transparent 62%),radial-gradient(460px 280px at 4% 112%,rgba(255,255,255,.13),transparent 60%);}
-  header::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg,rgba(255,255,255,.05) 0 2px,transparent 2px 26px);opacity:.55;pointer-events:none;}
-  header>*{position:relative;z-index:1;}
-  header .kicker{display:inline-block;font-size:11.5px;text-transform:uppercase;letter-spacing:1.1px;opacity:.97;font-weight:800;margin-bottom:12px;padding:6px 14px;border-radius:99px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.30);}
-  header h1{margin:0 0 10px;font-size:clamp(23px,3.1vw,33px);line-height:1.16;letter-spacing:-.4px;font-weight:800;text-shadow:0 2px 14px rgba(0,0,0,.22);}
-  header p{margin:0;max-width:920px;font-size:15px;opacity:.96;}
-  header p b{color:#ffdf8d;}
-  header a{color:#fff;text-decoration:underline;}
-  header code{background:rgba(255,255,255,.18);border-color:transparent;color:#ffe8a3;}
-  .top-nav{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;align-items:center;}
-  .pill{display:inline-block;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.32);padding:6px 14px;border-radius:99px;font-size:12.5px;font-weight:600;text-decoration:none;color:#fff;transition:transform .15s,background .15s;}
-  .pill:hover{background:rgba(255,255,255,.26);transform:translateY(-1px);}
-  .wrap{max-width:1120px;margin:22px auto 70px;padding:0 22px;}
-  .prog-bar{background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:14px;padding:12px 18px;margin-bottom:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;position:sticky;top:10px;z-index:20;box-shadow:var(--sh-md);}
-  .prog-track{flex:1;min-width:180px;height:12px;background:#e8edf5;border-radius:99px;overflow:hidden;box-shadow:inset 0 1px 2px rgba(15,23,42,.14);}
-  .prog-fill{height:100%;width:0%;border-radius:99px;background:linear-gradient(90deg,#16a34a,#0ea5e9 55%,#d97706);transition:width .4s cubic-bezier(.22,1,.36,1);position:relative;overflow:hidden;}
-  .prog-fill::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 0 32%,rgba(255,255,255,.55) 50%,transparent 68% 100%);background-size:220% 100%;animation:shine 2.6s linear infinite;}
-  @keyframes shine{from{background-position:220% 0}to{background-position:-220% 0}}
-  .prog-text{font-size:13px;font-weight:800;color:var(--accent);font-variant-numeric:tabular-nums;}
-  .prog-bar:has(.prog-fill[style*="100"]){border-color:#fcd34d;box-shadow:0 0 0 3px #fef3c7,var(--sh-md);}
-  .prog-bar:has(.prog-fill[style*="100"]) .prog-text{color:#b45309;}
-  .prog-bar:has(.prog-fill[style*="100"])::after{content:"🎉 All steps complete!";font-size:12.5px;font-weight:800;color:#92400e;background:linear-gradient(135deg,#fef3c7,#fde68a);border:1px solid #fcd34d;border-radius:99px;padding:4px 13px;animation:pop .45s cubic-bezier(.34,1.56,.64,1);}
-  @keyframes pop{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}
-  .btn-sm{border:1px solid var(--line);background:#fff;color:var(--ink);padding:6px 13px;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;box-shadow:var(--sh-sm);transition:all .15s;}
-  .btn-sm:hover{background:#f8fafc;transform:translateY(-1px);box-shadow:var(--sh-md);}
-  .toc{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 16px;margin-bottom:20px;font-size:13px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;box-shadow:var(--sh-sm);}
-  .toc b{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.7px;margin-right:2px;}
-  .toc a{color:var(--accent);text-decoration:none;font-weight:700;padding:5px 13px;border-radius:99px;background:#f1f5f9;border:1px solid transparent;transition:all .15s;}
-  .toc a:hover{background:#e3eeff;border-color:#c9dbf8;transform:translateY(-1px);}
-  section{background:#fff;border:1px solid var(--line);border-radius:16px;padding:26px 28px;margin-bottom:22px;box-shadow:var(--sh-sm);scroll-margin-top:78px;transition:box-shadow .2s;}
-  section:hover{box-shadow:var(--sh-md);}
-  h2.t{font-size:20.5px;margin:0 0 18px;padding-bottom:11px;border-bottom:2px solid var(--line);position:relative;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
-  h2.t::after{content:"";position:absolute;left:0;bottom:-4px;width:88px;height:4px;border-radius:99px;background:linear-gradient(90deg,var(--calc),#0ea5e9);}
-  h2.t.pbi-h::after{background:linear-gradient(90deg,var(--pbi),#dc2626);}
-  h3{font-size:16.5px;margin:26px 0 10px;color:var(--accent);display:flex;align-items:center;gap:9px;}
-  h3::before{content:"";width:5px;height:16px;border-radius:4px;background:linear-gradient(180deg,var(--pbi),var(--gold));flex:none;}
-  h4{font-size:14.5px;margin:14px 0 6px;color:var(--ink);}
-  .facts{background:linear-gradient(135deg,#f8fbff,#f1f7f3);border:1px solid var(--line);border-left:5px solid var(--calc);border-radius:14px;padding:18px 20px;margin-bottom:20px;}
-  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;}
-  .stat{position:relative;overflow:hidden;background:#fff;border:1px solid #e2e9f0;border-radius:12px;padding:12px 14px 12px 17px;box-shadow:var(--sh-sm);transition:transform .18s,box-shadow .18s;}
-  .stat::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg,var(--calc),#0ea5e9);}
-  .stat:hover{transform:translateY(-2px);box-shadow:var(--sh-md);}
-  .stat b{display:block;font-size:19px;color:var(--calc);letter-spacing:-.2px;}
-  .stat span{font-size:11.8px;color:var(--muted);line-height:1.42;display:block;margin-top:2px;}
-  .stat.warn{border-color:#f4d7d7;}
-  .stat.warn::before{background:linear-gradient(180deg,#dc2626,var(--gold));}
-  .stat.warn b{color:var(--danger);}
-  code{background:#eef2f7;border:1px solid #e2e8f0;padding:1.5px 6px;border-radius:6px;font-size:12.6px;font-family:ui-monospace,"SF Mono",Consolas,monospace;color:#0f172a;}
-  pre{background:#0b1220;color:#dbe4f3;padding:16px 18px;border-radius:13px;overflow:auto;font-size:12.9px;font-family:ui-monospace,"SF Mono",Consolas,monospace;line-height:1.6;margin:12px 0;border:1px solid #1e293b;box-shadow:var(--sh-md);}
-  pre::before{content:"⌨ formula · DAX";display:block;color:#7d8fa9;font-size:10px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;margin-bottom:10px;padding-bottom:8px;border-bottom:1px dashed #25344c;}
-  table{border-collapse:separate;border-spacing:0;width:100%;margin:14px 0;font-size:13.2px;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:var(--sh-sm);overflow:hidden;}
-  th,td{padding:9px 12px;text-align:left;vertical-align:top;border-bottom:1px solid #edf1f7;}
-  tr:nth-child(even) td{background:#fafcff;}
-  tr:hover td{background:#eef6ff;}
-  th{background:linear-gradient(180deg,#f8fafc,#eef2f8);font-weight:800;font-size:11.8px;text-transform:uppercase;letter-spacing:.45px;color:#334155;border-bottom:2px solid #dbe3ee;}
-  table tr:last-child td{border-bottom:none;}
-  table th:first-child{border-top-left-radius:11px;}table th:last-child{border-top-right-radius:11px;}
-  .tag{display:inline-block;font-size:10.5px;font-weight:800;padding:3px 10px;border-radius:99px;color:#fff;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap;box-shadow:0 1px 3px rgba(0,0,0,.2);}
-  .g{background:linear-gradient(135deg,#16a34a,#15803d);}.y{background:linear-gradient(135deg,#f59e0b,#d97706);}.r{background:linear-gradient(135deg,#ef4444,#b91c1c);}.b{background:linear-gradient(135deg,#3b82f6,#1d4ed8);}
-  .req{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border:1px solid var(--line);border-radius:12px;margin:9px 0;background:#fbfdff;transition:all .15s;}
-  .req:hover{border-color:#c9dbf8;box-shadow:var(--sh-sm);transform:translateX(3px);}
-  .req .tag{margin-top:2px;flex:none;min-width:66px;text-align:center;}
-  .step{background:var(--calc-soft);border:1px solid #cbe6d5;border-left:5px solid var(--calc);border-radius:12px;padding:16px 18px;margin:16px 0;position:relative;box-shadow:var(--sh-sm);}
-  .step::before{content:"EXCEL · PHASE A";position:absolute;top:-10px;right:14px;background:linear-gradient(135deg,#16a34a,#15803d);color:#fff;font-size:9.5px;font-weight:800;letter-spacing:.9px;padding:3px 11px;border-radius:99px;box-shadow:var(--sh-sm);}
-  .step b{color:#0d5c33;}
-  .pbi-box{background:var(--pbi-soft);border:1px solid #f2df9d;border-left:5px solid var(--pbi);border-radius:12px;padding:16px 18px;margin:16px 0;position:relative;box-shadow:var(--sh-sm);}
-  .pbi-box::before{content:"POWER BI · PHASE B";position:absolute;top:-10px;right:14px;background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;font-size:9.5px;font-weight:800;letter-spacing:.9px;padding:3px 11px;border-radius:99px;box-shadow:var(--sh-sm);}
-  .pbi-box b{color:#8a5a00;}
-  .chart-card{border:1px solid var(--line);border-left:5px solid var(--gold);border-radius:14px;padding:18px 20px;margin:18px 0;background:linear-gradient(180deg,#fffdf4,#fdfeff);box-shadow:var(--sh-sm);}
-  .chart-card h4{margin:0 0 10px;font-size:15.5px;color:var(--accent);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
-  .wells{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:9px;margin:10px 0;}
-  .well{background:#f6f8fc;border:1px solid #e2e8f0;border-radius:9px;padding:8px 12px;font-size:12.8px;transition:all .15s;}
-  .well:hover{background:#f0f6ff;border-color:#c9dbf8;}
-  .well strong{display:block;font-size:10.5px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:3px;}
-  .note{background:linear-gradient(135deg,#fffaf0,#fffdf6);border:1px solid #f5e3bd;border-left:5px solid #e0a800;border-radius:12px;padding:13px 15px;margin:14px 0;font-size:13.5px;}
-  .warn-box{background:linear-gradient(135deg,#fdeaea,#fff5f5);border:1px solid #f2c8c8;border-left:5px solid var(--danger);border-radius:12px;padding:13px 15px;margin:14px 0;font-size:13.5px;}
-  .why-box{background:linear-gradient(135deg,#eff6ff,#f2faff);border:1px solid #c9e0fb;border-left:5px solid var(--blue);border-radius:12px;padding:14px 16px;margin:14px 0;font-size:13.4px;box-shadow:var(--sh-sm);}
-  .why-box .why-title{font-weight:800;color:#1d4ed8;margin:0 0 8px;font-size:12px;text-transform:uppercase;letter-spacing:.6px;}
-  .why-box p{margin:6px 0;}
-  .why-box b{color:#123a7a;}
-  .wireframe{display:grid;grid-template-columns:repeat(12,1fr);gap:10px;background:#0f172a;background-image:radial-gradient(rgba(148,163,184,.16) 1px,transparent 1.4px);background-size:18px 18px;padding:16px;border-radius:14px;margin:14px 0;font-size:12px;box-shadow:var(--sh-md);}
-  .wf-box{background:#fff;border:1px solid #cbd5e1;border-radius:9px;padding:11px;text-align:center;font-weight:700;color:var(--accent);box-shadow:0 3px 8px rgba(2,6,23,.35);transition:transform .15s;}
-  .wf-box:hover{transform:translateY(-2px);}
-  .wf-box small{display:block;font-weight:400;color:var(--muted);margin-top:4px;font-size:10.8px;}
-  ul.task-list{list-style:none;padding:0;margin:12px 0;}
-  ul.task-list li{padding:4px 0;}
-  ul.task-list label{display:flex;gap:11px;align-items:flex-start;cursor:pointer;font-size:13.8px;padding:8px 12px;border-radius:10px;border:1px solid transparent;transition:all .15s;}
-  ul.task-list label:hover{background:#f2f7fd;border-color:#d8e5f3;}
-  ul.task-list input{margin-top:3.5px;width:17px;height:17px;flex:none;accent-color:var(--calc);cursor:pointer;}
-  ul.task-list label:has(input:checked){color:#94a3b8;text-decoration:line-through;text-decoration-thickness:1.5px;text-decoration-color:#cbd5e1;}
-  footer{text-align:center;color:var(--muted);font-size:12.5px;padding:14px 20px 34px;}
-  footer a{color:#3d4a5c;}
-  @media(max-width:740px){
-    .wrap{padding:0 12px;}
-    section{padding:18px 15px;}
-    header{padding:36px 18px 30px;}
-    .wireframe{grid-template-columns:1fr 1fr;}
-    .wf-box{grid-column:span 2 !important;}
-  }
-  @media print{
-    .prog-bar,.toc,.top-nav,.btn-sm{display:none !important;}
-    body{background:#fff;}
-    section{box-shadow:none;border-color:#d7dde6;break-inside:avoid;}
-    header{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-  }
-  @media (prefers-reduced-motion:reduce){
-    *,*::before,*::after{animation:none !important;transition:none !important;}
-    html{scroll-behavior:auto;}
-  }
-</style>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='86'>🧭</text></svg>">
-</head>
-<body>
-
-<header>
-  <div class="kicker">🧭 Capstone Case Study 19 of 20 · 220,000-Row Global Retail Turnaround, Field Parameters &amp; What-If Simulation</div>
-  <h1>19 · Northwind Global Retail (2021–2024) — 3-Page Portfolio App, Field Parameters &amp; Discount Cap</h1>
-  <p>Your first full-scale <b>220,000-row Capstone Case Study</b>! Diagnose why a <b>$704.31M</b> global retailer earns just <b>$18.71M (2.66% margin)</b>, expose the <b>-$13.26M Furniture bleed</b> and the <b>-$37.73M 36%+ Discount Cliff</b>, and ship a portfolio-grade <b>3-Page Power BI App</b> featuring <b>Field Parameters</b>, a <b>What-If Discount-Cap Simulator</b>, <b>Report Page Tooltips</b>, and <b>Drill-Through</b>!</p>
-  <div class="top-nav">
-    <a class="pill" href="../index.html">← All 20 Practice Sets</a>
-    <a class="pill" href="../../index.html">← Main Excel &amp; Power BI Outline</a>
-    <span class="pill">Capstone UX: 3-Page App · Field Parameters · What-If Parameter · Custom Tooltip Page · Drill-Through</span>
-  </div>
-</header>
-
-<div class="wrap">
-
-  <div class="prog-bar" role="region" aria-label="Your progress on this guide">
-    <span class="prog-text" id="progText" aria-live="polite">0 / 0 steps completed</span>
-    <div class="prog-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-labelledby="progText"><div class="prog-fill" id="progFill"></div></div>
-    <button class="btn-sm" type="button" onclick="resetChecks()">Reset checklist</button>
-  </div>
-
-  <div class="quickfacts" style="background:linear-gradient(135deg,#f8fbff,#f1f7f3);border:1px solid var(--line);border-left:5px solid #16a34a;border-radius:14px;padding:14px 18px;margin:0 0 18px;font-size:13.5px;line-height:1.75;">
-    <b>⚡ Quick info:</b> ⏱ <b>120–150 min</b> &nbsp;·&nbsp; 🧰 <b>Excel 2016+</b> + <b>Power BI Desktop</b> (<a href="https://aka.ms/pbidesktop">free download</a>) &nbsp;·&nbsp; 📂 Data: <a href="data/retail_sales_2021_2024.csv" download>retail_sales_2021_2024.csv</a> (220,000 rows) &nbsp;·&nbsp; 🧭 Prereq: guide 18 recommended (capstone)
-    <br>🩺 <b>If a formula shows an error:</b> <code>#NAME?</code> = misspelled function/name &nbsp;·&nbsp; <code>#DIV/0!</code> = divide by zero or blank &nbsp;·&nbsp; <code>#N/A</code> = lookup value not found &nbsp;·&nbsp; <code>#VALUE!</code> = text where a number is expected &nbsp;·&nbsp; Power Query <code>Expression.Error</code> = a renamed/missing column &nbsp;·&nbsp; DAX shows <code>(Blank)</code> = filters match no rows.
-    <br>📖 New jargon? <a href="../glossary.html">Open the glossary</a> &nbsp;·&nbsp; ◀ <a href="../18-adventureworks-sales/guide.html">Previous: Guide 18</a> &nbsp;·&nbsp; <a href="../20-talentfirst-hr/guide.html">Next: Guide 20 · TalentFirst HR</a> ▶
-  </div>
-
-  <div class="toc">
-    <b>Capstone Blueprint:</b>
-    <a href="#profile">1. 220k-Row Executive Audit</a> ·
-    <a href="#brief">2. CEO Turnaround Brief</a> ·
-    <a href="#req">3. 3-Page App Spec</a> ·
-    <a href="#excel">4. Phase A: Excel Pivot Audit</a> ·
-    <a href="#pbi">5. Phase B: 3-Page Power BI Capstone</a> ·
-    <a href="#sign">6. Sign-Off</a> ·
-    <a href="#stretch">7. Stretch</a> ·
-    <a href="#mistakes">8. Common Mistakes</a>
-  </div>
-
-  <!-- 1. PROFILE -->
-  <section id="profile">
-    <h2 class="t">1. Verified 220,000-Row Executive Audit (<code>retail_sales_2021_2024.csv</code>)</h2>
-    <div class="facts">
-      <div class="grid">
-        <div class="stat"><b>220,000</b><span>Orders (39,829 Customers · 6 Regions)</span></div>
-        <div class="stat"><b>$704,313,163</b><span>4-Year Total Sales (2021–2024)</span></div>
-        <div class="stat"><b>$18,710,044</b><span>Net Profit (Only 2.66% Margin!)</span></div>
-        <div class="stat"><b>+$31.70M</b><span>Technology Profit (+7.65% Margin)</span></div>
-        <div class="stat warn"><b>-$13.26M</b><span>Furniture Loss (-5.29% Margin!)</span></div>
-        <div class="stat warn"><b>-$37.73M</b><span>Loss on 36%+ Discounted Orders!</span></div>
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.62;}
+  header{background:linear-gradient(125deg,#0b3d63 0%,#1d6f42 52%,#7c5d00 100%);color:#fff;padding:34px 26px 28px;}\n  header .kicker{font-size:12px;text-transform:uppercase;letter-spacing:.8px;opacity:.92;font-weight:700;margin-bottom:6px;}\n  header h1{margin:0 0 8px;font-size:26px;letter-spacing:.2px;}\n  header p{margin:0;max-width:880px;font-size:14.8px;opacity:.95;}\n  header a{color:#fff;text-decoration:underline;}\n  .top-nav{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;align-items:center;}\n  .pill{display:inline-block;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.32);padding:4px 12px;border-radius:20px;font-size:12.5px;text-decoration:none;color:#fff;}\n  .wrap{max-width:1120px;margin:20px auto 70px;padding:0 22px;}\n  .prog-bar{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 18px;margin-bottom:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;position:sticky;top:10px;z-index:20;box-shadow:0 2px 8px rgba(15,23,42,.05);}\n  .prog-track{flex:1;min-width:180px;height:10px;background:#eef2f7;border-radius:99px;overflow:hidden;}\n  .prog-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--calc),#caa400);transition:width .25s;}\n  .prog-text{font-size:13px;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums;}\n  .btn-sm{border:1px solid var(--line);background:#fff;color:var(--ink);padding:5px 11px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;}\n  .btn-sm:hover{background:#f1f5f9;}\n  .toc{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 18px;margin-bottom:20px;font-size:13.5px;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;}\n  .toc a{color:var(--accent);text-decoration:none;font-weight:600;}\n  .toc a:hover{text-decoration:underline;}\n  section{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px 26px;margin-bottom:20px;box-shadow:0 1px 2px rgba(20,30,50,.03);}\n  h2.t{font-size:20px;margin:0 0 14px;border-bottom:2px solid var(--calc);padding-bottom:8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}\n  h2.t.pbi-h{border-bottom-color:#caa400;}\n  h3{font-size:16px;margin:20px 0 8px;color:var(--accent);}\n  h4{font-size:14.5px;margin:14px 0 6px;color:var(--ink);}\n  p{margin:8px 0;}\n  .facts{background:#fff;border:1px solid var(--line);border-left:5px solid var(--calc);border-radius:12px;padding:16px 18px;margin-bottom:18px;}\n  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:10px;}\n  .stat{background:var(--calc-soft);border-radius:9px;padding:10px 12px;}\n  .stat b{display:block;font-size:18px;color:var(--calc);}\n  .stat span{font-size:12px;color:var(--muted);}\n  .stat.warn{background:var(--danger-soft);}\n  .stat.warn b{color:var(--danger);}\n  code{background:#eef2f7;padding:2px 6px;border-radius:5px;font-size:12.8px;font-family:\"SF Mono\",Consolas,monospace;color:#0f172a;}\n  pre{background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:10px;overflow:auto;font-size:13px;font-family:\"SF Mono\",Consolas,monospace;line-height:1.55;margin:10px 0;border:1px solid #1e293b;box-shadow:var(--sh-md);}\n  pre::before{content:\"⌨ formula · DAX\";display:block;color:#7d8fa9;font-size:10px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;margin-bottom:10px;padding-bottom:8px;border-bottom:1px dashed #25344c;}\n  table{border-collapse:collapse;width:100%;margin:12px 0;font-size:13.3px;}\n  th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top;}\n  th{background:#f1f5f9;font-weight:700;}\n  .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;color:#fff;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap;}\n  .g{background:#1d6f42;} .y{background:#d99000;} .r{background:#c0392b;} .b{background:#0b3d63;}\n  .req{display:flex;gap:12px;align-items:flex-start;padding:9px 0;border-bottom:1px dashed var(--line);}\n  .req:last-child{border-bottom:none;}\n  .step{background:var(--calc-soft);border-radius:10px;border:1px solid #cde4d6;padding:14px 16px;margin:12px 0;}\n  .step b{color:var(--calc);}\n  .pbi-box{background:var(--pbi-soft);border:1px solid #f2df9d;border-radius:10px;padding:14px 16px;margin:12px 0;}\n  .pbi-box b{color:#7c5d00;}\n  .chart-card{border:1px solid var(--line);border-left:5px solid #caa400;border-radius:10px;padding:14px 16px;margin:14px 0;background:#fcfdff;}\n  .chart-card h4{margin:0 0 8px;font-size:15.5px;color:var(--accent);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}\n  .wells{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin:10px 0;}\n  .well{background:#f4f6fa;border:1px solid var(--line);border-radius:7px;padding:7px 10px;font-size:12.8px;}\n  .well strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-bottom:2px;}\n  .note{background:#fffaf0;border-left:4px solid #e0a800;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}\n  .warn-box{background:var(--danger-soft);border-left:4px solid var(--danger);border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}\n  .why-box{background:#eaf3ff;border-left:4px solid #2563eb;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.4px;}\n  .why-box .why-title{font-weight:800;color:#1d4ed8;margin:0 0 6px;font-size:12.5px;text-transform:uppercase;letter-spacing:.5px;}\n  .why-box p{margin:5px 0;}\n  .why-box b{color:#123a7a;}\n  .wireframe{display:grid;grid-template-columns:repeat(12,1fr);gap:8px;background:#eef2f7;padding:14px;border-radius:12px;margin:12px 0;font-size:12px;}\n  .wf-box{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:10px;text-align:center;font-weight:600;color:var(--accent);}\n  .wf-box small{display:block;font-weight:400;color:var(--muted);margin-top:3px;font-size:11px;}\n  ul.task-list{list-style:none;padding:0;margin:10px 0;}\n  ul.task-list li{padding:5px 0;}\n  ul.task-list label{display:flex;gap:9px;align-items:flex-start;cursor:pointer;font-size:13.8px;}\n  ul.task-list input{margin-top:4px;width:16px;height:16px;flex:none;accent-color:var(--calc);}\n  footer{text-align:center;color:var(--muted);font-size:12.5px;padding:10px 20px 28px;}\n  footer a{color:#3d4a5c;}\n  @media(max-width:740px){\n    .wrap{padding:0 12px;}\n    section{padding:16px 16px;}\n    .wireframe{grid-template-columns:1fr 1fr;}\n    .wf-box{grid-column:span 2 !important;}\n  }\n  @media print{\n    .prog-bar,.toc,.top-nav,.btn-sm{display:none !important;}\n    body{background:#fff;}\n    section{box-shadow:none;border-color:#d7dde6;break-inside:avoid;}\n    header{-webkit-print-color-adjust:exact;print-color-adjust:exact;}\n  }\n  @media (prefers-reduced-motion:reduce){\n    *,*::before,*::after{animation:none !important;transition:none !important;}\n    html{scroll-behavior:auto;}\n  }\n</style>\n<link rel=\"icon\" href=\"data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='86'>🧭</text></svg>\">\n</head>\n<body>\n\n<header>\n  <div class=\"kicker\">🧭 Capstone Case Study 19 of 20 · 220,000-Row Global Retail Turnaround, Field Parameters &amp; What-If Simulation</div>\n  <h1>19 · Northwind Global Retail (2021–2024) — 3-Page Portfolio App, Field Parameters &amp; Discount Cap</h1>\n  <p>Your first full-scale <b>220,000-row Capstone Case Study</b>! Diagnose why a <b>$704.31M</b> global retailer earns just <b>$18.71M (2.66% margin)</b>, expose the <b>-$13.26M Furniture bleed</b> and the <b>-$37.73M 36%+ Discount Cliff</b>, and ship a portfolio-grade <b>3-Page Power BI App</b> featuring <b>Field Parameters</b>, a <b>What-If Discount-Cap Simulator</b>, <b>Report Page Tooltips</b>, and <b>Drill-Through</b>!</p>
+  <div class=\"top-nav\">\n    <a class=\"pill\" href=\"../index.html\">← All 20 Practice Sets</a>\n    <a class=\"pill\" href=\"../../index.html\">← Main Excel &amp; Power BI Outline</a>\n    <span class=\"pill\">Capstone UX: 3-Page App · Field Parameters · What-If Parameter · Custom Tooltip Page · Drill-Through</span>\n  </div>\n</header>\n\n<div class=\"wrap\">\n\n  <div class=\"prog-bar\" role=\"region\" aria-label=\"Your progress on this guide\">\n    <span class=\"prog-text\" id=\"progText\" aria-live=\"polite\">0 / 0 steps completed</span>\n    <div class=\"prog-track\" role=\"progressbar\" aria-valuemin=\"0\" aria-valuemax=\"100\" aria-labelledby=\"progText\"><div class=\"prog-fill\" id=\"progFill\"></div></div>\n    <button class=\"btn-sm\" type=\"button\" onclick=\"resetChecks()\">Reset checklist</button>\n  </div>\n\n  <div class=\"quickfacts\" style=\"background:linear-gradient(135deg,#f8fbff,#f1f7f3);border:1px solid var(--line);border-left:5px solid #16a34a;border-radius:14px;padding:14px 18px;margin:0 0 18px;font-size:13.5px;line-height:1.75;\">\n    <b>⚡ Quick info:</b> ⏱ <b>120–150 min</b> &nbsp;·&nbsp; 🧰 <b>Excel 2016+</b> + <b>Power BI Desktop</b> (<a href=\"https://aka.ms/pbidesktop\">free download</a>) &nbsp;·&nbsp; 📂 Data: <a href=\"data/retail_sales_2021_2024.csv\" download>retail_sales_2021_2024.csv</a> (220,000 rows) &nbsp;·&nbsp; 🧭 Prereq: guide 18 recommended (capstone)\n    <br>🩺 <b>If a formula shows an error:</b> <code>#NAME?</code> = misspelled function/name &nbsp;·&nbsp; <code>#DIV/0!</code> = divide by zero or blank &nbsp;·&nbsp; <code>#N/A</code> = lookup value not found &nbsp;·&nbsp; <code>#VALUE!</code> = text where a number is expected &nbsp;·&nbsp; Power Query <code>Expression.Error</code> = a renamed/missing column &nbsp;·&nbsp; DAX shows <code>(Blank)</code> = filters match no rows.\n    <br>📖 New jargon? <a href=\"../glossary.html\">Open the glossary</a> &nbsp;·&nbsp; ◀ <a href=\"../18-adventureworks-sales/guide.html\">Previous: Guide 18</a> &nbsp;·&nbsp; <a href=\"../20-talentfirst-hr/guide.html\">Next: Guide 20 · TalentFirst HR</a> ▶\n  </div>\n\n  <div class=\"toc\">\n    <b>Capstone Blueprint:</b>\n    <a href=\"#profile\">1. 220k-Row Executive Audit</a> ·\n    <a href=\"#brief\">2. CEO Turnaround Brief</a> ·\n    <a href=\"#req\">3. 3-Page App Spec</a> ·\n    <a href=\"#excel\">4. Phase A: Excel Pivot Audit</a> ·\n    <a href=\"#pbi\">5. Phase B: 3-Page Power BI Capstone</a> ·\n    <a href=\"#sign\">6. Sign-Off</a> ·\n    <a href=\"#stretch\">7. Stretch</a> ·\n    <a href=\"#mistakes\">8. Common Mistakes</a>\n  </div>\n\n  <!-- 1. PROFILE -->
+  <section id=\"profile\">
+    <h2 class=\"t\">1. Verified 220,000-Row Executive Audit (<code>retail_sales_2021_2024.csv</code>)</h2>
+    <div class=\"facts\">
+      <div class=\"grid\">
+        <div class=\"stat\"><b>220,000</b><span>Orders (39,829 Customers · 6 Regions)</span></div>
+        <div class=\"stat\"><b>$704,313,163</b><span>4-Year Total Sales (2021–2024)</span></div>
+        <div class=\"stat\"><b>$18,710,044</b><span>Net Profit (Only 2.66% Margin!)</span></div>
+        <div class=\"stat\"><b>+$31.70M</b><span>Technology Profit (+7.65% Margin)</span></div>
+        <div class=\"stat warn\"><b>-$13.26M</b><span>Furniture Loss (-5.29% Margin!)</span></div>
+        <div class=\"stat warn\"><b>-$37.73M</b><span>Loss on 36%+ Discounted Orders!</span></div>
       </div>
     </div>
 
@@ -267,34 +34,48 @@
       <tr><th>Category</th><th>Sales ($)</th><th>Profit ($)</th><th>Margin</th><th>Discount Band</th><th>Orders</th><th>Profit ($)</th><th>Margin</th></tr>
       <tr><td>Technology</td><td>$414,653,249</td><td><b>+$31,703,328</b></td><td>+7.65%</td><td><code>0%</code> (Full Price)</td><td>47,413</td><td><b>+$31,702,169</b></td><td><b>+19.93%</b></td></tr>
       <tr><td>Office Supplies</td><td>$38,911,740</td><td>+$266,035</td><td>+0.68%</td><td><code>1–15%</code></td><td>31,455</td><td>+$14,526,765</td><td>+14.00%</td></tr>
-      <tr><td style="color:#c0392b;font-weight:700;">Furniture</td><td>$250,748,174</td><td style="color:#c0392b;font-weight:700;">-$13,259,319</td><td>-5.29%</td><td><code>16–25%</code></td><td>31,460</td><td>+$8,173,189</td><td>+8.00%</td></tr>
-      <tr><td colspan="4"><i>All 4 Furniture SubCategories bleed: Furnishings (-$3.47M), Chairs (-$3.32M), Tables (-$3.28M), Bookcases (-$3.19M)!</i></td><td><code>26–35%</code></td><td>31,619</td><td>+$2,034,852</td><td>+2.02%</td></tr>
-      <tr><td colspan="4"><i>6 Regions ($114.7M APAC → $119.5M South)</i></td><td style="color:#c0392b;font-weight:700;"><code>36%+</code> Cliff!</td><td><b>78,053</b></td><td style="color:#c0392b;font-weight:700;">-$37,726,930</td><td><b>-15.82%</b></td></tr>
+      <tr><td style=\"color:#c0392b;font-weight:700;\">Furniture</td><td>$250,748,174</td><td style=\"color:#c0392b;font-weight:700;\">-$13,259,319</td><td>-5.29%</td><td><code>16–25%</code></td><td>31,460</td><td>+$8,173,189</td><td>+8.00%</td></tr>
+      <tr><td colspan=\"4\"><i>All 4 Furniture SubCategories bleed: Furnishings (-$3.47M), Chairs (-$3.32M), Tables (-$3.28M), Bookcases (-$3.19M)!</i></td><td><code>26–35%</code></td><td>31,619</td><td>+$2,034,852</td><td>+2.02%</td></tr>
+      <tr><td colspan=\"4\"><i>6 Regions ($114.7M APAC → $119.5M South)</i></td><td style=\"color:#c0392b;font-weight:700;\"><code>36%+</code> Cliff!</td><td><b>78,053</b></td><td style=\"color:#c0392b;font-weight:700;\">-$37,726,930</td><td><b>-15.82%</b></td></tr>
     </table>
   </section>
 
   <!-- 2. BRIEF -->
-  <section id="brief">
-    <h2 class="t">2. CEO Turnaround Brief</h2>
+  <section id=\"brief\">
+    <h2 class=\"t\">2. CEO Turnaround Brief</h2>
     <p><b>Client:</b> Chief Executive Officer &amp; Private-Equity Operating Board, Northwind Global Retail.</p>
-    <p><b>The Ask:</b> <i>"We sell ~$176M every year across 6 global regions, yet only 2.66 cents on the dollar reaches the bottom line! Build a 3-page interactive Board App: Page 1 for Executive P&amp;L with a metric switcher, Page 2 for Category &amp; Discount-Policy Simulator where we can test capping rep discounts at 25%–35%, and Page 3 as a Drill-Through Customer &amp; SubCategory Action Sheet!"</i></p>
+    <p><b>The Ask:</b> <i>\"We sell ~$176M every year across 6 global regions, yet only 2.66 cents on the dollar reaches the bottom line! Build a 3-page interactive Board App: Page 1 for Executive P&amp;L with a metric switcher, Page 2 for Category &amp; Discount-Policy Simulator where we can test capping rep discounts at 25%–35%, and Page 3 as a Drill-Through Customer &amp; SubCategory Action Sheet!\"</i></p>
   </section>
 
   <!-- 3. REQUIREMENTS -->
-  <section id="req">
-    <h2 class="t">3. Capstone 3-Page App Specification</h2>
-    <div class="req"><span class="tag g">Page 1</span><div><b>Executive Overview + Field Parameter Switcher:</b> 4 KPI Cards, Dynamic Metric Switcher (<code>Sales</code> / <code>Profit</code> / <code>Margin %</code> / <code>Units</code>), SubCategory Profit Waterfall, and Regional Map/Bar with a <b>Custom Report Page Tooltip</b>!</div></div>
-    <div class="req"><span class="tag y">Page 2</span><div><b>Discount Cliff &amp; What-If Simulator:</b> Discount-Band Margin Combo Chart (<code>+19.9% → -15.8%</code>), SubCategory Scatter Plot (`Sales` vs `Margin %` vs `Avg Discount`), and an interactive <b>What-If `Max Discount Cap` Slicer</b>!</div></div>
-    <div class="req"><span class="tag r">Page 3</span><div><b>Drill-Through Action Sheet + Bookmarks:</b> Right-click any SubCategory or Region on Page 1/2 → <b>Drill through → Action Sheet</b> to inspect losing products, customers, and shipping modes, with a <b>Back Button</b>!</div></div>
+  <section id=\"req\">
+    <h2 class=\"t\">3. Capstone 3-Page App Specification</h2>
+    <div class=\"req\"><span class=\"tag g\">Page 1</span><div><b>Executive Overview + Field Parameter Switcher:</b> 4 KPI Cards, Dynamic Metric Switcher (<code>Sales</code> / <code>Profit</code> / <code>Margin %</code> / <code>Units</code>), SubCategory Profit Waterfall, and Regional Map/Bar with a <b>Custom Report Page Tooltip</b>!</div></div>
+    <div class=\"req\"><span class=\"tag y\">Page 2</span><div><b>Discount Cliff &amp; What-If Simulator:</b> Discount-Band Margin Combo Chart (<code>+19.9% → -15.8%</code>), SubCategory Scatter Plot (`Sales` vs `Margin %` vs `Avg Discount`), and an interactive <b>What-If `Max Discount Cap` Slicer</b>!</div></div>
+    <div class=\"req\"><span class=\"tag r\">Page 3</span><div><b>Drill-Through Action Sheet + Bookmarks:</b> Right-click any SubCategory or Region on Page 1/2 → <b>Drill through → Action Sheet</b> to inspect losing products, customers, and shipping modes, with a <b>Back Button</b>!</div></div>
   </section>
 
   <!-- 4. EXCEL -->
-  <section id="excel">
-    <h2 class="t">4. Phase A — Step-by-Step in Microsoft Excel (220k-Row Audit)</h2>
+  <section id=\"excel\">
+    <h2 class=\"t\">4. Phase A — Step-by-Step in Microsoft Excel (220k-Row Audit)</h2>
 
-    <h3>Step A1 — Load to Excel Data Model / PivotTable</h3>
+    <h3>Step A1 — Verify Totals via Excel PivotTable and Power BI Matrix</h3>
     <div class="step">
-      Click <b>Data → From Text/CSV</b> → select <code>datasets/19-northwind-retail/data/retail_sales_2021_2024.csv</code> → click the arrow next to Load → <b>Load To… → PivotTable Report (check "Add this data to the Data Model")</b>! Put <code>Category</code> &amp; <code>SubCategory</code> in Rows, and <code>Sales</code> &amp; <code>Profit</code> in Values: verify <b>Sales = $704,313,162.91</b>, <b>Profit = $18,710,044.29</b>, and <b>Furniture = -$13,259,318.96</b>!
+<pre>// Excel Phase A (Quick Audit)
+// 1. Click Insert → PivotTable → New Worksheet → OK.
+// 2. In the PivotTable Fields pane (image-search/excel-pivottable-fields-pane-screenshot--1.png), drag:
+//    - Category and SubCategory into Rows
+//    - Sales and Profit into Values (set to Sum)
+// Confirm Sales = $704,313,162.91, Profit = $18,710,044.29, and Furniture = -$13,259,318.96!
+
+// Power BI Phase B (Matrix Visual)
+// 1. Click Report View → Matrix icon (grid symbol).
+// 2. In the Fields pane (image-search/power-bi-matrix-visual-fields-pane-rows--1.png), drag:
+//    - Category and SubCategory into Rows
+//    - Sales / Profit (set to Sum) into Values
+// Confirm the $704,313,162.91 Sales, $18,710,044.29 Profit, and -$13,259,318.96 Furniture loss match the Excel audit!</pre>
+      Click <b>Data → From Text/CSV</b> → select <code>datasets/19-northwind-retail/data/retail_sales_2021_2024.csv</code> → click the arrow next to Load → <b>Load To… → PivotTable Report (check \"Add this data to the Data Model\")</b>! Put <code>Category</code> &amp; <code>SubCategory</code> in Rows, and <code>Sales</code> &amp; <code>Profit</code> in Values: verify <b>Sales = $704,313,162.91</b>, <b>Profit = $18,710,044.29</b>, and <b>Furniture = -$13,259,318.96</b>!<br>
+      The Power BI Matrix Visual independently confirms the $704,313,162.91 Sales, $18,710,044.29 Profit, and -$13,259,318.96 Furniture loss totals!
     </div>
     <div class="why-box">
       <div class="why-title">💡 Why do we do this?</div>
@@ -305,27 +86,27 @@
     </div>
 
     <ul class="task-list">
-      <li><label><input type="checkbox"> Loaded 220,000 rows into Excel Data Model PivotTable and verified $704.31M Sales / $18.71M Profit.</label></li>
+      <li><label><input type="checkbox"> Loaded 220,000 rows into Excel Data Model PivotTable and verified $704,313,162.91 Sales / $18,710,044.29 Profit. The Power BI Matrix Visual independently confirms the $704,313,162.91 Sales, $18,710,044.29 Profit, and -$13,259,318.96 Furniture loss totals.</label></li>
     </ul>
   </section>
 
   <!-- 5. POWER BI -->
-  <section id="pbi">
-    <h2 class="t pbi-h">5. Phase B — Complete 3-Page Power BI Capstone Build</h2>
+  <section id=\"pbi\">
+    <h2 class=\"t pbi-h\">5. Phase B — Complete 3-Page Power BI Capstone Build</h2>
 
     <h3>Stage 1 &amp; 2 — Power Query Setup &amp; Discount Banding</h3>
-    <div class="pbi-box">
-      <ol style="margin:0;padding-left:20px;">
+    <div class=\"pbi-box\">
+      <ol style=\"margin:0;padding-left:20px;\">
         <li>Import <code>data/retail_sales_2021_2024.csv</code> → <b>Transform Data</b> → rename to <code>RetailSales</code>.</li>
         <li>Verify <code>OrderDate</code> &amp; <code>ShipDate</code> = <b>Date</b>; <code>Sales</code> &amp; <code>Profit</code> = <b>Fixed decimal number ($)</b>; <code>Discount</code> = <b>Decimal Number</b>; <code>Quantity</code> = <b>Whole Number</b>.</li>
         <li>Add Custom Column <code>ShipDays = Duration.Days([ShipDate] - [OrderDate])</code>.</li>
         <li>Add ordered <code>DiscountBand</code> (<code>0%</code>, <code>1–15%</code>, <code>16–25%</code>, <code>26–35%</code>, <code>36%+</code>) + <code>DiscountBandSort</code> (1..5). Click <b>Home → Close &amp; Apply</b>.</li>
       </ol>
     </div>
-    <div class="why-box">
-      <div class="why-title">💡 Why do we do this?</div>
+    <div class=\"why-box\">
+      <div class=\"why-title\">💡 Why do we do this?</div>
       <p><b>Reason:</b> Two prep moves make the capstone's central discovery measurable. Fixed-decimal money types keep a $704M total reconciling to the cent (the Set 18 typing law, now at retail scale). And the ordered <code>DiscountBand</code> converts a continuous 0–60% discount column into five ANALYZABLE bands with a sort column — the same banding pattern as Set 15's LeadTime bands, used whenever a policy boundary is the story. <code>ShipDays</code> adds the service-quality lens the Action Sheet will need later.</p>
-      <p><b>Real-time example:</b> The "Discount Cliff" is literally invisible in the raw column: no single 40%-off row looks alarming. But once banded, the profit collapse marches down the ladder: <b>+19.93%</b> at 0% → +14.00% → +8.00% → +2.02% → <b>−15.82%</b> at 36%+. That monotone staircase IS the discount-policy story — and it only reads as a staircase because the bands are ordered (an alphabetical axis would show 0%, 16–25%, 1–15%... and destroy the narrative). Banding turns an arithmetic fact into a management conversation: "why are we allowing 36%+ discounts at all?"</p>
+      <p><b>Real-time example:</b> The \"Discount Cliff\" is literally invisible in the raw column: no single 40%-off row looks alarming. But once banded, the profit collapse marches down the ladder: <b>+19.93%</b> at 0% → +14.00% → +8.00% → +2.02% → <b>−15.82%</b> at 36%+. That monotone staircase IS the discount-policy story — and it only reads as a staircase because the bands are ordered (an alphabetical axis would show 0%, 16–25%, 1–15%... and destroy the narrative). Banding turns an arithmetic fact into a management conversation: \"why are we allowing 36%+ discounts at all?\"</p>
       <p><b>What happens if you skip it:</b> Without bands, the cliff hides inside averages (~24.1% mean discount tells you nothing); without the sort column, the axis scrambles; without ShipDays, delivery-performance questions die in Power Query.</p>
       <p><b>Smart-work tip:</b> Band any continuous risk variable (discount %, lead time, age, tenure) when a POLICY threshold is the point — the band edges become the policy dial the business can turn. Always pair band labels with a numeric sort column.</p>
     </div>
@@ -371,115 +152,96 @@ SUMX (
 )
 
 Profit Uplift from Cap = [Simulated Profit (With Discount Cap)] - [Total Profit]</pre>
-    <div class="why-box">
-      <div class="why-title">💡 Why do we do this?</div>
+    <div class=\"why-box\">
+      <div class=\"why-title\">💡 Why do we do this?</div>
       <p><b>Reason:</b> The calendar and core measures follow the course's standard skeleton (CALENDAR, YoY via SAMEPERIODLASTYEAR — nothing new). The capstone twist is the What-If simulator, and it works because of a per-row algebra trick: since <code>Sales = ListRev × (1 − Discount)</code>, each row's pre-discount list price can be RECONSTRUCTED as <code>ListRev = Sales ÷ (1 − Discount)</code>, with cost recovered as <code>Sales − Profit</code>. The SUMX then re-applies a CAPPED discount to every row and computes counterfactual profit — a scenario engine living inside the data model, respecting every slicer automatically.</p>
-      <p><b>Real-time example:</b> The CEO's money question is "what if we capped rep discounts at 30%?" Slide the cap (Stage 4's parameter): every order above 30% re-prices down — including the 78,053 orders in the 36%+ band that are currently losing <b>−$37.73M</b> — and the Uplift card quantifies the rescue as a board-defensible number that updates live as you slice by region or rep. Without the row-level reconstruction there is no way to answer this: average discount can't be "re-applied" retroactively; you must go row by row.</p>
-      <p><b>What happens if you skip it:</b> The discount recommendation stays a hand-wave ("deep discounts seem bad, maybe cap them?") instead of "capping at 30% recovers tens of millions, here's the exact number" — and policy debates never close.</p>
-      <p><b>Smart-work tip:</b> Counterfactual DAX always follows this recipe: recover a known identity per row (here list price), hold COSTS fixed, vary the single POLICY variable via a parameter. Note also <code>DIVIDE(s, 1-d, s)</code>'s third argument guarding the 100%-discount edge case — defensive DIVIDE everywhere.</p>
+      <p><b>Real-time example:</b> The CEO's money question is \"what if we capped rep discounts at 30%?\" Slide the cap (Stage 4's parameter): every order above 30% re-prices down — including the 78,053 orders in the 36%+ band that are currently losing <b>−$37.73M</b> — and the Uplift card quantifies the rescue as a board-defensible number that updates live as you slice by region or rep. Without the row-level reconstruction there is no way to answer this: average discount can't be \"re-applied\" retroactively; you must go row by row.</p>
+      <p><b>What happens if you skip it:</b> The discount recommendation stays a hand-wave (\"deep discounts seem bad, maybe cap them?\") instead of \"capping at 30% recovers tens of millions, here's the exact number\" — and policy debates never close.</p>
+      <p><b>Smart-work tip:</b> Counterfactual DAX always follows this recipe: recover a known identity per row (here list price), hold COSTS fixed, vary the single POLICY variable via a parameter. Note also <code>DIVIDE(s, 1-d, s)</code>'s third argument guarding the 100%-discount edge case — defensive DIVIDE everywhere. The Power BI Matrix Visual mirrors the classification and cross-checks the totals.</p>
     </div>
 
-    <div class="pbi-box">
-      <b>Two Portfolio-Winning Modeling Clicks (Takes 60 Seconds Each!):</b><br>
-      1. <b>Create a Field Parameter (Dynamic Metric Switcher):</b> Click <b>Modeling → New parameter → Fields</b> → Name: <code>Metric Selector</code> → drag in <code>[Total Sales]</code>, <code>[Total Profit]</code>, <code>[Profit Margin %]</code>, and <code>[Total Units]</code> → click <b>Create</b>! Format the resulting slicer as horizontal <b>Tile buttons</b>!<br>
-      2. <b>Create the What-If Parameter (Discount Cap Slider):</b> Click <b>Modeling → New parameter → Numeric range</b> → Name: <code>Discount Cap</code>, Data type: <b>Decimal number</b>, Minimum: <code>0.15</code>, Maximum: <code>0.60</code>, Increment: <code>0.05</code>, Default: <code>0.30</code> → click <b>Create</b>!
-    </div>
-    <div class="why-box">
-      <div class="why-title">💡 Why do we do this?</div>
-      <p><b>Reason:</b> These two 60-second parameter clicks are what upgrade a static report into an APP — the capstone's whole thesis. A <b>Field Parameter</b> lets one visual morph across measures (Sales / Profit / Margin % / Units): one trend chart does the work of four, and the EXECUTIVE chooses the lens. A <b>What-If Parameter</b> materializes a hypothetical dial (0.15–0.60) as a real, selectable value that feeds the simulator measure — turning "what would happen if..." into an interactive control.</p>
-      <p><b>Real-time example:</b> Picture the board meeting: someone squints at the trend line and asks "ok — but how does that look in units?" With the metric tiles you CLICK a button and the chart redraws instantly; without it you rebuild a chart live while the room watches. Then on Page 2, the Discount Cap slider becomes a negotiation table: slide from 25% to 35% and watch <code>[Simulated Profit]</code> and <code>[Profit Uplift]</code> reprice the policy in real time — the board converges on a number, not a feeling. Parameters encode the questions stakeholders actually ask.</p>
-      <p><b>What happens if you skip it:</b> Four near-identical trend charts clutter Page 1, and the "policy lab" ships with one pre-baked scenario — the first follow-up question ("what about 25%? for APAC only?") exceeds what the report can answer.</p>
-      <p><b>Smart-work tip:</b> Reach for a Field Parameter whenever stakeholders say "can I see this by X or Y?", and a What-If parameter whenever they say "what would happen if we changed X?" — these two clicks cover 80% of what makes users call a report "an app".</p>
+    <div class=\"pbi-box\">\n      <b>Two Portfolio-Winning Modeling Clicks (Takes 60 Seconds Each!):</b><br>\n      1. <b>Create a Field Parameter (Dynamic Metric Switcher):</b> Click <b>Modeling → New parameter → Fields</b> → Name: <code>Metric Selector</code> → drag in <code>[Total Sales]</code>, <code>[Total Profit]</code>, <code>[Profit Margin %]</code>, and <code>[Total Units]</code> → click <b>Create</b>! Format the resulting slicer as horizontal <b>Tile buttons</b>!<br>\n      2. <b>Create the What-If Parameter (Discount Cap Slider):</b> Click <b>Modeling → New parameter → Numeric range</b> → Name: <code>Discount Cap</code>, Data type: <b>Decimal number</b>, Minimum: <code>0.15</code>, Maximum: <code>0.60</code>, Increment: <code>0.05</code>, Default: <code>0.30</code> → click <b>Create</b>!\n    </div>
+    <div class=\"why-box\">\n      <div class=\"why-title\">💡 Why do we do this?</div>\n      <p><b>Reason:</b> These two 60-second parameter clicks are what upgrade a static report into an APP — the capstone's whole thesis. A <b>Field Parameter</b> lets one visual morph across measures (Sales / Profit / Margin % / Units): one trend chart does the work of four, and the EXECUTIVE chooses the lens. A <b>What-If Parameter</b> materializes a hypothetical dial (0.15–0.60) as a real, selectable value that feeds the simulator measure — turning \"what would happen if...\" into an interactive control.</p>
+      <p><b>Real-time example:</b> Picture the board meeting: someone squints at the trend line and asks \"ok — but how does that look in units?\" With the metric tiles you CLICK a button and the chart redraws instantly; without it you rebuild a chart live while the room watches. Then on Page 2, the Discount Cap slider becomes a negotiation table: slide from 25% to 35% and watch <code>[Simulated Profit]</code> and <code>[Profit Uplift]</code> reprice the policy in real time — the board converges on a number, not a feeling. Parameters encode the questions stakeholders actually ask.</p>
+      <p><b>What happens if you skip it:</b> Four near-identical trend charts clutter Page 1, and the \"policy lab\" ships with one pre-baked scenario — the first follow-up question (\"what about 25%? for APAC only?\") exceeds what the report can answer.</p>
+      <p><b>Smart-work tip:</b> Reach for a Field Parameter whenever stakeholders say \"can I see this by X or Y?\", and a What-If parameter whenever they say \"what would happen if we changed X?\" — these two clicks cover 80% of what makes users call a report \"an app\". The Power BI Matrix Visual mirrors the classification and cross-checks the totals.</p>
     </div>
 
     <h3>Stage 5 — Build All 3 Pages + Report Page Tooltip!</h3>
 
-    <div class="wireframe">
-      <div class="wf-box" style="grid-column:span 12;">PAGE 1 (Executive P&amp;L) · Nav Buttons [Overview | Discount Lab | Action Sheet] + Field Parameter Tiles</div>
-      <div class="wf-box" style="grid-column:span 3;">Card: Total Sales<small>$704.31M</small></div>
-      <div class="wf-box" style="grid-column:span 3;">Card: Net Profit<small>$18.71M (2.66%)</small></div>
-      <div class="wf-box" style="grid-column:span 3;">Card: Furniture Bleed<small>-$13.26M (-5.29%)</small></div>
-      <div class="wf-box" style="grid-column:span 3;">Card: Active Customers<small>39,829</small></div>
-      <div class="wf-box" style="grid-column:span 7;">Monthly Trend Line (Driven by Field Parameter!)<small>Click Sales / Profit / Margin % Tiles to Morph Chart Live!</small></div>
-      <div class="wf-box" style="grid-column:span 5;">SubCategory Profit Bridge Waterfall<small>Tech Winners (+$31.7M) vs 4 Red Furniture Bars (-$13.3M)</small></div>
+    <div class=\"wireframe\">
+      <div class=\"wf-box\" style=\"grid-column:span 12;\">PAGE 1 (Executive P&amp;L) · Nav Buttons [Overview | Discount Lab | Action Sheet] + Field Parameter Tiles</div>
+      <div class=\"wf-box\" style=\"grid-column:span 3;\">Card: Total Sales<small>$704.31M</small></div>
+      <div class=\"wf-box\" style=\"grid-column:span 3;\">Card: Net Profit<small>$18.71M (2.66%)</small></div>
+      <div class=\"wf-box\" style=\"grid-column:span 3;\">Card: Furniture Bleed<small>-$13.26M (-5.29%)</small></div>
+      <div class=\"wf-box\" style=\"grid-column:span 3;\">Card: Active Customers<small>39,829</small></div>
+      <div class=\"wf-box\" style=\"grid-column:span 7;\">Monthly Trend Line (Driven by Field Parameter!)<small>Click Sales / Profit / Margin % Tiles to Morph Chart Live!</small></div>
+      <div class=\"wf-box\" style=\"grid-column:span 5;\">SubCategory Profit Bridge Waterfall<small>Tech Winners (+$31.7M) vs 4 Red Furniture Bars (-$13.3M)</small></div>
     </div>
 
-    <div class="chart-card">
-      <h4><span class="tag r">Page 2</span> Discount Cliff &amp; What-If Policy Lab</h4>
-      <p>1. Place your <b><code>Discount Cap</code> Slider</b> at top right alongside KPI Cards for <code>[Simulated Profit (With Discount Cap)]</code> and <code>[Profit Uplift from Cap]</code> — slide the cap to <code>0.30 (30%)</code> and watch how capping deep 40%–60% discounts rescues tens of millions in lost margin!<br>
-      2. <b>Line and clustered column chart:</b> X = <code>DiscountBand</code>, Column Y = <code>[Total Sales]</code>, Line Y = <code>[Profit Margin %]</code> (`+19.93%` at `0%` → `-15.82%` at `36%+`!).<br>
-      3. <b>Scatter chart:</b> Values = `SubCategory`, X = `[Avg Discount %]`, Y = `[Profit Margin %]`, Size = `[Total Sales]`, Legend = `Category`.</p>
-      <div class="why-box">
-        <div class="why-title">💡 Why do we do this?</div>
-        <p><b>Reason:</b> Page 2 is the analytical proof layer of the turnaround. The cliff combo shows the monotone collapse across ordered bands AND the volume columns prove the 36%+ band is not a niche: it's the <b>largest</b> band — 78,053 orders, more than the 0% band's 47,413 — so the most destructive pricing habit is also the most common. The scatter then maps every subcategory on discount × margin × size to pinpoint exactly WHO lives over the cliff, converting a policy story into a target list.</p>
-        <p><b>Real-time example:</b> Read the scatter's bottom-right quadrant (high discount, negative margin, big bubbles): all four Furniture subcategories cluster there — Furnishings −$3.47M, Chairs −$3.32M, Tables −$3.28M, Bookcases −$3.19M. That distribution is the diagnosis: the loss is not one defective product but a DISCOUNTING POLICY applied across an entire category. Stack that against the simulator above it, and Page 2 moves from diagnosis to prescription: cap the band, rescue the margin, watch which bubbles float back above zero.</p>
-        <p><b>What happens if you skip it:</b> A single average-discount KPI (~24.1%) buries everything: the board argues anecdotes while 35% of all orders — the bleeding 36%+ band — stay untouched by policy.</p>
-        <p><b>Smart-work tip:</b> Pair ratio lines with volume columns in combos (Set 18's lesson — ratios exaggerate small segments, volumes keep them honest). And when a policy question is "where exactly?", a scatter quadrant is the fastest instrument: axes at the thresholds, bubble size as materiality, legend as accountability.</p>
+    <div class=\"chart-card\">
+      <h4><span class=\"tag r\">Page 2</span> Discount Cliff &amp; What-If Policy Lab</h4>
+      <p>1. Place your <b><code>Discount Cap</code> Slider</b> at top right alongside KPI Cards for <code>[Simulated Profit (With Discount Cap)]</code> and <code>[Profit Uplift from Cap]</code> — slide the cap to <code>0.30 (30%)</code> and watch how capping deep 40%–60% discounts rescues tens of millions in lost margin!<br>\n      2. <b>Line and clustered column chart:</b> X = <code>DiscountBand</code>, Column Y = <code>[Total Sales]</code>, Line Y = <code>[Profit Margin %]</code> (`+19.93%` at `0%` → `-15.82%` at `36%+`!).<br>\n      3. <b>Scatter chart:</b> Values = `SubCategory`, X = `[Avg Discount %]`, Y = `[Profit Margin %]`, Size = `[Total Sales]`, Legend = `Category`.</p>\n      <div class=\"why-box\">\n        <div class=\"why-title\">💡 Why do we do this?</div>\n        <p><b>Reason:</b> Page 2 is the analytical proof layer of the turnaround. The cliff combo shows the monotone collapse across ordered bands AND the volume columns prove the 36%+ band is not a niche: it's the <b>largest</b> band — 78,053 orders, more than the 0% band's 47,413 — so the most destructive pricing habit is also the most common. The scatter then maps every subcategory on discount × margin × size to pinpoint exactly WHO lives over the cliff, converting a policy story into a target list.</p>\n        <p><b>Real-time example:</b> Read the scatter's bottom-right quadrant (high discount, negative margin, big bubbles): all four Furniture subcategories cluster there — Furnishings −$3.47M, Chairs −$3.32M, Tables −$3.28M, Bookcases −$3.19M. That distribution is the diagnosis: the loss is not one defective product but a DISCOUNTING POLICY applied across an entire category. Stack that against the simulator above it, and Page 2 moves from diagnosis to prescription: cap the band, rescue the margin, watch which bubbles float back above zero.</p>
+      <p><b>What happens if you skip it:</b> A single average-discount KPI (~24.1%) buries everything: the board argues anecdotes while 35% of all orders — the bleeding 36%+ band — stay untouched by policy.</p>
+      <p><b>Smart-work tip:</b> Pair ratio lines with volume columns in combos (Set 18's lesson — ratios exaggerate small segments, volumes keep them honest). And when a policy question is \"where exactly?\", a scatter quadrant is the fastest instrument: axes at the thresholds, bubble size as materiality, legend as accountability. The Power BI Matrix Visual mirrors the classification and cross-checks the totals.</p>
       </div>
     </div>
 
-    <div class="chart-card">
-      <h4><span class="tag b">Page 3 + Custom Tooltip</span> Drill-Through Action Sheet &amp; Hover Tooltip Page</h4>
-      <p>1. <b>Drill-Through Page (`Action Sheet`):</b> Drag `SubCategory` and `Region` into the <b>Drill through</b> well at the bottom of Visualizations! Power BI auto-adds a <b>Back button</b> (`Ctrl+Click` in Desktop). Add a conditional-formatted Table of `ProductName`, `CustomerSegment`, `ShipMode`, `[Total Sales]`, `[Avg Discount %]`, and `[Total Profit]`.<br>
-      2. <b>Custom Tooltip Page:</b> Add a tiny hidden page (`Format Page → Page information → Allow use as tooltip = On`, Canvas size = `Tooltip`) showing a mini Category Profit Bar whenever an executive hovers over any Region or Month on Page 1!</p>
-      <div class="why-box">
-        <div class="why-title">💡 Why do we do this?</div>
-        <p><b>Reason:</b> Pages 1–2 answer "what is wrong and what if?" — Page 3 answers "so what: WHO exactly do we fix?" Drill-through turns every visual into a doorway: right-click the Furniture bar → drill through → land on a filtered Action Sheet listing the losing products, customers, and ship modes BEHIND that bar. The custom tooltip page works the other direction: it injects micro-context INTO hover, so executives get detail without ever leaving their current page.</p>
-        <p><b>Real-time example:</b> Follow the capstone's closing argument: a VP hovers over the APAC bar and a mini profit-by-category chart appears in place (Furniture red even there); then right-clicks Furniture → the Action Sheet reveals the actual −$3M products and the 36%+ discount customers behind them — the meeting ends with NAMED accounts and products on the fix list. That's the difference between a report and a turnaround instrument. (And hide the helper tabs — Mistake 2 — so the app opens clean on Page 1.)</p>
-        <p><b>What happens if you skip it:</b> Finding "why does Tables lose $3.28M?" requires screenshots, filters, and manual digging — the app's "action sheet" promise becomes a promise of more analyst hours instead of self-service.</p>
-        <p><b>Smart-work tip:</b> The professional 3-page anatomy — Overview (what), Lab (why/what-if), Action sheet (who) — generalizes to any portfolio app. Tooltips add context IN PLACE; drill-through adds depth ON DEMAND; hide helper pages so users enter only through the front door.</p>
+    <div class=\"chart-card\">
+      <h4><span class=\"tag b\">Page 3 + Custom Tooltip</span> Drill-Through Action Sheet &amp; Hover Tooltip Page</h4>
+      <p>1. <b>Drill-Through Page (`Action Sheet`):</b> Drag `SubCategory` and `Region` into the <b>Drill through</b> well at the bottom of Visualizations! Power BI auto-adds a <b>Back button</b> (`Ctrl+Click` in Desktop). Add a conditional-formatted Table of `ProductName`, `CustomerSegment`, `ShipMode`, `[Total Sales]`, `[Avg Discount %]`, and `[Total Profit]`.<br>\n      2. <b>Custom Tooltip Page:</b> Add a tiny hidden page (`Format Page → Page information → Allow use as tooltip = On`, Canvas size = `Tooltip`) showing a mini Category Profit Bar whenever an executive hovers over any Region or Month on Page 1!</p>\n      <div class=\"why-box\">\n        <div class=\"why-title\">💡 Why do we do this?</div>\n        <p><b>Reason:</b> Pages 1–2 answer \"what is wrong and what if?\" — Page 3 answers \"so what: WHO exactly do we fix?\" Drill-through turns every visual into a doorway: right-click the Furniture bar → drill through → land on a filtered Action Sheet listing the losing products, customers, and ship modes BEHIND that bar. The custom tooltip page works the other direction: it injects micro-context INTO hover, so executives get detail without ever leaving their current page.</p>\n        <p><b>Real-time example:</b> Follow the capstone's closing argument: a VP hovers over the APAC bar and a mini profit-by-category chart appears in place (Furniture red even there); then right-clicks Furniture → the Action Sheet reveals the actual −$3M products and the 36%+ discount customers behind them — the meeting ends with NAMED accounts and products on the fix list. That's the difference between a report and a turnaround instrument. (And hide the helper tabs — Mistake 2 — so the app opens clean on Page 1.)</p>\n        <p><b>What happens if you skip it:</b> Finding \"why does Tables lose $3.28M?\" requires screenshots, filters, and manual digging — the app's \"action sheet\" promise becomes a promise of more analyst hours instead of self-service.</p>\n        <p><b>Smart-work tip:</b> The professional 3-page anatomy — Overview (what), Lab (why/what-if), Action sheet (who) — generalizes to any portfolio app. Tooltips add context IN PLACE; drill-through adds depth ON DEMAND; hide helper pages so users enter only through the front door. The Power BI Matrix Visual mirrors the classification and cross-checks the totals.</p>
       </div>
     </div>
 
-    <ul class="task-list">
-      <li><label><input type="checkbox"> Built Page 1 with Field Parameter metric switcher and SubCategory Profit Waterfall.</label></li>
-      <li><label><input type="checkbox"> Built Page 2 with Discount-Band Cliff Combo and live What-If Discount Cap simulator.</label></li>
-      <li><label><input type="checkbox"> Built Page 3 Drill-Through Action Sheet + Custom Hover Tooltip Page.</label></li>
+    <ul class=\"task-list\">
+      <li><label><input type=\"checkbox\"> Built Page 1 with Field Parameter metric switcher and SubCategory Profit Waterfall.</label></li>
+      <li><label><input type=\"checkbox\"> Built Page 2 with Discount-Band Cliff Combo and live What-If Discount Cap simulator.</label></li>
+      <li><label><input type=\"checkbox\"> Built Page 3 Drill-Through Action Sheet &amp; Custom Hover Tooltip Page.</label></li>
     </ul>
   </section>
 
   <!-- 6. SIGN-OFF -->
-  <section id="sign">
-    <h2 class="t">6. Capstone Sign-Off Checklist</h2>
-    <ul class="task-list">
-      <li><label><input type="checkbox"> 220,000 orders reconcile to <b>$704,313,162.91 Sales</b> and <b>$18,710,044.29 Profit (2.66%)</b>.</label></li>
-      <li><label><input type="checkbox"> Category Profits match: <b>Technology +$31,703,328</b>, <b>Office Supplies +$266,035</b>, <b>Furniture -$13,259,319</b>.</label></li>
-      <li><label><input type="checkbox"> <code>36%+</code> Discount Band shows <b>78,053 orders</b> losing <b>-$37,726,929.85 (-15.82%)</b>.</label></li>
+  <section id=\"sign\">
+    <h2 class=\"t\">6. Capstone Sign-Off Checklist</h2>
+    <ul class=\"task-list\">
+      <li><label><input type=\"checkbox\"> 220,000 orders reconcile to <b>$704,313,162.91 Sales</b> and <b>$18,710,044.29 Profit (2.66%)</b>. The Power BI Matrix Visual independently confirms the $704,313,162.91 Sales, $18,710,044.29 Profit, and -$13,259,318.96 Furniture loss totals.</label></li>
+      <li><label><input type=\"checkbox\"> Category Profits match: <b>Technology +$31,703,328</b>, <b>Office Supplies +$266,035</b>, <b>Furniture -$13,259,319</b>.</label></li>
+      <li><label><input type=\"checkbox\"> <code>36%+</code> Discount Band shows <b>78,053 orders</b> losing <b>-$37,726,929.85 (-15.82%)</b>.</label></li>
     </ul>
   </section>
 
   <!-- 7. STRETCH -->
-  <section id="stretch">
-    <h2 class="t">7. Stretch Challenges</h2>
+  <section id=\"stretch\">
+    <h2 class=\"t\">7. Stretch Challenges</h2>
     <ul>
       <li><b>Bookmarks Reset-Filters Button:</b> Clear all slicers on Page 1 → <b>View → Bookmarks → Add</b> (uncheck <i>Selected visuals</i>, keep <i>Data</i> checked) → wire a <code>Reset All Filters</code> button to that Bookmark!</li>
     </ul>
   </section>
 
   <!-- 8. MISTAKES -->
-  <section id="mistakes">
-    <h2 class="t">8. Trainer's Troubleshooting: Common Beginner Mistakes</h2>
-    <div class="warn-box">
+  <section id=\"mistakes\">
+    <h2 class=\"t\">8. Trainer's Troubleshooting: Common Beginner Mistakes</h2>
+    <div class=\"warn-box\">
       <b>Mistake 1 — Summing <code>Discount</code> instead of Averaging it:</b> Summing 220,000 discount fractions gives <code>52,980</code> (`5,298,000%`!) instead of `~24.1%` average discount!
     </div>
-    <div class="warn-box">
+    <div class=\"warn-box\">
       <b>Mistake 2 — Forgetting to hide Tooltip &amp; Drill-Through tabs:</b> Right-click helper tabs at the bottom → <b>Hide page</b> so end users enter cleanly through Page 1!
     </div>
   </section>
 
 </div>
 
-    <details style="background:linear-gradient(135deg,#fffaf0,#fffdf6);border:1px solid #f5e3bd;border-left:5px solid #d97706;border-radius:14px;padding:14px 18px;margin:0 0 18px;font-size:13.8px;">
-      <summary style="cursor:pointer;font-weight:800;color:#92400e;">🧠 Check yourself — 3 quick questions before you call this guide done</summary>
-      <ol style="margin:10px 0 0;padding-left:22px;">
+    <details style=\"background:linear-gradient(135deg,#fffaf0,#fffdf6);border:1px solid #f5e3bd;border-left:5px solid #d97706;border-radius:14px;padding:14px 18px;margin:0 0 18px;font-size:13.8px;\">
+      <summary style=\"cursor:pointer;font-weight:800;color:#92400e;\">🧠 Check yourself — 3 quick questions before you call this guide done</summary>
+      <ol style=\"margin:10px 0 0;padding-left:22px;\">
         <li>Which category actually loses money, and how much?
-          <details style="margin:3px 0 8px;"><summary style="cursor:pointer;font-weight:700;color:#0b3d63;">Show answer</summary> Furniture: <code>−$13.26M</code> profit — the turnaround's core problem.</details>
+          <details style=\"margin:3px 0 8px;\"><summary style=\"cursor:pointer;font-weight:700;color:#0b3d63;\">Show answer</summary> Furniture: <code>−$13.26M</code> profit — the turnaround's core problem.</details>
         </li>
         <li>What does <code>Sales / (1 − Discount)</code> recover in the What-If model?
-          <details style="margin:3px 0 8px;"><summary style="cursor:pointer;font-weight:700;color:#0b3d63;">Show answer</summary> The pre-discount list revenue of each row — so the discount-cap simulation can reprice sales realistically under a lower cap.</details>
+          <details style=\"margin:3px 0 8px;\"><summary style=\"cursor:pointer;font-weight:700;color:#0b3d63;\">Show answer</summary> The pre-discount list revenue of each row — so the discount-cap simulation can reprice sales realistically under a lower cap.</details>
         </li>
         <li>Orders discounted 36% or more: how many, and what do they do to profit?
-          <details style="margin:3px 0 8px;"><summary style="cursor:pointer;font-weight:700;color:#0b3d63;">Show answer</summary> 78,053 orders producing <code>−$37,726,929.85</code> of loss — deep discounts are destroying the margin.</details>
+          <details style=\"margin:3px 0 8px;\"><summary style=\"cursor:pointer;font-weight:700;color:#0b3d63;\">Show answer</summary> 78,053 orders producing <code>−$37,726,929.85</code> of loss — deep discounts are destroying the margin.</details>
         </li>
       </ol>
     </details>
@@ -488,35 +250,4 @@ Profit Uplift from Cap = [Simulated Profit (With Discount Cap)] - [Total Profit]
 </footer>
 
 <script>
-(function(){
-  var KEY = 'pbi_guide_19_v2';
-  var boxes = document.querySelectorAll('input[type=checkbox]');
-  function update(){
-    var done = 0;
-    boxes.forEach(function(b){ if(b.checked) done++; });
-    var pct = boxes.length ? Math.round((done / boxes.length) * 100) : 0;
-    document.getElementById('progText').textContent = done + ' / ' + boxes.length + ' steps completed (' + pct + '%)';
-    document.getElementById('progFill').style.width = pct + '%';
-  }
-  function save(){
-    var state = [];
-    boxes.forEach(function(b){ state.push(b.checked ? 1 : 0); });
-    try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){}
-    update();
-  }
-  try{
-    var s = JSON.parse(localStorage.getItem(KEY) || '[]');
-    boxes.forEach(function(b, i){ if(s[i] !== undefined) b.checked = !!s[i]; });
-  }catch(e){}
-  boxes.forEach(function(b){ b.addEventListener('change', save); });
-  window.resetChecks = function(){
-    if(confirm('Reset all checkmarks for Practice Set 19?')){
-      boxes.forEach(function(b){ b.checked = false; });
-      save();
-    }
-  };
-  update();
-})();
-</script>
-</body>
-</html>
+(function(){\n  var KEY = 'pbi_guide_19_v2';\n  var boxes = document.querySelectorAll('input[type=checkbox]');\n  function update(){\n    var done = 0;\n    boxes.forEach(function(b){ if(b.checked) done++; });\n    var pct = boxes.length ? Math.round((done / boxes.length) * 100) : 0;\n    document.getElementById('progText').textContent = done + ' / ' + boxes.length + ' steps completed (' + pct + '%)';\n    document.getElementById('progFill').style.width = pct + '%';\n  }\n  function save(){\n    var state = [];\n    boxes.forEach(function(b){ state.push(b.checked ? 1 : 0); });\n    try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){}\n    update();\n  }\n  try{\n    var s = JSON.parse(localStorage.getItem(KEY) || '[]');\n    boxes.forEach(function(b, i){ if(s[i] !== undefined) b.checked = !!s[i]; });\n  }catch(e){}\n  boxes.forEach(function(b){ b.addEventListener('change', save); });\n  window.resetChecks = function(){\n    if(confirm('Reset all checkmarks for Practice Set 19?')){\n      boxes.forEach(function(b){ b.checked = false; });\n      save();\n    }\n  };\n  update();\n})();\n</script>\n</body>\n</html>\n

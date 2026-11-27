@@ -344,21 +344,43 @@
       <p><b>Smart-work tip:</b> The ×52 annualization (hours × rate × 52 weeks) is the standard payroll convention; say it out loud in your report ("estimated on 52 scheduled weeks") because an ESTIMATE must be labeled as one. Also keep the two raw measures ([Salaried Payroll], [Est Hourly Payroll]) separate in the dashboard so citizens can see BOTH layers, not just the blended total.</p>
     </div>
 
-    <h3>Step A3 — PivotTable Check</h3>
+    <h3>Step A3 — PivotTable Check and Power BI Matrix</h3>
     <div class="step">
-      Insert a PivotTable: Rows = <code>Department</code>, Values = <code>Count of Name</code> (<b>32,226</b>), <code>Sum of Annual Salary</code> (<b>$2,882,248,082.04</b>), and <code>Sum of EstAnnualPay</code> (<b>$3,592,272,113.64</b>). Verify <b>CHICAGO POLICE DEPARTMENT = $1.44B</b> (#1) and save as <code>08-chicago-payroll-clean.xlsx</code>.
+      <ol style="margin:0;padding-left:20px;">
+        <li><b>Excel Phase A (Quick Audit)</b>
+          <ul>
+            <li>Insert a PivotTable on a new sheet: Rename the sheet <code>Pivot_Check_Excel</code>.</li>
+            <li>In the <b>PivotTable Fields</b> pane on the right:
+              <ul>
+                <li>Drag <code>Department</code> into <b>Rows</b>.</li>
+                <li>Drag <code>Name</code> into <b>Values</b> (set to <b>Count</b> — <b>32,226</b>).</li>
+                <li>Drag <code>Annual Salary</code> into <b>Values</b> (set to <b>Sum</b> — <b>$2,882,248,082.04</b>).</li>
+                <li>Drag <code>EstAnnualPay</code> into <b>Values</b> (set to <b>Sum</b> — <b>$3,592,272,113.64</b>).</li>
+              </ul>
+            </li>
+            <li>Verify <b>CHICAGO POLICE DEPARTMENT = $1.44B</b> (#1) and save as <code>08-chicago-payroll-clean.xlsx</code>.</li>
+          </ul>
+        </li>
+        <li><b>Power BI Phase B (Matrix Visual)</b>
+          <ul>
+            <li>In <b>Report View</b>, click the blank canvas → in <b>Visualizations</b> pane, click the <b>Matrix</b> icon (grid symbol).</li>
+            <li>In the <b>Fields</b> pane, drag <code>Department</code> into <b>Rows</b>, and drag <code>Name</code> (set to <b>Count</b>), <code>Annual Salary</code> (set to <b>Sum</b>), and <code>EstAnnualPay</code> (set to <b>Sum</b>) into <b>Values</b>.</li>
+            <li>Format the currency values as <b>$#,##0.00</b>. Verify <b>CHICAGO POLICE DEPARTMENT = $1.44B</b> (#1) and the totals match the Excel audit (<b>32,226</b>, <b>$2,882,248,082.04</b>, <b>$3,592,272,113.64</b>).</li>
+          </ul>
+        </li>
+      </ol>
     </div>
     <div class="why-box">
       <div class="why-title">💡 Why do we do this?</div>
-      <p><b>Reason:</b> The pivot pins three canonical totals — headcount (32,226), salaried bill ($2.88B), combined payroll ($3.59B) — that every Power BI visual must reproduce. Note the deliberate choice of <b>Count of Name</b> (a row count) rather than "distinct names": a 32K-person workforce certainly contains duplicate names, and counting distinct names would silently undercount real employees.</p>
-      <p><b>Real-time example:</b> Scan the department rows and the transparency story organizes itself: Police $1.44B (40% of combined payroll by itself!), Fire $606M — and then the trap departments where salaried and combined disagree wildly (Water $47M → $239M). Having verified both totals in Excel, when your Power BI donut shows 77.2%/22.8% and your stacked bar reproduces the $3.59B sum, you KNOW the model is intact — including that no hourly row was dropped or zero-filled during load.</p>
-      <p><b>What happens if you skip it:</b> If even one hourly row got mis-loaded, [Est Hourly Payroll] drifts from $710.02M and nothing looks broken — the error only surfaces when a journalist compares the portal against the city's published budget.</p>
-      <p><b>Smart-work tip:</b> For public-facing numbers, verify with BOTH the column total AND the row count — dollars without a headcount check can't catch a duplicated or dropped row. Count + sum together certify a table.</p>
+      <p><b>Reason:</b> The pivot and matrix pin three canonical totals — headcount (32,226), salaried bill ($2.88B), combined payroll ($3.59B) — that every Power BI visual must reproduce. Note the deliberate choice of <b>Count of Name</b> (a row count) rather than "distinct names": a 32K-person workforce certainly contains duplicate names, and counting distinct names would silently undercount real employees. Both engines independently compute the target numbers to prove the data integrity.</p>
+      <p><b>Real-time example:</b> Scan the department rows and the transparency story organizes itself: Police $1.44B (40% of combined payroll by itself!), Fire $606M — and then the trap departments where salaried and combined disagree wildly (Water $47M → $239M). Having verified both totals in Excel and Power BI, when your Power BI donut shows 77.2%/22.8% and your stacked bar reproduces the $3.59B sum, you KNOW the model is intact — including that no hourly row was dropped or zero-filled during load.</p>
+      <p><b>What happens if you skip it:</b> If even one hourly row got mis-loaded, [Est Hourly Payroll] drifts from $710.02M and nothing looks broken — the error only surfaces when a journalist compares the portal against the city's published budget. If the engines disagree, the data import might have hidden type errors.</p>
+      <p><b>Smart-work tip:</b> For public-facing numbers, verify with BOTH the column total AND the row count — dollars without a headcount check can't catch a duplicated or dropped row. Count + sum together certify a table. Screenshot the verified PivotTable and Matrix and keep them beside you as your dashboard's acceptance test.</p>
     </div>
 
     <ul class="task-list">
       <li><label><input type="checkbox"> Loaded all 32,226 employees without deleting blank <code>Annual Salary</code> rows.</label></li>
-      <li><label><input type="checkbox"> Verified $2.88B Salaried Bill and $3.59B Combined Annualized Payroll in Excel PivotTable.</label></li>
+      <li><label><input type="checkbox"> Verified $2.88B Salaried Bill and $3.59B Combined Annualized Payroll in Excel PivotTable and Power BI Matrix.</label></li>
     </ul>
   </section>
 

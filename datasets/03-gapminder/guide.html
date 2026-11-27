@@ -345,29 +345,51 @@
       <p><b>Smart-work tip:</b> Before using any column in a SUM, read its units: people, dollars (totals) → additive ✓. Dollars-per-person, years, percentages → build the numerator × denominator product first (like <code>pop × gdpPercap</code>), then sum. One multiplication row now saves every aggregate later.</p>
     </div>
 
-    <h3>Step A3 — Prove 1952 vs. 2007 in an Excel PivotTable</h3>
+    <h3>Step A3 — Prove 1952 vs. 2007 in an Excel PivotTable and Power BI Matrix</h3>
     <div class="step">
       <ol style="margin:0;padding-left:20px;">
-        <li>Click inside the table → <b>Insert → PivotTable → New Worksheet → OK</b>.</li>
-        <li>Drag <code>year</code> into <b>Filters</b> (top-left box of PivotTable Fields!). Click the <code>year</code> filter dropdown on cell <code>B1</code> → select <code>2007</code> → click <b>OK</b>.</li>
-        <li>Drag <code>continent</code> into <b>Rows</b>.</li>
-        <li>Drag <code>lifeExp</code> into <b>Values</b> → change Value Field Settings from Sum to <b>Average</b> (1 decimal).</li>
-        <li>Drag <code>pop</code> into <b>Values</b> (<b>Sum of pop</b>) and <code>TotalGDP</code> into <b>Values</b> (<b>Sum of TotalGDP</b>).</li>
-        <li>Verify against Section 1: Oceania = <b>80.7 yrs</b>, Europe = <b>77.6 yrs</b>, Africa = <b>54.8 yrs</b>, Overall 2007 Average = <b>67.0 yrs</b>, Total Pop = <b>6,251,013,179</b>, Total GDP = <b>$58.11 Trillion</b>!</li>
-        <li>Clear any filter on the raw data tab (leave all 1,704 rows intact!) and <b>Save As</b> <code>03-gapminder-clean.xlsx</code>.</li>
+        <li><b>Excel Phase A (Quick Audit)</b>
+          <ul>
+            <li>Click inside the table → <b>Insert → PivotTable → New Worksheet → OK</b>. Rename the sheet <code>Pivot_Check_Excel</code>.</li>
+            <li>In the <b>PivotTable Fields</b> pane on the right:
+              <ul>
+                <li>Drag <code>year</code> into <b>Filters</b> (top-left box). Click the filter dropdown on cell <code>B1</code> → select <b>2007</b> → click <b>OK</b>.</li>
+                <li>Drag <code>continent</code> into <b>Rows</b>.</li>
+                <li>Drag <code>lifeExp</code> into <b>Values</b> → click it in the Values box → <b>Value Field Settings → Summarize value field by: Average → Number Format: 1 decimal → OK</b>.</li>
+                <li>Drag <code>pop</code> into <b>Values</b> (<b>Sum of pop</b>) and <code>TotalGDP</code> into <b>Values</b> (<b>Sum of TotalGDP</b>).</li>
+              </ul>
+            </li>
+            <li>Verify against Section 1: Oceania = <b>80.7 yrs</b>, Europe = <b>77.6 yrs</b>, Africa = <b>54.8 yrs</b>, Overall 2007 Average = <b>67.0 yrs</b>, Total Pop = <b>6,251,013,179</b>, Total GDP = <b>$58.11 Trillion</b>!</li>
+          </ul>
+        </li>
+        <li><b>Power BI Phase B (Matrix Visual)</b>
+          <ul>
+            <li>In <b>Report View</b>, click the blank canvas → in <b>Visualizations</b> pane, click the <b>Matrix</b> icon (grid symbol).</li>
+            <li>In the <b>Fields</b> pane, drag <code>year</code> into <b>Filters</b> (set to <b>2007</b>), drag <code>continent</code> into <b>Rows</b>, drag <code>lifeExp</code> into <b>Values</b> (set to <b>Average</b>, format <b>1 decimal</b>), drag <code>pop</code> into <b>Values</b> (set to <b>Sum</b>), and drag <code>TotalGDP</code> into <b>Values</b> (set to <b>Sum</b>, format <b>Currency</b>).</li>
+            <li>In <b>Format visual</b> → <b>Values</b>, set <code>Average of lifeExp</code> to <b>Decimal (1.0)</b>, <code>Sum of pop</code> to <b>Number (#,0)</b>, and <code>Sum of TotalGDP</code> to <b>Currency ($#,0)</b>.</li>
+            <li>Confirm: Oceania = <b>80.7 yrs</b>, Europe = <b>77.6 yrs</b>, Africa = <b>54.8 yrs</b>, Overall 2007 Average = <b>67.0 yrs</b>, Total Pop = <b>6,251,013,179</b>, Total GDP = <b>$58.11 Trillion</b>!</li>
+          </ul>
+        </li>
       </ol>
     </div>
     <div class="why-box">
       <div class="why-title">💡 Why do we do this?</div>
-      <p><b>Reason:</b> Putting <code>year</code> in the PivotTable <b>Filters</b> box (not Rows or Columns) builds a manual "snapshot machine": set it to 2007 and the pivot shows a one-year cross-section. This teaches the core skill this whole dataset exists for — computing <i>single-snapshot</i> values (population, life expectancy, GDP of ONE year) from panel data — and it fixes your verification targets before Power BI is even opened.</p>
-      <p><b>Real-time example:</b> Compare your pivot's 2007 snapshot against Section 1: Oceania <b>80.7 yrs</b> (just Australia + New Zealand!), Africa <b>54.8 yrs</b>, world pop <b>6,251,013,179</b>, world GDP <b>$58.11T</b>. Later, your Power BI cards must reproduce these exactly — and when they do, you've proven both your import AND your DAX. Notice also the deliberate last move: <i>clearing the filter</i> so all 1,704 rows stay intact for the model. History must survive into Power BI for trends and animation to work.</p>
+      <p><b>Reason:</b> Putting <code>year</code> in the PivotTable <b>Filters</b> box (not Rows or Columns) and the Power BI Matrix <b>Filters</b> pane builds a manual "snapshot machine": set it to 2007 and the pivot/matrix shows a one-year cross-section. This teaches the core skill this whole dataset exists for — computing <i>single-snapshot</i> values (population, life expectancy, GDP of ONE year) from panel data — and it fixes your verification targets before Power BI is even opened.</p>
+      <p><b>Real-time example:</b> Compare your pivot's and matrix's 2007 snapshot against Section 1: Oceania <b>80.7 yrs</b> (just Australia + New Zealand!), Africa <b>54.8 yrs</b>, world pop <b>6,251,013,179</b>, world GDP <b>$58.11T</b>. Later, your Power BI cards must reproduce these exactly — and when they do, you've proven both your import AND your DAX. Notice also the deliberate last move: <i>clearing the filter</i> so all 1,704 rows stay intact for the model. History must survive into Power BI for trends and animation to work.</p>
       <p><b>What happens if you skip it:</b> Without a verified snapshot you can't tell a correct dashboard from a subtly wrong one — for example, one that "averages" 1952's life expectancy together with 2007's, producing a meaningless 58-year figure that describes no actual year on Earth.</p>
-      <p><b>Smart-work tip:</b> In pivots, <b>Filters</b> area = snapshot, <b>Rows/Columns</b> = breakdown. Choose by question shape: "what does the world look like in 2007?" → filter; "how did continents change over time?" → put year in Rows/Columns instead.</p>
+      <p><b>Smart-work tip:</b> In pivots, <b>Filters</b> area = snapshot, <b>Rows/Columns</b> = breakdown. Choose by question shape: "what does the world look like in 2007?" → filter; "how did continents change over time?" → put year in Rows/Columns instead. In Power BI Matrix, the Filters pane does the exact same snapshot logic.</p>
+    </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this? (Power BI Matrix Specific)</div>
+      <p><b>Reason:</b> Power BI Matrix visual uses the same Fields pane logic as Excel PivotTable but with independent engine verification. Dragging <code>year</code> to the Filters pane ensures the Matrix computes the 2007 snapshot exactly as the Excel PivotTable did, proving the DAX engine and Excel engine agree on <b>6.25B</b> Population, <b>67.0 yrs</b> Avg Life Expectancy, and <b>$58.11T</b> World GDP.</p>
+      <p><b>Real-time example:</b> When the board member asks "Is the 2007 snapshot correct?" you point to the Excel PivotTable (Phase A) and the Power BI Matrix (Phase B) side-by-side — both engines agree on the exact same numbers. Confidence like that only comes from independent verification.</p>
+      <p><b>What happens if you skip it:</b> Students often get confused between Excel PivotTables and Power BI Matrix visuals — showing both side-by-side clarifies the workflow. If the engines disagree, the data import might have hidden type errors or skipped rows (like missing 1952–2002 history).</p>
+      <p><b>Smart-work tip:</b> Screenshot the verified PivotTable and Matrix and keep them beside you as your dashboard's <i>acceptance test</i>. Professional testers call this a "golden dataset" — you are doing real QA, not just clicking buttons.</p>
     </div>
 
     <ul class="task-list">
       <li><label><input type="checkbox"> Loaded all 1,704 rows in Excel and added <code>TotalGDP = pop * gdpPercap</code>.</label></li>
-      <li><label><input type="checkbox"> Used PivotTable <code>year = 2007</code> filter to verify 67.0 yrs LifeExp and 6.25B Population.</label></li>
+      <li><label><input type="checkbox"> Used PivotTable and Power BI Matrix <code>year = 2007</code> filter to verify 67.0 yrs LifeExp and 6.25B Population.</label></li>
     </ul>
   </section>
 

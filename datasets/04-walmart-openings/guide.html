@@ -359,26 +359,44 @@
       <p><b>Smart-work tip:</b> When a dataset ships redundant "raw + parsed" columns, ask "which one is authoritative?" and build from that one. Here <code>P/N/O</code> came straight from the source system, so <code>DATE(P2,N2,O2)</code> is 100% bulletproof — no locale, no century cutoffs, no guessing.</p>
     </div>
 
-    <h3>Step A3 — PivotTable Verification</h3>
+    <h3>Step A3 — PivotTable Verification and Power BI Matrix</h3>
     <div class="step">
       <ol style="margin:0;padding-left:20px;">
-        <li>Insert a PivotTable on a new sheet: Rows = <code>STRSTATE</code>, Columns = <code>StoreHistory</code>, Values = <code>Count of storenum</code>.</li>
-        <li>Sort Grand Total Largest to Smallest: confirm <b>TX = 315</b> (200 Converted, 53 Opened as Supercenter, 62 Discount Wal-Mart), <b>FL = 175</b>, <b>CA = 159</b> (only 12 Converted!), and Grand Total = <b>2,992</b>!</li>
-        <li>Save as <code>04-walmart-openings-clean.xlsx</code>.</li>
+        <li><b>Excel Phase A (Quick Audit)</b>
+          <ul>
+            <li>Insert a PivotTable on a new sheet: Rename the sheet <code>Pivot_Check_Excel</code>.</li>
+            <li>In the <b>PivotTable Fields</b> pane on the right:
+              <ul>
+                <li>Drag <code>STRSTATE</code> into <b>Rows</b>.</li>
+                <li>Drag <code>StoreHistory</code> into <b>Columns</b>.</li>
+                <li>Drag <code>storenum</code> into <b>Values</b> (automatically becomes <code>Count of storenum</code>).</li>
+              </ul>
+            </li>
+            <li>Sort Grand Total Largest to Smallest: confirm <b>TX = 315</b> (200 Converted, 53 Opened as Supercenter, 62 Discount Wal-Mart), <b>FL = 175</b>, <b>CA = 159</b> (only 12 Converted!), and Grand Total = <b>2,992</b>!</li>
+          </ul>
+        </li>
+        <li><b>Power BI Phase B (Matrix Visual)</b>
+          <ul>
+            <li>In <b>Report View</b>, click the blank canvas → in <b>Visualizations</b> pane, click the <b>Matrix</b> icon (grid symbol).</li>
+            <li>In the <b>Fields</b> pane, drag <code>STRSTATE</code> into <b>Rows</b>, drag <code>StoreHistory</code> into <b>Columns</b>, and drag <code>storenum</code> into <b>Values</b> (set to <b>Count</b>).</li>
+            <li>In <b>Format visual</b> → <b>Values</b>, set <code>Count of storenum</code> to <b>Number (#,0)</b>.</li>
+            <li>Sort Grand Total Largest to Smallest: confirm <b>TX = 315</b> (200 Converted, 53 Opened as Supercenter, 62 Discount Wal-Mart), <b>FL = 175</b>, <b>CA = 159</b> (only 12 Converted!), and Grand Total = <b>2,992</b>!</li>
+          </ul>
+        </li>
       </ol>
     </div>
     <div class="why-box">
       <div class="why-title">💡 Why do we do this?</div>
-      <p><b>Reason:</b> This is a <b>cross-tab</b> pivot (state × lifecycle), not a flat list — and cross-tabs exist to expose <i>differences in composition</i>, which a totals-only pivot hides. Reading Rows × Columns together answers the client's exact question: which states <b>converted</b> existing stores into Supercenters, and which barely converted at all?</p>
-      <p><b>Real-time example:</b> The pivot instantly surfaces the dataset's best story: Texas has 315 stores with 200 conversions, while California — the #3 state with 159 stores — converted only <b>12</b> (7.5%!). That asymmetry is the jumping-off point for the real-estate insight (California municipalities passed anti-supercenter zoning ordinances). If you'd only pivoted "total stores by state", TX 315 and CA 159 would look like pure size ranking, and the zoning story — the actual reason this data is interesting — would never appear.</p>
-      <p><b>What happens if you skip it:</b> You verify totals (good) but miss the structure (better), and your dashboard reproduces numbers nobody asked questions about.</p>
-      <p><b>Smart-work tip:</b> Whenever two categorical dimensions might interact ("does conversion differ by state?"), build a cross-tab pivot in Excel BEFORE designing Power BI visuals — it's a 3-minute prototype of your dashboard's main chart, and it tells you whether the story exists at all.</p>
+      <p><b>Reason:</b> This is a <b>cross-tab</b> pivot and matrix (state × lifecycle), not a flat list — and cross-tabs exist to expose <i>differences in composition</i>, which a totals-only pivot hides. Reading Rows × Columns together answers the client's exact question: which states <b>converted</b> existing stores into Supercenters, and which barely converted at all? Both Excel PivotTable and Power BI Matrix compute totals through independent engines to verify the target numbers.</p>
+      <p><b>Real-time example:</b> The pivot and matrix instantly surface the dataset's best story: Texas has 315 stores with 200 conversions, while California — the #3 state with 159 stores — converted only <b>12</b> (7.5%!). That asymmetry is the jumping-off point for the real-estate insight (California municipalities passed anti-supercenter zoning ordinances). If you'd only pivoted "total stores by state", TX 315 and CA 159 would look like pure size ranking, and the zoning story — the actual reason this data is interesting — would never appear. Both engines agree on the exact same numbers.</p>
+      <p><b>What happens if you skip it:</b> You verify totals (good) but miss the structure (better), and your dashboard reproduces numbers nobody asked questions about. If the engines disagree, the data import might have hidden type errors or skipped rows.</p>
+      <p><b>Smart-work tip:</b> Whenever two categorical dimensions might interact ("does conversion differ by state?"), build a cross-tab pivot in Excel and a Matrix in Power BI BEFORE designing Power BI visuals — it's a 3-minute prototype of your dashboard's main chart, and it tells you whether the story exists at all. Screenshot the verified PivotTable and Matrix and keep them beside you as your dashboard's acceptance test.</p>
     </div>
 
     <ul class="task-list">
       <li><label><input type="checkbox"> Built <code>OpenDateClean = DATE(P2,N2,O2)</code> confirming range <code>1962-07-01</code> to <code>2006-01-31</code>.</label></li>
       <li><label><input type="checkbox"> Used <code>ISBLANK(D2)</code> in <code>StoreHistory</code> to separate blank (1,046) from <code>0</code> (389) and <code>1</code> (1,557).</label></li>
-      <li><label><input type="checkbox"> Verified PivotTable state totals (TX 315, FL 175, CA 159, Total 2,992).</label></li>
+      <li><label><input type="checkbox"> Verified PivotTable and Power BI Matrix state totals (TX 315, FL 175, CA 159, Total 2,992).</label></li>
     </ul>
   </section>
 

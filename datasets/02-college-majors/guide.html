@@ -73,9 +73,11 @@
   .wf-box small{display:block;font-weight:400;color:var(--muted);margin-top:3px;font-size:11px;}
   ul.task-list{list-style:none;padding:0;margin:10px 0;}
   ul.task-list li{padding:5px 0;}
-  ul.task-list label{display:flex;gap:9px;align-items:flex-start;cursor:pointer;font-size:13.8px;}
-  ul.task-list input{margin-top:4px;width:16px;height:16px;flex:none;accent-color:var(--calc);}
-  footer{text-align:center;color:var(--muted);font-size:12.5px;padding:10px 20px 28px;}
+  ul.task-list label{display:flex;gap:11px;align-items:flex-start;cursor:pointer;font-size:13.8px;padding:8px 12px;border-radius:10px;border:1px solid transparent;transition:all .15s;}
+  ul.task-list label:hover{background:#f2f7fd;border-color:#d8e5f3;}
+  ul.task-list input{margin-top:3.5px;width:17px;height:17px;flex:none;accent-color:var(--calc);cursor:pointer;}
+  ul.task-list label:has(input:checked){color:#94a3b8;text-decoration:line-through;text-decoration-thickness:1.5px;text-decoration-color:#cbd5e1;}
+  footer{text-align:center;color:var(--muted);font-size:12.5px;padding:10px 20px 34px;}
   footer a{color:#3d4a5c;}
   @media(max-width:740px){
     .wrap{padding:0 12px;}
@@ -162,7 +164,7 @@
   .step{background:var(--calc-soft);border:1px solid #cbe6d5;border-left:5px solid var(--calc);border-radius:12px;padding:16px 18px;margin:16px 0;position:relative;box-shadow:var(--sh-sm);}
   .step::before{content:"EXCEL · PHASE A";position:absolute;top:-10px;right:14px;background:linear-gradient(135deg,#16a34a,#15803d);color:#fff;font-size:9.5px;font-weight:800;letter-spacing:.9px;padding:3px 11px;border-radius:99px;box-shadow:var(--sh-sm);}
   .step b{color:#0d5c33;}
-  .pbi-box{background:var(--pbi-soft);border:1px solid #f2df9d;border-left:5px solid var(--pbi);border-radius:12px;padding:16px 18px;margin:16px 0;position:relative;box-shadow:var(--sh-sm);}
+  .pbi-box{background:var(--pbi-soft);border:1px solid #f2df9d;border-radius:12px;padding:16px 18px;margin:16px 0;position:relative;box-shadow:var(--sh-sm);}
   .pbi-box::before{content:"POWER BI · PHASE B";position:absolute;top:-10px;right:14px;background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;font-size:9.5px;font-weight:800;letter-spacing:.9px;padding:3px 11px;border-radius:99px;box-shadow:var(--sh-sm);}
   .pbi-box b{color:#8a5a00;}
   .chart-card{border:1px solid var(--line);border-left:5px solid var(--gold);border-radius:14px;padding:18px 20px;margin:18px 0;background:linear-gradient(180deg,#fffdf4,#fdfeff);box-shadow:var(--sh-sm);}
@@ -174,14 +176,14 @@
   .note{background:linear-gradient(135deg,#fffaf0,#fffdf6);border:1px solid #f5e3bd;border-left:5px solid #e0a800;border-radius:12px;padding:13px 15px;margin:14px 0;font-size:13.5px;}
   .warn-box{background:linear-gradient(135deg,#fdeaea,#fff5f5);border:1px solid #f2c8c8;border-left:5px solid var(--danger);border-radius:12px;padding:13px 15px;margin:14px 0;font-size:13.5px;}
   .why-box{background:linear-gradient(135deg,#eff6ff,#f2faff);border:1px solid #c9e0fb;border-left:5px solid var(--blue);border-radius:12px;padding:14px 16px;margin:14px 0;font-size:13.4px;box-shadow:var(--sh-sm);}
-  .why-box .why-title{font-weight:800;color:#1d4ed8;margin:0 0 8px;font-size:12px;text-transform:uppercase;letter-spacing:.6px;}
+  .why-box .why-title{font-weight:800;color:#1d4ed8;margin:0 0 6px;font-size:12.5px;text-transform:uppercase;letter-spacing:.6px;}
   .why-box p{margin:6px 0;}
   .why-box b{color:#123a7a;}
   .wireframe{display:grid;grid-template-columns:repeat(12,1fr);gap:10px;background:#0f172a;background-image:radial-gradient(rgba(148,163,184,.16) 1px,transparent 1.4px);background-size:18px 18px;padding:16px;border-radius:14px;margin:14px 0;font-size:12px;box-shadow:var(--sh-md);}
   .wf-box{background:#fff;border:1px solid #cbd5e1;border-radius:9px;padding:11px;text-align:center;font-weight:700;color:var(--accent);box-shadow:0 3px 8px rgba(2,6,23,.35);transition:transform .15s;}
   .wf-box:hover{transform:translateY(-2px);}
   .wf-box small{display:block;font-weight:400;color:var(--muted);margin-top:4px;font-size:10.8px;}
-  ul.task-list{list-style:none;padding:0;margin:12px 0;}
+  ul.task-list{list-style:none;padding:0;margin:10px 0;}
   ul.task-list li{padding:4px 0;}
   ul.task-list label{display:flex;gap:11px;align-items:flex-start;cursor:pointer;font-size:13.8px;padding:8px 12px;border-radius:10px;border:1px solid transparent;transition:all .15s;}
   ul.task-list label:hover{background:#f2f7fd;border-color:#d8e5f3;}
@@ -309,7 +311,7 @@
   <!-- 3. REQUIREMENTS -->
   <section id="req">
     <h2 class="t">3. Project Requirements (Beginner → Advanced)</h2>
-    <div class="req"><span class="tag g">Beginner</span><div><b>Import CSV cleanly &amp; fix text/blanks:</b> Convert ALL-CAPS major names to Title Case, preserve <code>Food Science</code> despite its 4 blank demographic cells, and verify category pay in an Excel PivotTable.</div></div>
+    <div class="req"><span class="tag g">Beginner</span><div><b>Import CSV cleanly &amp; fix text/blanks:</b> Convert ALL-CAPS major names to Title Case, preserve <code>Food Science</code> despite its 4 blank demographic cells, and verify category pay in an Excel PivotTable and Power BI Matrix.</div></div>
     <div class="req"><span class="tag g">Beginner</span><div><b>4-Card Benchmark Strip:</b> Total Graduates (<code>6.77M</code>), Avg Median Pay (<code>$40,151</code>), Weighted Unemployment % (<code>7.19%</code>), and Women Share % (<code>57.5%</code>).</div></div>
     <div class="req"><span class="tag y">Inter.</span><div><b>Gender Balance by Academic Field (100% Stacked Bar Chart):</b> Compare Men vs. Women headcount share across all 16 major categories.</div></div>
     <div class="req"><span class="tag y">Inter.</span><div><b>Top 10 Highest-Paying Majors with Percentile Spread (Clustered Bar + Top-N Filter):</b> Plot <code>P25th</code>, <code>Median</code>, and <code>P75th</code> side-by-side for the Top 10 majors.</div></div>
@@ -376,30 +378,57 @@
       <p><b>Smart-work tip:</b> Encode sort order into labels when you can't add a separate sort column — it's a legitimate pro shortcut for Excel-only workflows. One formula per question, filled down once by the Table, reused forever.</p>
     </div>
 
-    <h3>Step A4 — Validate with an Excel PivotTable</h3>
+    <h3>Step A4 — Validate with an Excel PivotTable and Power BI Matrix</h3>
     <div class="step">
       <ol style="margin:0;padding-left:20px;">
-        <li>Click inside the table → <b>Insert → PivotTable → New Worksheet → OK</b>. Rename the sheet <code>Pivot_Check</code>.</li>
-        <li>Drag <code>Major_category</code> to <b>Rows</b>.</li>
-        <li>Drag <code>Major</code> to <b>Values</b> (automatically becomes <code>Count of Major</code> — confirm Grand Total = <b>173</b>).</li>
-        <li>Drag <code>Median</code> to <b>Values</b> → click it in the Values box → <b>Value Field Settings → Summarize value field by: Average → Number Format: Currency (0 decimals) → OK</b>.</li>
-        <li>Drag <code>Total</code> to <b>Values</b> (<code>Sum of Total</code> = <b>6,771,654</b>).</li>
-        <li>Sort by <code>Average of Median</code> Largest to Smallest: confirm <b>Engineering = $57,383</b> at the top, <b>Psychology &amp; Social Work = $30,100</b> at the bottom, and Grand Total Average = <b>$40,151</b>!</li>
-        <li>Save the workbook as <code>02-college-majors-clean.xlsx</code>.</li>
+        <li><b>Excel Phase A (Quick Audit)</b>
+          <ul>
+            <li>Click inside the table → <b>Insert → PivotTable → New Worksheet → OK</b>. Rename the sheet <code>Pivot_Check_Excel</code>.</li>
+            <li>In the <b>PivotTable Fields</b> pane on the right:
+              <ul>
+                <li>Drag <code>Major_category</code> to <b>Rows</b>.</li>
+                <li>Drag <code>Major</code> to <b>Values</b> (automatically becomes <code>Count of Major</code> — confirm Grand Total = <b>173</b>).</li>
+                <li>Drag <code>Median</code> to <b>Values</b> → click it in the Values box → <b>Value Field Settings → Summarize value field by: Average → Number Format: Currency (0 decimals) → OK</b>.</li>
+                <li>Drag <code>Total</code> to <b>Values</b> (<code>Sum of Total</code> = <b>6,771,654</b>).</li>
+              </ul>
+            </li>
+            <li>Sort by <code>Average of Median</code> Largest to Smallest: confirm <b>Engineering = $57,383</b> at the top, <b>Psychology &amp; Social Work = $30,100</b> at the bottom, and Grand Total Average = <b>$40,151</b>!</li>
+          </ul>
+        </li>
+        <li><b>Power BI Phase B (Matrix Visual)</b>
+          <ul>
+            <li>In <b>Report View</b>, click the blank canvas → in <b>Visualizations</b> pane, click the <b>Matrix</b> icon (grid symbol).</li>
+            <li>In the <b>Fields</b> pane, drag <code>Major_category</code> into <b>Rows</b>, <code>Major</code> into <b>Values</b> (set to <b>Count</b>), <code>Median</code> into <b>Values</b> (set to <b>Average</b>), and <code>Total</code> into <b>Values</b> (set to <b>Sum</b>).</li>
+            <li>In <b>Format visual</b> → <b>Values</b>, set <code>Average of Median</code> to <b>Currency ($#,0)</b> and <code>Count of Major</code> / <code>Sum of Total</code> to <b>Number (#,0)</b>.</li>
+            <li>Sort by <code>Average of Median</code> Largest to Smallest: confirm <b>Engineering = $57,383</b> at the top, <b>Psychology &amp; Social Work = $30,100</b> at the bottom, and Grand Total Average = <b>$40,151</b>!</li>
+          </ul>
+        </li>
       </ol>
     </div>
     <div class="why-box">
       <div class="why-title">💡 Why do we do this?</div>
-      <p><b>Reason:</b> The pivot verifies three things at once: <b>completeness</b> (Count of Major = 173 proves no row was lost or duplicated in import), <b>correct summarization</b> (Median must be AVERAGED — summing 173 salaries produces a nonsense "$6.95M total median"), and <b>your target numbers</b> (Engineering #1 at $57,383, grand average $40,151) that the Power BI dashboard must reproduce exactly.</p>
-      <p><b>Real-time example:</b> When your Power BI card later shows <code>$40,151</code>, you already know it's right — the pivot said so. When the Dean asks "which field should we market hardest?", you can say "Engineering: highest median pay <b>$57,383</b> across 29 majors" with full confidence, because two independent tools agree. That is the habit that separates analysts from spreadsheet-fillers.</p>
-      <p><b>What happens if you skip it:</b> Power BI defaults numeric columns to <b>SUM</b>; if nobody verified the pivot first, the very first draft dashboard may report "Total Median = $6,946,200" and the error travels into every percent-of-total calculation built on top of it.</p>
-      <p><b>Smart-work tip:</b> On ANY new import, validate in this order: <i>row count → column count → one spot-checked total</i>. Count first (fastest to debug), values second. Save the clean copy under the project-named convention so it's findable months later.</p>
+      <p><b>Reason:</b> Golden audit rule — <i>know your target numbers BEFORE building the dashboard</i>. Both Excel PivotTable and Power BI Matrix compute totals through independent engines. If both engines agree with the raw data, your data is clean; if they disagree, you have a bug to find — and you want to find it now, not during a client demo.</p>
+      <p><b>Real-time example:</b> Later in Power BI, your Avg Median Pay card will show <b>$40,151</b>. Because your PivotTable Grand Total already said <b>$40,151</b>, and your Power BI Matrix agrees, you can trust that number and move on. And when a student asks — <i>"Is Petroleum Engineering really that much better?"</i> — you answer instantly with verified figures: Engineering #1 at <b>$57,383</b>. Confidence like that only comes from independent verification.</p>
+      <p><b>What happens if you skip it:</b> Students often get confused between Excel PivotTables and Power BI Matrix visuals — showing both side-by-side clarifies the workflow. If the engines disagree, the data import might have hidden type errors or skipped blank rows (like the 4 blank demographic cells in Food Science).</p>
+      <p><b>Smart-work tip:</b> Screenshot the verified PivotTable and Matrix and keep them beside you as your dashboard's <i>acceptance test</i>. Professional testers call this a "golden dataset" — you are doing real QA, not just clicking buttons.</p>
+    </div>
+
+    <h3>Step A5 — Save Your Clean Workbook</h3>
+    <div class="step">
+      Click back to <code>Sheet1</code>, double-check that <b>no filter is active</b> (all 173 rows visible), then click <b>File → Save As</b> and save as <code>02-college-majors-clean.xlsx</code> inside the <code>02-college-majors</code> folder.
+    </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> Never mutate the raw source — keep the original untouched and save your work as a separate "clean" copy. This is the simplest possible version of the data-engineering pattern of raw (immutable) vs. cleaned (derived) layers, and it guarantees you can always start over.</p>
+      <p><b>Real-time example:</b> Real data teams store raw files as read-only "source of truth". Six months from now, a colleague overwrites a formula or Power BI refresh misbehaves — if the raw file is still pristine, you re-derive the clean workbook in 5 minutes. If you saved over the original, your only options are undo-history archaeology or rebuilding from scratch.</p>
+      <p><b>What happens if you skip it:</b> One accidental <b>Ctrl+S</b> on a filter-active sheet hides rows from every downstream PivotTable, and you no longer have the true source to compare against. Also, a hidden filter quietly drops rows from pivots — totals shrink with no error message.</p>
+      <p><b>Smart-work tip:</b> Use a naming convention that mirrors the project (<code>02-college-majors-clean.xlsx</code> lives in <code>02-college-majors/</code>). Future-you — and every teammate — can find the right file in seconds without opening anything.</p>
     </div>
 
     <ul class="task-list">
       <li><label><input type="checkbox"> Imported <code>recent-grads.csv</code> via <code>Data → From Text/CSV</code> and inspected row 23 (<code>FOOD SCIENCE</code>).</label></li>
       <li><label><input type="checkbox"> Built <code>MajorClean</code> (<code>PROPER</code>), <code>PayBand</code>, and <code>PaySpread</code> helper columns.</label></li>
-      <li><label><input type="checkbox"> Verified PivotTable: 173 majors, $40,151 Avg Median, Engineering #1 at $57,383.</label></li>
+      <li><label><input type="checkbox"> Verified PivotTable and Power BI Matrix: 173 majors, $40,151 Avg Median, Engineering #1 at $57,383.</label></li>
     </ul>
   </section>
 
@@ -420,7 +449,7 @@
             <li><code>Median</code>, <code>P25th</code>, <code>P75th</code> → <b>$ (Fixed decimal number)</b> or <b>123 (Whole Number)</b>.</li>
           </ul>
         </li>
-        <li><b>Add the Salary Band Column:</b> Click <b>Add Column → Conditional Column</b> → Name: <code>PayBand</code>:
+        <li><b>Add the Salary Band Column:</b> Click <b>Add Column → Conditional Column</b> → Name: <code>PayBand</code>:<br>
           <ul>
             <li>If <code>Median</code> is less than <code>30000</code> → <code>1. Under $30K</code></li>
             <li>Else if <code>Median</code> is less than <code>40000</code> → <code>2. $30K–$39K</code></li>
@@ -456,40 +485,7 @@
 
     <h3>Stage 4 — DAX Measures (Beginner → Advanced)</h3>
     <p>Right-click <code>Majors</code> → <b>New measure</b> for each formula below:</p>
-<pre>// --- BEGINNER MEASURES ---
-Majors Count = COUNTROWS ( 'Majors' )
-// Format: Whole number -> Check: 173
-
-Total Graduates = SUM ( 'Majors'[Total] )
-// Format: Whole number (#,0) -> Check: 6,771,654
-
-Total Men = SUM ( 'Majors'[Men] )
-Total Women = SUM ( 'Majors'[Women] )
-
-Avg Median Pay = AVERAGE ( 'Majors'[Median] )
-// Format: Currency ($#,0) -> Check: $40,151
-
-Avg P25 Pay = AVERAGE ( 'Majors'[P25th] )
-Avg P75 Pay = AVERAGE ( 'Majors'[P75th] )
-
-// --- INTERMEDIATE MEASURES (True Weighted Ratios!) ---
-Weighted Unemployment % =
-DIVIDE (
-    SUM ( 'Majors'[Unemployed] ),
-    SUM ( 'Majors'[Employed] ) + SUM ( 'Majors'[Unemployed] ),
-    0
-)
-// Format: Percentage (0.00%) -> Check: 7.19% (NOT the unweighted 6.82%!)
-
-Women Share % = DIVIDE ( [Total Women], [Total Graduates], 0 )
-// Format: Percentage (0.0%) -> Check: 57.5% (57.52%)
-
-College Job Match % = DIVIDE ( SUM ( 'Majors'[College_jobs] ), SUM ( 'Majors'[Employed] ), 0 )
-// Format: Percentage (0.0%) -> Check what share of working grads hold college-level jobs!
-
-// --- ADVANCED MEASURE (Pay Upside Spread) ---
-Interquartile Pay Spread = [Avg P75 Pay] - [Avg P25 Pay]
-// Format: Currency ($#,0) -> Shows salary growth potential from 25th to 75th percentile</pre>
+<pre>// --- BEGINNER MEASURES ---\nMajors Count = COUNTROWS ( 'Majors' )\n// Format: Whole number -> Check: 173\n\nTotal Graduates = SUM ( 'Majors'[Total] )\n// Format: Whole number (#,0) -> Check: 6,771,654\n\nTotal Men = SUM ( 'Majors'[Men] )\nTotal Women = SUM ( 'Majors'[Women] )\n\nAvg Median Pay = AVERAGE ( 'Majors'[Median] )\n// Format: Currency ($#,0) -> Check: $40,151\n\nAvg P25 Pay = AVERAGE ( 'Majors'[P25th] )\nAvg P75 Pay = AVERAGE ( 'Majors'[P75th] )\n\n// --- INTERMEDIATE MEASURES (True Weighted Ratios!) ---\nWeighted Unemployment % =\nDIVIDE (\n    SUM ( 'Majors'[Unemployed] ),\n    SUM ( 'Majors'[Employed] ) + SUM ( 'Majors'[Unemployed] ),\n    0\n)\n// Format: Percentage (0.00%) -> Check: 7.19% (NOT the unweighted 6.82%!)\n\nWomen Share % = DIVIDE ( [Total Women], [Total Graduates], 0 )\n// Format: Percentage (0.0%) -> Check: 57.5% (57.52%)\n\nCollege Job Match % = DIVIDE ( SUM ( 'Majors'[College_jobs] ), SUM ( 'Majors'[Employed] ), 0 )\n// Format: Percentage (0.0%) -> Check what share of working grads hold college-level jobs!\n\n// --- ADVANCED MEASURE (Pay Upside Spread) ---\nInterquartile Pay Spread = [Avg P75 Pay] - [Avg P25 Pay]\n// Format: Currency ($#,0) -> Shows salary growth potential from 25th to 75th percentile</pre>
     <div class="why-box">
       <div class="why-title">💡 Why do we do this?</div>
       <p><b>Reason:</b> Half these measures exist to <i>prevent</i> wrong math, not just produce right math. <code>Avg Median Pay</code> uses AVERAGE because medians can't be summed. <code>Weighted Unemployment %</code> rebuilds the ratio from summed headcounts (<code>Unemployed ÷ (Employed + Unemployed)</code>) so big categories count proportionally. <code>Women Share %</code> divides summed Women by summed Total — automatically weighted by graduate population.</p>
@@ -538,7 +534,7 @@ Interquartile Pay Spread = [Avg P75 Pay] - [Avg P25 Pay]
       <ol style="margin:6px 0;padding-left:20px;">
         <li>Click blank canvas → click <b>Scatter chart</b> (dots icon in Visualizations).</li>
         <li>Drag fields into the 5 wells above (start with <code>Major_category</code> in <b>Values</b> for 16 clean bubbles, or put <code>Major</code> in <b>Values</b> and <code>Major_category</code> in <b>Legend</b> to see all 173 majors!).</li>
-        <li><b>Add the 4-Quadrant Reference Lines:</b> With the Scatter selected, click the magnifying-glass <b>Add further analyses to your visual (Analytics)</b> icon at the top of the Visualizations pane:
+        <li><b>Add the 4-Quadrant Reference Lines:</b> With the Scatter selected, click the magnifying-glass <b>Add further analyses to your visual (Analytics)</b> icon at the top of the Visualizations pane:<br>
           <ul>
             <li>Expand <b>X-Axis Constant Line</b> (or <b>Average line</b>) → click <b>+ Add line</b> → Value = <code>40151</code> (dashed gray, Data label ON: <code>Avg Pay $40.2K</code>).</li>
             <li>Expand <b>Y-Axis Constant Line</b> → click <b>+ Add line</b> → Value = <code>0.0719</code> (dashed gray, Data label ON: <code>Avg Unemp 7.2%</code>).</li>
@@ -570,7 +566,7 @@ Interquartile Pay Spread = [Avg P75 Pay] - [Avg P25 Pay]
       </ol>
       <div class="why-box">
         <div class="why-title">💡 Why do we do this?</div>
-        <p><b>Reason:</b> Categories range from 12K graduates to 1.3M (Business). A normal stacked bar would render small categories as invisible slivers — the biggest bar always wins the eye. The <b>100%</b> version rescales every bar to the same length so you compare <i>composition</i> (what % women) rather than <i>volume</i> (how many) — a different question needs a different normalization.</p>
+        <p><b>Reason:</b> Categories range from 12K grads to 1.3M (Business). A normal stacked bar would render small categories as invisible slivers — the biggest bar always wins the eye. The <b>100%</b> version rescales every bar to the same length so you compare <i>composition</i> (what % women) rather than <i>volume</i> (how many) — a different question needs a different normalization.</p>
         <p><b>Real-time example:</b> With parity line at 50%, the field-level story appears instantly: Health <b>83.7%</b> women, Education <b>81.5%</b>, Psychology <b>79.6%</b> on one side; Engineering <b>24.1%</b> and Computers &amp; Math <b>30.2%</b> far on the other. A Dean planning outreach programs sees exactly which fields to target without doing a single division. The 50% line is the "fairness ruler" that makes "over/under half" readable at a glance.</p>
         <p><b>What happens if you skip it:</b> With raw counts, Business's 1.3M bar dwarfs Law &amp; Public Policy's 179K bar and the gender pattern in small fields disappears entirely — the office concludes "we can't see a pattern" when the pattern was always there, just scaled away.</p>
         <p><b>Smart-work tip:</b> Absolute counts still matter, so park <code>[Total Graduates]</code> and <code>[Avg Median Pay]</code> in Tooltips — hovering Business shows "48.7% women of 1.3M". Best of both: fair comparison on the canvas, real numbers under the cursor.</p>
@@ -681,7 +677,7 @@ Interquartile Pay Spread = [Avg P75 Pay] - [Avg P25 Pay]
         <li>What problem does <code>=PROPER(C2)</code> fix, and why does it matter for the report?
           <details style="margin:3px 0 8px;"><summary style="cursor:pointer;font-weight:700;color:#0b3d63;">Show answer</summary> It converts ALL-CAPS major names (<code>PETROLEUM ENGINEERING</code>) to readable Title Case — axis labels and tooltips become presentable.</details>
         </li>
-        <li><code>PayBand</code> labels start with "1."–"5.". What breaks if you remove the number prefixes?
+        <li><code>PayBand</code> labels start with "1."—"5.". What breaks if you remove the number prefixes?
           <details style="margin:3px 0 8px;"><summary style="cursor:pointer;font-weight:700;color:#0b3d63;">Show answer</summary> Sorting: text bands sort alphabetically ("3. $40K–$49K" before "4. $50K–$69K" is fine, but "1." vs "5." ordering generally scrambles) — the prefixes force true low→high order.</details>
         </li>
         <li>Which numbers produce Petroleum Engineering's PaySpread, and what does the result mean?
@@ -707,22 +703,9 @@ Interquartile Pay Spread = [Avg P75 Pay] - [Avg P25 Pay]
   function save(){
     var state = [];
     boxes.forEach(function(b){ state.push(b.checked ? 1 : 0); });
-    try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){}
-    update();
+    try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){}\n    update();
   }
-  try{
-    var s = JSON.parse(localStorage.getItem(KEY) || '[]');
-    boxes.forEach(function(b, i){ if(s[i] !== undefined) b.checked = !!s[i]; });
-  }catch(e){}
-  boxes.forEach(function(b){ b.addEventListener('change', save); });
-  window.resetChecks = function(){
-    if(confirm('Reset all checkmarks for Practice Set 02?')){
-      boxes.forEach(function(b){ b.checked = false; });
-      save();
-    }
-  };
-  update();
-})();
+  try{\n    var s = JSON.parse(localStorage.getItem(KEY) || '[]');\n    boxes.forEach(function(b, i){ if(s[i] !== undefined) b.checked = !!s[i]; });\n  }catch(e){}\n  boxes.forEach(function(b){ b.addEventListener('change', save); });\n  window.resetChecks = function(){\n    if(confirm('Reset all checkmarks for Practice Set 02?')){\n      boxes.forEach(function(b){ b.checked = false; });\n      save();\n    }\n  };\n  update();\n})();
 </script>
 </body>
 </html>
