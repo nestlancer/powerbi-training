@@ -224,10 +224,16 @@
 
 <div class="wrap">
 
-  <div class="prog-bar">
-    <span class="prog-text" id="progText">0 / 0 steps completed</span>
-    <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+  <div class="prog-bar" role="region" aria-label="Your progress on this guide">
+    <span class="prog-text" id="progText" aria-live="polite">0 / 0 steps completed</span>
+    <div class="prog-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-labelledby="progText"><div class="prog-fill" id="progFill"></div></div>
     <button class="btn-sm" type="button" onclick="resetChecks()">Reset checklist</button>
+  </div>
+
+  <div class="quickfacts" style="background:linear-gradient(135deg,#f8fbff,#f1f7f3);border:1px solid var(--line);border-left:5px solid #16a34a;border-radius:14px;padding:14px 18px;margin:0 0 18px;font-size:13.5px;line-height:1.75;">
+    <b>⚡ Quick info:</b> ⏱ <b>60–90 min</b> &nbsp;·&nbsp; 🧰 <b>Excel 2016+</b> + <b>Power BI Desktop</b> (<a href="https://aka.ms/pbidesktop">free download</a>) &nbsp;·&nbsp; 📂 Data: <a href="data/walmart-openings.csv" download>walmart-openings.csv</a> &nbsp;·&nbsp; 🧭 Prereq: none — beginner friendly
+    <br>🩺 <b>If a formula shows an error:</b> <code>#NAME?</code> = misspelled function/name &nbsp;·&nbsp; <code>#DIV/0!</code> = divide by zero or blank &nbsp;·&nbsp; <code>#N/A</code> = lookup value not found &nbsp;·&nbsp; <code>#VALUE!</code> = text where a number is expected &nbsp;·&nbsp; Power Query <code>Expression.Error</code> = a renamed/missing column &nbsp;·&nbsp; DAX shows <code>(Blank)</code> = filters match no rows.
+    <br>📖 New jargon? <a href="../glossary.html">Open the glossary</a> &nbsp;·&nbsp; ◀ <a href="../03-gapminder/guide.html">Previous: Guide 03</a> &nbsp;·&nbsp; <a href="../05-bike-sharing/guide.html">Next: Guide 05 · Bike Sharing</a> ▶
   </div>
 
   <div class="toc">
@@ -588,7 +594,21 @@ CALCULATE (
 
 </div>
 
-<footer>
+    <details style="background:linear-gradient(135deg,#fffaf0,#fffdf6);border:1px solid #f5e3bd;border-left:5px solid #d97706;border-radius:14px;padding:14px 18px;margin:0 0 18px;font-size:13.8px;">
+      <summary style="cursor:pointer;font-weight:800;color:#92400e;">🧠 Check yourself — 3 quick questions before you call this guide done</summary>
+      <ol style="margin:10px 0 0;padding-left:22px;">
+        <li>Why rebuild <code>OpenDateClean</code> from YEAR/MONTH/DAY instead of trusting the OPENDATE column?
+          <details style="margin:3px 0 8px;"><summary style="cursor:pointer;font-weight:700;color:#0b3d63;">Show answer</summary> OPENDATE holds 2-digit years that Excel misreads as modern dates (<code>62</code> → 2062). <code>=DATE(P2,N2,O2)</code> guarantees <code>1962-07-01</code>.</details>
+        </li>
+        <li>In <code>StoreHistory</code>, why must <code>ISBLANK(D2)</code> be tested before <code>D2=0</code>?
+          <details style="margin:3px 0 8px;"><summary style="cursor:pointer;font-weight:700;color:#0b3d63;">Show answer</summary> Excel treats blank as 0, so a blank conversion date would wrongly report "Opened as Supercenter". ISBLANK first correctly labels those as "Discount Wal-Mart".</details>
+        </li>
+        <li>What does <code>=INT(P2/10)*10 &amp; "s"</code> return for a 1990 opening, and why is it left-aligned?
+          <details style="margin:3px 0 8px;"><summary style="cursor:pointer;font-weight:700;color:#0b3d63;">Show answer</summary> <code>1990s</code> — the <code>&amp;</code> concatenation always produces text, and text left-aligns by default. That's exactly what a label column should be.</details>
+        </li>
+      </ol>
+    </details>
+    <footer>
   Source: Walmart Store Openings teaching dataset via Plotly datasets · Manually verified against <code>data/walmart-openings.csv</code> (2,992 rows) · Works 100% offline.
 </footer>
 

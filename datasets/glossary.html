@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Glossary · Excel &amp; Power BI Practice Course</title>
+<style>
+  :root{
+    --ink:#111827;--muted:#5b6472;--line:#e4e9f1;--bg:#f2f5fa;
+    --accent:#0b3d63;--green:#16a34a;--gold:#d97706;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);line-height:1.58;
+    background:radial-gradient(1100px 480px at 88% -80px,rgba(14,116,144,.10),transparent 60%),radial-gradient(900px 420px at -60px 34%,rgba(22,163,74,.08),transparent 55%),var(--bg);}
+  header{position:relative;overflow:hidden;color:#fff;padding:42px 28px 36px;background:linear-gradient(130deg,#0e7490 0%,#0b3d63 55%,#312e81 100%);}
+  header::before{content:"";position:absolute;inset:0;background:radial-gradient(620px 300px at 90% -12%,rgba(255,255,255,.20),transparent 62%),radial-gradient(460px 280px at 4% 112%,rgba(255,255,255,.13),transparent 60%);}
+  header::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg,rgba(255,255,255,.05) 0 2px,transparent 2px 26px);opacity:.55;}
+  header>*{position:relative;z-index:1;}
+  header .kicker{display:inline-block;font-size:11.5px;text-transform:uppercase;letter-spacing:1.1px;font-weight:800;margin-bottom:12px;padding:6px 14px;border-radius:99px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.30);}
+  header h1{margin:0 0 8px;font-size:clamp(23px,3vw,31px);letter-spacing:-.4px;font-weight:800;}
+  header p{margin:0;max-width:860px;font-size:14.5px;opacity:.96;}
+  .wrap{max-width:1000px;margin:22px auto 70px;padding:0 22px;}
+  .tools{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:16px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 16px;box-shadow:0 4px 16px rgba(15,23,42,.09);}
+  .tools input{flex:1;min-width:220px;border:1px solid var(--line);padding:9px 14px;border-radius:10px;font-size:14px;}
+  .tools input:focus{outline:none;border-color:#93c5fd;box-shadow:0 0 0 3px #dbeafe;}
+  .pill{display:inline-block;background:#f1f5f9;border:1px solid transparent;color:var(--accent);font-weight:700;font-size:12.5px;text-decoration:none;padding:6px 14px;border-radius:99px;transition:all .15s;}
+  .pill:hover{background:#e3eeff;border-color:#c9dbf8;}
+  table{border-collapse:separate;border-spacing:0;width:100%;font-size:13.6px;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 4px 16px rgba(15,23,42,.09);overflow:hidden;}
+  th,td{padding:10px 14px;text-align:left;vertical-align:top;border-bottom:1px solid #edf1f7;}
+  th{background:linear-gradient(180deg,#f8fafc,#eef2f8);font-weight:800;font-size:11.8px;text-transform:uppercase;letter-spacing:.45px;color:#334155;border-bottom:2px solid #dbe3ee;}
+  th:first-child{width:220px;}
+  tbody tr:nth-child(even) td{background:#fafcff;}
+  tbody tr:hover td{background:#eef6ff;}
+  tbody tr:last-child td{border-bottom:none;}
+  td b{color:var(--accent);}
+  code{background:#eef2f7;border:1px solid #e2e8f0;padding:1px 6px;border-radius:6px;font-size:12.4px;font-family:ui-monospace,"SF Mono",Consolas,monospace;color:#0f172a;}
+  .cat td{background:#f0f7f4 !important;font-weight:800;color:#14532d;font-size:12px;text-transform:uppercase;letter-spacing:.6px;}
+  footer{text-align:center;color:var(--muted);font-size:12.5px;padding:14px 20px 34px;}
+  footer a{color:#3d4a5c;}
+  .hidden{display:none;}
+  @media(max-width:640px){ th:first-child{width:auto;} td,th{padding:8px 10px;} }
+</style>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='86'>📖</text></svg>">
+</head>
+<body>
+
+<header>
+  <div class="kicker">📖 Jargon Decoder · Used Across All 20 Practice Sets</div>
+  <h1>Course Glossary — Every Term, In Plain English</h1>
+  <p>Every term used in the 20 practice guides, defined in one place. Press <b>Ctrl+F</b> or use the filter box to find a word. Definitions are practical — what it means <i>in these datasets</i>, not textbook theory.</p>
+</header>
+
+<div class="wrap">
+  <div class="tools">
+    <input id="filter" type="search" placeholder="🔍 Filter terms… (e.g. DAX, pivot, sentinel)" oninput="filterRows(this.value)">
+    <a class="pill" href="index.html">← All 20 practice sets</a>
+  </div>
+
+  <table>
+    <thead><tr><th scope="col">Term</th><th scope="col">Plain-English meaning</th></tr></thead>
+    <tbody id="rows">
+      <tr class="cat"><td colspan="2">Files &amp; Data Basics</td></tr>
+      <tr><td><b>CSV</b></td><td>Comma-Separated Values — a plain-text table where commas separate columns. Opens in any tool; no formatting, just data.</td></tr>
+      <tr><td><b>Delimiter</b></td><td>The character splitting columns in a text file — comma, semicolon (guide 06), or tab. Wrong delimiter = one giant column.</td></tr>
+      <tr><td><b>XLSX</b></td><td>An Excel workbook file. Can store multiple sheets, formats, and formulas — unlike CSV.</td></tr>
+      <tr><td><b>Workbook / Worksheet</b></td><td>The whole Excel file (workbook) vs. one tab inside it (worksheet/sheet).</td></tr>
+      <tr><td><b>Header row</b></td><td>Row 1 containing column names. Some files hide a second "tag" row under it (guide 07's double-header trap).</td></tr>
+      <tr><td><b>Granularity</b></td><td>What one row represents — one day (guide 05), one invoice line (guide 14), one person (guide 20). Mixing granularities double-counts.</td></tr>
+      <tr><td><b>Sentinel value</b></td><td>A fake number standing in for "missing" — e.g. <code>−200</code> for dead sensors (guide 10), <code>−1</code> for "never contacted" (guide 06), <code>\N</code> (guide 12).</td></tr>
+      <tr><td><b>Null / Blank</b></td><td>An empty cell — "no value recorded". Different from 0! Averages skip blanks but include zeros.</td></tr>
+      <tr><td><b>Data dictionary</b></td><td>A table listing every column and what it stores. Build one before analyzing any new file.</td></tr>
+      <tr><td><b>ISO / ISO-3 code</b></td><td>Standard 2–3 letter country codes (<code>IND</code>, <code>USA</code>). Blank codes in guide 16 = aggregate rows, not countries.</td></tr>
+
+      <tr class="cat"><td colspan="2">Excel Formulas</td></tr>
+      <tr><td><b>Cell reference</b></td><td>A cell's address, like <code>J2</code> (column J, row 2).</td></tr>
+      <tr><td><b>Relative vs. absolute ($)</b></td><td><code>A1</code> shifts when you copy the formula; <code>$A$1</code> stays locked on that cell. <code>$</code> = "don't move".</td></tr>
+      <tr><td><b>Excel Table (structured refs)</b></td><td>Ctrl+T converts a range to a smart Table. Formulas then read <code>[@[Net Sales]]</code> ("this row's Net Sales") and auto-fill down.</td></tr>
+      <tr><td><b>IF(condition, then, else)</b></td><td>If the condition is true do the first thing, otherwise the second. Nested IFs chain multiple rules.</td></tr>
+      <tr><td><b>IFERROR / ISBLANK</b></td><td><code>IFERROR</code> replaces an error with a value you choose; <code>ISBLANK</code> tests for truly empty cells (guide 04's blank-vs-0 trap).</td></tr>
+      <tr><td><b>VLOOKUP / XLOOKUP</b></td><td>Find a value in one column and return a value from another. XLOOKUP (Microsoft 365/2021+ only) is safer and easier; older Excel uses INDEX/MATCH.</td></tr>
+      <tr><td><b>COUNTIF / AVERAGEIF / SUMIFS</b></td><td>Count / average / sum rows that meet a condition — your first "analytics" functions.</td></tr>
+      <tr><td><b>PROPER / TRIM / LEFT / MID</b></td><td>Text cleaners: fix ALL CAPS, strip stray spaces, slice characters out of strings.</td></tr>
+      <tr><td><b>DATE / DATEVALUE</b></td><td>Build a real date from parts (<code>DATE(Y,M,D)</code>) or convert a text date into a real one. Excel stores dates as serial numbers.</td></tr>
+      <tr><td><b>Error codes</b></td><td><code>#NAME?</code> misspelled name · <code>#DIV/0!</code> divide by zero/blank · <code>#N/A</code> not found · <code>#VALUE!</code> text in a math formula · <code>#REF!</code> deleted referenced cells.</td></tr>
+      <tr><td><b>Fill handle / Ctrl+D</b></td><td>Drag the little square at a cell's corner (or press Ctrl+D) to copy a formula down thousands of rows.</td></tr>
+
+      <tr class="cat"><td colspan="2">PivotTables &amp; Chart Basics</td></tr>
+      <tr><td><b>PivotTable</b></td><td>Drag-and-drop summary: Rows = groups, Values = numbers (Sum/Count/Average), Columns = split, Filters = restrict.</td></tr>
+      <tr><td><b>"Sum of" field</b></td><td>Default Value naming ("Sum of Profit"). Rename to a real label — future-you will thank you.</td></tr>
+      <tr><td><b>% of Total</b></td><td>Right-click a pivot value → Show Values As → % of Grand Total, for share-of-whole analysis.</td></tr>
+      <tr><td><b>Slicer</b></td><td>Clickable filter buttons attached to a pivot/chart — one click filters everything connected.</td></tr>
+      <tr><td><b>Axis / Legend / Data field</b></td><td>The three drag zones of a chart: what's along the bottom, what each color means, what the bars measure.</td></tr>
+      <tr><td><b>Choropleth (filled map)</b></td><td>A map colored by value — needs country/city names or codes Power BI can place.</td></tr>
+
+      <tr class="cat"><td colspan="2">Power Query (Excel &amp; Power BI's data cleaner)</td></tr>
+      <tr><td><b>Power Query</b></td><td>The data-prep engine built into Excel and Power BI: point it at files, clean step by step, refresh later with one click.</td></tr>
+      <tr><td><b>Applied Steps</b></td><td>The recorded list of your cleaning actions on the right — each is repeatable and editable.</td></tr>
+      <tr><td><b>Promote Headers</b></td><td>Tell Power Query "row 1 is column names", not data.</td></tr>
+      <tr><td><b>Change Type</b></td><td>Mark each column as Number / Date / Text. Wrong types silently break sorts, math, and date logic.</td></tr>
+      <tr><td><b>Replace Values / Replace Errors</b></td><td>Swap sentinels (<code>−200</code>) for nulls, or clean error cells, inside the query.</td></tr>
+      <tr><td><b>Split Column</b></td><td>Break one column into several by a delimiter — "99 min" → 99 + "min" (guide 11).</td></tr>
+      <tr><td><b>Unpivot</b></td><td>Flip wide columns (year 1750…2025) into two tidy columns (Year, Value) — the fix for guide 16's 79-column sheet.</td></tr>
+      <tr><td><b>Append (Combine Files)</b></td><td>Stack many files/tables with the same columns into one — guide 13's 12 monthly CSVs become one table.</td></tr>
+      <tr><td><b>Merge</b></td><td>Join two tables on a shared key — like VLOOKUP, but in Power Query, and it keeps both tables intact.</td></tr>
+      <tr><td><b>Folder combine</b></td><td>Point Power Query at a folder (not a file); new files dropped in are included on refresh.</td></tr>
+      <tr><td><b>Close &amp; Load</b></td><td>Push the cleaned query result back to an Excel sheet (or the Data Model).</td></tr>
+
+      <tr class="cat"><td colspan="2">Data Modeling</td></tr>
+      <tr><td><b>Star schema</b></td><td>One central fact table (sales rows) connected to dimension tables (Product, Customer, Date) by keys. The professional layout Power BI loves.</td></tr>
+      <tr><td><b>Fact table</b></td><td>The big table of events/transactions — one row per sale, booking, or ticket (guides 18–20: 121k–220k rows).</td></tr>
+      <tr><td><b>Dimension table</b></td><td>The smaller "lookup" tables describing things: products, customers, dates, roles.</td></tr>
+      <tr><td><b>Primary / Foreign key</b></td><td>The ID that identifies a row (ProductKey in Product) vs. the same ID repeated in the fact table to link rows.</td></tr>
+      <tr><td><b>Relationship cardinality</b></td><td>One-to-many (normal), one-to-one (rare), many-to-many (dangerous — guide 17). Always aim for one-to-many from dimension to fact.</td></tr>
+      <tr><td><b>Snowflake</b></td><td>Dimensions split into sub-dimensions (guide 17's 7 sheets). Flatten or model carefully — cross-filtering gets confusing.</td></tr>
+      <tr><td><b>Role-playing table</b></td><td>One Date table used several ways (order date, ship date). Only one relationship is active; measures activate others with USERELATIONSHIP.</td></tr>
+      <tr><td><b>Bridge table</b></td><td>A helper table resolving many-to-many — one row per title-and-genre pair (guide 11).</td></tr>
+      <tr><td><b>Row-Level Security (RLS)</b></td><td>Rules so each viewer only sees their own slice of data (guide 20's region managers).</td></tr>
+
+      <tr class="cat"><td colspan="2">DAX (Power BI's formula language)</td></tr>
+      <tr><td><b>Measure vs. calculated column</b></td><td>A measure computes on the fly per visual (use 95% of the time); a calculated column stores a value per row (rare).</td></tr>
+      <tr><td><b>Filter context</b></td><td>The filters currently applying to a calculation (slicer + row + cross-highlight). Measures re-run for every context.</td></tr>
+      <tr><td><b>SUM / AVERAGE / DISTINCTCOUNT / COUNTROWS</b></td><td>Basic aggregations. DISTINCTCOUNT counts unique values — customers, not orders.</td></tr>
+      <tr><td><b>DIVIDE(a, b, alt)</b></td><td>Safe division: returns <i>alt</i> (usually 0 or blank) instead of an error when b is 0. Always prefer DIVIDE over <code>/</code>.</td></tr>
+      <tr><td><b>CALCULATE(expr, filter)</b></td><td>DAX's swiss knife: recompute an expression under new filters. E.g. <code>CALCULATE([Sales], 'Product'[Category]="Bikes")</code>.</td></tr>
+      <tr><td><b>FILTER / ALL / ALLSELECTED</b></td><td>Table filters: FILTER picks rows, ALL clears filters (denominator for % of total), ALLSELECTED respects the slicer.</td></tr>
+      <tr><td><b>SUMX / iterators (X-functions)</b></td><td>Row-by-row computation then aggregation — e.g. quantity × price per row, then sum.</td></tr>
+      <tr><td><b>VAR … RETURN</b></td><td>Store intermediate results in variables for readable, fast formulas.</td></tr>
+      <tr><td><b>SAMEPERIODLASTYEAR / DATESYTD / TOTALYTD</b></td><td>Time intelligence: last year's value, year-to-date — needs a proper Date table and continuous dates.</td></tr>
+      <tr><td><b>Date table</b></td><td>A dedicated table of continuous dates (one row per day) marked as the model's official calendar. Required for YoY/YTD.</td></tr>
+      <tr><td><b>USERELATIONSHIP</b></td><td>Temporarily activate an inactive relationship inside one measure (ship-date analysis in guides 12 &amp; 18).</td></tr>
+      <tr><td><b>(Blank) in DAX</b></td><td>Means "no rows matched the filters" — often a relationship or filter mismatch, not zero.</td></tr>
+
+      <tr class="cat"><td colspan="2">Business Metrics Used in the Guides</td></tr>
+      <tr><td><b>Margin %</b></td><td>Profit ÷ Sales. Guide 01: 14.23%; guide 19: 2.66% (thin!).</td></tr>
+      <tr><td><b>YoY (Year-over-Year)</b></td><td>This year vs. same period last year — the core growth metric.</td></tr>
+      <tr><td><b>YTD / Fiscal YTD</b></td><td>Running total since Jan 1 (or the fiscal start — Adventure Works' July 1).</td></tr>
+      <tr><td><b>AOV</b></td><td>Average Order Value = revenue ÷ number of orders (guide 13: $193.30).</td></tr>
+      <tr><td><b>ADR</b></td><td>Average Daily Rate for a hotel booking (guide 15) — the per-night price.</td></tr>
+      <tr><td><b>Pareto (80/20)</b></td><td>The top ~20% of customers drive ~80% of revenue — computed with a cumulative % measure (guide 14).</td></tr>
+      <tr><td><b>Conversion rate</b></td><td>Share of contacts/clicks that became customers (guides 06, 18).</td></tr>
+      <tr><td><b>Attrition / Churn</b></td><td>Share of employees (guide 20) or customers who left during the period.</td></tr>
+      <tr><td><b>CSAT / SLA</b></td><td>Customer Satisfaction rating (High/Medium/Low) and the promised resolution deadline (guide 17: under 4 days).</td></tr>
+      <tr><td><b>What-If parameter</b></td><td>A slider-backed number (discount cap, replacement cost %) that live-recalculates measures — great for scenario demos.</td></tr>
+      <tr><td><b>Field parameters</b></td><td>Let report viewers switch the metric/axis themselves from a slicer (guide 19's dynamic metric switcher).</td></tr>
+      <tr><td><b>Drill-through</b></td><td>Right-click a chart bar → jump to a detail page filtered to that item (guides 19–20).</td></tr>
+      <tr><td><b>Small multiples</b></td><td>One chart template repeated per group (hotel type, region) for easy comparison (guide 15).</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<footer>Part of the <a href="index.html">20 Practice Sets</a> · <a href="../../index.html">Main course outline</a> · Works fully offline</footer>
+
+<script>
+function filterRows(q){
+  q = q.toLowerCase();
+  var rows = document.querySelectorAll('#rows tr');
+  var lastCat = null;
+  rows.forEach(function(r){
+    if(r.classList.contains('cat')){ r.classList.add('hidden'); lastCat = r; return; }
+    var show = r.textContent.toLowerCase().indexOf(q) >= 0;
+    r.classList.toggle('hidden', !show);
+    if(show && lastCat){ lastCat.classList.remove('hidden'); }
+  });
+}
+</script>
+</body>
+</html>

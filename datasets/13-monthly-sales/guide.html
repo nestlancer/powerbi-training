@@ -224,10 +224,16 @@
 
 <div class="wrap">
 
-  <div class="prog-bar">
-    <span class="prog-text" id="progText">0 / 0 steps completed</span>
-    <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+  <div class="prog-bar" role="region" aria-label="Your progress on this guide">
+    <span class="prog-text" id="progText" aria-live="polite">0 / 0 steps completed</span>
+    <div class="prog-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-labelledby="progText"><div class="prog-fill" id="progFill"></div></div>
     <button class="btn-sm" type="button" onclick="resetChecks()">Reset checklist</button>
+  </div>
+
+  <div class="quickfacts" style="background:linear-gradient(135deg,#f8fbff,#f1f7f3);border:1px solid var(--line);border-left:5px solid #16a34a;border-radius:14px;padding:14px 18px;margin:0 0 18px;font-size:13.5px;line-height:1.75;">
+    <b>⚡ Quick info:</b> ⏱ <b>90–120 min</b> &nbsp;·&nbsp; 🧰 <b>Excel 2016+</b> + <b>Power BI Desktop</b> (<a href="https://aka.ms/pbidesktop">free download</a>) &nbsp;·&nbsp; 📂 Data: <a href="data/Sales_January_2019.csv" download>Sales_January_2019.csv</a> + 11 more monthly CSVs (Power Query combines the whole folder) &nbsp;·&nbsp; 🧭 Prereq: guides 01–05 recommended
+    <br>🩺 <b>If a formula shows an error:</b> <code>#NAME?</code> = misspelled function/name &nbsp;·&nbsp; <code>#DIV/0!</code> = divide by zero or blank &nbsp;·&nbsp; <code>#N/A</code> = lookup value not found &nbsp;·&nbsp; <code>#VALUE!</code> = text where a number is expected &nbsp;·&nbsp; Power Query <code>Expression.Error</code> = a renamed/missing column &nbsp;·&nbsp; DAX shows <code>(Blank)</code> = filters match no rows.
+    <br>📖 New jargon? <a href="../glossary.html">Open the glossary</a> &nbsp;·&nbsp; ◀ <a href="../12-openflights/guide.html">Previous: Guide 12</a> &nbsp;·&nbsp; <a href="../14-online-retail/guide.html">Next: Guide 14 · Online Retail</a> ▶
   </div>
 
   <div class="toc">
@@ -483,7 +489,21 @@ Items per Basket = DIVIDE ( [Total Units], [Distinct Orders] )
 
 </div>
 
-<footer>
+    <details style="background:linear-gradient(135deg,#fffaf0,#fffdf6);border:1px solid #f5e3bd;border-left:5px solid #d97706;border-radius:14px;padding:14px 18px;margin:0 0 18px;font-size:13.8px;">
+      <summary style="cursor:pointer;font-weight:800;color:#92400e;">🧠 Check yourself — 3 quick questions before you call this guide done</summary>
+      <ol style="margin:10px 0 0;padding-left:22px;">
+        <li>Why combine the folder in Power Query instead of copy-pasting 12 monthly files?
+          <details style="margin:3px 0 8px;"><summary style="cursor:pointer;font-weight:700;color:#0b3d63;">Show answer</summary> The folder query auto-includes every file present — next month's CSV loads with one Refresh, no manual work.</details>
+        </li>
+        <li>What was the 2020 spill bug, and how was it caught?
+          <details style="margin:3px 0 8px;"><summary style="cursor:pointer;font-weight:700;color:#0b3d63;">Show answer</summary> 34 rows carried a December 2020 date into the 2019 data — caught by checking min/max order dates after the combine.</details>
+        </li>
+        <li>What are the cleaned totals for revenue and average order value?
+          <details style="margin:3px 0 8px;"><summary style="cursor:pointer;font-weight:700;color:#0b3d63;">Show answer</summary> Revenue <code>$34,492,035.97</code> across 185,950 clean rows; AOV ≈ <code>$193.30</code>.</details>
+        </li>
+      </ol>
+    </details>
+    <footer>
   Source: Keith Galli / Public Domain POS Simulation · Manually verified against all 12 CSVs in <code>data/</code> · Works 100% offline.
 </footer>
 

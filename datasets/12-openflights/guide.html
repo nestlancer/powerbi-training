@@ -224,10 +224,16 @@
 
 <div class="wrap">
 
-  <div class="prog-bar">
-    <span class="prog-text" id="progText">0 / 0 steps completed</span>
-    <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+  <div class="prog-bar" role="region" aria-label="Your progress on this guide">
+    <span class="prog-text" id="progText" aria-live="polite">0 / 0 steps completed</span>
+    <div class="prog-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-labelledby="progText"><div class="prog-fill" id="progFill"></div></div>
     <button class="btn-sm" type="button" onclick="resetChecks()">Reset checklist</button>
+  </div>
+
+  <div class="quickfacts" style="background:linear-gradient(135deg,#f8fbff,#f1f7f3);border:1px solid var(--line);border-left:5px solid #16a34a;border-radius:14px;padding:14px 18px;margin:0 0 18px;font-size:13.5px;line-height:1.75;">
+    <b>⚡ Quick info:</b> ⏱ <b>90–120 min</b> &nbsp;·&nbsp; 🧰 <b>Excel 2016+</b> + <b>Power BI Desktop</b> (<a href="https://aka.ms/pbidesktop">free download</a>) &nbsp;·&nbsp; 📂 Data: <a href="data/airports.csv" download>airports.csv</a> + <a href="data/routes.csv" download>routes.csv</a> &nbsp;·&nbsp; 🧭 Prereq: guide 11 recommended (bridge tables)
+    <br>🩺 <b>If a formula shows an error:</b> <code>#NAME?</code> = misspelled function/name &nbsp;·&nbsp; <code>#DIV/0!</code> = divide by zero or blank &nbsp;·&nbsp; <code>#N/A</code> = lookup value not found &nbsp;·&nbsp; <code>#VALUE!</code> = text where a number is expected &nbsp;·&nbsp; Power Query <code>Expression.Error</code> = a renamed/missing column &nbsp;·&nbsp; DAX shows <code>(Blank)</code> = filters match no rows.
+    <br>📖 New jargon? <a href="../glossary.html">Open the glossary</a> &nbsp;·&nbsp; ◀ <a href="../11-netflix-titles/guide.html">Previous: Guide 11</a> &nbsp;·&nbsp; <a href="../13-monthly-sales/guide.html">Next: Guide 13 · Monthly Sales</a> ▶
   </div>
 
   <div class="toc">
@@ -508,7 +514,21 @@ Connected Hubs = DISTINCTCOUNT ( 'Routes'[source_airport_id] )</pre>
 
 </div>
 
-<footer>
+    <details style="background:linear-gradient(135deg,#fffaf0,#fffdf6);border:1px solid #f5e3bd;border-left:5px solid #d97706;border-radius:14px;padding:14px 18px;margin:0 0 18px;font-size:13.8px;">
+      <summary style="cursor:pointer;font-weight:800;color:#92400e;">🧠 Check yourself — 3 quick questions before you call this guide done</summary>
+      <ol style="margin:10px 0 0;padding-left:22px;">
+        <li>What problem does <code>USERELATIONSHIP</code> solve in this model?
+          <details style="margin:3px 0 8px;"><summary style="cursor:pointer;font-weight:700;color:#0b3d63;">Show answer</summary> Role-playing keys: the Routes table has several date/equipment keys but only one relationship can be active — USERELATIONSHIP activates the right one per measure.</details>
+        </li>
+        <li>What's the overall Codeshare Share %, and on what base?
+          <details style="margin:3px 0 8px;"><summary style="cursor:pointer;font-weight:700;color:#0b3d63;">Show answer</summary> 21.57% — 14,597 codeshare routes out of 67,663 outbound routes.</details>
+        </li>
+        <li>What do <code>\N</code> values in routes.csv and airports.csv represent?
+          <details style="margin:3px 0 8px;"><summary style="cursor:pointer;font-weight:700;color:#0b3d63;">Show answer</summary> OpenFlights' null marker for missing IDs/names — they must be cleaned (blanked) like any sentinel, or they join wrongly and pollute counts.</details>
+        </li>
+      </ol>
+    </details>
+    <footer>
   Source: OpenFlights.org Open Database · Manually verified against <code>data/routes.csv</code> &amp; <code>data/airports.csv</code> · Works 100% offline.
 </footer>
 
