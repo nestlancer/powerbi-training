@@ -353,13 +353,13 @@
       <ol style="margin:0;padding-left:20px;">
         <li><b>Column V — <code>MajorClean</code> (Fix ALL CAPS with PROPER):</b> In cell <code>V1</code> type <code>MajorClean</code>. In cell <code>V2</code> type:<br>
         <code>=PROPER(C2)</code><br>
-        Watch <code>PETROLEUM ENGINEERING</code> turn into clean <code>Petroleum Engineering</code> across all 173 rows!</li>
+        Watch <code>PETROLEUM ENGINEERING</code> turn into clean <code>Petroleum Engineering</code> across all 173 rows! <i>You'll see:</i> V2 shows <code>Petroleum Engineering</code> instantly — text results display exactly as returned, no number format involved.</li>
         <li><b>Column W — <code>PayBand</code> (Salary Histogram Buckets):</b> In cell <code>W1</code> type <code>PayBand</code>. In cell <code>W2</code> type:<br>
         <code>=IF(P2&lt;30000,"1. Under $30K",IF(P2&lt;40000,"2. $30K–$39K",IF(P2&lt;50000,"3. $40K–$49K",IF(P2&lt;70000,"4. $50K–$69K","5. $70K+"))))</code><br>
-        <i>Why number prefixes 1–5?</i> So any PivotTable or beginner chart automatically sorts the salary buckets from lowest to highest!</li>
+        <i>Why number prefixes 1–5?</i> So any PivotTable or beginner chart automatically sorts the salary buckets from lowest to highest! <i>You'll see:</i> W2 shows the text <code>5. $70K+</code> (row 2's median, <code>$110,000</code>, lands in the top band) — the <code>$</code> inside is part of the label text, not cell formatting.</li>
         <li><b>Column X — <code>PaySpread</code> (75th minus 25th Percentile Upside):</b> In cell <code>X1</code> type <code>PaySpread</code>. In cell <code>X2</code> type:<br>
         <code>=R2-Q2</code><br>
-        This measures earning upside within each major (e.g., <code>$125,000 - $95,000 = $30,000</code> for Petroleum Engineering).</li>
+        This measures earning upside within each major (e.g., <code>$125,000 - $95,000 = $30,000</code> for Petroleum Engineering). <i>You'll see:</i> X2 shows plain <code>30000</code> — General format from a CSV import, with no <code>$</code> and no thousands comma (the <code>$30,000</code> in this sentence is prose, not the cell display). Optional polish: format <code>X</code> (or <code>P:R</code>) as Currency <code>$#,##0</code> and it reads <code>$30,000</code>.</li>
       </ol>
     </div>
     <div class="why-box">

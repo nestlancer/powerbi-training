@@ -300,6 +300,7 @@
       • <code>AG2 (ArrivalDate)</code>: <code>=DATEVALUE(G2 &amp; "-" &amp; E2 &amp; "-" &amp; D2)</code> (format as <code>yyyy-mm-dd</code>)<br>
       • <code>AH2 (TotalNights)</code>: <code>=H2+I2</code><br>
       • <code>AI2 (RoomRevenue)</code>: <code>=AH2*AB2</code> (where <code>AB</code> is <code>adr</code>)<br>
+      <i>You'll see:</i> AG2 already displays a date — Excel auto-formats <code>DATEVALUE()</code> results in your regional format (<code>01-07-2015</code> or <code>7/1/2015</code>; row 2 = 1 July 2015); applying <code>yyyy-mm-dd</code> gives <code>2015-07-01</code>. AH2 and AI2 show <code>0</code> — row 2's booking genuinely has 0 recorded nights and adr <code>0.0</code> (1,959 rows in this file carry adr = 0; comps and zero-rate bookings). Check row 4 instead: 1 week-night × adr <code>75</code> → <code>75</code>. Format <code>AI</code> as <code>€#,##0.00</code> so the SUMIFS totals below display correctly.<br>
       Verify with <code>SUMIFS</code>: <code>is_canceled = 0</code> Realized Revenue = <b>€25,996,260.41</b>; <code>is_canceled = 1</code> Lost Revenue = <b>€16,727,237.12</b>!
     </div>
     <div class="why-box">
@@ -356,6 +357,7 @@ CALCULATE ( [Total Bookings], 'Bookings'[is_canceled] = 1 )
 // Check: 44,224
 
 Cancellation Rate % = DIVIDE ( [Cancelled Bookings], [Total Bookings] )
+// Format: 0.0%
 // Check: 37.04% (City = 41.73%, Resort = 27.76%)
 
 Booked Room Revenue =

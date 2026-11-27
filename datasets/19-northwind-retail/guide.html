@@ -333,16 +333,19 @@ Total Profit = SUM ( 'RetailSales'[Profit] )
 // Check: $18,710,044.29
 
 Profit Margin % = DIVIDE ( [Total Profit], [Total Sales] )
+// Format: 0.0% -> shows 2.7%, not the raw 0.0266
 // Check: 2.66%
 
 Total Units = SUM ( 'RetailSales'[Quantity] )
 // Check: 1,648,536
 
 Avg Discount % = AVERAGE ( 'RetailSales'[Discount] )
+// Format: 0.0%
 
 Sales YoY % =
 VAR PY = CALCULATE ( [Total Sales], SAMEPERIODLASTYEAR ( 'Calendar'[Date] ) )
 RETURN DIVIDE ( [Total Sales] - PY, PY )
+// Format: 0.0%
 
 // Recover Pre-Discount List Revenue &amp; Implied Cost per Row for What-If Cap!
 // Since Sales = ListRev * (1 - Discount) and Cost = Sales - Profit:

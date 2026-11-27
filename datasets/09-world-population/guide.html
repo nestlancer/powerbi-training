@@ -315,7 +315,7 @@
     <div class="step">
       Instead of hunting through 264 filter checkboxes by hand, paste this exact formula in cell <code>E2</code> (header <code>E1 = IsAggregate</code>):
 <pre>=ISNUMBER(FIND(","&amp;B2&amp;",", ",AFE,AFW,ARB,CEB,CSS,EAP,EAR,EAS,ECA,ECS,EMU,EUU,HIC,HPC,IBD,IBT,IDA,IDB,IDX,LAC,LCN,LDC,LIC,LMC,LMY,LTE,MEA,MIC,MNA,NAC,OED,OSS,PRE,PSS,PST,SAS,SSA,SSF,SST,TEA,TEC,TLA,TMN,TSA,TSS,UMC,WLD,"))</pre>
-      <i>How this works:</i> Wrapping commas around <code>B2</code> checks for an exact 3-letter code match! Every true country gets <code>FALSE</code>; all 47 regional/income rollups get <code>TRUE</code>!
+      <i>How this works:</i> Wrapping commas around <code>B2</code> checks for an exact 3-letter code match! Every true country gets <code>FALSE</code>; all 47 regional/income rollups get <code>TRUE</code>! <i>You'll see:</i> E2 shows <code>FALSE</code> — row 2 is Aruba (<code>ABW</code>), a real country. Boolean TRUE/FALSE results need no number formatting at all; you only need the dropdown filter later to pick <code>FALSE</code>.
     </div>
     <div class="why-box">
       <div class="why-title">💡 Why do we do this?</div>
@@ -397,12 +397,14 @@ YoY Net Change = [Snapshot Population] - [Prior Year Population]
 // In 2024: China = -1,735,000 (shrinking!) while India = +12,866,195!
 
 YoY Growth % = DIVIDE ( [YoY Net Change], [Prior Year Population] )
+// Format: 0.0%
 
 World Share % =
 DIVIDE (
     [Snapshot Population],
     CALCULATE ( [Snapshot Population], ALL ( 'Population'[Country Name], 'Population'[Country Code] ) )
-)</pre>
+)
+// Format: 0.0%</pre>
     <div class="why-box">
       <div class="why-title">💡 Why do we do this?</div>
       <p><b>Reason:</b> The snapshot pattern from Gapminder returns — population is semi-additive (add across countries within one year, never across years). Notice a deliberate difference: because <code>Year</code> is a plain integer (no Date table here), "prior year" is computed as <code>MAX(Year) - 1</code> with an <code>ALL(Year)</code> reset — the no-date-table way to walk back one period. And <code>World Share %</code> uses <code>ALL</code> on the country columns to un-filter geography while keeping the year filter — the classic "denominator = total of everything" move.</p>

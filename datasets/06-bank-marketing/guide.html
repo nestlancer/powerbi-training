@@ -333,9 +333,11 @@
     <div class="step">
       <ol style="margin:0;padding-left:20px;">
         <li><b>Column R — <code>Subscribed</code> (0/1 Flag for Pivot Checks):</b> In <code>R1</code> type <code>Subscribed</code>, and in <code>R2</code> type:<br>
-        <code>=IF(Q2="yes", 1, 0)</code></li>
+        <code>=IF(Q2="yes", 1, 0)</code><br>
+        <i>You'll see:</i> R2 shows plain <code>0</code> (row 2's <code>y</code> = no) — a 0/1 flag column is meant to stay an unformatted number.</li>
         <li><b>Column S — <code>CallBucket</code> (Dial Fatigue Grouping):</b> In <code>S1</code> type <code>CallBucket</code>, and in <code>S2</code> type:<br>
-        <code>=IF(M2=1,"1. 1 call",IF(M2=2,"2. 2 calls",IF(M2=3,"3. 3 calls",IF(M2&lt;=5,"4. 4-5 calls","5. 6+ calls"))))</code></li>
+        <code>=IF(M2=1,"1. 1 call",IF(M2=2,"2. 2 calls",IF(M2=3,"3. 3 calls",IF(M2&lt;=5,"4. 4-5 calls","5. 6+ calls"))))</code><br>
+        <i>You'll see:</i> S2 shows the text <code>1. 1 call</code> (row 2's <code>campaign</code> = 1) — again a text label, left-aligned.</li>
       </ol>
     </div>
     <div class="why-box">

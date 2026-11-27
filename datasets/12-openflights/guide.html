@@ -391,6 +391,7 @@ DIVIDE (
     CALCULATE ( [Outbound Routes], 'Routes'[codeshare] = "Codeshare" ),
     [Outbound Routes]
 )
+// Format: 0.0%
 // Check overall: 21.57% (14,597 of 67,663)
 
 Non-Stop Share % =
@@ -398,6 +399,7 @@ DIVIDE (
     CALCULATE ( [Outbound Routes], 'Routes'[stops] = 0 ),
     [Outbound Routes]
 )
+// Format: 0.0%
 // Check overall: 99.98% (67,652 of 67,663)
 
 Connected Hubs = DISTINCTCOUNT ( 'Routes'[source_airport_id] )</pre>

@@ -321,6 +321,7 @@
         <li><code>=AVERAGEIF(B2:B7788,"Movie",O2:O7788)</code> → <b>99.3 minutes</b></li>
         <li><code>=AVERAGEIF(B2:B7788,"TV Show",O2:O7788)</code> → <b>1.78 seasons</b></li>
       </ul>
+      <i>Display check:</i> COUNTIF answers arrive as plain <code>5377</code> and <code>2410</code> — General format never inserts the thousands comma (this guide writes 5,377 only for readability; click <b>Comma Style</b> if you want the comma in the cell). AVERAGEIF Movie returns <code>99.3080…</code> and TV Show <code>1.7759…</code> — long decimals are normal; click <b>Decrease Decimal</b> to display <code>99.3</code> and <code>1.78</code>.
       Save as <code>11-netflix-clean.xlsx</code>.
     </div>
     <div class="why-box">
@@ -389,6 +390,7 @@ TV Show Count = CALCULATE ( [Total Titles], 'Titles'[type] = "TV Show" )
 // Check: 2,410
 
 Movie Share % = DIVIDE ( [Movie Count], [Total Titles] )
+// Format: 0.0% -> shows 69.1%, not the raw 0.6905
 // Check: 69.1%
 
 Avg Movie Runtime (min) =
@@ -398,6 +400,7 @@ CALCULATE ( AVERAGE ( 'Titles'[DurationNum] ), 'Titles'[type] = "Movie" )
 One-Season TV Rate % =
 VAR OneS = CALCULATE ( [TV Show Count], 'Titles'[DurationNum] = 1 )
 RETURN DIVIDE ( OneS, [TV Show Count] )
+// Format: 0.0%
 // Check: 66.7% (1,608 of 2,410 TV Shows!)</pre>
     <div class="why-box">
       <div class="why-title">💡 Why do we do this?</div>
