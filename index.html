@@ -104,7 +104,61 @@
     ul.subs{grid-template-columns:1fr;}
     .progress{margin-left:0;}
   }
+  /* ═══ UI 2.0 theme — overrides the base block above ═══ */
+  :root{
+    --ink:#111827;--muted:#5b6472;--line:#e4e9f1;--bg:#f2f5fa;
+    --calc:#16a34a;--calc-soft:#e9f7ef;--pbi:#d97706;--pbi-soft:#fff6e6;
+    --sh-sm:0 1px 2px rgba(15,23,42,.05),0 1px 3px rgba(15,23,42,.07);
+    --sh-md:0 4px 16px rgba(15,23,42,.09),0 2px 4px rgba(15,23,42,.05);
+    --sh-lg:0 14px 38px rgba(15,23,42,.16);
+  }
+  body{background:radial-gradient(1100px 480px at 88% -80px,rgba(14,116,144,.10),transparent 60%),radial-gradient(900px 420px at -60px 34%,rgba(22,163,74,.08),transparent 55%),var(--bg);}
+  ::selection{background:#bfdbfe;}
+  header{position:relative;overflow:hidden;padding:46px 28px 40px;background:linear-gradient(130deg,#0e7490 0%,#0b3d63 55%,#312e81 100%);}
+  header::before{content:"";position:absolute;inset:0;background:radial-gradient(620px 300px at 90% -12%,rgba(255,255,255,.20),transparent 62%),radial-gradient(460px 280px at 4% 112%,rgba(255,255,255,.13),transparent 60%);}
+  header::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg,rgba(255,255,255,.05) 0 2px,transparent 2px 26px);opacity:.55;pointer-events:none;}
+  header>*{position:relative;z-index:1;}
+  header h1{font-size:clamp(24px,3.2vw,34px);letter-spacing:-.4px;font-weight:800;text-shadow:0 2px 14px rgba(0,0,0,.22);}
+  header p{opacity:.96;}
+  .badge{margin-top:16px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.32);padding:7px 15px;border-radius:99px;font-size:12.5px;font-weight:600;}
+  .toolbar{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 16px;margin:20px auto 0;max-width:1116px;box-shadow:var(--sh-md);position:sticky;top:10px;z-index:20;backdrop-filter:blur(8px);}
+  .toolbar button{border:1px solid var(--line);border-radius:9px;font-weight:700;padding:8px 14px;transition:all .15s;box-shadow:var(--sh-sm);}
+  .toolbar button:hover{background:#f1f5f9;transform:translateY(-1px);box-shadow:var(--sh-md);}
+  .toolbar input{border:1px solid var(--line);border-radius:10px;padding:8px 14px;transition:border-color .15s,box-shadow .15s;}
+  .toolbar input:focus{outline:none;border-color:#93c5fd;box-shadow:0 0 0 3px #dbeafe;}
+  .progress{font-weight:700;color:#0b3d63;font-variant-numeric:tabular-nums;}
+  .how{font-size:13.2px;}
+  .how .ptag{font-size:10.5px;}
+  nav.toc{background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:var(--sh-sm);padding:14px 18px;}
+  .card{border:1px solid var(--line);border-radius:16px;box-shadow:var(--sh-sm);transition:box-shadow .18s;}
+  .card:hover{box-shadow:var(--sh-md);}
+  .card > .head{padding:18px 22px;border-bottom:1px solid transparent;transition:border-color .15s;}
+  .card[open] > .head, .card.opened > .head{border-bottom-color:var(--line);}
+  .card.calc > .head{background:linear-gradient(135deg,#e9f7ef,#f2faf5);}
+  .card.pbi > .head{background:linear-gradient(135deg,#fff6e6,#fffaf0);}
+  .dot{box-shadow:0 0 0 3px rgba(255,255,255,.7),0 1px 3px rgba(0,0,0,.18);}
+  .calc .dot{background:linear-gradient(135deg,#22c55e,#15803d);}
+  .pbi .dot{background:linear-gradient(135deg,#fbbf24,#d97706);}
+  .head .sub{font-weight:600;}
+  .module{padding:16px 0;}
+  .step{font-weight:800;box-shadow:var(--sh-sm);}
+  .calc .step{background:linear-gradient(135deg,#22c55e,#15803d);}
+  .pbi .step{background:linear-gradient(135deg,#fbbf24,#d97706);}
+  .topic{background:#fbfdff;border-radius:12px;transition:all .15s;}
+  .topic:hover{border-color:#c9dbf8;background:#f5f9ff;box-shadow:var(--sh-sm);}
+  .topic-name{letter-spacing:-.1px;}
+  .count{font-weight:700;color:#0e7490;}
+  .ptag{border-radius:5px;padding:1.5px 7px;}
+  .calc .ptag{color:#14532d;background:#dcfce7;}
+  .pbi .ptag{color:#7a4a00;background:#fde8b8;}
+  .note{background:linear-gradient(135deg,#f8fbff,#f1f7f3);border:1px solid var(--line);border-left:5px solid #16a34a;border-radius:14px;padding:18px 22px;box-shadow:var(--sh-sm);}
+  footer{text-align:center;color:var(--muted);font-size:12.5px;padding:14px 16px 34px;}
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation:none !important;transition:none !important;}
+    html{scroll-behavior:auto;}
+  }
 </style>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='86'>📈</text></svg>">
 </head>
 <body>
 
