@@ -83,12 +83,136 @@
     .wireframe{grid-template-columns:1fr 1fr;}
     .wf-box{grid-column:span 2 !important;}
   }
+  /* ═══ UI 2.0 theme — overrides the base block above ═══ */
+  :root{
+    --calc:#16a34a;--calc-soft:#e9f7ef;--pbi:#d97706;--pbi-soft:#fff6e6;
+    --ink:#111827;--muted:#5b6472;--line:#e4e9f1;--bg:#f2f5fa;
+    --accent:#0b3d63;--danger:#dc2626;--danger-soft:#fdeaea;
+    --gold:#f59e0b;--blue:#2563eb;
+    --h1:#4338ca;--h2:#312e81;--h3:#0f766e;
+    --sh-sm:0 1px 2px rgba(15,23,42,.05),0 1px 3px rgba(15,23,42,.07);
+    --sh-md:0 4px 16px rgba(15,23,42,.09),0 2px 4px rgba(15,23,42,.05);
+    --sh-lg:0 14px 38px rgba(15,23,42,.16);
+  }
+  body{background:radial-gradient(1100px 480px at 88% -80px,rgba(14,116,144,.10),transparent 60%),radial-gradient(900px 420px at -60px 34%,rgba(22,163,74,.08),transparent 55%),var(--bg);}
+  ::selection{background:#bfdbfe;}
+  header{position:relative;overflow:hidden;color:#fff;padding:46px 28px 40px;background:linear-gradient(130deg,var(--h1) 0%,var(--h2) 55%,var(--h3) 100%);}
+  header::before{content:"";position:absolute;inset:0;background:radial-gradient(620px 300px at 90% -12%,rgba(255,255,255,.20),transparent 62%),radial-gradient(460px 280px at 4% 112%,rgba(255,255,255,.13),transparent 60%);}
+  header::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg,rgba(255,255,255,.05) 0 2px,transparent 2px 26px);opacity:.55;pointer-events:none;}
+  header>*{position:relative;z-index:1;}
+  header .kicker{display:inline-block;font-size:11.5px;text-transform:uppercase;letter-spacing:1.1px;opacity:.97;font-weight:800;margin-bottom:12px;padding:6px 14px;border-radius:99px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.30);}
+  header h1{margin:0 0 10px;font-size:clamp(23px,3.1vw,33px);line-height:1.16;letter-spacing:-.4px;font-weight:800;text-shadow:0 2px 14px rgba(0,0,0,.22);}
+  header p{margin:0;max-width:920px;font-size:15px;opacity:.96;}
+  header p b{color:#ffdf8d;}
+  header a{color:#fff;text-decoration:underline;}
+  header code{background:rgba(255,255,255,.18);border-color:transparent;color:#ffe8a3;}
+  .top-nav{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;align-items:center;}
+  .pill{display:inline-block;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.32);padding:6px 14px;border-radius:99px;font-size:12.5px;font-weight:600;text-decoration:none;color:#fff;transition:transform .15s,background .15s;}
+  .pill:hover{background:rgba(255,255,255,.26);transform:translateY(-1px);}
+  .wrap{max-width:1120px;margin:22px auto 70px;padding:0 22px;}
+  .prog-bar{background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:14px;padding:12px 18px;margin-bottom:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;position:sticky;top:10px;z-index:20;box-shadow:var(--sh-md);}
+  .prog-track{flex:1;min-width:180px;height:12px;background:#e8edf5;border-radius:99px;overflow:hidden;box-shadow:inset 0 1px 2px rgba(15,23,42,.14);}
+  .prog-fill{height:100%;width:0%;border-radius:99px;background:linear-gradient(90deg,#16a34a,#0ea5e9 55%,#d97706);transition:width .4s cubic-bezier(.22,1,.36,1);position:relative;overflow:hidden;}
+  .prog-fill::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 0 32%,rgba(255,255,255,.55) 50%,transparent 68% 100%);background-size:220% 100%;animation:shine 2.6s linear infinite;}
+  @keyframes shine{from{background-position:220% 0}to{background-position:-220% 0}}
+  .prog-text{font-size:13px;font-weight:800;color:var(--accent);font-variant-numeric:tabular-nums;}
+  .prog-bar:has(.prog-fill[style*="100"]){border-color:#fcd34d;box-shadow:0 0 0 3px #fef3c7,var(--sh-md);}
+  .prog-bar:has(.prog-fill[style*="100"]) .prog-text{color:#b45309;}
+  .prog-bar:has(.prog-fill[style*="100"])::after{content:"🎉 All steps complete!";font-size:12.5px;font-weight:800;color:#92400e;background:linear-gradient(135deg,#fef3c7,#fde68a);border:1px solid #fcd34d;border-radius:99px;padding:4px 13px;animation:pop .45s cubic-bezier(.34,1.56,.64,1);}
+  @keyframes pop{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}
+  .btn-sm{border:1px solid var(--line);background:#fff;color:var(--ink);padding:6px 13px;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;box-shadow:var(--sh-sm);transition:all .15s;}
+  .btn-sm:hover{background:#f8fafc;transform:translateY(-1px);box-shadow:var(--sh-md);}
+  .toc{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 16px;margin-bottom:20px;font-size:13px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;box-shadow:var(--sh-sm);}
+  .toc b{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.7px;margin-right:2px;}
+  .toc a{color:var(--accent);text-decoration:none;font-weight:700;padding:5px 13px;border-radius:99px;background:#f1f5f9;border:1px solid transparent;transition:all .15s;}
+  .toc a:hover{background:#e3eeff;border-color:#c9dbf8;transform:translateY(-1px);}
+  section{background:#fff;border:1px solid var(--line);border-radius:16px;padding:26px 28px;margin-bottom:22px;box-shadow:var(--sh-sm);scroll-margin-top:78px;transition:box-shadow .2s;}
+  section:hover{box-shadow:var(--sh-md);}
+  h2.t{font-size:20.5px;margin:0 0 18px;padding-bottom:11px;border-bottom:2px solid var(--line);position:relative;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  h2.t::after{content:"";position:absolute;left:0;bottom:-4px;width:88px;height:4px;border-radius:99px;background:linear-gradient(90deg,var(--calc),#0ea5e9);}
+  h2.t.pbi-h::after{background:linear-gradient(90deg,var(--pbi),#dc2626);}
+  h3{font-size:16.5px;margin:26px 0 10px;color:var(--accent);display:flex;align-items:center;gap:9px;}
+  h3::before{content:"";width:5px;height:16px;border-radius:4px;background:linear-gradient(180deg,var(--pbi),var(--gold));flex:none;}
+  h4{font-size:14.5px;margin:14px 0 6px;color:var(--ink);}
+  .facts{background:linear-gradient(135deg,#f8fbff,#f1f7f3);border:1px solid var(--line);border-left:5px solid var(--calc);border-radius:14px;padding:18px 20px;margin-bottom:20px;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;}
+  .stat{position:relative;overflow:hidden;background:#fff;border:1px solid #e2e9f0;border-radius:12px;padding:12px 14px 12px 17px;box-shadow:var(--sh-sm);transition:transform .18s,box-shadow .18s;}
+  .stat::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg,var(--calc),#0ea5e9);}
+  .stat:hover{transform:translateY(-2px);box-shadow:var(--sh-md);}
+  .stat b{display:block;font-size:19px;color:var(--calc);letter-spacing:-.2px;}
+  .stat span{font-size:11.8px;color:var(--muted);line-height:1.42;display:block;margin-top:2px;}
+  .stat.warn{border-color:#f4d7d7;}
+  .stat.warn::before{background:linear-gradient(180deg,#dc2626,var(--gold));}
+  .stat.warn b{color:var(--danger);}
+  code{background:#eef2f7;border:1px solid #e2e8f0;padding:1.5px 6px;border-radius:6px;font-size:12.6px;font-family:ui-monospace,"SF Mono",Consolas,monospace;color:#0f172a;}
+  pre{background:#0b1220;color:#dbe4f3;padding:16px 18px;border-radius:13px;overflow:auto;font-size:12.9px;font-family:ui-monospace,"SF Mono",Consolas,monospace;line-height:1.6;margin:12px 0;border:1px solid #1e293b;box-shadow:var(--sh-md);}
+  pre::before{content:"⌨ formula · DAX";display:block;color:#7d8fa9;font-size:10px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;margin-bottom:10px;padding-bottom:8px;border-bottom:1px dashed #25344c;}
+  table{border-collapse:separate;border-spacing:0;width:100%;margin:14px 0;font-size:13.2px;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:var(--sh-sm);overflow:hidden;}
+  th,td{padding:9px 12px;text-align:left;vertical-align:top;border-bottom:1px solid #edf1f7;}
+  tr:nth-child(even) td{background:#fafcff;}
+  tr:hover td{background:#eef6ff;}
+  th{background:linear-gradient(180deg,#f8fafc,#eef2f8);font-weight:800;font-size:11.8px;text-transform:uppercase;letter-spacing:.45px;color:#334155;border-bottom:2px solid #dbe3ee;}
+  table tr:last-child td{border-bottom:none;}
+  table th:first-child{border-top-left-radius:11px;}table th:last-child{border-top-right-radius:11px;}
+  .tag{display:inline-block;font-size:10.5px;font-weight:800;padding:3px 10px;border-radius:99px;color:#fff;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap;box-shadow:0 1px 3px rgba(0,0,0,.2);}
+  .g{background:linear-gradient(135deg,#16a34a,#15803d);}.y{background:linear-gradient(135deg,#f59e0b,#d97706);}.r{background:linear-gradient(135deg,#ef4444,#b91c1c);}.b{background:linear-gradient(135deg,#3b82f6,#1d4ed8);}
+  .req{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border:1px solid var(--line);border-radius:12px;margin:9px 0;background:#fbfdff;transition:all .15s;}
+  .req:hover{border-color:#c9dbf8;box-shadow:var(--sh-sm);transform:translateX(3px);}
+  .req .tag{margin-top:2px;flex:none;min-width:66px;text-align:center;}
+  .step{background:var(--calc-soft);border:1px solid #cbe6d5;border-left:5px solid var(--calc);border-radius:12px;padding:16px 18px;margin:16px 0;position:relative;box-shadow:var(--sh-sm);}
+  .step::before{content:"EXCEL · PHASE A";position:absolute;top:-10px;right:14px;background:linear-gradient(135deg,#16a34a,#15803d);color:#fff;font-size:9.5px;font-weight:800;letter-spacing:.9px;padding:3px 11px;border-radius:99px;box-shadow:var(--sh-sm);}
+  .step b{color:#0d5c33;}
+  .pbi-box{background:var(--pbi-soft);border:1px solid #f2df9d;border-left:5px solid var(--pbi);border-radius:12px;padding:16px 18px;margin:16px 0;position:relative;box-shadow:var(--sh-sm);}
+  .pbi-box::before{content:"POWER BI · PHASE B";position:absolute;top:-10px;right:14px;background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;font-size:9.5px;font-weight:800;letter-spacing:.9px;padding:3px 11px;border-radius:99px;box-shadow:var(--sh-sm);}
+  .pbi-box b{color:#8a5a00;}
+  .chart-card{border:1px solid var(--line);border-left:5px solid var(--gold);border-radius:14px;padding:18px 20px;margin:18px 0;background:linear-gradient(180deg,#fffdf4,#fdfeff);box-shadow:var(--sh-sm);}
+  .chart-card h4{margin:0 0 10px;font-size:15.5px;color:var(--accent);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .wells{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:9px;margin:10px 0;}
+  .well{background:#f6f8fc;border:1px solid #e2e8f0;border-radius:9px;padding:8px 12px;font-size:12.8px;transition:all .15s;}
+  .well:hover{background:#f0f6ff;border-color:#c9dbf8;}
+  .well strong{display:block;font-size:10.5px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:3px;}
+  .note{background:linear-gradient(135deg,#fffaf0,#fffdf6);border:1px solid #f5e3bd;border-left:5px solid #e0a800;border-radius:12px;padding:13px 15px;margin:14px 0;font-size:13.5px;}
+  .warn-box{background:linear-gradient(135deg,#fdeaea,#fff5f5);border:1px solid #f2c8c8;border-left:5px solid var(--danger);border-radius:12px;padding:13px 15px;margin:14px 0;font-size:13.5px;}
+  .why-box{background:linear-gradient(135deg,#eff6ff,#f2faff);border:1px solid #c9e0fb;border-left:5px solid var(--blue);border-radius:12px;padding:14px 16px;margin:14px 0;font-size:13.4px;box-shadow:var(--sh-sm);}
+  .why-box .why-title{font-weight:800;color:#1d4ed8;margin:0 0 8px;font-size:12px;text-transform:uppercase;letter-spacing:.6px;}
+  .why-box p{margin:6px 0;}
+  .why-box b{color:#123a7a;}
+  .wireframe{display:grid;grid-template-columns:repeat(12,1fr);gap:10px;background:#0f172a;background-image:radial-gradient(rgba(148,163,184,.16) 1px,transparent 1.4px);background-size:18px 18px;padding:16px;border-radius:14px;margin:14px 0;font-size:12px;box-shadow:var(--sh-md);}
+  .wf-box{background:#fff;border:1px solid #cbd5e1;border-radius:9px;padding:11px;text-align:center;font-weight:700;color:var(--accent);box-shadow:0 3px 8px rgba(2,6,23,.35);transition:transform .15s;}
+  .wf-box:hover{transform:translateY(-2px);}
+  .wf-box small{display:block;font-weight:400;color:var(--muted);margin-top:4px;font-size:10.8px;}
+  ul.task-list{list-style:none;padding:0;margin:12px 0;}
+  ul.task-list li{padding:4px 0;}
+  ul.task-list label{display:flex;gap:11px;align-items:flex-start;cursor:pointer;font-size:13.8px;padding:8px 12px;border-radius:10px;border:1px solid transparent;transition:all .15s;}
+  ul.task-list label:hover{background:#f2f7fd;border-color:#d8e5f3;}
+  ul.task-list input{margin-top:3.5px;width:17px;height:17px;flex:none;accent-color:var(--calc);cursor:pointer;}
+  ul.task-list label:has(input:checked){color:#94a3b8;text-decoration:line-through;text-decoration-thickness:1.5px;text-decoration-color:#cbd5e1;}
+  footer{text-align:center;color:var(--muted);font-size:12.5px;padding:14px 20px 34px;}
+  footer a{color:#3d4a5c;}
+  @media(max-width:740px){
+    .wrap{padding:0 12px;}
+    section{padding:18px 15px;}
+    header{padding:36px 18px 30px;}
+    .wireframe{grid-template-columns:1fr 1fr;}
+    .wf-box{grid-column:span 2 !important;}
+  }
+  @media print{
+    .prog-bar,.toc,.top-nav,.btn-sm{display:none !important;}
+    body{background:#fff;}
+    section{box-shadow:none;border-color:#d7dde6;break-inside:avoid;}
+    header{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation:none !important;transition:none !important;}
+    html{scroll-behavior:auto;}
+  }
 </style>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='86'>🌏</text></svg>">
 </head>
 <body>
 
 <header>
-  <div class="kicker">Practice Set 09 of 20 · Global Demographics, Market Sizing &amp; Rank-Shift Analytics</div>
+  <div class="kicker">🌏 Practice Set 09 of 20 · Global Demographics, Market Sizing &amp; Rank-Shift Analytics</div>
   <h1>09 · World Population — Filtering Regional Rollups, Ribbon Charts &amp; World Maps</h1>
   <p>Explore 66 years of World Bank population history (1960–2025, 17,394 raw rows). Learn how to strip out 47 embedded regional/income subtotals (like <code>World</code>, <code>IDA</code>, and <code>OECD</code>) in one formula so you never 10× global population, keep all 66 years intact for history, and build a <b>Power BI Ribbon Chart</b> showing India overtaking China at #1!</p>
   <div class="top-nav">
@@ -124,7 +248,7 @@
     <div class="facts">
       <div class="grid">
         <div class="stat"><b>217</b><span>Clean economies (264 raw entities)</span></div>
-        <div class="stat"><b>1960 → 2025</b><span>66 years (14,310 clean rows)</span></div>
+        <div class="stat"><b>1960 → 2025</b><span>66 years (14,292 clean rows)</span></div>
         <div class="stat"><b>8,117,484,624</b><span>2024 Clean Sum (8.19B in 2025)</span></div>
         <div class="stat"><b>India (1.45B)</b><span>#1 in 2024 (overtook China in 2021!)</span></div>
         <div class="stat"><b>China (1.41B)</b><span>#2 in 2024 (peaked in 2021)</span></div>
@@ -134,7 +258,7 @@
 
     <div class="note">
       <b>Two Classic Traps That Ruin World Bank Dashboards:</b><br>
-      1. <b>Embedded Regional &amp; Income Subtotals:</b> Out of 264 unique <code>Country Code</code> values in <code>population.csv</code>, <b>47 are NOT countries</b> — they are regional and income-tier rollups like <code>WLD</code> (World), <code>LMY</code> (Low &amp; Middle Income), <code>EAS</code> (East Asia &amp; Pacific), and <code>EUU</code> (European Union)! Leaving those 47 codes in makes 2024 population look like <b>88 billion</b> instead of <b>8.12 billion</b>!<br>
+      1. <b>Embedded Regional &amp; Income Subtotals:</b> Out of 264 unique <code>Country Code</code> values in <code>population.csv</code>, <b>47 are NOT countries</b> — they are regional and income-tier rollups like <code>WLD</code> (World), <code>LMY</code> (Low &amp; Middle Income), <code>EAS</code> (East Asia &amp; Pacific), and <code>EUU</code> (European Union)! Leaving those 47 codes in makes 2024 population look like <b>87 billion</b> instead of <b>8.12 billion</b>!<br>
       2. <b>Never Sum Across Years:</b> Keep all 66 years (<code>1960–2025</code>) in Power BI so trend lines and Ribbon Charts work, and use a snapshot-safe DAX measure (<code>MAX('Population'[Year])</code>) or Year Slicer (<code>2024</code> = <b>8,117,484,624</b>; <code>2025</code> = <b>8,192,078,152</b>).
     </div>
 
@@ -149,7 +273,7 @@
       <tr><td>6</td><td>Nigeria</td><td><code>NGA</code></td><td>232,679,478</td><td>237,527,782</td></tr>
       <tr><td>7</td><td>Brazil</td><td><code>BRA</code></td><td>211,998,573</td><td>212,812,405</td></tr>
       <tr><td>8</td><td>Bangladesh</td><td><code>BGD</code></td><td>173,562,364</td><td>175,686,899</td></tr>
-      <tr><td>9</td><td>Russian Federation</td><td><code>RUS</code></td><td>143,669,648</td><td>143,521,212</td></tr>
+      <tr><td>9</td><td>Russian Federation</td><td><code>RUS</code></td><td>143,669,648</td><td>143,513,328</td></tr>
       <tr><td>10</td><td>Ethiopia</td><td><code>ETH</code></td><td>132,059,767</td><td>135,472,051</td></tr>
     </table>
   </section>
@@ -190,7 +314,7 @@
     <h3>Step A2 — Flag All 47 Aggregate Codes in 1 Formula (Column E)</h3>
     <div class="step">
       Instead of hunting through 264 filter checkboxes by hand, paste this exact formula in cell <code>E2</code> (header <code>E1 = IsAggregate</code>):
-<pre>=ISNUMBER(FIND(","&amp;B2&amp;",", ",AFE,AFW,ARB,CEB,CSS,EAP,EAR,EAS,ECA,ECS,EMU,EUU,FCS,HIC,HPC,IBD,IBT,IDA,IDB,IDX,INX,LAC,LCN,LDC,LIC,LMC,LMY,LTE,MEA,MIC,MNA,NAC,OED,OSS,PRE,PSS,PST,SAS,SSA,SSF,SST,TEA,TEC,TLA,TMN,TSA,TSS,UMC,WLD,"))</pre>
+<pre>=ISNUMBER(FIND(","&amp;B2&amp;",", ",AFE,AFW,ARB,CEB,CSS,EAP,EAR,EAS,ECA,ECS,EMU,EUU,HIC,HPC,IBD,IBT,IDA,IDB,IDX,LAC,LCN,LDC,LIC,LMC,LMY,LTE,MEA,MIC,MNA,NAC,OED,OSS,PRE,PSS,PST,SAS,SSA,SSF,SST,TEA,TEC,TLA,TMN,TSA,TSS,UMC,WLD,"))</pre>
       <i>How this works:</i> Wrapping commas around <code>B2</code> checks for an exact 3-letter code match! Every true country gets <code>FALSE</code>; all 47 regional/income rollups get <code>TRUE</code>!
     </div>
     <div class="why-box">
@@ -231,13 +355,13 @@
 <pre>List.Contains({"AFE","AFW","ARB","CEB","CSS","EAP","EAR","EAS","ECA","ECS","EMU","EUU","FCS","HIC","HPC","IBD","IBT","IDA","IDB","IDX","INX","LAC","LCN","LDC","LIC","LMC","LMY","LTE","MEA","MIC","MNA","NAC","OED","OSS","PRE","PSS","PST","SAS","SSA","SSF","SST","TEA","TEC","TLA","TMN","TSA","TSS","UMC","WLD"}, [Country Code])</pre>
         Click the filter arrow on <code>IsAggregate</code> → keep only <code>false</code> → right-click <code>IsAggregate</code> → <b>Remove</b>!</li>
         <li>Add a <code>Decade</code> Custom Column for clean Ribbon Chart intervals: <code>Number.ToText(Number.IntegerDivide([Year], 10) * 10) &amp; "s"</code> (or filter Ribbon to 5-year milestones).</li>
-        <li>Click <b>Home → Close &amp; Apply</b> (confirm <b>14,310 rows</b> across 217 countries, 1960–2025!).</li>
+        <li>Click <b>Home → Close &amp; Apply</b> (confirm <b>14,292 rows</b> across 217 countries, 1960–2025!).</li>
       </ol>
     </div>
     <div class="why-box">
       <div class="why-title">💡 Why do we do this?</div>
-      <p><b>Reason:</b> Power Query re-implements the Excel flag as <code>List.Contains</code> — same rule, but now a recorded refresh-proof step instead of a hand-pasted formula. The arithmetic check <b>217 × 66 = 14,310</b> certifies a balanced panel (every country present in every year). Keeping ALL 66 years preserves the fuel for the Ribbon chart and growth measures, exactly like the Gapminder lesson — history is fuel, filter late. The <code>Decade</code> column exists because a 66-point ribbon is noisy; decade or 5-year milestone filtering makes rank crossovers legible.</p>
-      <p><b>Real-time example:</b> The multiplication check is doing free QA again: if the load had dropped one country-year (say, South Sudan's 2011 rows), you'd see 14,290 instead of 14,310 and catch it in one glance — no debugging required. And compare the aggregate-stripping approaches: clicking 47 checkboxes in a filter dropdown survives until the next export, while <code>List.Contains(...)</code> replays forever and even documents WHICH codes were excluded, right in the query — code as documentation.</p>
+      <p><b>Reason:</b> Power Query re-implements the Excel flag as <code>List.Contains</code> — same rule, but now a recorded refresh-proof step instead of a hand-pasted formula. The arithmetic check certifies the panel: <b>216 economies × 66 years + 36 rows (Palestine/West Bank &amp; Gaza starts in 1990) = 14,292</b>. Keeping ALL 66 years preserves the fuel for the Ribbon chart and growth measures, exactly like the Gapminder lesson — history is fuel, filter late. The <code>Decade</code> column exists because a 66-point ribbon is noisy; decade or 5-year milestone filtering makes rank crossovers legible.</p>
+      <p><b>Real-time example:</b> The multiplication check is doing free QA again: if the load had dropped a country-year (say, one of South Sudan's 2011 rows), you'd see one row less than 14,292 and catch it in one glance — no debugging required. And compare the aggregate-stripping approaches: clicking 47 checkboxes in a filter dropdown survives until the next export, while <code>List.Contains(...)</code> replays forever and even documents WHICH codes were excluded, right in the query — code as documentation.</p>
       <p><b>What happens if you skip it:</b> Unrecorded manual filters die on refresh (Mistake 1's cousin), the ribbon drowns in 66 jagged years, and a missing-country error ships silently to the map visual.</p>
       <p><b>Smart-work tip:</b> For any panel: expected rows = entities × periods — do the multiplication on paper before loading, then trust your eyes over the row counter. And encode list-based rules (exclusions, groupings) as Power Query list literals — auditable, repeatable, and visible in the Applied Steps.</p>
     </div>
@@ -249,7 +373,7 @@
     <div class="why-box">
       <div class="why-title">💡 Why do we do this?</div>
       <p><b>Reason:</b> These two metadata settings are modeling, not cosmetics. <b>Data Category = Country</b> tells Power BI's geography engine which field names countries — it's what lets the map visual geocode all 217 economies automatically instead of begging you for latitude/longitude. <b>Year = Don't summarize</b> stops Power BI's default SUM from treating the calendar dimension as a quantity, so Year stays a clean label for slicers and axes.</p>
-      <p><b>Real-time example:</b> The failure it prevents is a classic beginner screenshot: a card proudly showing <b>"Sum of Year = 435,656"</b> (that's what adding 217 countries' years together yields) — arithmetically valid, semantically absurd. And without the Data Category, the map visual's well rejects <code>Country Name</code> and the 217-economy choropleth (India 1.45B passing China 1.42B in 2021) simply can't be built without importing coordinates by hand.</p>
+      <p><b>Real-time example:</b> The failure it prevents is a classic beginner screenshot: a card proudly showing <b>"Sum of Year = 28,477,350"</b> (that's what adding the Year column across all 14,292 rows yields) — arithmetically valid, semantically absurd. And without the Data Category, the map visual's well rejects <code>Country Name</code> and the 217-economy choropleth (India passing China in 2021 at 1.414B vs 1.412B) simply can't be built without importing coordinates by hand.</p>
       <p><b>What happens if you skip it:</b> Year renders as "Sum of Year" in value wells, the map visual won't geocode, and every new visual starts by fighting the model's defaults.</p>
       <p><b>Smart-work tip:</b> Set metadata once, at the model level — Data Category, summarization, format strings — and every visual inherits it forever. Fixing it per-visual is the "heavy work"; fixing it in the model is the smart work.</p>
     </div>
@@ -282,8 +406,8 @@ DIVIDE (
     <div class="why-box">
       <div class="why-title">💡 Why do we do this?</div>
       <p><b>Reason:</b> The snapshot pattern from Gapminder returns — population is semi-additive (add across countries within one year, never across years). Notice a deliberate difference: because <code>Year</code> is a plain integer (no Date table here), "prior year" is computed as <code>MAX(Year) - 1</code> with an <code>ALL(Year)</code> reset — the no-date-table way to walk back one period. And <code>World Share %</code> uses <code>ALL</code> on the country columns to un-filter geography while keeping the year filter — the classic "denominator = total of everything" move.</p>
-      <p><b>Real-time example:</b> The <code>YoY Net Change</code> measure powers this set's most striking insight: in 2024 <b>China's population fell by 1,735,000</b> while <b>India's grew by 12,866,195</b> — one number pair that explains why the ribbon crossover is permanent, not noise. <code>World Share %</code> then frames market size for the expansion team: India alone is <b>17.9%</b> of humanity; Nigeria and Pakistan climbing past Brazil means the "emerging giants" the client asked about are ranked by share, not vibes. None of these answers exist without the measures — they only exist as 14,310 raw rows until DAX shapes them.</p>
-      <p><b>What happens if you skip it:</b> Summing across all years yields a "world population" of ~490 billion-people-years (the double-counting trap again); share percentages fail without the ALL-based denominator; and "which countries shrank?" becomes an unanswerable question.</p>
+      <p><b>Real-time example:</b> The <code>YoY Net Change</code> measure powers this set's most striking insight: in 2024 <b>China's population fell by 1,735,000</b> while <b>India's grew by 12,866,195</b> — one number pair that explains why the ribbon crossover is permanent, not noise. <code>World Share %</code> then frames market size for the expansion team: India alone is <b>17.9%</b> of humanity; Nigeria and Pakistan climbing past Brazil means the "emerging giants" the client asked about are ranked by share, not vibes. None of these answers exist without the measures — they only exist as 14,292 raw rows until DAX shapes them.</p>
+      <p><b>What happens if you skip it:</b> Summing across all years yields a "world population" of ~364 billion people-years (the double-counting trap again); share percentages fail without the ALL-based denominator; and "which countries shrank?" becomes an unanswerable question.</p>
       <p><b>Smart-work tip:</b> When your period column is an integer year (no date table), the <code>MAX(Yr) - 1</code> + <code>ALL</code> pattern replaces <code>SAMEPERIODLASTYEAR</code> — know both tools and pick by data shape. And define share measures with explicit ALL() denominators so slicing any country still shows its share of the WHOLE.</p>
     </div>
 
@@ -313,7 +437,7 @@ DIVIDE (
       <div class="why-box">
         <div class="why-title">💡 Why do we do this?</div>
         <p><b>Reason:</b> A Ribbon chart is the one visual built to show <b>rank changes over time</b>: stacks re-order every period (largest on top) and flowing ribbons connect each country across periods, so overtakes appear as visible crossings instead of mental math. The <b>Edit interactions</b> step is the crucial power-user move: a Year slicer would otherwise filter the ribbon to ONE year and erase the entire story it exists to tell.</p>
-        <p><b>Real-time example:</b> Filter the X-axis to 1960/1975/1990/2005/2020/2025 and watch 65 years of geopolitics: China's ribbon climbing from #4 (1960) to #1, Nigeria and Pakistan ribbons rising steadily from the bottom, and the moment everyone came to see — <b>India's ribbon crossing above China's around 2021</b>, now the permanent #1. A client asking "when did India pass China?" gets a picture, not a debate. Without the interaction fix, clicking 2024 on the slicer would collapse the ribbon to a single frozen year — visual amputation of its whole purpose.</p>
+        <p><b>Real-time example:</b> Filter the X-axis to 1960/1975/1990/2005/2020/2025 and watch 65 years of geopolitics: China holding #1 from 1960 (667M vs India's 436M) while Nigeria and Pakistan ribbons rise steadily from the bottom, and the moment everyone came to see — <b>India's ribbon crossing above China's around 2021</b>, now the permanent #1. A client asking "when did India pass China?" gets a picture, not a debate. Without the interaction fix, clicking 2024 on the slicer would collapse the ribbon to a single frozen year — visual amputation of its whole purpose.</p>
         <p><b>What happens if you skip it:</b> The rank-shift story dies (a stacked column shows totals but silently hides re-orderings), and the first slicer click kills the chart. This is also Mistake 1's trap: filter year in Power Query and the ribbon never has history to draw at all.</p>
         <p><b>Smart-work tip:</b> Master <b>Edit interactions</b> early — controlling which visuals respond to which slicers is the difference between a dashboard and a jumble. Rule of thumb: trend/history visuals stay independent of point-in-time slicers; snapshot visuals (cards, map, bar) follow them.</p>
       </div>
@@ -334,7 +458,7 @@ DIVIDE (
     </div>
 
     <ul class="task-list">
-      <li><label><input type="checkbox"> Filtered out all 47 World Bank aggregate codes while keeping all 66 years (14,310 clean rows).</label></li>
+      <li><label><input type="checkbox"> Filtered out all 47 World Bank aggregate codes while keeping all 66 years (14,292 clean rows).</label></li>
       <li><label><input type="checkbox"> Built Ribbon Chart, World Filled Map, Top-10 Bar, and configured <code>Edit interactions</code> on the Year slicer.</label></li>
     </ul>
   </section>
