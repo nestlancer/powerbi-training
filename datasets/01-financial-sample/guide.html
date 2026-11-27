@@ -365,12 +365,13 @@
       <ol style="margin:0;padding-left:20px;">
         <li>Click cell <code>Q1</code>, type <code>RowMarginPct</code>, and press <b>Enter</b>. In cell <code>Q2</code>, type:<br>
         <code>=IF(J2=0, 0, L2/J2)</code><br>
-        <i>Plain-English meaning:</i> Divide <code>Profit</code> (<code>L2</code>) by <code>Net Sales</code> (<code>J2</code>), returning <code>0</code> if sales were ever zero. Select column <code>Q</code> → click the <b>%</b> button on the Home tab and click <b>Increase Decimal</b> once (<code>0.0%</code>).</li>
+        <i>Plain-English meaning:</i> Divide <code>Profit</code> (<code>L2</code>) by <code>Net Sales</code> (<code>J2</code>), returning <code>0</code> if sales were ever zero. <i>You'll see:</i> Q2 first displays something like <code>$50.00</code> — Excel auto-copies the currency format of the columns you divided (row 2: <code>$16,185 ÷ $32,370 = 0.5</code>). That is auto-formatting, not a mistake! Select column <code>Q</code> → click the <b>%</b> button on the Home tab and click <b>Increase Decimal</b> once (<code>0.0%</code>) → Q2 reads <code>50.0%</code>.</li>
         <li>Click cell <code>R1</code>, type <code>ProfitStatus</code>, and press <b>Enter</b>. In cell <code>R2</code>, type:<br>
         <code>=IF(L2&lt;0, "Loss", IF(L2=0, "Break-Even", "Profitable"))</code><br>
-        <i>Check it:</i> Click the filter arrow on <code>ProfitStatus</code> → filter to <code>Loss</code> → look at the bottom-left Excel status bar: it says <b>58 of 700 records found</b>! Click <b>Data → Clear</b> so no filter stays active!</li>
+        <i>You'll see:</i> R2 shows the text <code>Profitable</code> immediately (row 2's Profit is positive) — text results never pick up a number format, so nothing to fix. <i>Check it:</i> Click the filter arrow on <code>ProfitStatus</code> → filter to <code>Loss</code> → look at the bottom-left Excel status bar: it says <b>58 of 700 records found</b>! Click <b>Data → Clear</b> so no filter stays active!</li>
         <li>Click cell <code>S1</code>, type <code>BandSort</code>, and press <b>Enter</b> (this teaches you how to sort text bands in logical order instead of alphabetical!). In cell <code>S2</code>, type:<br>
-        <code>=IF(D2="None", 1, IF(D2="Low", 2, IF(D2="Medium", 3, 4)))</code></li>
+        <code>=IF(D2="None", 1, IF(D2="Low", 2, IF(D2="Medium", 3, 4)))</code><br>
+        <i>You'll see:</i> S2 shows the plain number <code>1</code> (row 2's Discount Band is None) — deliberately left unformatted, so the codes <code>1–4</code> sort in logical order.</li>
       </ol>
       <p style="margin-bottom:0;font-size:12.8px;color:var(--muted);"><i>Note: If Excel turned your formula into structured table syntax like <code>=IF([@[Net Sales]]=0,0,[@Profit]/[@[Net Sales]])</code>, that is completely normal inside an Excel Table — both formulas give the exact same result!</i></p>
     </div>

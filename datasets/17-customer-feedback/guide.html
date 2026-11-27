@@ -300,6 +300,7 @@
       Open <code>datasets/17-customer-feedback/data/customer-feedback.xlsx</code>. On <code>Customer Table</code>, test how onboarding and support friction drive Low CSAT:<br>
       • <code>K2 (RoleName)</code>: <code>=XLOOKUP(F2, Role!$A$2:$A$4, Role!$B$2:$B$4)</code><br>
       • <code>L2 (TicketCount)</code>: <code>=COUNTIF('Support Tickets'!$B$2:$B$126645, A2)</code><br>
+      <i>You'll see:</i> K2 shows the text <code>publisher</code> (row 2's Role = 1 → the Role sheet maps 1 → publisher) and L2 shows the whole number <code>4</code> — customer <code>10000000</code> has exactly 4 support tickets. Text and counts: no number formatting needed.<br>
       Insert a PivotTable with <code>Completed tutorial</code> in Rows and <code>Rating</code> in Columns (% of Row Total): confirm <b><code>no</code> = 16.71% Low</b> vs. <b><code>yes</code> = 7.71% Low</b>!
     </div>
     <div class="why-box">
@@ -369,6 +370,7 @@ DIVIDE (
     CALCULATE ( [Total Customers], 'Customers'[Rating] = "Low" ),
     [Total Customers]
 )
+// Format: 0.0%
 // Check: 11.71% (5,293 Low)
 
 Total Tickets = COUNTROWS ( 'Support Tickets' )
@@ -379,6 +381,7 @@ DIVIDE (
     CALCULATE ( [Total Tickets], 'Support Tickets'[Escalated] = 1 ),
     [Total Tickets]
 )
+// Format: 0.0%
 // Check: 12.04% (15,254 escalated)
 
 Avg Resolution Days = AVERAGE ( 'Support Tickets'[Duration] )
@@ -389,6 +392,7 @@ DIVIDE (
 CALCULATE ( [Total Tickets], 'Support Tickets'[Duration] &gt; 4 ),
         [Total Tickets]
 )
+// Format: 0.0%
 // Check: 33.30% (42,169 tickets!)</pre>
     <div class="why-box">
       <div class="why-title">💡 Why do we do this?</div>

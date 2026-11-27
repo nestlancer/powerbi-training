@@ -322,9 +322,9 @@
     <h3>Step A2 — Add 3 Helper Columns (Columns Z, AA, AB)</h3>
     <div class="step">
       <ol style="margin:0;padding-left:20px;">
-        <li><b>Column Z — <code>EduLabel</code>:</b> <code>=IF(D2=1,"1. Graduate School",IF(D2=2,"2. University",IF(D2=3,"3. High School","4. Other")))</code></li>
-        <li><b>Column AA — <code>DelinquencyTier</code> (from <code>PAY_0</code> in G2):</b> <code>=IF(G2&lt;=0,"1. Current / Revolving",IF(G2=1,"2. 1 Month Late","3. 2+ Months Late"))</code></li>
-        <li><b>Column AB — <code>LimitBand</code> (from <code>LIMIT_BAL</code> in B2):</b> <code>=IF(B2&lt;=50000,"1. <=50K",IF(B2&lt;=150000,"2. 51K-150K",IF(B2&lt;=300000,"3. 151K-300K","4. >300K")))</code></li>
+        <li><b>Column Z — <code>EduLabel</code>:</b> <code>=IF(D2=1,"1. Graduate School",IF(D2=2,"2. University",IF(D2=3,"3. High School","4. Other")))</code> <i>You'll see:</i> Z2 shows the text <code>2. University</code> (row 2's <code>EDUCATION</code> = 2).</li>
+        <li><b>Column AA — <code>DelinquencyTier</code> (from <code>PAY_0</code> in G2):</b> <code>=IF(G2&lt;=0,"1. Current / Revolving",IF(G2=1,"2. 1 Month Late","3. 2+ Months Late"))</code> <i>You'll see:</i> AA2 shows <code>3. 2+ Months Late</code> (row 2's <code>PAY_0</code> = 2 — this client was already 2 months behind).</li>
+        <li><b>Column AB — <code>LimitBand</code> (from <code>LIMIT_BAL</code> in B2):</b> <code>=IF(B2&lt;=50000,"1. <=50K",IF(B2&lt;=150000,"2. 51K-150K",IF(B2&lt;=300000,"3. 151K-300K","4. >300K")))</code> <i>You'll see:</i> AB2 shows <code>1. <=50K</code> — row 2's credit limit is <code>20000</code> (NT$, stored as a plain number).</li>
       </ol>
     </div>
     <div class="why-box">

@@ -336,13 +336,13 @@
       <ol style="margin:0;padding-left:20px;">
         <li><b>Column Q — <code>OpenDateClean</code> (True 4-Digit Date):</b> Instead of trusting 2-digit <code>OPENDATE</code>, combine <code>YEAR</code> (<code>P2</code>), <code>MONTH</code> (<code>N2</code>), and <code>DAY</code> (<code>O2</code>)! In cell <code>Q1</code> type <code>OpenDateClean</code>, and in <code>Q2</code> type:<br>
         <code>=DATE(P2, N2, O2)</code><br>
-        Format column <code>Q</code> as <code>yyyy-mm-dd</code>. Check row 2: <code>1962-07-01</code> (never <code>2062</code>!).</li>
+        Format column <code>Q</code> as <code>yyyy-mm-dd</code>. Check row 2: <code>1962-07-01</code> (never <code>2062</code>!). <i>You'll see:</i> right after Enter, Q2 already shows a date — Excel recognizes <code>DATE()</code> results and auto-applies your regional date format (<code>7/1/1962</code> US-style or <code>01-07-1962</code>), not a raw serial number. Reformat to <code>yyyy-mm-dd</code> → <code>1962-07-01</code>.</li>
         <li><b>Column R — <code>StoreHistory</code> (3-Way Lifecycle Label):</b> In cell <code>R1</code> type <code>StoreHistory</code>, and in <code>R2</code> type:<br>
         <code>=IF(D2=1, "Converted to Supercenter", IF(D2=0, "Opened as Supercenter", "Discount Wal-Mart"))</code><br>
         <i>Watch carefully:</i> Make sure you test <code>ISBLANK(D2)</code> first if Excel treats blank as 0! Even safer formula:<br>
-        <code>=IF(ISBLANK(D2), "Discount Wal-Mart", IF(D2=1, "Converted to Supercenter", "Opened as Supercenter"))</code> ✅ (Always use <code>ISBLANK</code> in Excel because Excel evaluates <code>"" = 0</code> as TRUE if you aren't careful!)</li>
+        <code>=IF(ISBLANK(D2), "Discount Wal-Mart", IF(D2=1, "Converted to Supercenter", "Opened as Supercenter"))</code> ✅ (Always use <code>ISBLANK</code> in Excel because Excel evaluates <code>"" = 0</code> as TRUE if you aren't careful!) <i>You'll see:</i> R2 shows the text <code>Converted to Supercenter</code> — row 2's store converted in 1962 (<code>D2</code> = 1). Text labels: no formatting needed.</li>
         <li><b>Column S — <code>Decade</code>:</b> In cell <code>S1</code> type <code>Decade</code>, and in <code>S2</code> type:<br>
-        <code>=INT(P2/10)*10 &amp; "s"</code> (turns <code>1962</code> into <code>1960s</code>, <code>1990</code> into <code>1990s</code>).</li>
+        <code>=INT(P2/10)*10 &amp; "s"</code> (turns <code>1962</code> into <code>1960s</code>, <code>1990</code> into <code>1990s</code>). <i>You'll see:</i> S2 shows <code>1960s</code> — the <code>&amp;</code> concatenation always returns text, so it left-aligns; that's exactly what you want for a label column.</li>
       </ol>
     </div>
     <div class="why-box">

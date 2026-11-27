@@ -304,7 +304,7 @@
       <ol style="margin:0;padding-left:20px;">
         <li>Open Excel → <b>Data → From Text/CSV</b> → select <code>datasets/05-bike-sharing/data/day.csv</code> → Delimiter = Comma → <b>Load</b>.</li>
         <li>Format column <code>B</code> (<code>dteday</code>) as Date and columns <code>N:P</code> (<code>casual</code>, <code>registered</code>, <code>cnt</code>) as <code>#,##0</code>.</li>
-        <li><b>Integrity Check Formula (Column Q):</b> In <code>Q1</code> type <code>MathCheck</code>, and in <code>Q2</code> type <code>=(N2+O2)-P2</code>. Check the filter dropdown on <code>MathCheck</code>: the ONLY value is <code>0</code>! Every single day balances to the exact trip.</li>
+        <li><b>Integrity Check Formula (Column Q):</b> In <code>Q1</code> type <code>MathCheck</code>, and in <code>Q2</code> type <code>=(N2+O2)-P2</code>. <i>You'll see:</i> Q2 displays a plain <code>0</code> (Excel may inherit the <code>#,##0</code> format from the columns you added — still just <code>0</code>). Check the filter dropdown on <code>MathCheck</code>: the ONLY value is <code>0</code>! Every single day balances to the exact trip.</li>
       </ol>
     </div>
     <div class="why-box">
@@ -319,8 +319,8 @@
     <div class="step">
       <ol style="margin:0;padding-left:20px;">
         <li><b>Column R — <code>SeasonName</code>:</b> <code>=CHOOSE(C2, "1. Winter-Spring", "2. Spring-Summer", "3. Peak Summer", "4. Autumn")</code><br>
-        <i>Beginner Bonus Function!</i> Whenever a code is cleanly <code>1, 2, 3, 4</code>, Excel's <code>CHOOSE()</code> is much shorter and cleaner than four nested <code>IF</code>s!</li>
-        <li><b>Column S — <code>TempCelsius</code>:</b> <code>=ROUND(J2*47-8, 1)</code> (converts normalized <code>0–1</code> temperature into readable °C using the UCI scaling <code>C = temp × 47 − 8</code>).</li>
+        <i>Beginner Bonus Function!</i> Whenever a code is cleanly <code>1, 2, 3, 4</code>, Excel's <code>CHOOSE()</code> is much shorter and cleaner than four nested <code>IF</code>s! <i>You'll see:</i> R2 shows the text <code>1. Winter-Spring</code> (row 2 = Jan 1, 2011 → season code 1) — a left-aligned text label.</li>
+        <li><b>Column S — <code>TempCelsius</code>:</b> <code>=ROUND(J2*47-8, 1)</code> (converts normalized <code>0–1</code> temperature into readable °C using the UCI scaling <code>C = temp × 47 − 8</code>). <i>You'll see:</i> S2 shows <code>8.2</code> — a clean 1-decimal number straight from <code>ROUND</code> (row 2: <code>0.344167 × 47 − 8 = 8.1758 → 8.2</code>), no formatting needed.</li>
       </ol>
     </div>
     <div class="why-box">
@@ -430,6 +430,7 @@ Rides YoY % =
 VAR PriorYr = CALCULATE ( [Total Rides], SAMEPERIODLASTYEAR ( 'Calendar'[Date] ) )
 RETURN
     IF ( NOT ISBLANK ( PriorYr ), DIVIDE ( [Total Rides] - PriorYr, PriorYr ) )
+// Format: +0.0% (shows +64.9%, not the raw 0.6488)
 // Select Year = 2012 -> Check: +64.9% (+64.88%)</pre>
     <div class="why-box">
       <div class="why-title">💡 Why do we do this?</div>

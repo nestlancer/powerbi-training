@@ -326,8 +326,8 @@
       <ol style="margin:0;padding-left:20px;">
         <li><b>Column I — <code>EstAnnualPay</code> (Unified Compensation Column):</b> In <code>I1</code> type <code>EstAnnualPay</code>, and in <code>I2</code> type:<br>
         <code>=IF(E2="SALARY", G2, F2*H2*52)</code><br>
-        <i>Plain-English meaning:</i> If the worker is Salaried, use their exact <code>Annual Salary</code>; otherwise multiply <code>Typical Hours × Hourly Rate × 52 weeks</code>!</li>
-        <li><b>Column J — <code>EmploymentType</code>:</b> <code>=IF(D2="F", "Full-Time", "Part-Time")</code></li>
+        <i>Plain-English meaning:</i> If the worker is Salaried, use their exact <code>Annual Salary</code>; otherwise multiply <code>Typical Hours × Hourly Rate × 52 weeks</code>! <i>You'll see:</i> I2 shows plain <code>67608</code> (row 2 — RIORDAN — is salaried, so the formula just copies his Annual Salary). CSV columns arrive as General format: no <code>$</code>, no thousands comma. Format column <code>I</code> as <code>$#,##0</code> → <code>$67,608</code>. Hourly rows multiply out — e.g., the first <code>HOURLY</code> worker: <code>40 × 42.4 × 52 = 88192</code>.</li>
+        <li><b>Column J — <code>EmploymentType</code>:</b> <code>=IF(D2="F", "Full-Time", "Part-Time")</code> <i>You'll see:</i> J2 shows the text <code>Full-Time</code> (row 2's F/P code is <code>F</code>).</li>
       </ol>
     </div>
     <div class="why-box">

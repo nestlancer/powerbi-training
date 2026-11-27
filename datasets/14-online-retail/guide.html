@@ -302,6 +302,7 @@
       Open <code>datasets/14-online-retail/data/Online Retail.xlsx</code> (give Excel 8–12 seconds to unpack 541,909 rows!). Add just two lightweight columns:<br>
       • <code>I2 (LineAmount)</code>: <code>=D2*F2</code><br>
       • <code>J2 (EntryType)</code>: <code>=IF(LEFT(A2,1)="C","Credit Note",IF(F2&lt;0,"Bad Debt",IF(D2&gt;0,"Gross Sale","Stock Adj")))</code><br>
+      <i>You'll see:</i> I2 shows <code>15.3</code> — the workbook stores raw General-format numbers, so no currency symbol appears anywhere (row 2: <code>6 × 2.55</code>). J2 shows the text <code>Gross Sale</code> (invoice <code>536365</code> starts with 5, not C). Before building the PivotTable, format column <code>I</code> as Currency <code>£#,##0.00</code> so the totals display as the £ figures below.<br>
       Insert a PivotTable with <code>EntryType</code> in Rows and <code>Sum of LineAmount</code> in Values: verify <b>Gross Sale = £10,666,684.54</b>, <b>Credit Note = -£896,812.49</b>, <b>Bad Debt = -£22,124.12</b>, and <b>Grand Total = £9,747,747.93</b>!
     </div>
     <div class="why-box">
@@ -361,6 +362,7 @@ CALCULATE ( [Net Revenue], 'Retail'[EntryType] = "Credit Note" )
 
 Return Rate % =
 DIVIDE ( ABS ( [Credit Note Returns] ), [Gross Sales] )
+// Format: 0.0%
 // Check: 8.41%
 
 Registered Accounts =
@@ -380,7 +382,8 @@ VAR CumRev =
         [Net Revenue]
     )
 RETURN
-    DIVIDE ( CumRev, TotalRegRev )</pre>
+    DIVIDE ( CumRev, TotalRegRev )
+// Format: 0.0% (running cumulative share of registered-customer revenue)</pre>
     <div class="why-box">
       <div class="why-title">💡 Why do we do this?</div>
       <p><b>Reason:</b> Two DAX milestones live here. First, <b>SUMX again</b>: revenue must be computed line-by-line (<code>Quantity × UnitPrice</code> per row, then summed) — <code>SUM(Quantity) * SUM(UnitPrice)</code> multiplies the total units by the total price and produces a trillion-pound fantasy (Mistake 2). Second, the <b>Pareto cumulative %</b>: this pattern ranks every registered customer, sums revenue of everyone at-or-above the current rank, and divides by all registered revenue — the classic 80/20 construction, made possible by <code>ALLSELECTED</code> (which respects the user's slicers while ignoring the chart's own row context).</p>

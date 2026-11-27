@@ -388,6 +388,7 @@ Avg Temp (C) = AVERAGE ( 'AirQuality'[T] )
 
 CO Sensor Uptime % =
 DIVIDE ( COUNT ( 'AirQuality'[CO(GT)] ), [Total Monitored Hours] )
+// Format: 0.0%
 // Check: 82.0% (vs 96.1% for PT08.S1!)
 
 EU NO2 Breach Hours =

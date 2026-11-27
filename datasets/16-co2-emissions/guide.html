@@ -362,6 +362,7 @@ VAR Yr = MAX ( 'Emissions'[year] )
 VAR Tonnes = CALCULATE ( SUM ( 'Emissions'[co2] ), 'Emissions'[year] = Yr ) * 1000000
 VAR Pop = CALCULATE ( SUM ( 'Emissions'[population] ), 'Emissions'[year] = Yr )
 RETURN DIVIDE ( Tonnes, Pop )
+// Format: 0.00 (tonnes — shows ~4.59, not 4.5928127…)
 // Check 2025: ~4.59 t territorial (4.74 t incl. aviation/shipping)
 
 Fuel CO2 (Mt) = SUM ( 'FuelBreakdown'[FuelMtCO2] )</pre>

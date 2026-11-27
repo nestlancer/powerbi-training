@@ -345,6 +345,7 @@ CALCULATE ( [Total Workforce], 'Workforce'[Attrition] = "Yes" )
 // Check: 46,474
 
 Attrition Rate % = DIVIDE ( [Departed Headcount], [Total Workforce] )
+// Format: 0.0%
 // Check: 21.12%
 
 OverTime Share % =
@@ -352,6 +353,7 @@ DIVIDE (
     CALCULATE ( [Total Workforce], 'Workforce'[OverTime] = "Yes" ),
     [Total Workforce]
 )
+// Format: 0.0%
 // Check: 21.95%
 
 Avg Annual Salary = AVERAGE ( 'Workforce'[AnnualSalary] )
