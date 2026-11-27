@@ -64,6 +64,10 @@
   .well strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-bottom:2px;}
   .note{background:#fffaf0;border-left:4px solid #e0a800;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
   .warn-box{background:var(--danger-soft);border-left:4px solid var(--danger);border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
+  .why-box{background:#eaf3ff;border-left:4px solid #2563eb;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.4px;}
+  .why-box .why-title{font-weight:800;color:#1d4ed8;margin:0 0 6px;font-size:12.5px;text-transform:uppercase;letter-spacing:.5px;}
+  .why-box p{margin:5px 0;}
+  .why-box b{color:#123a7a;}
   .wireframe{display:grid;grid-template-columns:repeat(12,1fr);gap:8px;background:#eef2f7;padding:14px;border-radius:12px;margin:12px 0;font-size:12px;}
   .wf-box{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:10px;text-align:center;font-weight:600;color:var(--accent);}
   .wf-box small{display:block;font-weight:400;color:var(--muted);margin-top:3px;font-size:11px;}
@@ -174,6 +178,13 @@
       • <code>AI2 (RoomRevenue)</code>: <code>=AH2*AB2</code> (where <code>AB</code> is <code>adr</code>)<br>
       Verify with <code>SUMIFS</code>: <code>is_canceled = 0</code> Realized Revenue = <b>€25,996,260.41</b>; <code>is_canceled = 1</code> Lost Revenue = <b>€16,727,237.12</b>!
     </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> Three constructions convert a PMS export into analyzable shape. <code>ArrivalDate</code>: hotels store arrival as THREE columns (year, month name, day) — useless for any time chart until combined into one real date. <code>TotalNights</code>: stays are split weekend/week for accounting reasons, but revenue math needs one number. <code>RoomRevenue</code>: nights × ADR builds the money column everything else depends on. And the SUMIFS verification establishes the set's core lesson BEFORE any dashboard exists: <b>booked revenue (€42.72M) ≠ earned revenue (€26.00M)</b>, because 37% of bookings never check in.</p>
+      <p><b>Real-time example:</b> This distinction is worth €16.73M in this dataset — the amount of "revenue" that exists only as cancelled reservations. A revenue manager who reports €42.72M has inflated their year by 64% and will budget staffing, purchasing, and cash flow against rooms that were never occupied. That's Mistake 1, and it's the hospitality version of the semi-additive trap: <i>booked value is a promise, realized value is a fact</i> — reports must separate them (and the leakage IS valuable: it's the size of the prize for better deposit policies).</p>
+      <p><b>What happens if you skip it:</b> No working ArrivalDate means no seasonality chart; no split of realized vs cancelled means the single most important number in revenue management is wrong.</p>
+      <p><b>Smart-work tip:</b> Whenever an event has a lifecycle (booked → checked-in / cancelled / no-show), compute the value at EACH lifecycle stage, not just the total. The gaps between stages are where every operational decision lives.</p>
+    </div>
 
     <ul class="task-list">
       <li><label><input type="checkbox"> Reconstructed <code>ArrivalDate</code> and verified €26.00M Realized vs €16.73M Cancelled Revenue in Excel.</label></li>
@@ -203,6 +214,13 @@ else "181d+ (6m+)"</pre>
         (Add matching <code>LeadTimeSort</code> 1..5!). Click <b>Home → Close &amp; Apply</b>.</li>
       </ol>
     </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> Two PMS quirks get neutralized here. (1) Literal text codes: <code>children</code> stores the STRING "NA" in 4 rows — leave it and the Whole-Number conversion throws errors (Mistake 2); <code>country</code> stores the literal string "NULL" which is NOT a null — a value-based distinction you can only catch by reading the data, not the type. (2) The <code>Date.FromText(..., "en-US")</code> pattern rebuilds a real date from month-NAME + day + year, with the locale pinned so "July 1, 2016" parses identically on every machine. The <code>LeadTimeBand</code> column then converts the raw <code>lead_time</code> integer (0–629 days!) into 5 ordered risk bands — the ladder the cancellation analysis climbs.</p>
+      <p><b>Real-time example:</b> Why bands instead of raw days: charting cancellation rate against 629 individual lead-time values produces a noisy scatter-ish line where the staircase (9.6% → 57%) is invisible. Five bands make the pattern chartable AND actionable — revenue managers set policies per band ("deposits required for 181d+"), not per day. The <code>LeadTimeSort</code> companion column is the familiar Sort-by-column pattern ensuring the bands run young→old, never alphabetically.</p>
+      <p><b>What happens if you skip it:</b> Four conversion errors block the load, "NULL" shows up as a fake country on the map, dates parse differently per laptop, and lead-time risk analysis drowns in 629 ungrouped days.</p>
+      <p><b>Smart-work tip:</b> Always pin locale explicitly when parsing text dates built from parts — implicit parsing is machine-dependent and will break on a colleague's laptop with different regional settings. And bucket any wide-range risk variable (days, age, credit score) into ordered bands before analyzing — bands are what policies are written against.</p>
+    </div>
 
     <h3>Stage 3 &amp; 4 — Calendar Table &amp; Hospitality DAX Measures</h3>
     <p>Create a <code>Calendar</code> table (<code>2015-07-01</code> to <code>2017-08-31</code>), relate <code>Calendar[Date] → Bookings[ArrivalDate]</code>, and sort <code>Bookings[LeadTimeBand]</code> by <code>LeadTimeSort</code>. Then write:</p>
@@ -230,6 +248,13 @@ CALCULATE ( [Booked Room Revenue], 'Bookings'[is_canceled] = 1 )
 
 Avg ADR = AVERAGE ( 'Bookings'[adr] )
 // Check: €101.83</pre>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> The measure family here implements the <b>lifecycle revenue split</b> from Step A1 as reusable DAX: <code>Booked Room Revenue</code> (all promises, €42.72M), <code>Realized Revenue</code> (kept promises, €26.00M), and <code>Cancelled Revenue Leakage</code> (broken promises, €16.73M). All three come from ONE SUMX core with different <code>is_canceled</code> filters — one definition, three lenses, no disagreement possible. <code>Cancellation Rate %</code> then becomes a ratio that must be sliced to be understood: 37.04% overall hides that City hotels leak at 41.73% while Resorts leak at 27.76%.</p>
+      <p><b>Real-time example:</b> Why the split matters operationally: leakage of €16.73M is not "lost forever" — it's recoverable through policy. Deposit requirements on long-lead bookings, stricter group contracts, and smarter overbooking all target specific leakage slices, and each measure above feeds one chart that locates the slice (Visual 3 finds WHEN guests cancel, Visual 4 finds WHO cancels). A revenue manager with this measure set can quantify any policy change ("if long-lead cancellations drop by a third, that's €X back") before negotiating it with the GM.</p>
+      <p><b>What happens if you skip it:</b> Reports quote booked revenue (Mistake 1: +64% inflation), cancellation analysis stays at the blended 37%, and every overbooking/deposit decision is made on vibes.</p>
+      <p><b>Smart-work tip:</b> Define revenue measures at each lifecycle stage ONCE, then let every chart combine them. And never report a blended rate (37%) without its segment split — averages across properties hide the exact variance the business needs to act on (city ≠ resort here, dramatically).</p>
+    </div>
 
     <h3>Stage 5 — Power BI Charts Journey: Build the 5-Visual Revenue Management Suite</h3>
 
@@ -254,12 +279,26 @@ Avg ADR = AVERAGE ( 'Bookings'[adr] )
         <div class="well"><strong>Small multiples</strong><code>Bookings[hotel]</code> (1 row × 2 columns grid in Format pane!)</div>
       </div>
       <p><b>Instant Insight:</b> Algarve <b>Resort Hotel</b> ADR &amp; revenue skyrocket in July–August beach vacation months, while Lisbon <b>City Hotel</b> stays steady Spring through Autumn!</p>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> The two hotels share a parent company but live in OPPOSITE seasonal worlds — which is exactly the situation Small Multiples were built for (the Set 03/09 pattern, now for side-by-side business comparison): synchronized Jan–Dec mini-charts sharing one Y-axis, so the eye compares shapes rather than decoding overlapping lines. One visual answers "how do our two properties differ seasonally?" without a single legend.</p>
+        <p><b>Real-time example:</b> Read the trellis as the Revenue Director: the Resort panel shows a dramatic July–August spike (beach season: both occupancy AND rate climb — ADR surges), while the City panel stays broad and steady spring-through-autumn (business + city-break travel). The management consequence is real money: pricing strategy, staffing, and maintenance windows must be scheduled OPPOSITELY per property — the Resort discounts hard in winter and maxes rates in August; the City hotel can hold rates year-round. Merging both into one averaged line would erase this contrast and misprice BOTH properties.</p>
+        <p><b>What happens if you skip it:</b> An averaged "hotel group" seasonal curve shows a mild summer bump that describes NEITHER property — the Resort's 3× summer peak and the City's steady baseline both wash out, and pricing decisions get made against fiction.</p>
+        <p><b>Smart-work tip:</b> When comparing 2–8 groups over time where the SHAPE is the message, small multiples beat multi-line charts — separate panels, shared scales. Put volume in the Y-axis and price (ADR) in a second chart or tooltip; never average a rate across properties without showing each.</p>
+      </div>
     </div>
 
     <div class="chart-card">
       <h4><span class="tag y">Visual 3 &amp; 4</span> Lead-Time Cancellation Combo + Channel Leakage Stacked Bar</h4>
       <p>1. <b>Line and clustered column chart:</b> X-axis = <code>Bookings[LeadTimeBand]</code>, Column Y-axis = <code>[Total Bookings]</code>, Line Y-axis = <code>[Cancellation Rate %]</code>. Recommend requiring deposits or controlled overbooking for <code>181d+</code> reservations (57.0% cancellation rate)!<br>
       2. <b>Stacked bar chart:</b> Y-axis = <code>Bookings[market_segment]</code>, X-axis = <code>[Realized Revenue]</code> and <code>[Cancelled Revenue Leakage]</code>.</p>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> These two charts turn the leakage number into a POLICY. The lead-time combo shows cancellation risk rising monotonically from <b>9.63%</b> (last-minute bookings — people who show up because they're already traveling) to <b>57.01%</b> (6-month-out bookings — plans that changed). The channel stacked bar then shows WHERE the leakage concentrates: Groups cancel at 61.06% while Direct bookings cancel at just 15.34% — same rooms, wildly different reliability. Together they answer the brief's overbooking question with a segmentation, not a guess.</p>
+        <p><b>Real-time example:</b> Walk through the revenue-management decisions these charts license: (1) require deposits on 181d+ bookings — the band where over half the inventory promised never shows; (2) negotiate group contracts with attrition clauses (groups book early AND cancel at 61% — the worst of both); (3) invest in the Direct channel — the 15.34% cancel rate makes every direct euro worth ~4 direct-euros of reliability versus Groups. Each recommendation cites a measured band or segment; the GM approves policies, not hunches. The column layer (booking volume per band) matters too: it shows the 181d+ band isn't a tiny edge case — 24,692 bookings live there.</p>
+        <p><b>What happens if you skip it:</b> Overbooking is calibrated on the blended 37% — meaning the hotel double-sells too aggressively on last-minute bookings (9.6% risk) and not aggressively enough on long-lead ones (57%) — losing both occupancy AND credibility at once.</p>
+        <p><b>Smart-work tip:</b> A risk variable plus a rate line plus a volume column is the universal "calibration" chart (works for loan default by age band, churn by tenure, no-show by lead time). Volume columns keep the tail bands honest — policy only matters where the bookings actually are.</p>
+      </div>
     </div>
 
     <ul class="task-list">

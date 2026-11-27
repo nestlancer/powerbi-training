@@ -64,6 +64,10 @@
   .well strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-bottom:2px;}
   .note{background:#fffaf0;border-left:4px solid #e0a800;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
   .warn-box{background:var(--danger-soft);border-left:4px solid var(--danger);border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
+  .why-box{background:#eaf3ff;border-left:4px solid #2563eb;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.4px;}
+  .why-box .why-title{font-weight:800;color:#1d4ed8;margin:0 0 6px;font-size:12.5px;text-transform:uppercase;letter-spacing:.5px;}
+  .why-box p{margin:5px 0;}
+  .why-box b{color:#123a7a;}
   .wireframe{display:grid;grid-template-columns:repeat(12,1fr);gap:8px;background:#eef2f7;padding:14px;border-radius:12px;margin:12px 0;font-size:12px;}
   .wf-box{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:10px;text-align:center;font-weight:600;color:var(--accent);}
   .wf-box small{display:block;font-weight:400;color:var(--muted);margin-top:3px;font-size:11px;}
@@ -195,6 +199,13 @@
         <li>Set <code>ZIPCODE</code> to <b>Text</b>, <code>YEAR</code>/<code>MONTH</code>/<code>DAY</code> to <b>Whole Number</b>, and click <b>Close &amp; Load</b>.</li>
       </ol>
     </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> Two identity columns are under attack the moment this CSV touches a spreadsheet engine. <b>ZIP codes</b> look numeric but are labels — East Coast ZIPs like <code>07501</code> (New Jersey) lose their leading zero and become <code>7501</code>, breaking every join or lookup by ZIP. And <code>OPENDATE</code>'s 2-digit years are a <b>loaded trap</b>: Excel's cutoff rules will decide — for you, silently — whether <code>62</code> means 1962 or 2062. Going through <b>Transform Data</b> first means you see and type these columns yourself instead of letting the import guess.</p>
+      <p><b>Real-time example:</b> Imagine the retail VP asks: "How many stores opened per year in the 1960s?" If Excel "helpfully" read <code>7/1/62</code> as July 1, <b>2062</b>, your time charts now contain stores that opened 36 years in the future — and the 1960s count comes out near zero. The analysis is wrong before a single chart was drawn, and because the error is plausible-looking, it survives reviews.</p>
+      <p><b>What happens if you skip it:</b> Leading-zero ZIPs break, 2-digit years scatter stores across two centuries, and nobody notices until a map or a timeline looks "weird" — usually in front of the client.</p>
+      <p><b>Smart-work tip:</b> Treat any identifier (ZIP, phone, store number, FIPS code) as <b>Text on sight</b> — identifiers are names that happen to use digits. And never let a date column pass through an import un-inspected when it has 2-digit years.</p>
+    </div>
 
     <h3>Step A2 — Build 3 Bulletproof Helper Columns (Columns Q, R, S)</h3>
     <div class="step">
@@ -210,6 +221,13 @@
         <code>=INT(P2/10)*10 &amp; "s"</code> (turns <code>1962</code> into <code>1960s</code>, <code>1990</code> into <code>1990s</code>).</li>
       </ol>
     </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> Each helper column embodies one professional principle. <code>OpenDateClean = DATE(P2,N2,O2)</code>: when a file offers BOTH an ambiguous text date (<code>7/1/62</code>) AND the exact components (<code>YEAR=1962</code>), <i>reconstruct from the authoritative parts instead of parsing the ambiguous text</i>. <code>StoreHistory</code> with <code>ISBLANK()</code>: blank ("never converted") and <code>0</code> ("built as Supercenter from day one") are two different business states that a careless <code>=IF(D2=0,...)</code> would merge into one. <code>Decade</code>: time trends become readable when years are grouped into eras.</p>
+      <p><b>Real-time example:</b> Why the ISBLANK order matters: Excel compares blank cells loosely, so <code>IF(D2=0,...)</code> fires on BOTH the 1,046 never-converted stores AND the 389 built-as-Supercenter stores — merging 1,435 distinct rows into one category. Your 3-slice donut becomes a 2-slice donut and the whole "conversion vs built-new" analysis the VP asked for quietly disappears. One function call protects 1,046 rows of truth.</p>
+      <p><b>What happens if you skip it:</b> Dates span 1962–2062 (future stores!), the lifecycle story collapses, and decade-level charts can't exist.</p>
+      <p><b>Smart-work tip:</b> When a dataset ships redundant "raw + parsed" columns, ask "which one is authoritative?" and build from that one. Here <code>P/N/O</code> came straight from the source system, so <code>DATE(P2,N2,O2)</code> is 100% bulletproof — no locale, no century cutoffs, no guessing.</p>
+    </div>
 
     <h3>Step A3 — PivotTable Verification</h3>
     <div class="step">
@@ -218,6 +236,13 @@
         <li>Sort Grand Total Largest to Smallest: confirm <b>TX = 315</b> (200 Converted, 53 Opened as Supercenter, 62 Discount Wal-Mart), <b>FL = 175</b>, <b>CA = 159</b> (only 12 Converted!), and Grand Total = <b>2,992</b>!</li>
         <li>Save as <code>04-walmart-openings-clean.xlsx</code>.</li>
       </ol>
+    </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> This is a <b>cross-tab</b> pivot (state × lifecycle), not a flat list — and cross-tabs exist to expose <i>differences in composition</i>, which a totals-only pivot hides. Reading Rows × Columns together answers the client's exact question: which states <b>converted</b> existing stores into Supercenters, and which barely converted at all?</p>
+      <p><b>Real-time example:</b> The pivot instantly surfaces the dataset's best story: Texas has 315 stores with 200 conversions, while California — the #3 state with 159 stores — converted only <b>12</b> (7.5%!). That asymmetry is the jumping-off point for the real-estate insight (California municipalities passed anti-supercenter zoning ordinances). If you'd only pivoted "total stores by state", TX 315 and CA 159 would look like pure size ranking, and the zoning story — the actual reason this data is interesting — would never appear.</p>
+      <p><b>What happens if you skip it:</b> You verify totals (good) but miss the structure (better), and your dashboard reproduces numbers nobody asked questions about.</p>
+      <p><b>Smart-work tip:</b> Whenever two categorical dimensions might interact ("does conversion differ by state?"), build a cross-tab pivot in Excel BEFORE designing Power BI visuals — it's a 3-minute prototype of your dashboard's main chart, and it tells you whether the story exists at all.</p>
     </div>
 
     <ul class="task-list">
@@ -248,6 +273,13 @@
         <li>Ensure <code>LAT</code> and <code>LON</code> are <b>1.2 (Decimal Number)</b>, <code>ZIPCODE</code> is <b>ABC (Text)</b>, and <code>conversion</code> is <b>123 (Whole Number)</b>. Click <b>Home → Close &amp; Apply</b>.</li>
       </ol>
     </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> Three Power Query moves replace the Excel helper columns with refreshable ones: <code>#date([YEAR],[MONTH],[DAY])</code> rebuilds the bulletproof date, the Conditional Column's <b>null branch</b> keeps blank ≠ 0 ≠ 1 separate (protecting the 1,046 never-converted stores), and <code>LocationState = [STRSTATE] &amp; ", USA"</code> de-duplicates geography <i>at the source</i>. Everything is now a recorded step that replays on refresh.</p>
+      <p><b>Real-time example:</b> The ", USA" suffix looks trivial until you see the failure it prevents: Power BI geocodes "GA" — and the filled map lights up the <b>country Georgia in Eastern Europe</b>, so your most interesting state (68.4% conversion rate!) vanishes from America. Same trap: "WA" (state vs Washington, D.C. vs Western Australia). Ambiguous short codes are a geocoder's nightmare; appending the country and setting Data Category = State or Province removes the guesswork permanently.</p>
+      <p><b>What happens if you skip it:</b> Pins land on the wrong continent, the 2-digit year bug resurrects, blanks get mislabeled — and every one of those bugs re-appears after every refresh because the fix was never recorded.</p>
+      <p><b>Smart-work tip:</b> Fix geography in Power Query, not in the visual: a measure or label suffix fixed on one chart doesn't help the other four. Source-level cleaning is written once and protects every map, slicer, and export downstream.</p>
+    </div>
 
     <h3>Stage 3 — Model View: Geo Categories &amp; Calendar Table</h3>
     <div class="pbi-box">
@@ -268,6 +300,13 @@ ADDCOLUMNS (
 )</pre>
         Mark as date table and relate <code>Calendar[Date]</code> (1) → <code>Stores[OpenDate]</code> (*).</li>
       </ol>
+    </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> <code>LAT</code>/<code>LON</code> get three pieces of metadata, and each prevents one specific failure: <b>Data category = Latitude/Longitude</b> tells Power BI "these are coordinates, not statistics"; <b>Don't summarize</b> stops the visual from averaging 2,992 pins into ONE pin; and the relationship from a 1962–2006 Calendar gives the running-total measure a continuous axis to walk (including years with zero openings).</p>
+      <p><b>Real-time example:</b> Here's the famous failure this prevents: Power BI defaults LAT to <i>Average of LAT</i> ≈ 37.8 and LON to <i>Average of LON</i> ≈ −90.6 — and the map shows a single glowing pin in <b>the middle of Kansas</b>, as if Walmart built one store for the entire nation. It is the single most common "my map is broken!" support question in Power BI training, and the fix is 10 seconds of metadata. The Decade column in the Calendar, meanwhile, is what lets a slicer animate 44 years of expansion in 4 button clicks.</p>
+      <p><b>What happens if you skip it:</b> One pin in Kansas, charts that can't filter by decade, and a cumulative measure that skips empty years and draws a jagged, misleading curve.</p>
+      <p><b>Smart-work tip:</b> Coordinates are <i>positions</i>, never quantities — any default aggregation on them is a bug in waiting. Check Summarization = Don't summarize on every geo column the day you import, and build the Calendar table wide enough to cover every date in the model (1962, not 2013 — each project gets its own range).</p>
     </div>
 
     <h3>Stage 4 — DAX Measures (Including Your First Cumulative Running Total!)</h3>
@@ -295,6 +334,13 @@ CALCULATE (
     )
 )
 // ADVANCED RUNNING TOTAL! Starts at 1 in 1962 and climbs smoothly to 2,992 in 2006!</pre>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> Each measure encodes a reusable DAX pattern. <code>Converted Stores = SUM(conversion)</code> is an elegant null-safe count: 1s contribute 1, 0s and nulls contribute nothing — so a SUM becomes a conditional count with zero extra logic. <code>Cumulative Stores</code> is your first <b>running total</b>: <code>ALL('Calendar')</code> temporarily removes the date filter, then <code>'Calendar'[Date] &lt;= MAX('Calendar'[Date])</code> re-adds only the dates up to "now" — summing every store opened so far.</p>
+      <p><b>Real-time example:</b> Why SUM works where COUNT fails: <code>COUNT(conversion)</code> would count every non-blank row (1,557 + 389 = 1,946 — wrong!), but SUM reads the column as 1/0/null flags, landing exactly on <b>1,557</b>. And the running total tells the growth story a yearly bar never can: the fleet crossed 1,000 stores around 1988 and doubled again within 10 years — an S-curve of compounding expansion the VP can annotate ("when did we reach half today's fleet?").</p>
+      <p><b>What happens if you skip it:</b> Without the <code>ALL</code> pattern, "cumulative" at each year equals just that year's openings (the filter never lifts), and the line collapses to a copy of the columns — the #1 beginner running-total bug. Without null-aware counting, conversion counts silently include stores that never converted.</p>
+      <p><b>Smart-work tip:</b> Memorize the skeleton <code>CALCULATE([X], FILTER(ALL(DateTable), Date &lt;= MAX(Date)))</code> — it's the universal YTD, lifetime-to-date, and inventory-accumulation pattern. Verify the endpoints (1 in 1962, 2,992 in 2006) and one midpoint; three checks prove the whole curve.</p>
+    </div>
 
     <h3>Stage 5 — Power BI Charts Journey: Build the 6-Visual Geo-Expansion Dashboard</h3>
 
@@ -320,6 +366,13 @@ CALCULATE (
       </div>
       <p>Click the globe <b>Map</b> icon. Drag <code>LAT</code> and <code>LON</code> into their dedicated wells (verify neither says <i>Average of LAT</i>!). Click the <code>1960s</code> button on your Decade slicer, then <code>1970s</code>, <code>1980s</code>, <code>1990s</code> — watch Walmart radiate outward from northwest Arkansas across the entire continent!</p>
       <p style="font-size:12.5px;color:var(--muted);"><i>Note: If Power BI Desktop asks to enable Map visuals, go to <b>File → Options and settings → Options → Global → Security → Map and Filled Map visuals</b> and tick Enable.</i></p>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> A GPS point map is the <i>highest-resolution</i> view this dataset allows: 2,992 exact store locations, not state averages. Geography-only questions ("where did Walmart actually expand?") deserve geography-native visuals — no bar chart can show distance, clustering, or direction the way pins on a map can.</p>
+        <p><b>Real-time example:</b> Click through the Decade slicer and you watch history happen: <code>1960s</code> = a tight dot-cluster around northwest Arkansas (Store #1 in Rogers, 1962); <code>1970s</code> = radiating across neighboring states; <code>1990s</code> = saturated nationwide. This is the classic <b>diffusion pattern</b> — expansion radiating outward from a single hub — and it answers the VP's geographic question with zero explanation needed. The Legend (StoreHistory) then colors converted vs built-new stores, so density AND format mix are visible in one frame.</p>
+        <p><b>What happens if you skip it:</b> With only state-level visuals, all of Arkansas's neighbors blur into "some states", and the outward-radiation insight — the entire point of a 44-year rollout study — is lost. Tooltips (city + opening date) also let executives touch individual stores.</p>
+        <p><b>Smart-work tip:</b> Point map = detail questions ("where exactly?"); filled map = comparison questions ("which state converts faster?"). Use both on one page precisely because they answer different questions about the same pins.</p>
+      </div>
     </div>
 
     <div class="chart-card">
@@ -329,6 +382,13 @@ CALCULATE (
         <div class="well"><strong>Tooltips</strong><code>[Total Stores]</code>, <code>[Converted Stores]</code>, <code>[Conversion Rate %]</code></div>
       </div>
       <p>Click <b>Filled map</b> (shaded map icon next to Map). Go to <b>Format visual → Fill colors → Conditional formatting (fx)</b> → Format style = <b>Gradient</b> based on <code>[Conversion Rate %]</code> from light yellow (0%) to deep green (70%). Notice Georgia (<code>68.4%</code>) and Texas (<code>63.5%</code>) glow deep green while California (<code>7.5%</code>) stays pale yellow!</p>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> A choropleth (filled map) encodes a <i>rate</i> as color intensity — the fastest possible read for "which regions differ?" Conditional formatting binds the shade to <code>[Conversion Rate %]</code>, so the map updates automatically when any slicer changes. This is the visual analog of the cross-tab pivot you built in Step A3, but readable by color instead of numbers.</p>
+        <p><b>Real-time example:</b> The gradient instantly separates two Americas: the Deep South (GA 68.4%, TX 63.5%, MO 61.5%) glows green — Walmart's historical home turf where big-box Supercenter conversions met little resistance — while California stays pale yellow at 7.5%, reflecting municipal anti-supercenter zoning ordinances. A real-estate strategist reading that map can prioritize markets in seconds: green states accept large-format expansion; yellow ones require different formats or legal workarounds.</p>
+        <p><b>What happens if you skip it:</b> The same rates in a table (52.0%, 63.5%, 7.5%…) take deliberate reading to compare across 41 states; on a map, the regional pattern jumps out pre-attentively — the audience "gets it" before you finish the sentence.</p>
+        <p><b>Smart-work tip:</b> Always pin the gradient's min/max explicitly (0% → 70%) instead of auto: auto-scaling makes every map look "colorful" even when rates barely differ, exaggerating meaningless differences. Fixed scales keep multiple maps (or time periods) comparable and honest.</p>
+      </div>
     </div>
 
     <div class="chart-card">
@@ -339,12 +399,26 @@ CALCULATE (
         <div class="well"><strong>Line y-axis</strong><code>[Cumulative Stores]</code> (Running Total)</div>
       </div>
       <p>Columns show annual building waves peaking in <b>1990 (178 stores)</b> and <b>1991 (161 stores)</b>, while the secondary-axis S-curve line climbs steadily to <b>2,992</b>!</p>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> This combo pairs two different mathematical questions about the same timeline: <i>pace</i> (columns: how many NEW stores per year?) and <i>accumulated scale</i> (line: how big is the fleet so far?). They need separate axes because one is a small yearly number (max 178) and the other is a growing total (up to 2,992) — on one axis, either the peaks or the curve would be crushed.</p>
+        <p><b>Real-time example:</b> Read it the way an executive does: the columns reveal <b>when</b> Walmart pushed hardest (peaks of 178 in 1990 and 161 in 1991 — the Supercenter gold-rush years) and when it cooled; the S-curve line reveals <b>what those years added up to</b> — half the fleet arriving after the mid-1980s. Together they answer both "when was the push?" and "how did we end up at 2,992?" in one glance. A speedometer and an odometer, on one chart.</p>
+        <p><b>What happens if you skip it:</b> Two separate charts force mental chart-matching; one chart with both fields on a single axis renders the 178-store columns invisible next to a 2,992 line — the flat-column trap from Set 01, in a different costume.</p>
+        <p><b>Smart-work tip:</b> Whenever you have "events per period" + "cumulative total", this combo is the standard shape (works identically for sales + revenue-to-date, hires + headcount, tickets + backlog). Your <code>ALL('Calendar')</code> running-total measure is what makes the line true at every year.</p>
+      </div>
     </div>
 
     <div class="chart-card">
       <h4><span class="tag g">Visual 5 &amp; 6</span> Lifecycle Donut Chart + Top 12 States Stacked Bar</h4>
       <p>1. Add a <b>Donut chart</b> with <code>StoreHistory</code> in Legend and <code>[Total Stores]</code> in Values (3 crisp slices — ideal use of a Donut chart!).<br>
       2. Add a <b>Stacked bar chart</b> with <code>STRSTATE</code> on Y-axis (filtered to <b>Top 12</b> by <code>[Total Stores]</code>), <code>[Total Stores]</code> on X-axis, and <code>StoreHistory</code> in Legend.</p>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> The Donut gets exactly the situation donuts are FOR: 3 mutually-exclusive parts of one whole (52.0% converted / 35.0% discount / 13.0% built-as-Supercenter). With more than ~4 slices, pie/donut charts become angle-guessing games — but 3 clean slices read instantly. The Top-12 Stacked bar then breaks that same fleet mix down <i>by state</i>, because composition differences between states are the real story, not the national average.</p>
+        <p><b>Real-time example:</b> Look down the stacked bars and the state story writes itself: Georgia's segment is almost all Supercenter (68.4% conversion), Texas is dominated by conversions, and California's bar is conspicuously mostly plain discount-store gray — the zoning-restriction footprint from Visual 3, now visible as bar composition. National averages (52.0%) hide this; per-state stacks reveal which markets Walmart could re-format and which it had to leave alone.</p>
+        <p><b>What happens if you skip it:</b> A stakeholder sees "52% converted nationally" and assumes it's true everywhere; the CA exception stays buried in a table. And an all-states bar chart (41 bars) drowns the Top 12 that matter.</p>
+        <p><b>Smart-work tip:</b> Donut for parts-of-one-whole with ≤4 slices; stacked bar for comparing composition ACROSS categories. Together: the national mix on top, the state-by-state mix underneath — one page answers "what's the mix?" and "where does it differ?".</p>
+      </div>
     </div>
 
     <ul class="task-list">

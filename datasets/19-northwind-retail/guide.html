@@ -64,6 +64,10 @@
   .well strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-bottom:2px;}
   .note{background:#fffaf0;border-left:4px solid #e0a800;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
   .warn-box{background:var(--danger-soft);border-left:4px solid var(--danger);border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
+  .why-box{background:#eaf3ff;border-left:4px solid #2563eb;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.4px;}
+  .why-box .why-title{font-weight:800;color:#1d4ed8;margin:0 0 6px;font-size:12.5px;text-transform:uppercase;letter-spacing:.5px;}
+  .why-box p{margin:5px 0;}
+  .why-box b{color:#123a7a;}
   .wireframe{display:grid;grid-template-columns:repeat(12,1fr);gap:8px;background:#eef2f7;padding:14px;border-radius:12px;margin:12px 0;font-size:12px;}
   .wf-box{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:10px;text-align:center;font-weight:600;color:var(--accent);}
   .wf-box small{display:block;font-weight:400;color:var(--muted);margin-top:3px;font-size:11px;}
@@ -162,6 +166,13 @@
     <div class="step">
       Click <b>Data → From Text/CSV</b> → select <code>datasets/19-northwind-retail/data/retail_sales_2021_2024.csv</code> → click the arrow next to Load → <b>Load To… → PivotTable Report (check "Add this data to the Data Model")</b>! Put <code>Category</code> &amp; <code>SubCategory</code> in Rows, and <code>Sales</code> &amp; <code>Profit</code> in Values: verify <b>Sales = $704,313,162.91</b>, <b>Profit = $18,710,044.29</b>, and <b>Furniture = -$13,259,318.96</b>!
     </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> A capstone opens with reconciliation for the same reason every enterprise report does: the PE board's turnaround thesis rests on numbers, so you prove the pipeline first — at 220,000 rows the Data Model PivotTable (not grid formulas) is the right tool, compressing and aggregating instantly where raw-grid pivots choke. Verifying three headline totals now means every Power BI page you build later must reproduce them or be rejected.</p>
+      <p><b>Real-time example:</b> Notice what this one pivot already reveals BEFORE any BI work: $704.31M of sales produces just $18.71M profit — 2.66 cents on the dollar — and the damage is concentrated: Furniture loses <b>−$13.26M</b>, single-handedly erasing nearly half of Technology's +$31.70M gain. You walk into the model build already knowing the turnaround story lives in Furniture and discounting, not in celebrating growth. That's the analyst's edge: find the losses early.</p>
+      <p><b>What happens if you skip it:</b> If your app's totals drift from these verified figures, the first board member with a calculator destroys trust in every other number on screen.</p>
+      <p><b>Smart-work tip:</b> On any large audit, pivot the WORST categories first — the story is in the losses. And load >100K-row CSVs through the Data Model (or Power BI) as a habit; Excel grids stop being a professional tool around that size.</p>
+    </div>
 
     <ul class="task-list">
       <li><label><input type="checkbox"> Loaded 220,000 rows into Excel Data Model PivotTable and verified $704.31M Sales / $18.71M Profit.</label></li>
@@ -180,6 +191,13 @@
         <li>Add Custom Column <code>ShipDays = Duration.Days([ShipDate] - [OrderDate])</code>.</li>
         <li>Add ordered <code>DiscountBand</code> (<code>0%</code>, <code>1–15%</code>, <code>16–25%</code>, <code>26–35%</code>, <code>36%+</code>) + <code>DiscountBandSort</code> (1..5). Click <b>Home → Close &amp; Apply</b>.</li>
       </ol>
+    </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> Two prep moves make the capstone's central discovery measurable. Fixed-decimal money types keep a $704M total reconciling to the cent (the Set 18 typing law, now at retail scale). And the ordered <code>DiscountBand</code> converts a continuous 0–60% discount column into five ANALYZABLE bands with a sort column — the same banding pattern as Set 15's LeadTime bands, used whenever a policy boundary is the story. <code>ShipDays</code> adds the service-quality lens the Action Sheet will need later.</p>
+      <p><b>Real-time example:</b> The "Discount Cliff" is literally invisible in the raw column: no single 40%-off row looks alarming. But once banded, the profit collapse marches down the ladder: <b>+19.93%</b> at 0% → +14.00% → +8.00% → +2.02% → <b>−15.82%</b> at 36%+. That monotone staircase IS the discount-policy story — and it only reads as a staircase because the bands are ordered (an alphabetical axis would show 0%, 16–25%, 1–15%... and destroy the narrative). Banding turns an arithmetic fact into a management conversation: "why are we allowing 36%+ discounts at all?"</p>
+      <p><b>What happens if you skip it:</b> Without bands, the cliff hides inside averages (~24.1% mean discount tells you nothing); without the sort column, the axis scrambles; without ShipDays, delivery-performance questions die in Power Query.</p>
+      <p><b>Smart-work tip:</b> Band any continuous risk variable (discount %, lead time, age, tenure) when a POLICY threshold is the point — the band edges become the policy dial the business can turn. Always pair band labels with a numeric sort column.</p>
     </div>
 
     <h3>Stage 3 &amp; 4 — Calendar Table, Core DAX, Field Parameters &amp; What-If Cap!</h3>
@@ -220,11 +238,25 @@ SUMX (
 )
 
 Profit Uplift from Cap = [Simulated Profit (With Discount Cap)] - [Total Profit]</pre>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> The calendar and core measures follow the course's standard skeleton (CALENDAR, YoY via SAMEPERIODLASTYEAR — nothing new). The capstone twist is the What-If simulator, and it works because of a per-row algebra trick: since <code>Sales = ListRev × (1 − Discount)</code>, each row's pre-discount list price can be RECONSTRUCTED as <code>ListRev = Sales ÷ (1 − Discount)</code>, with cost recovered as <code>Sales − Profit</code>. The SUMX then re-applies a CAPPED discount to every row and computes counterfactual profit — a scenario engine living inside the data model, respecting every slicer automatically.</p>
+      <p><b>Real-time example:</b> The CEO's money question is "what if we capped rep discounts at 30%?" Slide the cap (Stage 4's parameter): every order above 30% re-prices down — including the 78,053 orders in the 36%+ band that are currently losing <b>−$37.73M</b> — and the Uplift card quantifies the rescue as a board-defensible number that updates live as you slice by region or rep. Without the row-level reconstruction there is no way to answer this: average discount can't be "re-applied" retroactively; you must go row by row.</p>
+      <p><b>What happens if you skip it:</b> The discount recommendation stays a hand-wave ("deep discounts seem bad, maybe cap them?") instead of "capping at 30% recovers tens of millions, here's the exact number" — and policy debates never close.</p>
+      <p><b>Smart-work tip:</b> Counterfactual DAX always follows this recipe: recover a known identity per row (here list price), hold COSTS fixed, vary the single POLICY variable via a parameter. Note also <code>DIVIDE(s, 1-d, s)</code>'s third argument guarding the 100%-discount edge case — defensive DIVIDE everywhere.</p>
+    </div>
 
     <div class="pbi-box">
       <b>Two Portfolio-Winning Modeling Clicks (Takes 60 Seconds Each!):</b><br>
       1. <b>Create a Field Parameter (Dynamic Metric Switcher):</b> Click <b>Modeling → New parameter → Fields</b> → Name: <code>Metric Selector</code> → drag in <code>[Total Sales]</code>, <code>[Total Profit]</code>, <code>[Profit Margin %]</code>, and <code>[Total Units]</code> → click <b>Create</b>! Format the resulting slicer as horizontal <b>Tile buttons</b>!<br>
       2. <b>Create the What-If Parameter (Discount Cap Slider):</b> Click <b>Modeling → New parameter → Numeric range</b> → Name: <code>Discount Cap</code>, Data type: <b>Decimal number</b>, Minimum: <code>0.15</code>, Maximum: <code>0.60</code>, Increment: <code>0.05</code>, Default: <code>0.30</code> → click <b>Create</b>!
+    </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> These two 60-second parameter clicks are what upgrade a static report into an APP — the capstone's whole thesis. A <b>Field Parameter</b> lets one visual morph across measures (Sales / Profit / Margin % / Units): one trend chart does the work of four, and the EXECUTIVE chooses the lens. A <b>What-If Parameter</b> materializes a hypothetical dial (0.15–0.60) as a real, selectable value that feeds the simulator measure — turning "what would happen if..." into an interactive control.</p>
+      <p><b>Real-time example:</b> Picture the board meeting: someone squints at the trend line and asks "ok — but how does that look in units?" With the metric tiles you CLICK a button and the chart redraws instantly; without it you rebuild a chart live while the room watches. Then on Page 2, the Discount Cap slider becomes a negotiation table: slide from 25% to 35% and watch <code>[Simulated Profit]</code> and <code>[Profit Uplift]</code> reprice the policy in real time — the board converges on a number, not a feeling. Parameters encode the questions stakeholders actually ask.</p>
+      <p><b>What happens if you skip it:</b> Four near-identical trend charts clutter Page 1, and the "policy lab" ships with one pre-baked scenario — the first follow-up question ("what about 25%? for APAC only?") exceeds what the report can answer.</p>
+      <p><b>Smart-work tip:</b> Reach for a Field Parameter whenever stakeholders say "can I see this by X or Y?", and a What-If parameter whenever they say "what would happen if we changed X?" — these two clicks cover 80% of what makes users call a report "an app".</p>
     </div>
 
     <h3>Stage 5 — Build All 3 Pages + Report Page Tooltip!</h3>
@@ -244,12 +276,26 @@ Profit Uplift from Cap = [Simulated Profit (With Discount Cap)] - [Total Profit]
       <p>1. Place your <b><code>Discount Cap</code> Slider</b> at top right alongside KPI Cards for <code>[Simulated Profit (With Discount Cap)]</code> and <code>[Profit Uplift from Cap]</code> — slide the cap to <code>0.30 (30%)</code> and watch how capping deep 40%–60% discounts rescues tens of millions in lost margin!<br>
       2. <b>Line and clustered column chart:</b> X = <code>DiscountBand</code>, Column Y = <code>[Total Sales]</code>, Line Y = <code>[Profit Margin %]</code> (`+19.93%` at `0%` → `-15.82%` at `36%+`!).<br>
       3. <b>Scatter chart:</b> Values = `SubCategory`, X = `[Avg Discount %]`, Y = `[Profit Margin %]`, Size = `[Total Sales]`, Legend = `Category`.</p>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> Page 2 is the analytical proof layer of the turnaround. The cliff combo shows the monotone collapse across ordered bands AND the volume columns prove the 36%+ band is not a niche: it's the <b>largest</b> band — 78,053 orders, more than the 0% band's 47,413 — so the most destructive pricing habit is also the most common. The scatter then maps every subcategory on discount × margin × size to pinpoint exactly WHO lives over the cliff, converting a policy story into a target list.</p>
+        <p><b>Real-time example:</b> Read the scatter's bottom-right quadrant (high discount, negative margin, big bubbles): all four Furniture subcategories cluster there — Furnishings −$3.47M, Chairs −$3.32M, Tables −$3.28M, Bookcases −$3.19M. That distribution is the diagnosis: the loss is not one defective product but a DISCOUNTING POLICY applied across an entire category. Stack that against the simulator above it, and Page 2 moves from diagnosis to prescription: cap the band, rescue the margin, watch which bubbles float back above zero.</p>
+        <p><b>What happens if you skip it:</b> A single average-discount KPI (~24.1%) buries everything: the board argues anecdotes while 35% of all orders — the bleeding 36%+ band — stay untouched by policy.</p>
+        <p><b>Smart-work tip:</b> Pair ratio lines with volume columns in combos (Set 18's lesson — ratios exaggerate small segments, volumes keep them honest). And when a policy question is "where exactly?", a scatter quadrant is the fastest instrument: axes at the thresholds, bubble size as materiality, legend as accountability.</p>
+      </div>
     </div>
 
     <div class="chart-card">
       <h4><span class="tag b">Page 3 + Custom Tooltip</span> Drill-Through Action Sheet &amp; Hover Tooltip Page</h4>
       <p>1. <b>Drill-Through Page (`Action Sheet`):</b> Drag `SubCategory` and `Region` into the <b>Drill through</b> well at the bottom of Visualizations! Power BI auto-adds a <b>Back button</b> (`Ctrl+Click` in Desktop). Add a conditional-formatted Table of `ProductName`, `CustomerSegment`, `ShipMode`, `[Total Sales]`, `[Avg Discount %]`, and `[Total Profit]`.<br>
       2. <b>Custom Tooltip Page:</b> Add a tiny hidden page (`Format Page → Page information → Allow use as tooltip = On`, Canvas size = `Tooltip`) showing a mini Category Profit Bar whenever an executive hovers over any Region or Month on Page 1!</p>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> Pages 1–2 answer "what is wrong and what if?" — Page 3 answers "so what: WHO exactly do we fix?" Drill-through turns every visual into a doorway: right-click the Furniture bar → drill through → land on a filtered Action Sheet listing the losing products, customers, and ship modes BEHIND that bar. The custom tooltip page works the other direction: it injects micro-context INTO hover, so executives get detail without ever leaving their current page.</p>
+        <p><b>Real-time example:</b> Follow the capstone's closing argument: a VP hovers over the APAC bar and a mini profit-by-category chart appears in place (Furniture red even there); then right-clicks Furniture → the Action Sheet reveals the actual −$3M products and the 36%+ discount customers behind them — the meeting ends with NAMED accounts and products on the fix list. That's the difference between a report and a turnaround instrument. (And hide the helper tabs — Mistake 2 — so the app opens clean on Page 1.)</p>
+        <p><b>What happens if you skip it:</b> Finding "why does Tables lose $3.28M?" requires screenshots, filters, and manual digging — the app's "action sheet" promise becomes a promise of more analyst hours instead of self-service.</p>
+        <p><b>Smart-work tip:</b> The professional 3-page anatomy — Overview (what), Lab (why/what-if), Action sheet (who) — generalizes to any portfolio app. Tooltips add context IN PLACE; drill-through adds depth ON DEMAND; hide helper pages so users enter only through the front door.</p>
+      </div>
     </div>
 
     <ul class="task-list">

@@ -64,6 +64,10 @@
   .well strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-bottom:2px;}
   .note{background:#fffaf0;border-left:4px solid #e0a800;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
   .warn-box{background:var(--danger-soft);border-left:4px solid var(--danger);border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
+  .why-box{background:#eaf3ff;border-left:4px solid #2563eb;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.4px;}
+  .why-box .why-title{font-weight:800;color:#1d4ed8;margin:0 0 6px;font-size:12.5px;text-transform:uppercase;letter-spacing:.5px;}
+  .why-box p{margin:5px 0;}
+  .why-box b{color:#123a7a;}
   .wireframe{display:grid;grid-template-columns:repeat(12,1fr);gap:8px;background:#eef2f7;padding:14px;border-radius:12px;margin:12px 0;font-size:12px;}
   .wf-box{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:10px;text-align:center;font-weight:600;color:var(--accent);}
   .wf-box small{display:block;font-weight:400;color:var(--muted);margin-top:3px;font-size:11px;}
@@ -175,6 +179,13 @@
     <div class="step">
       Open Excel → <b>Data → From Text/CSV</b> → select <code>datasets/09-world-population/data/population.csv</code> → <b>Load</b>. Rename cell <code>D1</code> from <code>Value</code> to <code>Population</code> and format column <code>D</code> as <code>#,##0</code>.
     </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> Data portals name their numeric column <code>Value</code> because the same export format serves many indicators (population, GDP, CO2...). But "Value" tells the reader nothing. Renaming it to <code>Population</code> makes every future formula, measure, and chart label self-explanatory — and matters doubly here, where you'll soon write DAX like <code>SUM('Population'[Population])</code>. A column named "Value" next to a table named "Population" would read like a riddle.</p>
+      <p><b>Real-time example:</b> Two versions of a measure six months apart: <code>SUM(Data[Value])</code> (which indicator was this again? better open the source CSV to check) versus <code>SUM('Population'[Population])</code> (obvious). When a market-sizing deck gets revised quarterly, self-documenting names are the difference between a 5-minute edit and a 30-minute audit. The <code>#,##0</code> format similarly turns <code>1450935791</code> into <code>1,450,935,791</code> — readable at the exact moment someone tries to verify India's figure against a website.</p>
+      <p><b>What happens if you skip it:</b> Vague names propagate: pivots say "Sum of Value", DAX says "Sum of Value", and eventually two different "Value" columns from two exports get confused in one model.</p>
+      <p><b>Smart-work tip:</b> Rename vague portal columns (<code>Value</code>, <code>Code</code>, <code>Name</code>) the moment they land — thirty seconds now, clarity forever. Names are documentation you get for free.</p>
+    </div>
 
     <h3>Step A2 — Flag All 47 Aggregate Codes in 1 Formula (Column E)</h3>
     <div class="step">
@@ -182,10 +193,24 @@
 <pre>=ISNUMBER(FIND(","&amp;B2&amp;",", ",AFE,AFW,ARB,CEB,CSS,EAP,EAR,EAS,ECA,ECS,EMU,EUU,FCS,HIC,HPC,IBD,IBT,IDA,IDB,IDX,INX,LAC,LCN,LDC,LIC,LMC,LMY,LTE,MEA,MIC,MNA,NAC,OED,OSS,PRE,PSS,PST,SAS,SSA,SSF,SST,TEA,TEC,TLA,TMN,TSA,TSS,UMC,WLD,"))</pre>
       <i>How this works:</i> Wrapping commas around <code>B2</code> checks for an exact 3-letter code match! Every true country gets <code>FALSE</code>; all 47 regional/income rollups get <code>TRUE</code>!
     </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> World Bank files mix 217 real economies with 47 aggregate rows — <code>WLD</code> (World), <code>EUU</code> (EU), <code>HIC</code>/<code>LMC</code>/<code>LMY</code> (income tiers), <code>EAS</code>/<code>SSA</code> (regions). They look like countries, sit in the same column, and sum silently into your totals. The comma-wrapped <code>FIND</code> is a classic exact-match lookup: searching for <code>",EUU,"</code> inside the comma-delimited string can only hit the whole code — never a false positive like "IN" matching inside "INDIA".</p>
+      <p><b>Real-time example:</b> Feel the stakes: leave all 264 entities in and the 2024 "world population" sums to roughly <b>88 billion</b> — because every Indian is counted once as India, again in "South Asia", again in "Low &amp; Middle Income", and again in "World". A market-sizing deck built on that number would be off by a factor of 10.8×. And the one-formula approach matters operationally: clicking 47 checkboxes in a filter dropdown works ONCE but isn't repeatable or auditable; one formula documents the entire rule in a single cell.</p>
+      <p><b>What happens if you skip it:</b> Totals inflate 10×, per-country "world share" percentages sum to 1080%, and the choropleth draws fake giant blobs over whole continents (Mistake 2 exactly).</p>
+      <p><b>Smart-work tip:</b> Memorize the pattern <code>ISNUMBER(FIND(","&amp;code&amp;",", ",list,"))</code> — an exact-match membership test with zero helper columns. The general lesson: whenever a file mixes entities and aggregates, build ONE auditable flag column rather than hand-maintained exclusions.</p>
+    </div>
 
     <h3>Step A3 — PivotTable Check (2024 = 8,117,484,624)</h3>
     <div class="step">
       Insert a PivotTable: Drag <code>IsAggregate</code> to <b>Filters</b> → choose <code>FALSE</code>. Drag <code>Year</code> to <b>Filters</b> → choose <code>2024</code>. Drag <code>Country Name</code> to <b>Rows</b> and <code>Population</code> to <b>Values</b>. Sort Largest to Smallest: confirm <b>217 rows</b>, <b>India = 1,450,935,791</b>, <b>China = 1,408,975,000</b>, and Grand Total = <b>8,117,484,624</b>! Save as <code>09-world-population-clean.xlsx</code>.
+    </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> Two filter conditions in one pivot (clean countries + single year) define exactly the number the strategy team needs: an accurate single-year global headcount. The pivot is the first proof that the aggregate-stripping worked — if Grand Total reads ~8.12B instead of ~88B, the 47 rollups are truly gone; if it reads anything else, the flag formula caught too much or too little.</p>
+      <p><b>Real-time example:</b> Every check here validates a fact the expansion team will repeat in boardrooms: <b>217 economies</b> (the market universe), <b>India #1 at 1.45B</b> (India passed China in 2021 — a fact investors still get wrong), <b>China at 1.41B and shrinking</b>. Grand total 8,117,484,624 for 2024 cross-checks against UN figures, meaning your pipeline (import → flag → filter) hasn't distorted a single country. When the Power BI card later shows the same 8,117,484,624, you've verified the whole chain end-to-end.</p>
+      <p><b>What happens if you skip it:</b> A silent error — say, one aggregate code left in — inflates some regional share percentage by a few percent, and market-prioritization decisions get made on a subtly wrong ranking.</p>
+      <p><b>Smart-work tip:</b> Row-count checks (217) plus anchor-value checks (India, China) plus a total check (8.12B) form a three-point verification triangle — if all three match expectations, the pipeline is almost certainly clean. Cheap, fast, and persuasive in front of skeptics.</p>
     </div>
 
     <ul class="task-list">
@@ -209,10 +234,24 @@
         <li>Click <b>Home → Close &amp; Apply</b> (confirm <b>14,310 rows</b> across 217 countries, 1960–2025!).</li>
       </ol>
     </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> Power Query re-implements the Excel flag as <code>List.Contains</code> — same rule, but now a recorded refresh-proof step instead of a hand-pasted formula. The arithmetic check <b>217 × 66 = 14,310</b> certifies a balanced panel (every country present in every year). Keeping ALL 66 years preserves the fuel for the Ribbon chart and growth measures, exactly like the Gapminder lesson — history is fuel, filter late. The <code>Decade</code> column exists because a 66-point ribbon is noisy; decade or 5-year milestone filtering makes rank crossovers legible.</p>
+      <p><b>Real-time example:</b> The multiplication check is doing free QA again: if the load had dropped one country-year (say, South Sudan's 2011 rows), you'd see 14,290 instead of 14,310 and catch it in one glance — no debugging required. And compare the aggregate-stripping approaches: clicking 47 checkboxes in a filter dropdown survives until the next export, while <code>List.Contains(...)</code> replays forever and even documents WHICH codes were excluded, right in the query — code as documentation.</p>
+      <p><b>What happens if you skip it:</b> Unrecorded manual filters die on refresh (Mistake 1's cousin), the ribbon drowns in 66 jagged years, and a missing-country error ships silently to the map visual.</p>
+      <p><b>Smart-work tip:</b> For any panel: expected rows = entities × periods — do the multiplication on paper before loading, then trust your eyes over the row counter. And encode list-based rules (exclusions, groupings) as Power Query list literals — auditable, repeatable, and visible in the Applied Steps.</p>
+    </div>
 
     <h3>Stage 3 &amp; 4 — Geo Categories &amp; Semi-Additive DAX Measures</h3>
     <div class="pbi-box">
       Set <code>Country Name</code> Data Category = <b>Country</b>, and set <code>Year</code> Summarization = <b>Don't summarize</b>. Then write:
+    </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> These two metadata settings are modeling, not cosmetics. <b>Data Category = Country</b> tells Power BI's geography engine which field names countries — it's what lets the map visual geocode all 217 economies automatically instead of begging you for latitude/longitude. <b>Year = Don't summarize</b> stops Power BI's default SUM from treating the calendar dimension as a quantity, so Year stays a clean label for slicers and axes.</p>
+      <p><b>Real-time example:</b> The failure it prevents is a classic beginner screenshot: a card proudly showing <b>"Sum of Year = 435,656"</b> (that's what adding 217 countries' years together yields) — arithmetically valid, semantically absurd. And without the Data Category, the map visual's well rejects <code>Country Name</code> and the 217-economy choropleth (India 1.45B passing China 1.42B in 2021) simply can't be built without importing coordinates by hand.</p>
+      <p><b>What happens if you skip it:</b> Year renders as "Sum of Year" in value wells, the map visual won't geocode, and every new visual starts by fighting the model's defaults.</p>
+      <p><b>Smart-work tip:</b> Set metadata once, at the model level — Data Category, summarization, format strings — and every visual inherits it forever. Fixing it per-visual is the "heavy work"; fixing it in the model is the smart work.</p>
     </div>
 <pre>Selected Year = MAX ( 'Population'[Year] )
 
@@ -240,6 +279,13 @@ DIVIDE (
     [Snapshot Population],
     CALCULATE ( [Snapshot Population], ALL ( 'Population'[Country Name], 'Population'[Country Code] ) )
 )</pre>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> The snapshot pattern from Gapminder returns — population is semi-additive (add across countries within one year, never across years). Notice a deliberate difference: because <code>Year</code> is a plain integer (no Date table here), "prior year" is computed as <code>MAX(Year) - 1</code> with an <code>ALL(Year)</code> reset — the no-date-table way to walk back one period. And <code>World Share %</code> uses <code>ALL</code> on the country columns to un-filter geography while keeping the year filter — the classic "denominator = total of everything" move.</p>
+      <p><b>Real-time example:</b> The <code>YoY Net Change</code> measure powers this set's most striking insight: in 2024 <b>China's population fell by 1,735,000</b> while <b>India's grew by 12,866,195</b> — one number pair that explains why the ribbon crossover is permanent, not noise. <code>World Share %</code> then frames market size for the expansion team: India alone is <b>17.9%</b> of humanity; Nigeria and Pakistan climbing past Brazil means the "emerging giants" the client asked about are ranked by share, not vibes. None of these answers exist without the measures — they only exist as 14,310 raw rows until DAX shapes them.</p>
+      <p><b>What happens if you skip it:</b> Summing across all years yields a "world population" of ~490 billion-people-years (the double-counting trap again); share percentages fail without the ALL-based denominator; and "which countries shrank?" becomes an unanswerable question.</p>
+      <p><b>Smart-work tip:</b> When your period column is an integer year (no date table), the <code>MAX(Yr) - 1</code> + <code>ALL</code> pattern replaces <code>SAMEPERIODLASTYEAR</code> — know both tools and pick by data shape. And define share measures with explicit ALL() denominators so slicing any country still shows its share of the WHOLE.</p>
+    </div>
 
     <h3>Stage 5 — Power BI Charts Journey: Build the 5-Visual Demographic Suite</h3>
 
@@ -264,6 +310,13 @@ DIVIDE (
         <div class="well"><strong>Legend</strong><code>Population[Country Name]</code> (Visual filter: Top 8 by <code>[Snapshot Population]</code>)</div>
       </div>
       <p><b>Important Interaction Tip:</b> Click your Year Slicer → <b>Format → Edit interactions</b> → click the <b>None (circle-slash)</b> icon on the Ribbon Chart so picking <code>2024</code> on the slicer updates your Cards/Map/Bar while keeping all 1960–2025 history visible on the Ribbon Chart!</p>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> A Ribbon chart is the one visual built to show <b>rank changes over time</b>: stacks re-order every period (largest on top) and flowing ribbons connect each country across periods, so overtakes appear as visible crossings instead of mental math. The <b>Edit interactions</b> step is the crucial power-user move: a Year slicer would otherwise filter the ribbon to ONE year and erase the entire story it exists to tell.</p>
+        <p><b>Real-time example:</b> Filter the X-axis to 1960/1975/1990/2005/2020/2025 and watch 65 years of geopolitics: China's ribbon climbing from #4 (1960) to #1, Nigeria and Pakistan ribbons rising steadily from the bottom, and the moment everyone came to see — <b>India's ribbon crossing above China's around 2021</b>, now the permanent #1. A client asking "when did India pass China?" gets a picture, not a debate. Without the interaction fix, clicking 2024 on the slicer would collapse the ribbon to a single frozen year — visual amputation of its whole purpose.</p>
+        <p><b>What happens if you skip it:</b> The rank-shift story dies (a stacked column shows totals but silently hides re-orderings), and the first slicer click kills the chart. This is also Mistake 1's trap: filter year in Power Query and the ribbon never has history to draw at all.</p>
+        <p><b>Smart-work tip:</b> Master <b>Edit interactions</b> early — controlling which visuals respond to which slicers is the difference between a dashboard and a jumble. Rule of thumb: trend/history visuals stay independent of point-in-time slicers; snapshot visuals (cards, map, bar) follow them.</p>
+      </div>
     </div>
 
     <div class="chart-card">
@@ -271,6 +324,13 @@ DIVIDE (
       <p>1. <b>Clustered bar chart:</b> Top 10 <code>Country Name</code> by <code>[Snapshot Population]</code>.<br>
       2. <b>Filled map:</b> Location = <code>Country Name</code>, Gradient color by <code>[YoY Growth %]</code> (red for negative population growth in Eastern Europe/East Asia, green for fast-growing Sub-Saharan Africa!).<br>
       3. <b>Table:</b> Show <code>Country Name</code>, <code>[Snapshot Population]</code>, <code>[YoY Net Change]</code>, and <code>[World Share %]</code>.</p>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> Three visuals, three market-research lenses on the same snapshot. The Top-10 bar ranks absolute market size. The choropleth colored by <b>YoY Growth %</b> (not by size!) shows momentum — where the next billion consumers are coming from. The table then hands planners exact numbers plus the shrinking-nation red flags. Notice the deliberate contrast: size on the bar, GROWTH on the map — using two different measures on two different visuals is how one page avoids repeating itself.</p>
+        <p><b>Real-time example:</b> Read the map for expansion signals: deep green across Sub-Saharan Africa (Nigeria adding ~4.8M people/year), deep red across Eastern Europe and East Asia — Japan and China shrinking. The strategy conclusion is a two-tier plan the client brief asked for: bet TODAY's volume on the Top-10 bar (India, Indonesia, Pakistan), and bet 2035's growth on the green map zones. The table's red <code>YoY Net Change</code> cells then list which markets are structurally contracting — where a 10-year retail build would face shrinking foot traffic.</p>
+        <p><b>What happens if you skip it:</b> A growth-rate map colored by population SIZE instead would just re-draw the Top-10 bar in green (India and China everywhere) — the most common choropleth mistake, which hides every shrinking and fast-growing small nation. Momentum becomes invisible, and expansion planning loses its forward-looking lens.</p>
+        <p><b>Smart-work tip:</b> For geographic comparisons of RATES, always color by the rate with a diverging gradient (red–white–green centered at 0) so decline and growth are equally visible; size belongs in tooltips. One measure per question — never let one visual answer two.</p>
+      </div>
     </div>
 
     <ul class="task-list">

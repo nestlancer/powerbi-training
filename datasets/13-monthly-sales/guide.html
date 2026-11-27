@@ -64,6 +64,10 @@
   .well strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-bottom:2px;}
   .note{background:#fffaf0;border-left:4px solid #e0a800;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
   .warn-box{background:var(--danger-soft);border-left:4px solid var(--danger);border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
+  .why-box{background:#eaf3ff;border-left:4px solid #2563eb;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.4px;}
+  .why-box .why-title{font-weight:800;color:#1d4ed8;margin:0 0 6px;font-size:12.5px;text-transform:uppercase;letter-spacing:.5px;}
+  .why-box p{margin:5px 0;}
+  .why-box b{color:#123a7a;}
   .wireframe{display:grid;grid-template-columns:repeat(12,1fr);gap:8px;background:#eef2f7;padding:14px;border-radius:12px;margin:12px 0;font-size:12px;}
   .wf-box{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:10px;text-align:center;font-weight:600;color:var(--accent);}
   .wf-box small{display:block;font-weight:400;color:var(--muted);margin-top:3px;font-size:11px;}
@@ -173,10 +177,24 @@
       185,950 rows easily fit inside Excel's 1,048,576-row grid, <b>and</b> Excel has the exact same Power Query engine as Power BI!<br>
       Click <b>Data → Get Data → From File → From Folder</b> → browse to <code>datasets/13-monthly-sales/data</code> → click <b>Combine → Combine &amp; Transform Data</b> → click <b>OK</b>.
     </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> When data arrives as many same-structured files (one per month, per region, per store), the Folder connector replaces copy-paste with <b>automation</b>: it stacks every CSV in the folder into one table, records the recipe, and — the crucial part — will pick up NEXT month's file automatically on Refresh. You're not combining 12 files once; you're building a pipeline that keeps combining them forever.</p>
+      <p><b>Real-time example:</b> This is exactly the client's situation: "every month our POS dumps a separate CSV into a shared folder." The old workflow: an analyst opens 12 files, copies each range, pastes into a master sheet, misses a row somewhere — 45 error-prone minutes monthly. The Folder workflow: one connection, defined once; January 2020 arrives as a 13th CSV and the whole dashboard updates in a 10-second refresh, no human touching the data. That difference is the entire ROI of learning Power Query.</p>
+      <p><b>What happens if you skip it:</b> Manual stacks drift out of sync (a month forgotten, a paste misaligned), and the "automate it!" requirement in the brief goes unmet — the dashboard becomes a January-only artifact.</p>
+      <p><b>Smart-work tip:</b> Whenever files share identical structure, never merge by hand — point a Folder (or SharePoint/SharePoint-folder in real jobs) connector at the directory. One connection to rule them all; new files join themselves.</p>
+    </div>
 
     <h3>Step A2 — Clean &amp; Load directly to an Excel PivotTable</h3>
     <div class="step">
       In Power Query, filter <code>Order ID</code> to uncheck <code>null</code>, <code>(blank)</code>, and <code>Order ID</code>. Change <code>Quantity Ordered</code> = Whole Number and <code>Price Each</code> = Currency. Add Custom Column <code>LineRevenue = [Quantity Ordered] * [Price Each]</code>. Click <b>Home → Close &amp; Load To… → PivotTable Report</b>! Verify Grand Total = <b>$34,492,035.97</b> across <b>185,950</b> rows!
+    </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> This step's hidden lesson is <b>order of operations</b>. The 12 monthly CSVs each contain 30-ish repeated header rows buried mid-file (someone concatenated files badly upstream), plus 545 blanks. If Power Query's auto-generated <code>Changed Type</code> step runs FIRST, it tries to type the literal text "Order ID" as a number and produces 355 <code>DataFormat.Error</code> cells — the scary red error state beginners panic over. Filter the text junk BEFORE typing columns, and no error ever appears.</p>
+      <p><b>Real-time example:</b> Watch the two sequences on the same file: (A) auto-type first → 355 Errors → confused manual "Replace Errors" patching → junk rows still pollute totals; (B) filter <code>Order ID ≠ "Order ID", ≠ null</code> first → 900 junk rows gone in one click → types apply cleanly → 185,950 verified rows → pivot confirms <b>$34,492,035.97</b>. Same data, same tools — sequence (B) is 10 minutes, sequence (A) is a lost afternoon. <code>LineRevenue</code> meanwhile pre-builds the additive currency column that every later chart uses.</p>
+      <p><b>What happens if you skip it:</b> Error cells (Mistake 1), inflated totals that quietly include header rows as "products", and a pivot that won't reconcile to the checkpoint value.</p>
+      <p><b>Smart-work tip:</b> Memorize the mantra: <i>filter junk → fix types → compute columns</i>. And treat Power Query errors as information, not enemies — an Error cell always means "a step ran before its prerequisites were ready."</p>
     </div>
 
     <ul class="task-list">
@@ -207,6 +225,13 @@
         <li>Remove helper column <code>Source.Name</code> if not needed, then click <b>Home → Close &amp; Apply</b> (confirm <b>185,950 rows</b>!).</li>
       </ol>
     </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> The address parse exists because of the dataset's most famous trap: <b>two different cities named Portland</b> — Portland, OR ($1.87M) and Portland, ME ($449K). "City" alone merges them into a fake $2.32M "Portland" market, double the truth and wrong twice. The composite <code>Market = City &amp; ", " &amp; State</code> makes geography unambiguous. The locale-parse of <code>Order Date</code> and the Hour extraction similarly convert text timestamps into the time dimensions every chart needs.</p>
+      <p><b>Real-time example:</b> The business cost of the trap: a growth manager reading a city-only report concludes "Portland is our #6 market, worth $2.3M — let's open a pop-up store there." But the revenue lives 3,000 km apart in two states; the real decision (which Portland?) can't even be asked. The same disambiguation logic applies far beyond this file: Paris, TX vs Paris, France; Springfield ×4 in Illinois alone; Cambridge, MA vs Cambridge, UK. Any city-level analysis without state/country context is one collision away from a wrong decision.</p>
+      <p><b>What happens if you skip it:</b> Markets merge wrongly, the 10-market bar chart shows 9 markets (or two phantom "Portlands" mixed), and the ZIP becomes a number losing East Coast leading zeros.</p>
+      <p><b>Smart-work tip:</b> When a free-text address field exists, ALWAYS build an unambiguous geographic key (City, State / City, Country) before charting geography. And keep ZIP as Text — it's an identifier, not a quantity (the Set 04 rule, still true).</p>
+    </div>
 
     <h3>Stage 3 &amp; 4 — Calendar Table &amp; E-Commerce DAX Measures</h3>
 <pre>Calendar =
@@ -219,6 +244,13 @@ ADDCOLUMNS (
     "MonthShort", FORMAT ( [Date], "MMM" ),
     "YearMonth", FORMAT ( [Date], "YYYY-MM" )
 )</pre>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> A dedicated <code>CALENDAR()</code> table is the DAX-native way to guarantee a CONTIGUOUS date dimension — every day present, even days with zero sales — which time-intelligence functions require and a raw fact-table date column can't promise. <code>ADDCOLUMNS</code> then manufactures the slicer-friendly fields (Year, MonthNum, MonthShort, YearMonth), and relating + <b>Mark as date table</b> + sorting <code>MonthShort</code> by <code>MonthNum</code> finishes the setup the same way as Sets 03 and 18.</p>
+      <p><b>Real-time example:</b> This dataset's own edge case proves the need: 34 orders dated <b>Jan 1, 2020</b> spill into the file (that's why total revenue $34,492,035.97 vs strict-2019 $34,483,365.68 differ by $8,670.29). A calendar spanning 2019-01-01 → 2020-01-01 keeps those orders visible and attributable, so the December peak card (<b>$4,613,443.34</b>) and the monthly trend line read truthfully — and if you filter to 2019 you can SEE what the spillover was instead of silently losing it.</p>
+      <p><b>What happens if you skip it:</b> <code>SAMEPERIODLASTYEAR</code> and any YTD pattern refuse to work (no marked date table), month axes sort Apr–Aug–Dec alphabetically, and the 2020 spillover either vanishes or contaminates the 2019 story unnoticed.</p>
+      <p><b>Smart-work tip:</b> <code>CALENDAR + ADDCOLUMNS</code> is the universal date-table recipe — memorize it once and reuse it in every model. Always Mark as Date Table immediately, always sort month names by month numbers, and always check the calendar's span against the data's earliest/latest dates.</p>
+    </div>
     <p>Relate <code>Calendar[Date] (1) → (*) Sales[OrderDate]</code>, mark as Date table, and sort <code>MonthShort</code> by <code>MonthNum</code>. Then write:</p>
 <pre>Total Revenue =
 SUMX ( 'Sales', 'Sales'[Quantity Ordered] * 'Sales'[Price Each] )
@@ -235,6 +267,13 @@ Avg Order Value (AOV) = DIVIDE ( [Total Revenue], [Distinct Orders] )
 
 Items per Basket = DIVIDE ( [Total Units], [Distinct Orders] )
 // Check: 1.17 units/order</pre>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> These measures are a lesson in <b>grain-aware ratios</b>. The table's grain is the ORDER LINE (185,950 rows), but the business unit everyone quotes is the ORDER (178,437 baskets) — so <code>Average Order Value</code> must divide revenue by <code>DISTINCTCOUNT(Order ID)</code>, never by COUNTROWS. Use the wrong denominator and you compute the "average line value" ($185.49) while believing it's AOV ($193.30) — a 4% understatement that compounds across every revenue projection built on it.</p>
+      <p><b>Real-time example:</b> See the grain in action: one customer buys an iPhone + Lightning Cable in a single order — that's 1 order, 2 lines. Multiply that by 7,136 multi-item baskets and the two grains diverge by 7,513 rows. The <code>Items per Basket = 1.17</code> measure then quantifies cross-selling success: every 0.01 rise means thousands more customers adding a second item (and the stretch challenge finds the #1 pair — iPhone + its cable, obviously). Revenue itself uses SUMX over line-level multiplication, because revenue lives at line grain but must aggregate to every level above it.</p>
+      <p><b>What happens if you skip it:</b> Mistake 2 ships a wrong AOV into the deck; marketing ROI calculations keyed to AOV inherit the error; and "how many baskets?" questions get answered with line counts.</p>
+      <p><b>Smart-work tip:</b> For any ratio, write the fraction out loud — "revenue per WHAT?" — before writing DAX. If the denominator is an entity (order, customer, session), it's a DISTINCTCOUNT; if it's a row, COUNTROWS. The 3-second habit prevents the most common ratio bug in e-commerce analytics.</p>
+    </div>
 
     <h3>Stage 5 — Power BI Charts Journey: Build the 5-Visual E-Commerce Growth Suite</h3>
 
@@ -257,6 +296,13 @@ Items per Basket = DIVIDE ( [Total Units], [Distinct Orders] )
         <div class="well"><strong>Y-axis</strong><code>[Distinct Orders]</code></div>
       </div>
       <p><b>Marketing Action Recommendation:</b> Bid up ad budgets at <b>11:00–12:00</b> (lunchtime mobile browsing) and <b>18:00–20:00</b> (post-work desktop shopping, peaking at <code>19:00</code>)!</p>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> This is the chart that justifies the Hour column from Stage 2: ad platforms charge real money per impression, and impressions cost MORE at high-demand hours — so knowing WHEN this store's customers actually buy turns ad scheduling from guesswork into arbitrage. The hourly curve is the direct answer to the brief's "best hours to run Facebook/Google ads."</p>
+        <p><b>Real-time example:</b> The curve shows two demand humps: <b>12:00</b> (12,587 orders — lunch-scroll purchases) and <b>19:00</b> (12,905 orders — the evening couch-shopping peak), with the 3:00 AM trough at a fraction of those. The marketing translation: front-load daily budgets into 11:00–13:00 and 18:00–20:00 windows and ease off overnight, when the same ad dollars buy impressions shown to people who aren't buying. A team that shifts even 20% of spend from dead hours to the twin peaks buys the same order volume for less — measurable in the very next month's blended CAC.</p>
+        <p><b>What happens if you skip it:</b> Ads run on flat 24-hour schedules, paying peak-impression prices through the 3am trough, and the "why is our ROAS low?" question never gets its answer — which was sitting in an Hour column all along.</p>
+        <p><b>Smart-work tip:</b> Behavioral rhythms (hour-of-day, day-of-week) are the cheapest actionable analytics: one column + one line chart → a budget rule. Always convert such findings into a RECOMMENDATION sentence with numbers, exactly like this step does — that's what makes analysis operational.</p>
+      </div>
     </div>
 
     <div class="chart-card">
@@ -267,6 +313,13 @@ Items per Basket = DIVIDE ( [Total Units], [Distinct Orders] )
         <div class="well"><strong>Line Y-axis</strong><code>[Total Units]</code></div>
       </div>
       <p><b>Instant Insight:</b> <code>Macbook Pro Laptop</code> drives <b>$8,037,600</b> on just 4,728 units ($1,700 each), whereas <code>AAA Batteries (4-pack)</code> sells <b>31,017 packs</b> ($2.99 each = $92.7K) — cheap consumables act as traffic &amp; checkout add-ons!</p>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> This chart answers the client's final question — "why does our #1 unit seller make tiny revenue?" — which is fundamentally a two-scale problem: revenue (millions) and units (tens of thousands) need separate axes, and a single-metric product ranking silently hides one of the two stories. The dual-axis combo lets each product be read on BOTH dimensions at once, exposing the strategic split between margin engines and traffic engines.</p>
+        <p><b>Real-time example:</b> Read the four quadrants of product personality the chart reveals: Macbook Pro = high revenue / low units (the margin hero — 4,728 sales produce $8.04M); AAA Batteries = low revenue / massive units (31,017 packs = the traffic magnet and checkout add-on — the answer to the brief's puzzle); and products like iPhones sit in the middle. The merchandising consequence: batteries belong at checkout and in bundles ("add batteries to your iPhone order"), Macbooks deserve homepage hero placement — two different plays from one chart. It also explains why "best seller by units" and "best seller by revenue" are DIFFERENT products, a distinction casual dashboards routinely blur.</p>
+        <p><b>What happens if you skip it:</b> The team celebrates AAA batteries as "our top product" (units) while the Macbook — 87× the revenue — gets no visibility; or conversely, the cheap add-on workhorse gets cut from the catalog for "low revenue", and average basket size (1.17) quietly drops.</p>
+        <p><b>Smart-work tip:</b> For any catalog/portfolio question, force yourself to look at TWO measures — dollars AND volume — before ranking anything. Products, like employees, have roles: some earn, some attract. One combo chart shows who plays which position.</p>
+      </div>
     </div>
 
     <ul class="task-list">

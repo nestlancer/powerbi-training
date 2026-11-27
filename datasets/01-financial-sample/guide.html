@@ -64,6 +64,10 @@
   .well strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-bottom:2px;}
   .note{background:#fffaf0;border-left:4px solid #e0a800;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
   .warn-box{background:var(--danger-soft);border-left:4px solid var(--danger);border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
+  .why-box{background:#eaf3ff;border-left:4px solid #2563eb;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.4px;}
+  .why-box .why-title{font-weight:800;color:#1d4ed8;margin:0 0 6px;font-size:12.5px;text-transform:uppercase;letter-spacing:.5px;}
+  .why-box p{margin:5px 0;}
+  .why-box b{color:#123a7a;}
   .wireframe{display:grid;grid-template-columns:repeat(12,1fr);gap:8px;background:#eef2f7;padding:14px;border-radius:12px;margin:12px 0;font-size:12px;}
   .wf-box{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:10px;text-align:center;font-weight:600;color:var(--accent);}
   .wf-box small{display:block;font-weight:400;color:var(--muted);margin-top:3px;font-size:11px;}
@@ -206,6 +210,13 @@
         <li>Click <b>View → Freeze Panes → Freeze Top Row</b> so row 1 stays visible when you scroll down to row 701.</li>
       </ol>
     </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> Professional rule #1 — <i>understand the data before writing a single formula</i>. Spotting the <code>financials</code> Excel Table tells you the range is "smart" (it auto-expands and auto-fills formulas), and freezing the header row stops you from misreading columns when you scroll deep into the data.</p>
+      <p><b>Real-time example:</b> Imagine a store manager who receives this workbook every month. This month it has 700 rows; next month 740 rows arrive. If you had built formulas on a fixed range like <code>A2:P701</code>, the 40 new rows would be <b>silently ignored</b> — your totals would be wrong and nobody would notice. Because the data is a named Table, formulas and PivotTables stretch automatically. That is why we check <b>Table Design → Table Name</b> first, not last.</p>
+      <p><b>What happens if you skip it:</b> Without frozen headers you will read column <code>L</code> (Profit) as column <code>K</code> (COGS) at row 400 and build the whole analysis on the wrong field. Fixing that later costs hours; checking now costs 20 seconds.</p>
+      <p><b>Smart-work tip:</b> Make "open → inspect → freeze" a 2-minute ritual on EVERY new file. Hard workers start typing formulas immediately; smart workers understand the shape of the data first.</p>
+    </div>
 
     <h3>Step A2 — Fix the Hidden Header Space &amp; Format Numbers</h3>
     <div class="step">
@@ -213,8 +224,15 @@
         <li>Click cell <code>J1</code> and look in the <b>Formula Bar</b> at the top. You will see <code>&nbsp;Sales</code> (there is an invisible space before the S!). Double-click <code>J1</code>, delete everything, type <code>Net Sales</code> (clean and unambiguous), and press <b>Enter</b>.</li>
         <li>Check formats: Select columns <code>H:L</code> (click column letter <code>H</code>, hold <b>Shift</b>, click <code>L</code>) → <b>Home → Number dropdown → Currency</b> (or format <code>$#,##0.00</code>).</li>
         <li>Select column <code>M</code> (<code>Date</code>) → <b>Home → Number dropdown → Short Date</b> so dates read clearly (<code>9/1/2013</code> or <code>2013-09-01</code>).</li>
-        <li>Check for missing cells: Press <b>Ctrl + Shift + L</b> (or click the filter arrows already on row 1). Click the dropdown arrow on <code>Country</code>, <code>Segment</code>, and <code>Profit</code> — scroll to the bottom of each filter list to verify there is no <code>(Blanks)</code> item.</li>
+            <li>Check for missing cells: Press <b>Ctrl + Shift + L</b> (or click the filter arrows already on row 1). Click the dropdown arrow on <code>Country</code>, <code>Segment</code>, and <code>Profit</code> — scroll to the bottom of each filter list to verify there is no <code>(Blanks)</code> item.</li>
       </ol>
+    </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> An invisible leading space makes the header <code>" Sales"</code> a <i>different piece of text</i> than <code>"Sales"</code>. Excel, Power Query, and DAX all compare text character-by-character — a space is a real character — so every formula that refers to "Sales" by name will fail or silently pick the wrong column. Formatting currency and dates does not change the values, but it changes whether a human can <i>verify</i> them at a glance.</p>
+      <p><b>Real-time example:</b> A colleague sends you a workbook where <code>=VLOOKUP("Sales", A1:P701, 10, FALSE)</code> returns <code>#N/A</code> even though a "Sales" column visibly exists. The cause? The real header was <code>" Sales"</code> with a space — the lookup text did not match. The same trap breaks SUMIFS, PivotTables that show "<i>Sum of&nbsp; Sales</i>", and SQL imports that create a column literally named <code>Sales </code>. Prove it to yourself: click an empty cell, type <code>=LEN(J1)</code> — it returns <b>6</b> (1 space + 5 letters) instead of 5. That is forensic-level proof in 3 seconds.</p>
+      <p><b>What happens if you skip it:</b> You carry the dirty header into Power BI, where you must reference <code>'Financials'[ Sales]</code> in every measure — ugly, fragile, and confusing for teammates. Unformatted numbers like <code>118726350.26</code> also make verification slow and error-prone.</p>
+      <p><b>Smart-work tip:</b> Always check headers with the Formula Bar, not the grid — the grid hides the space, the Formula Bar reveals it. Renaming to <code>Net Sales</code> also makes the column self-documenting (Net = after discounts).</p>
     </div>
 
     <h3>Step A3 — Add 3 Beginner Helper Columns (Columns Q, R, S)</h3>
@@ -231,6 +249,13 @@
         <code>=IF(D2="None", 1, IF(D2="Low", 2, IF(D2="Medium", 3, 4)))</code></li>
       </ol>
       <p style="margin-bottom:0;font-size:12.8px;color:var(--muted);"><i>Note: If Excel turned your formula into structured table syntax like <code>=IF([@[Net Sales]]=0,0,[@Profit]/[@[Net Sales]])</code>, that is completely normal inside an Excel Table — both formulas give the exact same result!</i></p>
+    </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> Helper columns convert raw numbers into <i>decisions</i>. <code>RowMarginPct</code> tells you if an individual deal is healthy, <code>ProfitStatus</code> turns 700 rows into three filterable buckets (Profitable / Break-Even / Loss), and <code>BandSort</code> forces text tiers into a logical order. You are not changing the data — you are adding the business logic that questions will be asked against.</p>
+      <p><b>Real-time example:</b> In a review meeting the CFO asks: <i>"How many individual deals lost money last year?"</i> Without <code>ProfitStatus</code>, you would scan 700 cells of red-and-green numbers or improvise a COUNTIF under pressure. With it, one filter click answers instantly: <b>58 loss rows</b>. Same story with <code>BandSort</code>: text sorts alphabetically by default, so <code>Discount Band</code> lines up as <b>High → Low → Medium → None</b> — a zigzag that hides the beautiful margin staircase (21.9% → 17.9% → 14.4% → 9.1%). The sort column fixes the story before the chart is even drawn.</p>
+      <p><b>What happens if you skip it:</b> Every future analysis re-invents the same logic by hand, and charts get presented with alphabetically-sorted nonsense that confuses stakeholders. Also notice the <code>IF(J2=0,0,...)</code> guard — without it, a zero-sales row would return <code>#DIV/0!</code> and poison every total it touches.</p>
+      <p><b>Smart-work tip:</b> Build the logic ONCE as a column and reuse it forever. Inside an Excel Table, typing the formula in row 2 auto-fills all 700 rows <i>and every future row</i> — that is the "smart work" the Table gives you for free.</p>
     </div>
 
     <h3>Step A4 — Prove the Numbers with Two Quick PivotTables</h3>
@@ -250,10 +275,24 @@
         <li>Now test Segment: drag <code>Country</code> out of Rows and drag <code>Segment</code> into <b>Rows</b>. Confirm <code>Enterprise</code> shows <b>-$614,545.62</b>!</li>
       </ol>
     </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> Golden audit rule — <i>know your target numbers BEFORE building the dashboard</i>. A PivotTable computes totals through a completely different engine than Power BI. If both engines agree, your data is clean; if they disagree, you have a bug to find — and you want to find it now, not during a client demo.</p>
+      <p><b>Real-time example:</b> Later in Power BI, your Net Sales card will show <b>$118.73M</b>. Because your PivotTable Grand Total already said <b>$118,726,350.26</b>, you can trust that number and move on. And when a stakeholder challenges you — <i>"Why do you claim France out-earns the USA?"</i> — you answer instantly with verified figures: France profit <b>$3,781,020.78</b> vs USA <b>$2,995,540.66</b>, because USA discounts <b>$2.24M</b> away. Confidence like that only comes from independent verification.</p>
+      <p><b>What happens if you skip it:</b> You present the dashboard, someone opens the raw file in Excel, the numbers don't match (for example, because the dataset got double-loaded — 1,400 rows instead of 700), and your credibility takes a hit that no pretty chart can repair.</p>
+      <p><b>Smart-work tip:</b> Screenshot the verified PivotTable and keep it beside you as your dashboard's <i>acceptance test</i>. Professional testers call this a "golden dataset" — you are doing real QA, not just clicking buttons.</p>
+    </div>
 
     <h3>Step A5 — Save Your Clean Workbook</h3>
     <div class="step">
       Click back to <code>Sheet1</code>, double-check that <b>no filter is active</b> (all 700 rows visible), then click <b>File → Save As</b> and save as <code>01-financial-sample-clean.xlsx</code> inside the <code>01-financial-sample</code> folder.
+    </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> Never mutate the raw source — keep the original untouched and save your work as a separate "clean" copy. This is the simplest possible version of the data-engineering pattern of raw (immutable) vs. cleaned (derived) layers, and it guarantees you can always start over.</p>
+      <p><b>Real-time example:</b> Real data teams store raw files as read-only "source of truth". Six months from now, a colleague overwrites a formula or Power BI refresh misbehaves — if the raw file is still pristine, you re-derive the clean workbook in 5 minutes. If you saved over the original, your only options are undo-history archaeology or rebuilding from scratch.</p>
+      <p><b>What happens if you skip it:</b> One accidental <b>Ctrl+S</b> on a filter-active sheet hides 642 of your 700 rows from every downstream PivotTable, and you no longer have the true source to compare against. Also, a hidden filter quietly drops rows from pivots — totals shrink with no error message.</p>
+      <p><b>Smart-work tip:</b> Use a naming convention that mirrors the project (<code>01-financial-sample-clean.xlsx</code> lives in <code>01-financial-sample/</code>). Future-you — and every teammate — can find the right file in seconds without opening anything.</p>
     </div>
 
     <ul class="task-list">
@@ -282,6 +321,13 @@
         <li>Click the <b>Transform Data</b> button at the bottom-right (NOT Load yet — always inspect in Power Query first!).</li>
       </ol>
     </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> The Navigator offers BOTH <code>Sheet1</code> (the worksheet) and <code>financials</code> (the Excel Table sitting on top of that same worksheet). They are the same 700 rows wearing two outfits — loading both is like pasting the same photo into your album twice. And clicking <b>Transform Data</b> instead of <b>Load</b> means you inspect and clean the data BEFORE it ever enters the model, which is the professional ETL order: shape first, then load.</p>
+      <p><b>Real-time example:</b> A junior analyst ticks both boxes because "more data can't hurt". Every total in the report doubles — Total Profit reads <b>$33.79M</b> instead of <b>$16.89M</b> — and nobody catches it until the CFO, who knows the business, says "our profit was not 33 million last year". That single checkbox costs the analyst their credibility for the whole project.</p>
+      <p><b>What happens if you skip it:</b> Double-loaded rows corrupt every sum, average, and count (700 → 1,400 rows), and skipping Transform Data bakes dirty headers and wrong data types straight into the model — you end up patching in DAX what should have been fixed upstream in 30 seconds.</p>
+      <p><b>Smart-work tip:</b> In the Navigator, the item with the <b>blue bar and tiny table icon</b> is the named Table — prefer it over the raw sheet, because named Tables keep working correctly when rows are added later. Ritual: <i>tick one source, Transform Data, breathe</i>.</p>
+    </div>
 
     <h3>Stage 2 — Clean &amp; Shape in Power Query Editor</h3>
     <div class="pbi-box">
@@ -309,6 +355,13 @@
         <li>Look at <b>Applied Steps</b> on the right — every transformation is recorded! Click <b>Home → Close &amp; Apply</b>.</li>
       </ol>
     </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> Power Query is a <i>recipe recorder</i>, not a one-time cleanup. Every click (rename, trim, data type, conditional column) is saved as an <b>Applied Step</b>, so the identical cleaning replays automatically on every refresh. You are not "fixing a file" — you are teaching Power BI a repeatable process.</p>
+      <p><b>Real-time example:</b> Two analysts get next month's file. Analyst A cleaned last month's data by hand in Excel: 2 hours of retyping, and one column forgotten. Analyst B cleaned in Power Query: one click on <b>Refresh</b>, 30 seconds, every step re-applied — header renamed, text trimmed, types set, <code>BandSort</code> rebuilt. That is the entire business case for Power Query, and it's why 90% of a real developer's time is spent in this editor.</p>
+      <p><b>What happens if you skip it:</b> Invisible trailing spaces survive into the model, so slicers show twins like <code>Canada</code> and <code>Canada&nbsp;</code> as two separate filter items, splitting the country's sales in half. Wrong data types (Decimal → Whole Number) quietly round <code>1618.5</code> units to <code>1619</code> — small per row, wrong in every total.</p>
+      <p><b>Smart-work tip:</b> Rename the query to clean PascalCase (<code>Financials</code>) — every future DAX formula reads like English: <code>'Financials'[Net Sales]</code>. And glance at Applied Steps before closing; each step should have a reason you can say out loud.</p>
+    </div>
 
     <h3>Stage 3 — Data Modeling, Date Table &amp; Custom Sorting</h3>
     <p>Even on a 1-table workbook, professional Power BI developers create a continuous <b>Calendar Date Table</b> so DAX Time Intelligence (<code>SAMEPERIODLASTYEAR</code>, <code>TOTALYTD</code>) works without gaps.</p>
@@ -333,6 +386,13 @@ ADDCOLUMNS (
         <li><b>Hide Clutter Columns:</b> In Model view, click the eye icon to hide <code>Financials[Date]</code>, <code>Financials[Month Number]</code>, <code>Financials[Month Name]</code>, <code>Financials[Year]</code>, <code>Financials[BandSort]</code>, and <code>Calendar[MonthNum]</code> so you never accidentally drag the wrong Year or Month onto a chart!</li>
       </ol>
     </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> Three hidden laws of modeling live in this stage. (1) <b>Time intelligence needs a continuous calendar</b> — <code>SAMEPERIODLASTYEAR</code> walks day-by-day through a date table, so gaps or missing years make YoY measures return blanks. (2) <b>Text sorts alphabetically, always</b> — months line up Apr-Aug-Dec unless you attach a numeric sort column. (3) <b>Relationships decide how filters flow</b> — one Calendar date filters many fact rows (1-to-many), which is what lets one slicer move every visual on the page.</p>
+      <p><b>Real-time example:</b> Your fact table only stores 16 dates (the 1st of each month, Sep 2013 – Dec 2014). Ask for "Profit in November 2013" and Power BI finds the date; ask <code>SAMEPERIODLASTYEAR</code> for Sep–Dec 2014 and it must walk back through a full 2013 calendar — which only exists if your <code>Calendar</code> table spans 2013-01-01 to 2014-12-31, even for months with no sales. Skipping the Calendar table here is the single most common reason beginners see a <i>blank</i> YoY card and conclude "DAX is broken".</p>
+      <p><b>What happens if you skip it:</b> The combo chart reads <b>Apr, Aug, Dec, Feb...</b> (alphabetical!) and the Discount Band chart reads <b>High, Low, Medium, None</b> — both hide the true staircase pattern. Unhidden duplicate date columns mean you might drag <code>Financials[Year]</code> onto one visual and <code>Calendar[Year]</code> onto another, creating visuals that refuse to filter each other.</p>
+      <p><b>Smart-work tip:</b> <b>Mark as Date Table</b> is your receipt — it tells Power BI "this is the official calendar", so every time-intelligence function uses it without guessing. Hiding helper columns is not cosmetic: it removes 6 wrong choices from the field list so the <i>only</i> remaining choice is the right one.</p>
+    </div>
 
     <h3>Stage 4 — DAX Measures (Beginner → Intermediate → Advanced)</h3>
     <p>Switch to <b>Report view</b> (top icon on left rail). Right-click the <code>Financials</code> table in the <b>Data</b> pane → click <b>New measure</b> for each formula below. After pressing Enter on each measure, set its format in the top <b>Measure tools</b> ribbon!</p>
@@ -355,6 +415,13 @@ Total Profit = SUM ( 'Financials'[Profit] )
 
 Units Sold Total = SUM ( 'Financials'[Units Sold] )
 // Format: Whole number with comma (#,0) -> Check card: 1,125,806</pre>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> These five SUM measures are the P&amp;L skeleton — and they're written as MEASURES, not calculated columns, because measures compute at query time and respect every slicer/filter automatically. Just as important as the formulas is the discipline of setting each measure's format string in the Measure tools ribbon immediately: a measure's formatting lives with the measure, so every card, axis, and tooltip inherits "$127.93M" instead of a raw <code>127931598.5</code>.</p>
+      <p><b>Real-time example:</b> The check-card values do free quality assurance: Gross $127.93M − Discounts $9.21M = Net $118.73M, and Net − COGS $101.83M = Profit $16.89M — the income statement ties out to the penny in four cards. Add Units (1,125,806) and you can quote <code>$16.89M ÷ 1,125,806 ≈ $15.00 profit per unit</code> in the same breath — an instant sanity metric a CFO recognizes. If any card disagrees with these figures, the model (not the business) is wrong — catch it now, not in the review.</p>
+      <p><b>What happens if you skip it:</b> Unformatted measures render 16 decimal places or rounded integers in different visuals, and without the check-card discipline a silent filter error ships to the exec deck.</p>
+      <p><b>Smart-work tip:</b> Write the expected value as a <code>// Check</code> comment the moment you author a measure — verification is part of writing the measure, not an afterthought. And default to measures over calculated columns for anything that aggregates: columns bloat the model, measures don't.</p>
+    </div>
 
     <h4>Intermediate Measures (Safe Ratios &amp; Conditional Counts)</h4>
 <pre>Net Margin % = DIVIDE ( [Total Profit], [Net Sales], 0 )
@@ -366,6 +433,13 @@ Discount Rate % = DIVIDE ( [Total Discounts], [Gross Sales], 0 )
 
 Loss Rows Count = CALCULATE ( COUNTROWS ( 'Financials' ), 'Financials'[Profit] &lt; 0 )
 // Format: Whole number -> Overall check: 58</pre>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> This tier teaches the two rules that separate professional ratio work from spreadsheet errors. (1) <b>Never average a ratio — divide the totals.</b> <code>Net Margin %</code> divides total profit by total net sales; it does NOT average the 700 row-level margins, because an average weights a tiny row the same as a $20M segment. (2) <b>DIVIDE's third argument guards division by zero</b>, so a segment with no sales returns a clean blank instead of an error that blanks whole visuals.</p>
+      <p><b>Real-time example:</b> Feel the wrongness concretely: overall margin is 14.2% ($16.89M ÷ $118.73M). But the 700 segment rows include deep losers and a few high-margin niches — averaging their margins produces a different number that no reconciliation supports, yet it LOOKS plausible on a card. Meanwhile <code>Loss Rows Count</code> = 58 reveals the portfolio shape: 642 segments make money, 58 bleed — and a later visual can isolate those 58 to ask WHERE the losses concentrate. That's the analyst's reflex: counts for scale, ratios for quality, never mixed up.</p>
+      <p><b>What happens if you skip it:</b> Average-of-margins cards that match nothing, and <code>#DIV/0!</code>-style blanks when a slicer isolates a zero-revenue segment, taking whole report pages blank with them.</p>
+      <p><b>Smart-work tip:</b> Make <code>DIVIDE</code> your default for every ratio and build conditional counts (<code>CALCULATE + COUNTROWS + filter</code>) as named measures — they become the building blocks of gauges, KPIs, and conditional formatting in every later set (the 11.70%-yes funnel, the 22.12% default rate — same skeleton).</p>
+    </div>
 
     <h4>Advanced Measures (Time Intelligence YoY % &amp; Share of Profit)</h4>
 <pre>Profit PY = CALCULATE ( [Total Profit], SAMEPERIODLASTYEAR ( 'Calendar'[Date] ) )
@@ -376,6 +450,13 @@ VAR PriorProfit = [Profit PY]
 RETURN
     IF ( NOT ISBLANK ( PriorProfit ), DIVIDE ( [Total Profit] - PriorProfit, PriorProfit ) )
 // Format: Percentage (%), 1 decimal -> For Sep-Dec 2014 vs Sep-Dec 2013, check: +40.1% (+40.15%)</pre>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> A <b>measure</b> is a single definition that Power BI recalculates inside every filter context — country, segment, month, discount band, whatever is selected. One formula, infinite correct answers. That is the difference between a model and a pile of numbers, and it is why professionals almost never sum in a visual directly.</p>
+      <p><b>Real-time example:</b> The ONE measure <code>[Net Margin %] = DIVIDE([Total Profit], [Net Sales])</code> correctly shows <b>14.2%</b> overall, <b>15.5%</b> for France, <b>-3.1%</b> for Enterprise, and <b>9.1%</b> for High-discount rows — four different business answers from one formula, with zero extra work. Now the classic trap this file is famous for: if you instead wrote <code>AVERAGE(RowMarginPct)</code>, you would get <b>27.7%</b> — because tiny-but-73%-margin Channel Partner orders get the same vote as giant 10%-margin Small Business orders. Weighting every row equally when the dollars are unequal is the #1 margin lie in amateur dashboards.</p>
+      <p><b>What happens if you skip measures:</b> Numbers get hardcoded or recomputed by hand for each view; two teammates produce two different "profit margins"; and the moment someone clicks a slicer, hardcoded values stop responding — the report lies silently.</p>
+      <p><b>Smart-work tip:</b> Notice the pro habits baked into these formulas: <code>DIVIDE</code> instead of <code>/</code> (survives divide-by-zero), <code>CALCULATE</code> to override filter context for Prior Year, and <code>IF(NOT ISBLANK(...))</code> so 2014-only months don't fake a +∞% YoY. After each measure, type its expected value from Section 1 into a card and check it — that is unit-testing, analyst style.</p>
+    </div>
 
     <h3>Stage 5 — Power BI Charts Journey: Build the 6-Visual Executive Canvas</h3>
     <p>First, set up a clean canvas: click empty space on the report page → in the <b>Visualizations</b> pane click the <b>Format page</b> brush icon → <b>Canvas background</b> → set Color to light gray <code>#F6F8FB</code> and Transparency to <code>0%</code>. Rename <code>Page 1</code> at the bottom to <code>Executive P&amp;L</code>. Use this exact layout grid:</p>
@@ -404,6 +485,13 @@ RETURN
         <li>Click <b>Format visual</b> (paintbrush) → <b>Callout value</b> → set Font size to <code>26 pt</code>, Display units = <b>Millions</b>. Turn <b>Category label</b> ON, or turn it OFF and turn <b>General → Title</b> ON with text <code>Net Sales</code>. under <b>General → Effects</b>, turn <b>Visual border</b> ON (rounded corners <code>8 px</code>).</li>
         <li>Copy and paste that Card 3 times (<b>Ctrl+C</b>, <b>Ctrl+V</b>) so all 4 cards have identical styling! Swap the field in Cards 2, 3, and 4 to <code>[Total Profit]</code> (<code>$16.89M</code>), <code>[Net Margin %]</code> (<code>14.2%</code>), and <code>[Discount Rate %]</code> (<code>7.2%</code>).</li>
       </ol>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> Executives scan a report top-left → top-right in about 3 seconds and form their entire first impression there. KPI cards answer "how big is the business and how healthy?" <i>before</i> any breakdown — the chart questions come second, always.</p>
+        <p><b>Real-time example:</b> Picture your CFO opening this report on a phone in a taxi, five minutes before the board meeting. Four cards deliver the whole headline: <b>$118.73M</b> sales, <b>$16.89M</b> profit, <b>14.2%</b> margin, <b>7.2%</b> discount rate. That last card is the plot twist — 7.2% of gross revenue handed away as discounts is the villain of this story, and the CFO walks into the meeting already knowing which slide to point at.</p>
+        <p><b>What happens if you skip it:</b> The report opens on charts with no anchor, so the meeting starts with ten minutes of "so what's the total again?" instead of decisions. Also, without a consistent card strip, each stakeholder mentally computes their own "headline number" — and they won't all match.</p>
+        <p><b>Smart-work tip:</b> Copy-paste the styled card instead of rebuilding it 4 times — identical fonts, borders, and spacing is what makes a dashboard look designed rather than assembled. Display units = <b>Millions</b> keeps every number readable at a glance; nobody parses 118,726,350.26 in a meeting.</p>
+      </div>
     </div>
 
     <!-- Visual 2 -->
@@ -421,6 +509,13 @@ RETURN
         <li>In <b>Format visual → Bars</b>, color <code>Net Sales</code> slate blue (<code>#64748B</code>) and <code>Total Profit</code> emerald green (<code>#1D6F42</code>). Turn <b>Data labels</b> ON (Display units = Millions, 1 decimal).</li>
         <li><b>Title:</b> <code>USA Leads Revenue ($25.0M), but France Leads Profit ($3.8M)</code>. Hover over USA to see why in the tooltip: <code>12.0%</code> margin and <code>$2.24M</code> in discounts!</li>
       </ol>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> A clustered <i>bar</i> (horizontal) chart is chosen deliberately: long labels like "United States of America" stay fully readable instead of being tilted or truncated, and the side-by-side pair of bars puts revenue and profit in direct confrontation — the two numbers the CFO always wants to compare.</p>
+        <p><b>Real-time example:</b> Sorted by Total Profit, France floats to the top (<b>$3.78M</b>) while the USA — the longest <i>Net Sales</i> bar at <b>$25.03M</b> — sits 4th on profit (<b>$3.00M</b>, margin only <b>12.0%</b>). In a column chart sorted alphabetically this story is invisible; here it is the first thing the eye catches. The sales VP for the USA will ask "why are we 4th?" and the tooltip answers with evidence: <b>$2.24M</b> in discounts — more than any other market.</p>
+        <p><b>What happens if you skip it:</b> With a single-metric or pie view, the USA looks like the undisputed champion, management rewards a margin-destroying market, and the real story (discount policy differs by country) never surfaces. Wrong incentive, wrong bonus, same mistake next year.</p>
+        <p><b>Smart-work tip:</b> Always sort by the measure that carries the insight (here: Profit, descending) — never alphabetically by default. Put the "why" fields (margin %, discounts) in the <b>Tooltips</b> well: the chart stays clean on the canvas but every bar hides a full explanation under the cursor.</p>
+      </div>
     </div>
 
     <!-- Visual 3 -->
@@ -438,6 +533,13 @@ RETURN
         <li>In <b>Format visual → Columns → Colors</b>, confirm <b>Increase</b> = Green (<code>#1D6F42</code>), <b>Decrease</b> = Red (<code>#C0392B</code>), and <b>Total</b> = Navy (<code>#0B3D63</code>). Turn <b>Data labels</b> ON.</li>
         <li><b>What you see immediately:</b> Four green bars climb above <code>$17.5M</code>, and then <b>Enterprise drops red (-$0.61M)</b> to land at the <code>$16.89M</code> Total bar!</li>
       </ol>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> A waterfall is the finance-industry standard for answering "how did we get from zero to the total?" — because it shows <i>negative contributions</i>, which ordinary column charts render as invisible near-zero bars. Profit bridges are how CFOs literally think, so speaking their visual language buys you instant credibility.</p>
+        <p><b>Real-time example:</b> Watch the reading order: Government <b>+$11.39M</b>, Small Business <b>+$4.14M</b>, Channel Partners <b>+$1.32M</b>, Midmarket <b>+$0.66M</b> — then Enterprise <b>-$615K</b> yanks the staircase down before the navy Total bar lands on <b>$16.89M</b>. In a regular column chart, Enterprise would be a hairline sliver at zero and nobody would notice. In the waterfall, the red drop is the loudest object on the screen — which is exactly the conversation ("why do we lose money on our biggest enterprise customers?") the CFO asked for in the brief.</p>
+        <p><b>What happens if you skip it:</b> The loss gets visually buried, the meeting concludes "all five segments are fine", and a segment quietly bleeding money for another year goes unchallenged.</p>
+        <p><b>Smart-work tip:</b> Keep the finance color convention (green = increase, red = decrease, navy/gray = total) — decision-makers parse it without a legend. Data labels ON means nobody has to guess whether the red bar is -$0.6M or -$6M.</p>
+      </div>
     </div>
 
     <!-- Visual 4 -->
@@ -456,6 +558,13 @@ RETURN
         <li>Drag <code>[Net Sales]</code> to <b>Column y-axis</b> and <code>[Net Margin %]</code> to <b>Line y-axis</b>.</li>
         <li>Format the line color as gold (<code>#D99000</code>), Stroke width = <code>3 px</code>, and turn <b>Markers</b> ON so every monthly margin point is crisp.</li>
       </ol>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> Net Sales lives in the <b>millions of dollars</b> while Net Margin % lives between <b>0–25%</b>. On one shared axis, the percentage line hugs the floor and looks like a flat dead line — a classic scale-mismatch trap. The dual-axis combo chart gives each metric its own scale, so <i>volume</i> (columns) and <i>efficiency</i> (line) can be read together, which is how trend analysis is actually done.</p>
+        <p><b>Real-time example:</b> Trace the chart after building it: a tall column month where the gold margin line dips is a month the company <i>bought revenue with discounts</i> — sales went up, efficiency went down. That is a pricing conversation, not a celebration. Without the combo view, someone sees a record sales month in one chart and a margin slump in a separate chart two scroll-lengths away, and never connects them.</p>
+        <p><b>What happens if you skip it:</b> Two separate charts force the audience to mentally match months across visuals (they won't), or worse — one chart with both fields on one axis shows margin as a flat zero line and someone declares "margin never changes all year".</p>
+        <p><b>Smart-work tip:</b> Pull <code>Calendar[Year]</code> + <code>Calendar[Month]</code> into the X-axis and hit <b>Expand all down one level</b> so all 16 months appear in true calendar order — proof your Stage 3 sort work paid off. Markers ON make each month a crisp point instead of a smeared line; thick 3px gold line stays visible over tall columns.</p>
+      </div>
     </div>
 
     <!-- Visual 5 -->
@@ -472,6 +581,13 @@ RETURN
         <li>Add <code>Discount Band</code> to X-axis and <code>[Net Margin %]</code> to Y-axis.</li>
         <li>Click <code>...</code> on the visual → <b>Sort axis → Discount Band → Sort ascending</b>. Because you set <code>Sort by column = BandSort</code> in Stage 3, the X-axis reads <b>None (21.9%) → Low (17.9%) → Medium (14.4%) → High (9.1%)</b> like a staircase going down!</li>
       </ol>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> This visual is the direct answer to the CFO's original hypothesis: <i>"I suspect aggressive discounting is eating our margin."</i> A chart that proves or disproves the client's stated suspicion is worth ten decorative charts — this one ends the debate with a monotonic staircase.</p>
+        <p><b>Real-time example:</b> Read the staircase: <b>None 21.9%</b> → <b>Low 17.9%</b> → <b>Medium 14.4%</b> → <b>High 9.1%</b>. Every extra discount tier burns roughly 4–5 margin points, and at High band the company keeps less than half the margin of full-price deals. That converts an opinion ("I feel like discounts hurt us") into a quantified policy fact — the basis for renegotiating when reps are allowed to offer High-band pricing at all.</p>
+        <p><b>What happens if you skip it:</b> Without the BandSort fix, the X-axis reads alphabetically: <b>High, Low, Medium, None</b> — a zigzag that hides the staircase completely. The CFO sees noise, concludes "no clear pattern", and the discount policy survives another year untouched.</p>
+        <p><b>Smart-work tip:</b> <code>Sort by column</code> is a reusable weapon for every ordered-but-textual column you will ever meet: T-shirt sizes (S/M/L), priority (Low/Med/High), survey scores, education levels. Attach a numeric key once; every chart sorts logically forever.</p>
+      </div>
     </div>
 
     <!-- Visual 6 -->
@@ -495,6 +611,13 @@ RETURN
         </li>
         <li>Every loss-making Segment × Product × Discount Band combination lights up in red immediately!</li>
       </ol>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> Charts answer <i>"where?"</i>; a matrix answers <i>"exactly which combination?"</i> Finance leaders always demand the table underneath the story — and conditional formatting turns that table from a wall of numbers into a self-announcing alarm system: losses glow red without anyone reading a single cell.</p>
+        <p><b>Real-time example:</b> The waterfall told us Enterprise loses <b>-$615K</b> overall. Now click the <code>+</code> next to Enterprise: the red cells reveal <i>which</i> products and <i>which</i> discount bands burn the money, so the pricing team knows precisely where to renegotiate — not "Enterprise is bad" but "these specific Segment × Product × Band cells". The chart raises the alarm; the matrix hands over the address. You need both, in that order, on the same page.</p>
+        <p><b>What happens if you skip it:</b> In the meeting someone asks the inevitable "OK — which deals exactly are losing money?" and you have no answer on screen. The action item goes to a follow-up email, the momentum dies, and the decision slips another month.</p>
+        <p><b>Smart-work tip:</b> Use <b>Rules-based</b> conditional formatting (value &lt; 0 → red) instead of hand-coloring cells — rules survive next month's refresh automatically. And keep the matrix last on the page: it's the "receipts" visual that backs up everything above it.</p>
+      </div>
     </div>
 
     <h3>Stage 6 — Add Slicers, Cross-Filtering &amp; What-If Extra Discount Simulator</h3>
@@ -513,6 +636,13 @@ RETURN
           </ul>
         </li>
       </ol>
+    </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> Slicers convert a static report into a conversation, and the What-If parameter converts a question into a <i>live negotiation</i>. This is the difference between reporting the past and supporting a decision about the future — the whole reason dashboards exist.</p>
+      <p><b>Real-time example:</b> In the meeting, the sales VP asks: <i>"What if we cap extra discounts at 5% to win more Enterprise deals?"</i> The old way: "great question, I'll model it and email you Thursday" — decision postponed, momentum lost. The new way: drag the slider to 5% and the whole room watches Simulated Profit fall <b>$16.89M → $10.50M</b> (-$6.40M) in real time. The conclusion lands in the same breath as the question: a flat 5% giveaway destroys 38% of profit — maybe target discounts surgically instead.</p>
+      <p><b>What happens if you skip it:</b> Every scenario becomes a new email request, the report goes stale within weeks, and you stay a "report builder" instead of becoming the analyst who runs the meeting.</p>
+      <p><b>Smart-work tip:</b> Use the Sep–Dec 2014 slicer test (<code>[Profit YoY %]</code> = <b>+40.15%</b>) as your model's health check — if it stops matching, a relationship or filter broke. Add a <b>Clear all slicers</b> button top-right so executives can reset everything in one click; and always sanity-check that with no filters, the page totals exactly 700 rows.</p>
     </div>
 
     <ul class="task-list">

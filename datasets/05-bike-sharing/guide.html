@@ -64,6 +64,10 @@
   .well strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-bottom:2px;}
   .note{background:#fffaf0;border-left:4px solid #e0a800;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
   .warn-box{background:var(--danger-soft);border-left:4px solid var(--danger);border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
+  .why-box{background:#eaf3ff;border-left:4px solid #2563eb;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.4px;}
+  .why-box .why-title{font-weight:800;color:#1d4ed8;margin:0 0 6px;font-size:12.5px;text-transform:uppercase;letter-spacing:.5px;}
+  .why-box p{margin:5px 0;}
+  .why-box b{color:#123a7a;}
   .wireframe{display:grid;grid-template-columns:repeat(12,1fr);gap:8px;background:#eef2f7;padding:14px;border-radius:12px;margin:12px 0;font-size:12px;}
   .wf-box{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:10px;text-align:center;font-weight:600;color:var(--accent);}
   .wf-box small{display:block;font-weight:400;color:var(--muted);margin-top:3px;font-size:11px;}
@@ -179,6 +183,13 @@
         <li><b>Integrity Check Formula (Column Q):</b> In <code>Q1</code> type <code>MathCheck</code>, and in <code>Q2</code> type <code>=(N2+O2)-P2</code>. Check the filter dropdown on <code>MathCheck</code>: the ONLY value is <code>0</code>! Every single day balances to the exact trip.</li>
       </ol>
     </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> This is a <b>reconciliation check</b> — the data-analyst's version of an accountant's balance check. The codebook promises <code>casual + registered = cnt</code> on every row; proving it in one formula converts "I read the documentation" into "I verified the file". It also detects the worst kind of bug: partially broken data where <i>most</i> rows are fine but a few are corrupt.</p>
+      <p><b>Real-time example:</b> Imagine one bad export where <code>cnt</code> was written before <code>casual</code> finished updating: a handful of rows would show <code>MathCheck = -37</code> instead of 0. Without the check, your Registered Share % would be quietly wrong and nobody would ever know why it disagreed with the finance team's number. With the check, the filter dropdown IS the audit: one value, <code>0</code>, across all 731 days — the file's internal math is sound and you can build on it with confidence.</p>
+      <p><b>What happens if you skip it:</b> You discover additive inconsistencies months later, when two dashboards disagree — and nobody remembers which file, which column, or which export caused it.</p>
+      <p><b>Smart-work tip:</b> Whenever a dataset defines relationships between columns (parts = total, subtotal = sum of lines), encode that promise as a formula column and check that it's always 0. It costs 30 seconds and certifies the file like a tamper seal.</p>
+    </div>
 
     <h3>Step A2 — Add Readable Labels in Excel (Columns R &amp; S)</h3>
     <div class="step">
@@ -188,10 +199,24 @@
         <li><b>Column S — <code>TempCelsius</code>:</b> <code>=ROUND(J2*41, 1)</code> (converts normalized <code>0–1</code> temperature into readable °C).</li>
       </ol>
     </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> Numeric codes are for databases, not for humans. A chart axis that says "Season 3 is best" forces every reader to guess — and stakeholders don't guess, they <i>disengage</i>. Translating codes into labeled categories ("3. Peak Summer") and normalized fractions into real units (temp <code>0.72</code> → <code>29.5°C</code>) makes the data speak the client's language. And <code>CHOOSE()</code> exists precisely for clean 1-to-n codes: one short function replaces four nested IFs and is far harder to typo.</p>
+      <p><b>Real-time example:</b> Two versions of the same slide: "Rides peak in Season 3" (audience squints, someone asks "is that fall?") versus "Rides peak in Peak Summer — 1,061,129 rides" (instant nodding). The temperature translation matters even more for operations: "avg temp 0.61" means nothing to a fleet manager, but "25.0°C" triggers the immediate insight — <i>"that's when our docks empty out"</i> — because humans reason in weather units, not normalization math.</p>
+      <p><b>What happens if you skip it:</b> Sign-off checklist item #5 fails: charts displaying raw mystery codes like "Weathersit 1" get returned with the note "please translate", and you redo formatting on every visual.</p>
+      <p><b>Smart-work tip:</b> Notice the number prefixes ("1. Winter-Spring"…) — the same alphabetization trick from earlier sets, keeping codes AND their labels sorted logically in every slicer. Translate codes once, at import; never leave translation work to whoever is presenting.</p>
+    </div>
 
     <h3>Step A3 — PivotTable Check</h3>
     <div class="step">
       Insert a PivotTable: Rows = <code>SeasonName</code>, Columns = <code>yr</code>, Values = <code>Sum of cnt</code>. Confirm <b>3. Peak Summer = 1,061,129</b>, <code>yr 0</code> (2011) = <b>1,243,103</b>, <code>yr 1</code> (2012) = <b>2,049,576</b>, and Grand Total = <b>3,292,679</b> across <b>731 daily rows</b>! Save as <code>05-bike-sharing-day-check.xlsx</code>.
+    </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> This pivot does double duty: it verifies <b>totals</b> (3,292,679 rides — the number that must re-appear in Power BI from the <i>other</i> file) and previews the <b>cross-sectional story</b> (season × year). The light 731-row file is ideal for this: pivots are instant, and Excel is the cheapest place to find and fix misunderstanding before the model is built.</p>
+      <p><b>Real-time example:</b> Read the cross-tab and a business insight appears before any Power BI work: Peak Summer is the #1 season (1,061,129), but look at the year split — 2012 alone (2,049,576) is 65% bigger than 2011 (1,243,103), with growth in EVERY season. That's the growth narrative the Director of Fleet Operations will care about ("is the network booming, or just summer?") — and you now know the answer before designing a single visual. The pivot shaped the report's storyline.</p>
+      <p><b>What happens if you skip it:</b> You'd discover in Power BI that "Season 3" needs translating, that 2012 dominates, and that your totals don't match the codebook — three findings you could have had in Excel in five minutes, now discovered mid-build.</p>
+      <p><b>Smart-work tip:</b> Use the small-grain file as your <i>scratchpad</i> and the fine-grain file as your <i>model</i>. Quick questions → Excel pivot; dashboard questions → Power BI. Choosing the lightest tool for each question is exactly the "smart work" mindset this course teaches.</p>
     </div>
 
     <ul class="task-list">
@@ -220,6 +245,13 @@
         <li>Click <b>Home → Close &amp; Apply</b>. Confirm <b>17,379 rows</b> load into <code>Trips</code>!</li>
       </ol>
     </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> This step teaches <b>grain discipline</b> — the most important data-modeling concept in the entire practice set. <code>day.csv</code> and <code>hour.csv</code> contain the SAME 3,292,679 rides at two grains; loading both and relating them on <code>dteday</code> means one daily row matches 24 hourly rows, and Power BI starts multiplying numbers by 24. One fact per grain: you load the FINEST grain you need (hour — it answers daily, monthly, and annual questions too, because date and hour both live in it) and nothing coarser.</p>
+      <p><b>Real-time example:</b> The dispatch questions demand hours ("which hour gets slammed?"), so <code>hour.csv</code> is mandatory. Now notice it also covers the annual question: summing <code>cnt</code> by <code>yr</code> gives 2011 = 1,243,103 and 2012 = 2,049,576 — identical to the day file, because both files describe the same rides. That's the power of the finest grain: it can always aggregate UP, but a coarse grain can never drill DOWN.</p>
+      <p><b>What happens if you skip it:</b> Mistake 1 from the troubleshooting section: totals multiply by 24, cross-filtering breaks, and a debugging afternoon is spent finding why "Total Rides" shows 79 million.</p>
+      <p><b>Smart-work tip:</b> Before loading ANY file ask: <i>"what is one row here, and what's the smallest grain my questions need?"</i> Load exactly that grain (17,379 rows, not 17,379 + 731). Hourly data answers hourly AND daily questions; daily data cannot answer hourly ones.</p>
+    </div>
 
     <h3>Stage 3 — Model View: Calendar Table &amp; Weekday Sorting</h3>
     <div class="pbi-box">
@@ -236,6 +268,13 @@ ADDCOLUMNS (
         Mark as date table, sort <code>Month</code> by <code>MonthNum</code>, and relate <code>Calendar[Date]</code> (1) → <code>Trips[dteday]</code> (*).</li>
         <li>On <code>Trips</code>, select <code>WeekdayShort</code> → <b>Column tools → Sort by column → weekday</b> (so columns run <code>Sun, Mon, Tue, Wed, Thu, Fri, Sat</code>!). Also set <code>hr</code> Summarization = <b>Don't summarize</b>.</li>
       </ol>
+    </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> Same two modeling laws as earlier sets, now on dispatch data. (1) A continuous Calendar table feeds time intelligence — without it, <code>SAMEPERIODLASTYEAR</code> in the YoY measure has no complete 2011–2012 timeline to walk. (2) Text sorts alphabetically unless you attach a numeric sort key — "Fri, Mon, Sat, Sun…" is useless for spotting commuter patterns; <code>Sun → Sat</code> puts days in riding order. And <code>hr</code> with "Don't summarize" stays an identity (a time slot), never "sum of hours = 1,784".</p>
+      <p><b>Real-time example:</b> Picture the heatmap matrix (Visual 3) with unsorted weekday columns: Fri, Mon, Sat, Sun, Thu, Tue, Wed. The dispatcher's core pattern — quiet Sunday left edge, slammed Tuesday–Friday right edge — is scrambled into noise. After <b>Sort by column = weekday</b>, the left-to-right rhythm of the week becomes visible in one sweep of the eye, which is literally how the rebalancing schedule gets designed.</p>
+      <p><b>What happens if you skip it:</b> YoY % returns blank or wrong values (no marked date table), the heatmap reads in alphabetical gibberish, and hour slicers show "sum = 276 hours".</p>
+      <p><b>Smart-work tip:</b> Any ordered text column (weekday, month, time slot) gets a numeric companion column + Sort by column — make it reflex. And every fact table with dates gets a marked continuous Calendar; it's the entry ticket to time intelligence.</p>
     </div>
 
     <h3>Stage 4 — DAX Measures (Beginner → Advanced)</h3>
@@ -268,6 +307,13 @@ VAR PriorYr = CALCULATE ( [Total Rides], SAMEPERIODLASTYEAR ( 'Calendar'[Date] )
 RETURN
     IF ( NOT ISBLANK ( PriorYr ), DIVIDE ( [Total Rides] - PriorYr, PriorYr ) )
 // Select Year = 2012 -> Check: +64.9% (+64.88%)</pre>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> These measures encode the right aggregation for each physical quantity — the habit that separates correct dashboards from quietly-wrong ones. Rides are counts → <code>SUM</code>. "How slammed is an hour?" is an <i>intensity</i> → <code>AVERAGE(cnt)</code> per hour. Temperature is a state reading → <code>AVERAGE</code> only (summing 24 hourly temps yields nonsense "14.2 normalized degrees"). And the YoY measure wraps <code>DIVIDE</code> in an <code>ISBLANK</code> guard so 2011 (no prior year) stays blank instead of showing an error.</p>
+      <p><b>Real-time example:</b> Watch the same data produce two valid but different answers: <code>Total Rides</code> = 3,292,679 (annual capacity story) versus <code>Avg Hourly Rides</code> = 189.5 (dispatch intensity story). The Director asks "are we slammed?" — the honest answer is 525.3 rides at 5pm on working days, not "525,000 rides in September". Choosing the wrong one of these two measures produces a technically-correct number that answers nobody's question. Also note the exact reconciliation: 2,672,662 + 620,017 = 3,292,679 — your measures inherit the file's integrity from Step A1.</p>
+      <p><b>What happens if you skip it:</b> Weather columns get summed into gibberish, intensity questions get answered with totals, and YoY shows <code>-100%</code> or infinite values for 2011 because the blank-guard is missing.</p>
+      <p><b>Smart-work tip:</b> For every measure ask: <i>count, sum, or average?</i> Counts of events → SUM/COUNT. Per-slot intensity → AVERAGE. Rates (shares) → DIVIDE of two sums, never AVERAGE of the ratio column. Write the expected check value (189.5, +64.9%) as a comment; verify each measure on a card before it enters a chart.</p>
+    </div>
 
     <h3>Stage 5 — Power BI Charts Journey: Build the 6-Visual Dispatch Dashboard</h3>
 
@@ -292,6 +338,13 @@ RETURN
         <div class="well"><strong>Legend</strong><code>Trips[DayType]</code></div>
       </div>
       <p>This single visual is the crown jewel of transit analytics: the <b>Working Day</b> line forms an unmistakable "M" shape spiking at <b>Hour 8 (477.0)</b> and <b>Hour 17 (525.3)</b>, while the <b>Weekend / Holiday</b> line forms a smooth hill peaking at <b>Hour 13 (372.7)</b>!</p>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> The client's #1 complaint is <i>temporal</i> ("vans arrive too late"), so the report must show demand AS A FUNCTION OF TIME — and as two lines (Working Day vs Weekend/Holiday) on one shared axis, because the comparison between commuter rhythm and leisure rhythm IS the insight. One axis, two curves: differences are read directly, no mental chart-jumping.</p>
+        <p><b>Real-time example:</b> Read the "M" shape operationally: demand surges 7–9am and 4–6pm, so rebalancing vans must pre-position bikes <i>before</i> the spikes (say 6:30am and 3:30pm) — reactive afternoon dispatch is provably too late when Hour 17 hits 525 rides. The weekend hill says the opposite schedule: docks drain gradually toward a 1pm peak, so morning van routes can double as maintenance runs. Two very different playbooks from two lines that never needed a single spreadsheet formula.</p>
+        <p><b>What happens if you skip it:</b> A single averaged line (all days mixed) produces a bland mid-shape around 189.5 rides/hr — hiding BOTH peaks entirely. The van schedules stay wrong, and the client's original complaint remains unaddressed even after the dashboard ships.</p>
+        <p><b>Smart-work tip:</b> Keep <code>hr</code> as a continuous 0–23 axis so the curves flow; split categories via <b>Legend</b> (DayType), not via two separate charts. And when a shape (the "M") IS the message, add a text note or data labels at the peaks — callouts guide the reader to the exact hours the client must act on.</p>
+      </div>
     </div>
 
     <div class="chart-card">
@@ -307,6 +360,13 @@ RETURN
         <li>Right-click <code>[Avg Hourly Rides]</code> in Values → <b>Conditional formatting → Background color</b> → Gradient from pale cream (Minimum) → amber (Middle) → deep forest green (Maximum).</li>
         <li>Optional pro touch: apply the exact same gradient to <b>Font color</b> if you want a pure color-only heatmap, or keep numbers visible for dispatchers!</li>
       </ol>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> A 24-hour × 7-day grid is 168 numbers — far beyond what any human reads as digits, but instantly readable as a color field. A native Matrix + gradient conditional formatting turns those numbers into a heatmap WITHOUT downloading any marketplace visual — proving that format settings, not plugins, solve most "we need a special chart" requests. Turning subtotals off keeps the color scale comparing hours-to-hours instead of mixing in giant row/col totals.</p>
+        <p><b>Real-time example:</b> Watch a dispatcher use it: the right side of the grid (Tue–Fri) glows deep green in two horizontal bands — rows <code>8</code> and <code>17</code> — while the Sunday column stays pale cream almost all day. Those two dark bands are exactly where vans must stand guard; the pale blocks (midnight–6am, Sunday mornings) are the safe maintenance windows the Director asked to schedule during wet shifts. One glance answers "when" and "when NOT to send vans" — no reading required.</p>
+        <p><b>What happens if you skip it:</b> Mistake 3 strikes: subtotals left ON turn the Grand Total dark green and wash every real hourly cell pale — the heatmap becomes a mostly-white grid with one blazing corner. Also, a plain matrix of 168 numbers gets scrolled past unread.</p>
+        <p><b>Smart-work tip:</b> When applying the gradient, set "Apply to" = <b>Values only</b> (exclude totals) and pin min/mid/max colors — the middle anchor (amber) prevents the "everything looks light-green" wash. Numbers-on-color beats color-only for ops teams: dispatchers need the exact count, not just the vibe.</p>
+      </div>
     </div>
 
     <div class="chart-card">
@@ -314,6 +374,13 @@ RETURN
       <p>1. <b>Stacked column chart:</b> X-axis = <code>Calendar[YearMonth]</code>, Y-axis = <code>[Registered Rides]</code> &amp; <code>[Casual Rides]</code>.<br>
       2. <b>Line and clustered column chart:</b> X-axis = <code>Trips[WeatherLabel]</code>, Column y-axis = <code>[Avg Hourly Rides]</code> (<code>204.9 → 175.2 → 111.6 → 74.3</code>), Line y-axis = <code>[Casual Share %]</code> (watch casual riders vanish during rain while registered commuters keep riding!).<br>
       3. <b>Donut chart:</b> Values = <code>[Registered Rides]</code> and <code>[Casual Rides]</code>.</p>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> Three visuals, three distinct questions. The 24-month stacked columns answer "how fast are we growing, and WHO is driving it?" (volume + mix in one chart). The weather combo answers "what does rain cost us, and to whom?" — the line of Casual Share % on top of the ride-count columns separates <i>volume loss</i> from <i>behavior change</i>. The 2-slice donut anchors the strategic fact: this is a membership business (81.2%), not a tourism business (18.8%).</p>
+        <p><b>Real-time example:</b> The weather combo carries a subtle gem the client explicitly asked about: from Clear to Light Rain, columns fall 204.9 → 111.6 rides/hr — but the Casual Share line collapses even faster, because tourists simply stay home while registered commuters still need to reach work (and the <b>-45.5%</b> rain drop from the profile is mostly casuals). Operationally that means maintenance during wet hours costs few members their commute — exactly the wet-shift maintenance window the Director wanted quantified. The stacked columns add the growth angle: the Registered band widens steadily through 2012 while Casual stays nearly flat — growth is coming from converts to membership.</p>
+        <p><b>What happens if you skip it:</b> "Rain cuts demand" stays a vague feeling instead of a quantified -45.5% with a rider-mix explanation; budgeting for bike purchases and marketing keeps treating casual surges as the growth engine when the member base is.</p>
+        <p><b>Smart-work tip:</b> When a drop could be "fewer people" or "different people", plot the volume AND the share together — columns + line. And keep the donut at exactly 2–3 slices; it's a strategic mix headline, not a data exploration tool.</p>
+      </div>
     </div>
 
     <ul class="task-list">
