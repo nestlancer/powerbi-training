@@ -354,21 +354,46 @@
       <p><b>Smart-work tip:</b> Whenever a column is yes/no or condition-based, ask "would a 0/1 flag make this easier to aggregate?" — it usually does. And bucket any long-tailed numeric column (dials, tenure, order sizes) into 4–6 named ranges before charting it.</p>
     </div>
 
-    <h3>Step A3 — PivotTable Verification</h3>
+    <h3>Step A3 — PivotTable Verification and Power BI Matrix</h3>
     <div class="step">
-      Insert a PivotTable: Rows = <code>job</code>, Values = <code>Count of y</code> (Calls), <code>Sum of Subscribed</code> (Yes count), and <code>Average of Subscribed</code> (formatted as <code>0.0%</code>). Sort by <code>Average of Subscribed</code> descending: verify <b>student = 28.7%</b>, <b>retired = 22.8%</b>, <b>blue-collar = 7.3%</b>, and Grand Total = <b>45,211 calls / 5,289 yes / 11.7%</b>! Save as <code>06-bank-marketing-clean.xlsx</code>.
+      <ol style="margin:0;padding-left:20px;">
+        <li><b>Excel Phase A (Quick Audit)</b>
+          <ul>
+            <li>Insert a PivotTable on a new sheet: Rename the sheet <code>Pivot_Check_Excel</code>.</li>
+            <li>In the <b>PivotTable Fields</b> pane on the right:
+              <ul>
+                <li>Drag <code>job</code> into <b>Rows</b>.</li>
+                <li>Drag <code>y</code> into <b>Values</b> (automatically becomes <code>Count of y</code> — Total Calls).</li>
+                <li>Drag <code>Subscribed</code> (Column R) into <b>Values</b> (automatically becomes <code>Sum of Subscribed</code> — Yes count).</li>
+                <li>Drag <code>Subscribed</code> (Column R) into <b>Values</b> again (automatically becomes <code>Average of Subscribed</code> — formatted as <code>0.0%</code> for Conversion Rate).</li>
+              </ul>
+            </li>
+            <li>Sort by <code>Average of Subscribed</code> descending: verify <b>student = 28.7%</b>, <b>retired = 22.8%</b>, <b>blue-collar = 7.3%</b>, and Grand Total = <b>45,211 calls / 5,289 yes / 11.7%</b>!</li>
+          </ul>
+        </li>
+        <li><b>Power BI Phase B (Matrix Visual)</b>
+          <ul>
+            <li>In <b>Report View</b>, click the blank canvas → in <b>Visualizations</b> pane, click the <b>Matrix</b> icon (grid symbol).</li>
+            <li>In the <b>Fields</b> pane, drag <code>job</code> into <b>Rows</b>.</li>
+            <li>Drag <code>y</code> into <b>Values</b> (set to <b>Count</b> for Total Calls).</li>
+            <li>Drag <code>Subscribed</code> (from Power Query) into <b>Values</b> (set to <b>Sum</b> for Yes count).</li>
+            <li>Drag <code>Subscribed</code> (from Power Query) into <b>Values</b> again (set to <b>Average</b> and format as <b>0.0%</b> for Conversion Rate).</li>
+            <li>Sort by <code>Average of Subscribed (Conversion Rate)</code> descending: verify <b>student = 28.7%</b>, <b>retired = 22.8%</b>, <b>blue-collar = 7.3%</b>, and Grand Total = <b>45,211 calls / 5,289 yes / 11.7%</b>!</li>
+          </ul>
+        </li>
+      </ol>
     </div>
     <div class="why-box">
       <div class="why-title">💡 Why do we do this?</div>
-      <p><b>Reason:</b> Putting <b>effort</b> (calls dialed) and <b>yield</b> (conversion rate) side-by-side in one pivot sets up the campaign's central diagnosis: are agent hours going where deposits actually come from? Sorting by rate turns a table of numbers into a ranked target list for next quarter.</p>
-      <p><b>Real-time example:</b> Read the sorted pivot as the Head of Retail Deposits would: the bank dialed <b>9,732</b> blue-collar numbers — more than any other group — and converted just <b>7.3%</b>; meanwhile students (938 calls, <b>28.7%</b>) and retirees (2,264 calls, <b>22.8%</b>) were barely touched. Rough math says re-routing even 2,000 dials from blue-collar (7.3%) to the student/retired segments (blended ≈ 24.5%) wins roughly +345 extra subscriptions without one additional euro of payroll. That's the "smart work" version of campaign management: reallocate, don't just dial more.</p>
-      <p><b>What happens if you skip it:</b> The dashboard gets built, but nobody can state WHERE to shift effort — the client asked for priorities, not pictures. The pivot is where the recommendation gets its evidence.</p>
-      <p><b>Smart-work tip:</b> Verify with three anchors: the two extremes (student 28.7%, blue-collar 7.3%) and the grand total (11.7%). If all three match in Power BI later, every intermediate segment is almost certainly right too — endpoints + total are a cheap, strong correctness proof.</p>
+      <p><b>Reason:</b> Putting <b>effort</b> (calls dialed) and <b>yield</b> (conversion rate) side-by-side in one pivot and matrix sets up the campaign's central diagnosis: are agent hours going where deposits actually come from? Sorting by rate turns a table of numbers into a ranked target list for next quarter. Both Excel and Power BI engines independently compute the target numbers to prove the data integrity.</p>
+      <p><b>Real-time example:</b> Read the sorted pivot and matrix as the Head of Retail Deposits would: the bank dialed <b>9,732</b> blue-collar numbers — more than any other group — and converted just <b>7.3%</b>; meanwhile students (938 calls, <b>28.7%</b>) and retirees (2,264 calls, <b>22.8%</b>) were barely touched. Rough math says re-routing even 2,000 dials from blue-collar (7.3%) to the student/retired segments (blended ≈ 24.5%) wins roughly +345 extra subscriptions without one additional euro of payroll. That's the "smart work" version of campaign management: reallocate, don't just dial more. Both engines agree on the exact same numbers.</p>
+      <p><b>What happens if you skip it:</b> The dashboard gets built, but nobody can state WHERE to shift effort — the client asked for priorities, not pictures. The pivot and matrix are where the recommendation gets its evidence. If the engines disagree, the data import might have hidden type errors.</p>
+      <p><b>Smart-work tip:</b> Verify with three anchors: the two extremes (student 28.7%, blue-collar 7.3%) and the grand total (11.7%). If all three match in Excel PivotTable and Power BI Matrix later, every intermediate segment is almost certainly right too — endpoints + total are a cheap, strong correctness proof. Screenshot the verified PivotTable and Matrix and keep them beside you as your dashboard's acceptance test.</p>
     </div>
 
     <ul class="task-list">
       <li><label><input type="checkbox"> Imported <code>bank-full.csv</code> with Semicolon delimiter (17 columns, 45,211 rows).</label></li>
-      <li><label><input type="checkbox"> Verified job conversion rates and 11.7% overall subscription rate in Excel PivotTable.</label></li>
+      <li><label><input type="checkbox"> Verified job conversion rates and 11.7% overall subscription rate in Excel PivotTable and Power BI Matrix.</label></li>
     </ul>
   </section>
 

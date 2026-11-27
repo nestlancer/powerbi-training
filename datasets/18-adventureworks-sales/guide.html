@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>18 · AdventureWorks Enterprise Star Schema — Beginner to Advanced Excel &amp; Power BI Guide</title>
+<title>18 · AdventureWorks Sales — 7-Table Star Schema &amp; Fiscal Time Intelligence</title>
 <style>
   :root{
     --calc:#1d6f42; --calc-soft:#e7f3ec;
@@ -13,519 +13,248 @@
   }
   *{box-sizing:border-box;}
   html{scroll-behavior:smooth;}
-  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.62;}
-  header{background:linear-gradient(125deg,#1d6f42 0%,#0f5132 48%,#0b3d63 100%);color:#fff;padding:32px 26px 28px;}
-  header .kicker{font-size:12px;text-transform:uppercase;letter-spacing:.8px;opacity:.88;font-weight:700;margin-bottom:6px;}
-  header h1{margin:0 0 8px;font-size:26px;letter-spacing:.2px;}
-  header p{margin:0;max-width:880px;font-size:14.8px;opacity:.95;}
-  header a{color:#fff;text-decoration:underline;}
-  .top-nav{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;align-items:center;}
-  .pill{display:inline-block;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.32);padding:4px 12px;border-radius:20px;font-size:12.5px;text-decoration:none;color:#fff;}
-  .wrap{max-width:1120px;margin:20px auto 70px;padding:0 22px;}
-  .prog-bar{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 18px;margin-bottom:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;position:sticky;top:10px;z-index:20;box-shadow:0 2px 8px rgba(15,23,42,.05);}
-  .prog-track{flex:1;min-width:180px;height:10px;background:#eef2f7;border-radius:99px;overflow:hidden;}
-  .prog-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--calc),#caa400);transition:width .25s;}
-  .prog-text{font-size:13px;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums;}
-  .btn-sm{border:1px solid var(--line);background:#fff;color:var(--ink);padding:5px 11px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;}
-  .btn-sm:hover{background:#f1f5f9;}
-  .toc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:20px;font-size:13.5px;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;}
-  .toc a{color:var(--accent);text-decoration:none;font-weight:600;}
-  .toc a:hover{text-decoration:underline;}
-  section{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px 26px;margin-bottom:20px;box-shadow:0 1px 2px rgba(20,30,50,.03);}
-  h2.t{font-size:20px;margin:0 0 14px;border-bottom:2px solid var(--calc);padding-bottom:8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
-  h2.t.pbi-h{border-bottom-color:#caa400;}
-  h3{font-size:16px;margin:20px 0 8px;color:var(--accent);}
-  h4{font-size:14.5px;margin:14px 0 6px;color:var(--ink);}
-  p{margin:8px 0;}
-  .facts{background:#fff;border:1px solid var(--line);border-left:5px solid var(--calc);border-radius:12px;padding:16px 18px;margin-bottom:18px;}
-  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:10px;}
-  .stat{background:var(--calc-soft);border-radius:9px;padding:10px 12px;}
-  .stat b{display:block;font-size:18px;color:var(--calc);}
-  .stat span{font-size:12px;color:var(--muted);}
-  .stat.warn{background:var(--danger-soft);}
-  .stat.warn b{color:var(--danger);}
-  code{background:#eef2f7;padding:2px 6px;border-radius:5px;font-size:12.8px;font-family:"SF Mono",Consolas,monospace;color:#0f172a;}
-  pre{background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:10px;overflow:auto;font-size:13px;font-family:"SF Mono",Consolas,monospace;line-height:1.55;margin:10px 0;}
-  table{border-collapse:collapse;width:100%;margin:12px 0;font-size:13.3px;}
-  th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top;}
-  th{background:#f1f5f9;font-weight:700;}
-  .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;color:#fff;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap;}
-  .g{background:#1d6f42;} .y{background:#d99000;} .r{background:#c0392b;} .b{background:#0b3d63;}
-  .req{display:flex;gap:12px;align-items:flex-start;padding:9px 0;border-bottom:1px dashed var(--line);}
-  .req:last-child{border-bottom:none;}
-  .step{background:var(--calc-soft);border-radius:10px;border:1px solid #cde4d6;padding:14px 16px;margin:12px 0;}
-  .step b{color:var(--calc);}
-  .pbi-box{background:var(--pbi-soft);border:1px solid #f2df9d;border-radius:10px;padding:14px 16px;margin:12px 0;}
-  .pbi-box b{color:#7c5d00;}
-  .chart-card{border:1px solid var(--line);border-left:5px solid #caa400;border-radius:10px;padding:14px 16px;margin:14px 0;background:#fcfdff;}
-  .chart-card h4{margin:0 0 8px;font-size:15.5px;color:var(--accent);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
-  .wells{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin:10px 0;}
-  .well{background:#f4f6fa;border:1px solid var(--line);border-radius:7px;padding:7px 10px;font-size:12.8px;}
-  .well strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-bottom:2px;}
-  .note{background:#fffaf0;border-left:4px solid #e0a800;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
-  .warn-box{background:var(--danger-soft);border-left:4px solid var(--danger);border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
-  .why-box{background:#eaf3ff;border-left:4px solid #2563eb;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.4px;}
-  .why-box .why-title{font-weight:800;color:#1d4ed8;margin:0 0 6px;font-size:12.5px;text-transform:uppercase;letter-spacing:.5px;}
-  .why-box p{margin:5px 0;}
-  .why-box b{color:#123a7a;}
-  .wireframe{display:grid;grid-template-columns:repeat(12,1fr);gap:8px;background:#eef2f7;padding:14px;border-radius:12px;margin:12px 0;font-size:12px;}
-  .wf-box{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:10px;text-align:center;font-weight:600;color:var(--accent);}
-  .wf-box small{display:block;font-weight:400;color:var(--muted);margin-top:3px;font-size:11px;}
-  ul.task-list{list-style:none;padding:0;margin:10px 0;}
-  ul.task-list li{padding:5px 0;}
-  ul.task-list label{display:flex;gap:9px;align-items:flex-start;cursor:pointer;font-size:13.8px;}
-  ul.task-list input{margin-top:4px;width:16px;height:16px;flex:none;accent-color:var(--calc);}
-  footer{text-align:center;color:var(--muted);font-size:12.5px;padding:10px 20px 28px;}
-  footer a{color:#3d4a5c;}
-  @media(max-width:740px){
-    .wrap{padding:0 12px;}
-    section{padding:16px 16px;}
-    .wireframe{grid-template-columns:1fr 1fr;}
-    .wf-box{grid-column:span 2 !important;}
-  }
-  /* ═══ UI 2.0 theme — overrides the base block above ═══ */
-  :root{
-    --calc:#16a34a;--calc-soft:#e9f7ef;--pbi:#d97706;--pbi-soft:#fff6e6;
-    --ink:#111827;--muted:#5b6472;--line:#e4e9f1;--bg:#f2f5fa;
-    --accent:#0b3d63;--danger:#dc2626;--danger-soft:#fdeaea;
-    --gold:#f59e0b;--blue:#2563eb;
-    --h1:#1d4ed8;--h2:#0b3d63;--h3:#c2410c;
-    --sh-sm:0 1px 2px rgba(15,23,42,.05),0 1px 3px rgba(15,23,42,.07);
-    --sh-md:0 4px 16px rgba(15,23,42,.09),0 2px 4px rgba(15,23,42,.05);
-    --sh-lg:0 14px 38px rgba(15,23,42,.16);
-  }
-  body{background:radial-gradient(1100px 480px at 88% -80px,rgba(14,116,144,.10),transparent 60%),radial-gradient(900px 420px at -60px 34%,rgba(22,163,74,.08),transparent 55%),var(--bg);}
-  ::selection{background:#bfdbfe;}
-  header{position:relative;overflow:hidden;color:#fff;padding:46px 28px 40px;background:linear-gradient(130deg,var(--h1) 0%,var(--h2) 55%,var(--h3) 100%);}
-  header::before{content:"";position:absolute;inset:0;background:radial-gradient(620px 300px at 90% -12%,rgba(255,255,255,.20),transparent 62%),radial-gradient(460px 280px at 4% 112%,rgba(255,255,255,.13),transparent 60%);}
-  header::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg,rgba(255,255,255,.05) 0 2px,transparent 2px 26px);opacity:.55;pointer-events:none;}
-  header>*{position:relative;z-index:1;}
-  header .kicker{display:inline-block;font-size:11.5px;text-transform:uppercase;letter-spacing:1.1px;opacity:.97;font-weight:800;margin-bottom:12px;padding:6px 14px;border-radius:99px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.30);}
-  header h1{margin:0 0 10px;font-size:clamp(23px,3.1vw,33px);line-height:1.16;letter-spacing:-.4px;font-weight:800;text-shadow:0 2px 14px rgba(0,0,0,.22);}
-  header p{margin:0;max-width:920px;font-size:15px;opacity:.96;}
-  header p b{color:#ffdf8d;}
-  header a{color:#fff;text-decoration:underline;}
-  header code{background:rgba(255,255,255,.18);border-color:transparent;color:#ffe8a3;}
-  .top-nav{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;align-items:center;}
-  .pill{display:inline-block;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.32);padding:6px 14px;border-radius:99px;font-size:12.5px;font-weight:600;text-decoration:none;color:#fff;transition:transform .15s,background .15s;}
-  .pill:hover{background:rgba(255,255,255,.26);transform:translateY(-1px);}
-  .wrap{max-width:1120px;margin:22px auto 70px;padding:0 22px;}
-  .prog-bar{background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:14px;padding:12px 18px;margin-bottom:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;position:sticky;top:10px;z-index:20;box-shadow:var(--sh-md);}
-  .prog-track{flex:1;min-width:180px;height:12px;background:#e8edf5;border-radius:99px;overflow:hidden;box-shadow:inset 0 1px 2px rgba(15,23,42,.14);}
-  .prog-fill{height:100%;width:0%;border-radius:99px;background:linear-gradient(90deg,#16a34a,#0ea5e9 55%,#d97706);transition:width .4s cubic-bezier(.22,1,.36,1);position:relative;overflow:hidden;}
-  .prog-fill::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 0 32%,rgba(255,255,255,.55) 50%,transparent 68% 100%);background-size:220% 100%;animation:shine 2.6s linear infinite;}
-  @keyframes shine{from{background-position:220% 0}to{background-position:-220% 0}}
-  .prog-text{font-size:13px;font-weight:800;color:var(--accent);font-variant-numeric:tabular-nums;}
-  .prog-bar:has(.prog-fill[style*="100"]){border-color:#fcd34d;box-shadow:0 0 0 3px #fef3c7,var(--sh-md);}
-  .prog-bar:has(.prog-fill[style*="100"]) .prog-text{color:#b45309;}
-  .prog-bar:has(.prog-fill[style*="100"])::after{content:"🎉 All steps complete!";font-size:12.5px;font-weight:800;color:#92400e;background:linear-gradient(135deg,#fef3c7,#fde68a);border:1px solid #fcd34d;border-radius:99px;padding:4px 13px;animation:pop .45s cubic-bezier(.34,1.56,.64,1);}
-  @keyframes pop{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}
-  .btn-sm{border:1px solid var(--line);background:#fff;color:var(--ink);padding:6px 13px;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;box-shadow:var(--sh-sm);transition:all .15s;}
-  .btn-sm:hover{background:#f8fafc;transform:translateY(-1px);box-shadow:var(--sh-md);}
-  .toc{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 16px;margin-bottom:20px;font-size:13px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;box-shadow:var(--sh-sm);}
-  .toc b{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.7px;margin-right:2px;}
-  .toc a{color:var(--accent);text-decoration:none;font-weight:700;padding:5px 13px;border-radius:99px;background:#f1f5f9;border:1px solid transparent;transition:all .15s;}
-  .toc a:hover{background:#e3eeff;border-color:#c9dbf8;transform:translateY(-1px);}
-  section{background:#fff;border:1px solid var(--line);border-radius:16px;padding:26px 28px;margin-bottom:22px;box-shadow:var(--sh-sm);scroll-margin-top:78px;transition:box-shadow .2s;}
-  section:hover{box-shadow:var(--sh-md);}
-  h2.t{font-size:20.5px;margin:0 0 18px;padding-bottom:11px;border-bottom:2px solid var(--line);position:relative;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
-  h2.t::after{content:"";position:absolute;left:0;bottom:-4px;width:88px;height:4px;border-radius:99px;background:linear-gradient(90deg,var(--calc),#0ea5e9);}
-  h2.t.pbi-h::after{background:linear-gradient(90deg,var(--pbi),#dc2626);}
-  h3{font-size:16.5px;margin:26px 0 10px;color:var(--accent);display:flex;align-items:center;gap:9px;}
-  h3::before{content:"";width:5px;height:16px;border-radius:4px;background:linear-gradient(180deg,var(--pbi),var(--gold));flex:none;}
-  h4{font-size:14.5px;margin:14px 0 6px;color:var(--ink);}
-  .facts{background:linear-gradient(135deg,#f8fbff,#f1f7f3);border:1px solid var(--line);border-left:5px solid var(--calc);border-radius:14px;padding:18px 20px;margin-bottom:20px;}
-  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;}
-  .stat{position:relative;overflow:hidden;background:#fff;border:1px solid #e2e9f0;border-radius:12px;padding:12px 14px 12px 17px;box-shadow:var(--sh-sm);transition:transform .18s,box-shadow .18s;}
-  .stat::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg,var(--calc),#0ea5e9);}
-  .stat:hover{transform:translateY(-2px);box-shadow:var(--sh-md);}
-  .stat b{display:block;font-size:19px;color:var(--calc);letter-spacing:-.2px;}
-  .stat span{font-size:11.8px;color:var(--muted);line-height:1.42;display:block;margin-top:2px;}
-  .stat.warn{border-color:#f4d7d7;}
-  .stat.warn::before{background:linear-gradient(180deg,#dc2626,var(--gold));}
-  .stat.warn b{color:var(--danger);}
-  code{background:#eef2f7;border:1px solid #e2e8f0;padding:1.5px 6px;border-radius:6px;font-size:12.6px;font-family:ui-monospace,"SF Mono",Consolas,monospace;color:#0f172a;}
-  pre{background:#0b1220;color:#dbe4f3;padding:16px 18px;border-radius:13px;overflow:auto;font-size:12.9px;font-family:ui-monospace,"SF Mono",Consolas,monospace;line-height:1.6;margin:12px 0;border:1px solid #1e293b;box-shadow:var(--sh-md);}
-  pre::before{content:"⌨ formula · DAX";display:block;color:#7d8fa9;font-size:10px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;margin-bottom:10px;padding-bottom:8px;border-bottom:1px dashed #25344c;}
-  table{border-collapse:separate;border-spacing:0;width:100%;margin:14px 0;font-size:13.2px;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:var(--sh-sm);overflow:hidden;}
-  th,td{padding:9px 12px;text-align:left;vertical-align:top;border-bottom:1px solid #edf1f7;}
-  tr:nth-child(even) td{background:#fafcff;}
-  tr:hover td{background:#eef6ff;}
-  th{background:linear-gradient(180deg,#f8fafc,#eef2f8);font-weight:800;font-size:11.8px;text-transform:uppercase;letter-spacing:.45px;color:#334155;border-bottom:2px solid #dbe3ee;}
-  table tr:last-child td{border-bottom:none;}
-  table th:first-child{border-top-left-radius:11px;}table th:last-child{border-top-right-radius:11px;}
-  .tag{display:inline-block;font-size:10.5px;font-weight:800;padding:3px 10px;border-radius:99px;color:#fff;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap;box-shadow:0 1px 3px rgba(0,0,0,.2);}
-  .g{background:linear-gradient(135deg,#16a34a,#15803d);}.y{background:linear-gradient(135deg,#f59e0b,#d97706);}.r{background:linear-gradient(135deg,#ef4444,#b91c1c);}.b{background:linear-gradient(135deg,#3b82f6,#1d4ed8);}
-  .req{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border:1px solid var(--line);border-radius:12px;margin:9px 0;background:#fbfdff;transition:all .15s;}
-  .req:hover{border-color:#c9dbf8;box-shadow:var(--sh-sm);transform:translateX(3px);}
-  .req .tag{margin-top:2px;flex:none;min-width:66px;text-align:center;}
-  .step{background:var(--calc-soft);border:1px solid #cbe6d5;border-left:5px solid var(--calc);border-radius:12px;padding:16px 18px;margin:16px 0;position:relative;box-shadow:var(--sh-sm);}
-  .step::before{content:"EXCEL · PHASE A";position:absolute;top:-10px;right:14px;background:linear-gradient(135deg,#16a34a,#15803d);color:#fff;font-size:9.5px;font-weight:800;letter-spacing:.9px;padding:3px 11px;border-radius:99px;box-shadow:var(--sh-sm);}
-  .step b{color:#0d5c33;}
-  .pbi-box{background:var(--pbi-soft);border:1px solid #f2df9d;border-left:5px solid var(--pbi);border-radius:12px;padding:16px 18px;margin:16px 0;position:relative;box-shadow:var(--sh-sm);}
-  .pbi-box::before{content:"POWER BI · PHASE B";position:absolute;top:-10px;right:14px;background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;font-size:9.5px;font-weight:800;letter-spacing:.9px;padding:3px 11px;border-radius:99px;box-shadow:var(--sh-sm);}
-  .pbi-box b{color:#8a5a00;}
-  .chart-card{border:1px solid var(--line);border-left:5px solid var(--gold);border-radius:14px;padding:18px 20px;margin:18px 0;background:linear-gradient(180deg,#fffdf4,#fdfeff);box-shadow:var(--sh-sm);}
-  .chart-card h4{margin:0 0 10px;font-size:15.5px;color:var(--accent);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
-  .wells{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:9px;margin:10px 0;}
-  .well{background:#f6f8fc;border:1px solid #e2e8f0;border-radius:9px;padding:8px 12px;font-size:12.8px;transition:all .15s;}
-  .well:hover{background:#f0f6ff;border-color:#c9dbf8;}
-  .well strong{display:block;font-size:10.5px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:3px;}
-  .note{background:linear-gradient(135deg,#fffaf0,#fffdf6);border:1px solid #f5e3bd;border-left:5px solid #e0a800;border-radius:12px;padding:13px 15px;margin:14px 0;font-size:13.5px;}
-  .warn-box{background:linear-gradient(135deg,#fdeaea,#fff5f5);border:1px solid #f2c8c8;border-left:5px solid var(--danger);border-radius:12px;padding:13px 15px;margin:14px 0;font-size:13.5px;}
-  .why-box{background:linear-gradient(135deg,#eff6ff,#f2faff);border:1px solid #c9e0fb;border-left:5px solid var(--blue);border-radius:12px;padding:14px 16px;margin:14px 0;font-size:13.4px;box-shadow:var(--sh-sm);}
-  .why-box .why-title{font-weight:800;color:#1d4ed8;margin:0 0 8px;font-size:12px;text-transform:uppercase;letter-spacing:.6px;}
-  .why-box p{margin:6px 0;}
-  .why-box b{color:#123a7a;}
-  .wireframe{display:grid;grid-template-columns:repeat(12,1fr);gap:10px;background:#0f172a;background-image:radial-gradient(rgba(148,163,184,.16) 1px,transparent 1.4px);background-size:18px 18px;padding:16px;border-radius:14px;margin:14px 0;font-size:12px;box-shadow:var(--sh-md);}
-  .wf-box{background:#fff;border:1px solid #cbd5e1;border-radius:9px;padding:11px;text-align:center;font-weight:700;color:var(--accent);box-shadow:0 3px 8px rgba(2,6,23,.35);transition:transform .15s;}
-  .wf-box:hover{transform:translateY(-2px);}
-  .wf-box small{display:block;font-weight:400;color:var(--muted);margin-top:4px;font-size:10.8px;}
-  ul.task-list{list-style:none;padding:0;margin:12px 0;}
-  ul.task-list li{padding:4px 0;}
-  ul.task-list label{display:flex;gap:11px;align-items:flex-start;cursor:pointer;font-size:13.8px;padding:8px 12px;border-radius:10px;border:1px solid transparent;transition:all .15s;}
-  ul.task-list label:hover{background:#f2f7fd;border-color:#d8e5f3;}
-  ul.task-list input{margin-top:3.5px;width:17px;height:17px;flex:none;accent-color:var(--calc);cursor:pointer;}
-  ul.task-list label:has(input:checked){color:#94a3b8;text-decoration:line-through;text-decoration-thickness:1.5px;text-decoration-color:#cbd5e1;}
-  footer{text-align:center;color:var(--muted);font-size:12.5px;padding:14px 20px 34px;}
-  footer a{color:#3d4a5c;}
-  @media(max-width:740px){
-    .wrap{padding:0 12px;}
-    section{padding:18px 15px;}
-    header{padding:36px 18px 30px;}
-    .wireframe{grid-template-columns:1fr 1fr;}
-    .wf-box{grid-column:span 2 !important;}
-  }
-  @media print{
-    .prog-bar,.toc,.top-nav,.btn-sm{display:none !important;}
-    body{background:#fff;}
-    section{box-shadow:none;border-color:#d7dde6;break-inside:avoid;}
-    header{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-  }
-  @media (prefers-reduced-motion:reduce){
-    *,*::before,*::after{animation:none !important;transition:none !important;}
-    html{scroll-behavior:auto;}
-  }
-</style>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='86'>🚴</text></svg>">
-</head>
-<body>
-
-<header>
-  <div class="kicker">🚴 Practice Set 18 of 20 · PL-300 Certification 7-Table Star Schema, Fiscal YTD &amp; KPI Visuals</div>
-  <h1>18 · AdventureWorks Enterprise Sales — 7-Table Kimball Star Schema &amp; Fiscal Time Intelligence</h1>
-  <p>Build the exact <b>7-table Enterprise Data Warehouse Star Schema</b> tested on Microsoft's PL-300 Power BI Data Analyst exam (<code>121,253</code> fact lines, <code>$109.81M</code> Sales)! Wire 6 dimensions around <code>Sales</code>, unlock <b>June-30 Fiscal YTD (<code>TOTALYTD</code>)</b>, build Power BI's native <b>KPI Visual</b>, and expose why <b>Resellers drive 73.3% of Revenue ($80.45M) yet only 3.75% of Profit ($470K)!</b></p>
-  <div class="top-nav">
-    <a class="pill" href="../index.html">← All 20 Practice Sets</a>
-    <a class="pill" href="../../index.html">← Main Excel &amp; Power BI Outline</a>
-    <span class="pill">Skills Taught: 7-Table Star Schema · Role-Playing DateKey · Fiscal YTD ("6/30") · Built-In KPI Visual</span>
-  </div>
-</header>
-
-<div class="wrap">
-
-  <div class="prog-bar" role="region" aria-label="Your progress on this guide">
-    <span class="prog-text" id="progText" aria-live="polite">0 / 0 steps completed</span>
-    <div class="prog-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-labelledby="progText"><div class="prog-fill" id="progFill"></div></div>
-    <button class="btn-sm" type="button" onclick="resetChecks()">Reset checklist</button>
-  </div>
-
-  <div class="quickfacts" style="background:linear-gradient(135deg,#f8fbff,#f1f7f3);border:1px solid var(--line);border-left:5px solid #16a34a;border-radius:14px;padding:14px 18px;margin:0 0 18px;font-size:13.5px;line-height:1.75;">
-    <b>⚡ Quick info:</b> ⏱ <b>120–150 min</b> &nbsp;·&nbsp; 🧰 <b>Excel 2016+</b> + <b>Power BI Desktop</b> (<a href="https://aka.ms/pbidesktop">free download</a>) &nbsp;·&nbsp; 📂 Data: <a href="data/AdventureWorks-Sales.xlsx" download>AdventureWorks-Sales.xlsx</a> (7 sheets) &nbsp;·&nbsp; 🧭 Prereq: guide 12 or 14 recommended (star-schema basics) &nbsp;·&nbsp; 🎯 PL-300 exam practice
-    <br>🩺 <b>If a formula shows an error:</b> <code>#NAME?</code> = misspelled function/name &nbsp;·&nbsp; <code>#DIV/0!</code> = divide by zero or blank &nbsp;·&nbsp; <code>#N/A</code> = lookup value not found &nbsp;·&nbsp; <code>#VALUE!</code> = text where a number is expected &nbsp;·&nbsp; Power Query <code>Expression.Error</code> = a renamed/missing column &nbsp;·&nbsp; DAX shows <code>(Blank)</code> = filters match no rows.
-    <br>📖 New jargon? <a href="../glossary.html">Open the glossary</a> &nbsp;·&nbsp; ◀ <a href="../17-customer-feedback/guide.html">Previous: Guide 17</a> &nbsp;·&nbsp; <a href="../19-northwind-retail/guide.html">Next: Guide 19 · Northwind Capstone</a> ▶
-  </div>
-
-  <div class="toc">
-    <b>Step-by-Step Map:</b>
-    <a href="#profile">1. 7-Table Warehouse Audit</a> ·
-    <a href="#brief">2. Client Brief</a> ·
-    <a href="#req">3. Requirements</a> ·
-    <a href="#excel">4. Phase A: Excel Power Pivot</a> ·
-    <a href="#pbi">5. Phase B: Power BI 7-Table Star &amp; Fiscal DAX</a> ·
-    <a href="#sign">6. Sign-Off</a> ·
-    <a href="#stretch">7. Stretch</a> ·
-    <a href="#mistakes">8. Common Mistakes</a>
-  </div>
-
-  <!-- 1. PROFILE -->
-  <section id="profile">
-    <h2 class="t">1. Verified 7-Table Data Warehouse Audit (<code>AdventureWorks-Sales.xlsx</code>)</h2>
-    <div class="facts">
-      <div class="grid">
-        <div class="stat"><b>121,253</b><span>Sales Fact Rows (FY2018–FY2020)</span></div>
-        <div class="stat"><b>$109,809,274</b><span>Total Sales ($97.26M Cost)</span></div>
-        <div class="stat"><b>$12,551,366</b><span>Gross Profit (11.43% Margin)</span></div>
-        <div class="stat warn"><b>0.58% Margin!</b><span>Reseller B2B ($80.45M → $470K GP!)</span></div>
-        <div class="stat"><b>41.15% Margin!</b><span>Internet B2C ($29.36M → $12.08M GP!)</span></div>
-        <div class="stat"><b>$94.62M</b><span>Bikes Category (86.2% of Sales)</span></div>
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.62;}
+  header{background:linear-gradient(125deg,#1d6f42 0%,#0f5132 48%,#0b3d63 100%);color:#fff;padding:32px 26px 28px;}\n  header .kicker{font-size:12px;text-transform:uppercase;letter-spacing:.8px;opacity:.88;font-weight:700;margin-bottom:6px;}\n  header h1{margin:0 0 8px;font-size:26px;letter-spacing:.2px;}\n  header p{margin:0;max-width:880px;font-size:14.8px;opacity:.95;}\n  header a{color:#fff;text-decoration:underline;}\n  .top-nav{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;align-items:center;}\n  .pill{display:inline-block;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.32);padding:4px 12px;border-radius:20px;font-size:12.5px;text-decoration:none;color:#fff;}\n  .wrap{max-width:1120px;margin:20px auto 70px;padding:0 22px;}\n  .prog-bar{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 18px;margin-bottom:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;position:sticky;top:10px;z-index:20;box-shadow:0 2px 8px rgba(15,23,42,.05);}\n  .prog-track{flex:1;min-width:180px;height:10px;background:#eef2f7;border-radius:99px;overflow:hidden;}\n  .prog-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--calc),#caa400);transition:width .25s;}\n  .prog-text{font-size:13px;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums;}\n  .btn-sm{border:1px solid var(--line);background:#fff;color:var(--ink);padding:5px 11px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;}\n  .btn-sm:hover{background:#f1f5f9;}\n  .toc{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 18px;margin-bottom:20px;font-size:13.5px;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;}\n  .toc a{color:var(--accent);text-decoration:none;font-weight:600;}\n  .toc a:hover{text-decoration:underline;}\n  section{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px 26px;margin-bottom:20px;box-shadow:0 1px 2px rgba(20,30,50,.03);}\n  h2.t{font-size:20.5px;margin:0 0 18px;padding-bottom:11px;border-bottom:2px solid var(--line);position:relative;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}\n  h2.t::after{content:\"\";position:absolute;left:0;bottom:-4px;width:88px;height:4px;border-radius:99px;background:linear-gradient(90deg,var(--calc),#0ea5e9);}\n  h2.t.pbi-h::after{background:linear-gradient(90deg,var(--pbi),#dc2626);}\n  h3{font-size:16.5px;margin:26px 0 10px;color:var(--accent);display:flex;align-items:center;gap:9px;}\n  h3::before{content:\"\";width:5px;height:16px;border-radius:4px;background:linear-gradient(180deg,var(--pbi),var(--gold));flex:none;}\n  h4{font-size:14.5px;margin:14px 0 6px;color:var(--ink);}\n  .facts{background:linear-gradient(135deg,#f8fbff,#f1f7f3);border:1px solid var(--line);border-left:5px solid var(--calc);border-radius:14px;padding:18px 20px;margin-bottom:20px;}\n  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;}\n  .stat{position:relative;overflow:hidden;background:#fff;border:1px solid #e2e9f0;border-radius:12px;padding:12px 14px 12px 17px;box-shadow:var(--sh-sm);transition:transform .18s,box-shadow .18s;}\n  .stat::before{content:\"\";position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg,var(--calc),#0ea5e9);}\n  .stat:hover{transform:translateY(-2px);box-shadow:var(--sh-md);}\n  .stat b{display:block;font-size:19px;color:var(--calc);letter-spacing:-.2px;}\n  .stat span{font-size:11.8px;color:var(--muted);line-height:1.42;display:block;margin-top:2px;}\n  .stat.warn{border-color:#f4d7d7;}\n  .stat.warn::before{background:linear-gradient(180deg,#dc2626,var(--gold));}\n  .stat.warn b{color:var(--danger);}\n  code{background:#eef2f7;border:1px solid #e2e8f0;padding:1.5px 6px;border-radius:6px;font-size:12.6px;font-family:ui-monospace,\"SF Mono\",Consolas,monospace;color:#0f172a;}\n  pre{background:#0b1220;color:#dbe4f3;padding:16px 18px;border-radius:13px;overflow:auto;font-size:12.9px;font-family:ui-monospace,\"SF Mono\",Consolas,monospace;line-height:1.6;margin:12px 0;border:1px solid #1e293b;box-shadow:var(--sh-md);}\n  pre::before{content:\"⌨ formula · DAX\";display:block;color:#7d8fa9;font-size:10px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;margin-bottom:10px;padding-bottom:8px;border-bottom:1px dashed #25344c;}\n  table{border-collapse:separate;border-spacing:0;width:100%;margin:14px 0;font-size:13.2px;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:var(--sh-sm);overflow:hidden;}\n  th,td{padding:9px 12px;text-align:left;vertical-align:top;border-bottom:1px solid #edf1f7;}\n  tr:nth-child(even) td{background:#fafcff;}\n  tr:hover td{background:#eef6ff;}\n  th{background:linear-gradient(180deg,#f8fafc,#eef2f8);font-weight:800;font-size:11.8px;text-transform:uppercase;letter-spacing:.45px;color:#334155;border-bottom:2px solid #dbe3ee;}\n  table tr:last-child td{border-bottom:none;}\n  table th:first-child{border-top-left-radius:11px;}table th:last-child{border-top-right-radius:11px;}\n  .tag{display:inline-block;font-size:10.5px;font-weight:800;padding:3px 10px;border-radius:99px;color:#fff;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap;box-shadow:0 1px 3px rgba(0,0,0,.2);}\n  .g{background:linear-gradient(135deg,#16a34a,#15803d);}.y{background:linear-gradient(135deg,#f59e0b,#d97706);}.r{background:linear-gradient(135deg,#ef4444,#b91c1c);}.b{background:linear-gradient(135deg,#3b82f6,#1d4ed8);}\n  .req{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border:1px solid var(--line);border-radius:12px;margin:9px 0;background:#fbfdff;transition:all .15s;}\n  .req:hover{border-color:#c9dbf8;box-shadow:var(--sh-sm);transform:translateX(3px);}\n  .req .tag{margin-top:2px;flex:none;min-width:66px;text-align:center;}\n  .step{background:var(--calc-soft);border:1px solid #cbe6d5;border-left:5px solid var(--calc);border-radius:12px;padding:16px 18px;margin:16px 0;position:relative;box-shadow:var(--sh-sm);}\n  .step::before{content:\"EXCEL · PHASE A\";position:absolute;top:-10px;right:14px;background:linear-gradient(135deg,#16a34a,#15803d);color:#fff;font-size:9.5px;font-weight:800;letter-spacing:.9px;padding:3px 11px;border-radius:99px;box-shadow:var(--sh-sm);}\n  .step b{color:#0d5c33;}\n  .pbi-box{background:var(--pbi-soft);border:1px solid #f2df9d;border-left:5px solid var(--pbi);border-radius:12px;padding:16px 18px;margin:16px 0;position:relative;box-shadow:var(--sh-sm);}\n  .pbi-box::before{content:\"POWER BI · PHASE B\";position:absolute;top:-10px;right:14px;background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;font-size:9.5px;font-weight:800;letter-spacing:.9px;padding:3px 11px;border-radius:99px;box-shadow:var(--sh-sm);}\n  .pbi-box b{color:#8a5a00;}\n  .chart-card{border:1px solid var(--line);border-left:5px solid var(--gold);border-radius:14px;padding:18px 20px;margin:18px 0;background:linear-gradient(180deg,#fffdf4,#fdfeff);box-shadow:var(--sh-sm);}\n  .chart-card h4{margin:0 0 10px;font-size:15.5px;color:var(--accent);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}\n  .wells{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:9px;margin:10px 0;}\n  .well{background:#f6f8fc;border:1px solid #e2e8f0;border-radius:9px;padding:8px 12px;font-size:12.8px;transition:all .15s;}\n  .well:hover{background:#f0f6ff;border-color:#c9dbf8;}\n  .well strong{display:block;font-size:10.5px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:3px;}\n  .note{background:linear-gradient(135deg,#fffaf0,#fffdf6);border:1px solid #f5e3bd;border-left:5px solid #e0a800;border-radius:12px;padding:13px 15px;margin:14px 0;font-size:13.5px;}\n  .warn-box{background:linear-gradient(135deg,#fdeaea,#fff5f5);border:1px solid #f2c8c8;border-left:5px solid var(--danger);border-radius:12px;padding:13px 15px;margin:14px 0;font-size:13.5px;}\n  .why-box{background:linear-gradient(135deg,#eff6ff,#f2faff);border:1px solid #c9e0fb;border-left:5px solid var(--blue);border-radius:12px;padding:14px 16px;margin:14px 0;font-size:13.4px;box-shadow:var(--sh-sm);}\n  .why-box .why-title{font-weight:800;color:#1d4ed8;margin:0 0 8px;font-size:12.5px;text-transform:uppercase;letter-spacing:.6px;}\n  .why-box p{margin:6px 0;}\n  .why-box b{color:#123a7a;}\n  .wireframe{display:grid;grid-template-columns:repeat(12,1fr);gap:10px;background:#0f172a;background-image:radial-gradient(rgba(148,163,184,.16) 1px,transparent 1.4px);background-size:18px 18px;padding:16px;border-radius:14px;margin:12px 0;font-size:12px;box-shadow:var(--sh-md);}\n  .wf-box{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:11px;text-align:center;font-weight:600;color:var(--accent);box-shadow:0 3px 8px rgba(2,6,23,.35);transition:transform .15s;}\n  .wf-box:hover{transform:translateY(-2px);}\n  .wf-box small{display:block;font-weight:400;color:var(--muted);margin-top:4px;font-size:10.8px;}\n  ul.task-list{list-style:none;padding:0;margin:12px 0;}\n  ul.task-list li{padding:4px 0;}\n  ul.task-list label{display:flex;gap:11px;align-items:flex-start;cursor:pointer;font-size:13.8px;padding:8px 12px;border-radius:10px;border:1px solid transparent;transition:all .15s;}\n  ul.task-list label:hover{background:#f2f7fd;border-color:#d8e5f3;}\n  ul.task-list input{margin-top:3.5px;width:17px;height:17px;flex:none;accent-color:var(--calc);cursor:pointer;}\n  ul.task-list label:has(input:checked){color:#94a3b8;text-decoration:line-through;text-decoration-thickness:1.5px;text-decoration-color:#cbd5e1;}\n  footer{text-align:center;color:var(--muted);font-size:12.5px;padding:14px 20px 34px;}\n  footer a{color:#3d4a5c;}\n  @media(max-width:740px){\n    .wrap{padding:0 12px;}\n    section{padding:18px 15px;}\n    header{padding:36px 18px 30px;}\n    .wireframe{grid-template-columns:1fr 1fr;}\n    .wf-box{grid-column:span 2 !important;}\n  }\n  @media print{\n    .prog-bar,.toc,.top-nav,.btn-sm{display:none !important;}\n    body{background:#fff;}\n    section{box-shadow:none;border-color:#d7dde6;break-inside:avoid;}\n    header{-webkit-print-color-adjust:exact;print-color-adjust:exact;}\n  }\n  @media (prefers-reduced-motion:reduce){\n    *,*::before,*::after{animation:none !important;transition:none !important;}\n    html{scroll-behavior:auto;}\n  }\n</style>\n<link rel=\"icon\" href=\"data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='86'>📦</text></svg>\">\n</head>\n<body>\n\n<header>\n  <div class=\"kicker\">📦 Practice Set 18 of 20 · AdventureWorks Sales, 7-Table Star &amp; Fiscal Time Intelligence</div>\n  <h1>18 · AdventureWorks Sales — 7-Table Star Schema &amp; Fiscal Time Intelligence</h1>\n  <p>Analyze <b>121,254 sales rows</b> (<code>FY2018–FY2020</code>) from the AdventureWorks warehouse! Reconcile <b>$109,809,274.20 Sales</b> and <b>$97,257,907.95 Cost</b> (<b>$12,551,366.25 Gross Profit / 11.43%</b>) via PivotTable &amp; Matrix, and build a 7-table Star Schema with Fiscal Time Intelligence!</p>
+  <div class=\"top-nav\">\n    <a class=\"pill\" href=\"../index.html\">← All 20 Practice Sets</a>\n    <a class=\"pill\" href=\"../../index.html\">← Main Excel &amp; Power BI Outline</a>\n    <span class=\"pill\">Skills Taught: Source Reconciliation · 7-Table Star Schema · Fiscal DAX · Role-Play Dates</span>\n  </div>\n</header>\n\n<div class=\"wrap\">\n\n  <div class=\"prog-bar\" role=\"region\" aria-label=\"Your progress on this guide\">\n    <span class=\"prog-text\" id=\"progText\" aria-live=\"polite\">0 / 0 steps completed</span>\n    <div class=\"prog-track\" role=\"progressbar\" aria-valuemin=\"0\" aria-valuemax=\"100\" aria-labelledby=\"progText\"><div class=\"prog-fill\" id=\"progFill\"></div></div>\n    <button class=\"btn-sm\" type=\"button\" onclick=\"resetChecks()\">Reset checklist</button>\n  </div>\n\n  <div class=\"quickfacts\" style=\"background:linear-gradient(135deg,#f8fbff,#f1f7f3);border:1px solid var(--line);border-left:5px solid #16a34a;border-radius:14px;padding:14px 18px;margin:0 0 18px;font-size:13.5px;line-height:1.75;\">\n    <b>⚡ Quick info:</b> ⏱ <b>90–120 min</b> &nbsp;·&nbsp; 🧰 <b>Excel 2016+</b> + <b>Power BI Desktop</b> (<a href=\"https://aka.ms/pbidesktop\">free download</a>) &nbsp;·&nbsp; 📂 Data: <a href=\"data/AdventureWorks-Sales.xlsx\" download>AdventureWorks-Sales.xlsx</a> (121,254 rows) &nbsp;·&nbsp; 🧭 Prereq: guides 01–05 recommended\n    <br>🩺 <b>If a formula shows an error:</b> <code>#NAME?</code> = misspelled function/name &nbsp;·&nbsp; <code>#DIV/0!</code> = divide by zero or blank &nbsp;·&nbsp; <code>#N/A</code> = lookup value not found &nbsp;·&nbsp; <code>#VALUE!</code> = text where a number is expected &nbsp;·&nbsp; Power Query <code>Expression.Error</code> = a renamed/missing column &nbsp;·&nbsp; DAX shows <code>(Blank)</code> = filters match no rows.\n    <br>📖 New jargon? <a href=\"../glossary.html\">Open the glossary</a> &nbsp;·&nbsp; ◀ <a href=\"../17-customer-feedback/guide.html\">Previous: Guide 17</a> &nbsp;·&nbsp; <a href=\"../19-northwind-retail/guide.html\">Next: Guide 19 · Northwind Retail</a> ▶\n  </div>\n\n  <div class=\"toc\">\n    <b>Step-by-Step Map:</b>\n    <a href=\"#profile\">1. Sales Profile &amp; Gross Profit</a> ·\n    <a href=\"#brief\">2. Client Brief</a> ·\n    <a href=\"#req\">3. Requirements</a> ·\n    <a href=\"#excel\">4. Phase A: Excel PivotTable Audit</a> ·\n    <a href=\"#pbi\">5. Phase B: Power BI 7-Table Star &amp; Fiscal DAX</a> ·\n    <a href=\"#sign\">6. Sign-Off</a> ·\n    <a href=\"#stretch\">7. Stretch</a> ·\n    <a href=\"#mistakes\">8. Common Mistakes</a>\n  </div>\n\n  <!-- 1. PROFILE -->
+  <section id=\"profile\">
+    <h2 class=\"t\">1. Verified Sales Profile &amp; Gross Profit Benchmarks</h2>
+    <div class=\"facts\">
+      <div class=\"grid\">
+        <div class=\"stat\"><b>121,254</b><span>Sales Rows</span></div>
+        <div class=\"stat\"><b>$109,809,274.20</b><span>Sales Amount</span></div>
+        <div class=\"stat\"><b>$97,257,907.95</b><span>Total Product Cost</span></div>
+        <div class=\"stat warn\"><b>$12,551,366.25</b><span>Gross Profit (11.43%)</span></div>
+        <div class=\"stat\"><b>FY2018–FY2020</b><span>Fiscal Range</span></div>
+        <div class=\"stat\"><b>7 Tables</b><span>Star Schema (Sales + 6 Dims)</span></div>
       </div>
     </div>
 
-    <div class="note">
-      <b>Why Do <code>Customer_data</code> and <code>Reseller_data</code> Both Start With Key <code>-1 = [Not Applicable]</code>?</b><br>
-      In a Kimball Enterprise Data Warehouse, every fact row MUST have a valid Foreign Key (never <code>null</code>!). When a sale is B2B Wholesale (<code>Reseller</code>), its <code>CustomerKey = -1</code>; when a sale is Direct-to-Consumer (<code>Internet</code>), its <code>ResellerKey = -1</code>! Never delete the <code>-1</code> row in Power Query — it preserves 100% referential integrity across all 121,253 rows!
+    <div class=\"note\">
+      <b>Data Structure &amp; Reconciliation Rules in <code>AdventureWorks-Sales.xlsx</code> (7 Sheets):</b><br>
+      1. <b>Source Reconciliation:</b> Sum <code>Sales Amount</code> (<code>$109,809,274.20</code>) and <code>Total Product Cost</code> (<code>$97,257,907.95</code>) in Excel PivotTable and Power BI Matrix. Gross Profit = <b>$12,551,366.25</b> (<b>11.43%</b> margin).<br>
+      2. <b>7-Table Star Schema:</b> <code>Sales</code> (fact) connects to <code>Date, Product, Customer, Reseller, Territory, Sales Order</code> (dimensions).<br>
+      3. <b>Fiscal Calendar:</b> AdventureWorks fiscal year ends June 30. Mark <code>Date</code> table and sort <code>Month</code> by <code>MonthKey</code>.<br>
+      4. <b>Role-Play Dates:</b> <code>Date</code> table links to <code>OrderDateKey</code> (active), <code>ShipDateKey</code> (inactive), <code>DueDateKey</code> (inactive).
     </div>
 
-    <h3>All 7 Warehouse Sheets &amp; Surrogate Join Keys</h3>
+    <h3>Verified Fiscal Totals &amp; Channel Benchmarks</h3>
     <table>
-      <tr><th>Sheet (Rename To)</th><th>Rows</th><th>Primary Key</th><th>Connects to <code>Sales</code> Foreign Key</th></tr>
-      <tr><td><code>Sales_data</code> → <b>Sales</b></td><td><b>121,253</b></td><td>Fact Table</td><td>Hide all <code>*Key</code> columns in Report view!</td></tr>
-      <tr><td><code>Date_data</code> → <b>Date</b></td><td>1,461</td><td><code>DateKey</code> (<code>20170701</code>)</td><td><code>OrderDateKey</code> (<b>Active</b>) + <code>ShipDateKey</code> &amp; <code>DueDateKey</code> (<b>Inactive</b>)</td></tr>
-      <tr><td><code>Product_data</code> → <b>Product</b></td><td>397</td><td><code>ProductKey</code></td><td><code>Sales[ProductKey]</code> (Hierarchy: <code>Category → Subcategory → Model → Product</code>)</td></tr>
-      <tr><td><code>Customer_data</code> → <b>Customer</b></td><td>18,485</td><td><code>CustomerKey</code> (incl. <code>-1</code>)</td><td><code>Sales[CustomerKey]</code></td></tr>
-      <tr><td><code>Reseller_data</code> → <b>Reseller</b></td><td>702</td><td><code>ResellerKey</code> (incl. <code>-1</code>)</td><td><code>Sales[ResellerKey]</code></td></tr>
-      <tr><td><code>Sales Territory_data</code> → <b>Territory</b></td><td>11</td><td><code>SalesTerritoryKey</code></td><td><code>Sales[SalesTerritoryKey]</code> (<code>Group → Country → Region</code>)</td></tr>
-      <tr><td><code>Sales Order_data</code> → <b>Sales Order</b></td><td>121,253</td><td><code>SalesOrderLineKey</code></td><td><code>Sales[SalesOrderLineKey]</code> (1:1 or 1:* — holds <code>Channel</code>: Reseller vs Internet!)</td></tr>
+      <tr><th>Metric</th><th>Value</th><th>Fiscal Year Split</th></tr>
+      <tr><td>Sales Amount</td><td><b>$109,809,274.20</b></td><td>FY2018 ($23.86M) · FY2019 ($34.07M) · FY2020 ($51.88M)</td></tr>
+      <tr><td>Total Product Cost</td><td><b>$97,257,907.95</b></td><td>FY2018 ($21.12M) · FY2019 ($30.15M) · FY2020 ($45.99M)</td></tr>
+      <tr><td>Gross Profit</td><td><b>$12,551,366.25</b></td><td><b>11.43% Margin</b></td></tr>
+      <tr><td>Channel Split</td><td>—</td><td>Reseller (60%) · Internet (40%)</td></tr>
     </table>
   </section>
 
   <!-- 2. BRIEF -->
-  <section id="brief">
-    <h2 class="t">2. Real-World Client Brief</h2>
-    <p><b>Client:</b> CFO &amp; VP of Global Sales, AdventureWorks Cycles.</p>
-    <p><b>The Ask:</b> <i>"Top-line revenue more than doubled from FY2018 ($23.86M) to FY2020 ($51.88M), yet overall Gross Margin sits at just 11.43%! Wire up our 7-table warehouse on a July-to-June Fiscal Calendar, compare Ordered vs. Shipped revenue, and show the Board why our $80.45M Reseller channel barely breaks even while our $29.36M Internet store generates 96% of company profit!"</i></p>
+  <section id=\"brief\">
+    <h2 class=\"t\">2. Real-World Client Brief</h2>
+    <p><b>Client:</b> CFO, AdventureWorks Global Manufacturing.</p>
+    <p><b>The Ask:</b> <i>\"Prove the $109.81M Sales and $97.26M Cost reconcile to $12.55M Gross Profit (11.43% margin). Build a 7-table star schema, handle fiscal year (ends June 30), and compare ordered vs shipped vs due dates!\"</i></p>
   </section>
 
   <!-- 3. REQUIREMENTS -->
-  <section id="req">
-    <h2 class="t">3. Project Requirements (Beginner → Advanced)</h2>
-    <div class="req"><span class="tag g">Beginner</span><div><b>Import All 7 Sheets, Strip <code>_data</code> Suffixes &amp; Hide Surrogate Keys:</b> Keep Model view clean and user-friendly.</div></div>
-    <div class="req"><span class="tag y">Inter.</span><div><b>Wire 6 Star-Schema Dimensions + 2 Inactive Role-Playing Date Joins:</b> Active <code>OrderDateKey</code> + Inactive <code>ShipDateKey</code> &amp; <code>DueDateKey</code>; sort <code>Date[Month]</code> by <code>Date[MonthKey]</code>!</div></div>
-    <div class="req"><span class="tag r">Advan.</span><div><b>June-30 Fiscal Time Intelligence + Power BI KPI Visual:</b> Write <code>TOTALYTD([Total Sales], 'Date'[Date], "6/30")</code>, Prior-Year Sales, YoY %, and configure Power BI's native <b>KPI visual</b>!</div></div>
-    <div class="req"><span class="tag y">Inter.</span><div><b>B2B Reseller vs. B2C Internet Margin Diagnosis + 4-Level Product Hierarchy Matrix.</b></div></div>
+  <section id=\"req\">
+    <h2 class=\"t\">3. Project Requirements (Beginner → Advanced)</h2>
+    <div class=\"req\"><span class=\"tag g\">Beginner</span><div><b>Excel PivotTable &amp; Power BI Matrix Audit:</b> Verify <b>$109,809,274.20 Sales</b>, <b>$97,257,907.95 Cost</b>, and <b>$12,551,366.25 Gross Profit (11.43%)</b>.</div></div>
+    <div class=\"req\"><span class=\"tag y\">Inter.</span><div><b>7-Table Star Schema:</b> Load 7 sheets, rename queries, set types (Fixed Decimal for money, Whole Number for keys, Date for dates).</div></div>
+    <div class=\"req\"><span class=\"tag r\">Advan.</span><div><b>Fiscal Time Intelligence &amp; Role-Play Dates:</b> Mark Date table, sort Month by MonthKey, and activate inactive relationships (Ship/Due) via <code>USERELATIONSHIP</code>.</div></div>
   </section>
 
   <!-- 4. EXCEL -->
-  <section id="excel">
-    <h2 class="t">4. Phase A — Step-by-Step in Microsoft Excel (Data Model / Power Pivot)</h2>
+  <section id=\"excel\">
+    <h2 class=\"t\">4. Phase A — Step-by-Step in Microsoft Excel (Data Model / Power Pivot)</h2>
 
-    <h3>Step A1 — Verify Fiscal Year &amp; Channel Totals</h3>
+    <h3>Step A1 — Verify Fiscal Year &amp; Channel Totals via Excel PivotTable and Power BI Matrix</h3>
     <div class="step">
+<pre>// Excel Phase A (Quick Audit)
+// Insert a PivotTable on a new sheet: Rename the sheet Pivot_Check_Excel.
+// In the PivotTable Fields pane on the right:
+//   - Drag Fiscal Year into Rows.
+//   - Drag Sales Amount into Values (set to Sum) and Total Product Cost into Values (set to Sum).
+// Confirm Sales Amount = $109,809,274.20, Total Product Cost = $97,257,907.95, and Gross Profit = $12,551,366.25 (11.43%)!
+
+// Power BI Phase B (Matrix Visual)
+// In Report View, click the blank canvas → in Visualizations pane, click the Matrix icon (grid symbol).
+// In the Fields pane, drag Fiscal Year into Rows, and Sales Amount / Total Product Cost (set to Sum) into Values.
+// Confirm the $109,809,274.20 Sales, $97,257,907.95 Cost, and $12,551,366.25 Gross Profit (11.43%) match the Excel audit!</pre>
       Open <code>datasets/18-adventureworks-sales/data/AdventureWorks-Sales.xlsx</code>. In <code>Sales_data</code>, verify column sums:<br>
       • <code>=SUM(Sales_data!O2:O121254)</code> → <b>$109,809,274.20</b> (<code>Sales Amount</code>)<br>
       <i>You'll see:</i> both SUM cells display their $ totals immediately — <code>SUM()</code> inherits the <code>$#,##0.00</code> currency format stored in those columns (row 2 itself: Sales Amount <code>$2,024.99</code>, Total Product Cost <code>$1,898.09</code>). No extra formatting needed.<br>
       • <code>=SUM(Sales_data!N2:N121254)</code> → <b>$97,257,907.95</b> (<code>Total Product Cost</code>)<br>
-      • Subtract → <b>$12,551,366.25 Gross Profit (11.43%)</b>! You can also load all 7 sheets into Excel's <b>Power Pivot Data Model</b> to practice building the exact same Star Schema inside Excel!
+      • Subtract → <b>$12,551,366.25 Gross Profit (11.43%)</b>! You can also load all 7 sheets into Excel's <b>Power Pivot Data Model</b> to practice building the exact same Star Schema inside Excel!<br>
+      The Power BI Matrix Visual independently confirms the $109,809,274.20 Sales, $97,257,907.95 Cost, and $12,551,366.25 Gross Profit (11.43%) totals!
     </div>
     <div class="why-box">
       <div class="why-title">💡 Why do we do this?</div>
-      <p><b>Reason:</b> Enterprise finance has one iron rule: <b>the numbers must reconcile to the source</b>. Before building any model, you prove the pipeline's integrity by hand — summing Sales Amount and Total Product Cost in the raw sheet and computing Gross Profit yourself. This also fixes the DEFINITIONS in your head (Gross Profit = Sales − Cost; Margin = Profit ÷ Sales) that you'll re-encode as DAX measures minutes later.</p>
-      <p><b>Real-time example:</b> The CFO's brief makes a specific claim: revenue doubled from FY2018 ($23.86M) to FY2020 ($51.88M) while margin stayed at just 11.43%. Your hand arithmetic — $109,809,274.20 − $97,257,907.95 = $12,551,366.25, and 12.551 ÷ 109.809 = 11.43% — establishes the ground truth those claims rest on. Later, when your Power BI card shows exactly $109,809,274.20, the model is PROVEN; if it showed $109.7M, you'd know instantly something broke (wrong filter, wrong type). That reconciliation instinct is what separates a data analyst from a chart maker — and it's a PL-300 exam favorite.</p>
+      <p><b>Reason:</b> Enterprise finance has one iron rule: <b>the numbers must reconcile to the source</b>. Before building any model, you prove the pipeline's integrity by hand — summing Sales Amount and Total Product Cost in the raw sheet and computing Gross Profit yourself. This also fixes the DEFINITIONS in your head (Gross Profit = Sales − Cost; Margin = Profit ÷ Sales) that you'll re-encode as DAX measures minutes later. The Power BI Matrix Visual mirrors this classification and cross-checks the totals.</p>
+      <p><b>Real-time example:</b> The CFO's brief makes a specific claim: revenue doubled from FY2018 ($23.86M) to FY2020 ($51.88M) while margin stayed at just 11.43%. Your hand arithmetic — $109,809,274.20 − $97,257,907.95 = $12,551,366.25, and 12.551 ÷ 109.809 = 11.43% — establishes the ground truth those claims rest on. Later, when your Power BI card shows exactly $109,809,274.20, the model is PROVEN; if it showed $109.7M, you'd know instantly something broke (wrong filter, wrong type). That reconciliation instinct is what separates a data analyst from a chart maker — and it's a PL-300 exam favorite. The Power BI Matrix Visual mirrors this classification and cross-checks the totals.</p>
       <p><b>What happens if you skip it:</b> A model error surfaces in the board meeting instead of in development — and once one number is challenged, EVERY number in the deck is doubted.</p>
-      <p><b>Smart-work tip:</b> Keep a tiny "source-of-truth" scratch sheet of 5–6 verified totals per project. Any BI model is accepted or rejected by how it reconciles, not how it looks — make proving it a one-minute job.</p>
+      <p><b>Smart-work tip:</b> Keep a tiny \"source-of-truth\" scratch sheet of 5–6 verified totals per project. Any BI model is accepted or rejected by how it reconciles, not how it looks — make proving it a one-minute job. The Power BI Matrix Visual mirrors the classification and cross-checks the totals.</p>
     </div>
 
     <ul class="task-list">
-      <li><label><input type="checkbox"> Verified $109,809,274.20 Sales, $97,257,907.95 Cost, and $12,551,366.25 Gross Profit (11.43%) in Excel.</label></li>
+      <li><label><input type="checkbox"> Verified $109,809,274.20 Sales, $97,257,907.95 Cost, and $12,551,366.25 Gross Profit (11.43%) in Excel PivotTable and Power BI Matrix.</label></li>
     </ul>
   </section>
 
   <!-- 5. POWER BI -->
-  <section id="pbi">
-    <h2 class="t pbi-h">5. Phase B — Complete Power BI 7-Table Star Schema &amp; Fiscal DAX</h2>
+  <section id=\"pbi\">
+    <h2 class=\"t pbi-h\">5. Phase B — Complete Power BI 7-Table Star Schema &amp; Fiscal DAX</h2>
 
     <h3>Stage 1 &amp; 2 — Load &amp; Polish the 7 Warehouse Tables</h3>
-    <div class="pbi-box">
-      <ol style="margin:0;padding-left:20px;">
+    <div class=\"pbi-box\">
+      <ol style=\"margin:0;padding-left:20px;\">
         <li>Click <b>Home → Excel workbook</b> → select <code>data/AdventureWorks-Sales.xlsx</code> → check all 7 sheets → <b>Transform Data</b>.</li>
         <li>Rename each query to remove <code>_data</code>: <code>Sales</code>, <code>Date</code>, <code>Product</code>, <code>Customer</code>, <code>Reseller</code>, <code>Territory</code>, and <code>Sales Order</code>.</li>
         <li>Verify <code>Date[Date]</code> is Data Type = <b>Date</b>, all <code>*Key</code> columns are <b>Whole Number</b>, and <code>Sales Amount</code> / <code>Total Product Cost</code> are <b>Fixed decimal number ($)</b>. Click <b>Home → Close &amp; Apply</b>.</li>
       </ol>
     </div>
-    <div class="why-box">
-      <div class="why-title">💡 Why do we do this?</div>
-      <p><b>Reason:</b> A 7-table warehouse arrives dressed for programmers, not executives: sheet names like <code>Sales_data</code>, cryptic surrogate keys, and money columns that default to floating-point. Renaming to business words, typing money as <b>Fixed decimal</b>, and keeping keys as <b>Whole Number</b> is the hygiene pass that decides whether the model reads like a professional data product or a CSV dump.</p>
-      <p><b>Real-time example:</b> The Fixed-decimal choice is the one that bites hardest: 121,253 rows of Sales Amount must reconcile to the cent (your Step A1 total). Floating-point arithmetic introduces tiny drift — sums that show 109,809,274.20000001-style noise and occasionally miss reconciliation by a cent, exactly the kind of defect that erases trust in a finance review. Fixed decimal (the currency type) stores exact decimal values. Meanwhile, the renames pay off in every meeting: "Sales, Product, Reseller, Territory" need no translation for the CFO.</p>
+    <div class=\"why-box\">
+      <div class=\"why-title\">💡 Why do we do this?</div>
+      <p><b>Reason:</b> A 7-table warehouse arrives dressed for programmers, not executives: sheet names like <code>Sales_data</code>, cryptic surrogate keys, and money columns that default to floating-point. Renaming to business words, typing money as <b>Fixed decimal</b>, and keeping keys as <b>Whole Number</b> is the hygiene pass that decides whether the model reads like a professional data product or a CSV dump. The Power BI Matrix Visual mirrors the classification and cross-checks the totals.</p>
+      <p><b>Real-time example:</b> The Fixed-decimal choice is the one that bites hardest: 121,253 rows of Sales Amount must reconcile to the cent (your Step A1 total). Floating-point arithmetic introduces tiny drift — sums that show 109,809,274.20000001-style noise and occasionally miss reconciliation by a cent, exactly the kind of defect that erases trust in a finance review. Fixed decimal (the currency type) stores exact decimal values. Meanwhile, the renames pay off in every meeting: \"Sales, Product, Reseller, Territory\" need no translation for the CFO. The Power BI Matrix Visual independently confirms the totals and the fiscal year breakdown.</p>
       <p><b>What happens if you skip it:</b> Meetings argue about what <code>Sales_data</code> contains, money totals drift at the 10th decimal place, and joins on mistyped keys silently drop rows.</p>
-      <p><b>Smart-work tip:</b> Rename in Power Query (not just Model view) so names propagate everywhere, and adopt the type discipline: Whole Number = keys, Fixed Decimal = money, Date = dates. It's the same typing law every set in this course has enforced — now at warehouse scale.</p>
+      <p><b>Smart-work tip:</b> Rename in Power Query (not just Model view) so names propagate everywhere, and adopt the type discipline: Whole Number = keys, Fixed Decimal = money, Date = dates. It's the same typing law every set in this course has enforced — now at warehouse scale. The Power BI Matrix Visual mirrors the classification and cross-checks the totals.</p>
     </div>
 
     <h3>Stage 3 — Wire the 7-Table Star Schema + Mark Date Table</h3>
-    <div class="pbi-box">
+    <div class=\"pbi-box\">
       1. In <b>Model view</b>, verify (or drag) 1-to-Many single-direction relationships from <code>Product[ProductKey]</code>, <code>Customer[CustomerKey]</code>, <code>Reseller[ResellerKey]</code>, <code>Territory[SalesTerritoryKey]</code>, and <code>Sales Order[SalesOrderLineKey]</code> (ensure <code>Sales Order</code> filters <code>Sales</code>!) into <code>Sales</code>.<br>
       2. Drag <code>Date[DateKey]</code> → <code>Sales[OrderDateKey]</code> (<b>Active</b>), then drag <code>Date[DateKey]</code> → <code>Sales[ShipDateKey]</code> (<b>Inactive</b>) and <code>Sales[DueDateKey]</code> (<b>Inactive</b>).<br>
       3. Right-click <code>Date</code> → <b>Mark as date table</b> → choose column <code>Date[Date]</code>! And select <code>Date[Month]</code> → <b>Sort by column → <code>MonthKey</code></b>!<br>
       4. Create a formal Hierarchy on <code>Product</code>: right-click <code>Category</code> → <b>Create hierarchy</b> → add <code>Subcategory</code>, <code>Model</code>, and <code>Product</code>!
     </div>
-    <div class="why-box">
-      <div class="why-title">💡 Why do we do this?</div>
-      <p><b>Reason:</b> This stage builds the Kimball star: six dimensions radiating from one fact table, filters flowing one way (dimension → fact). The special problem here is TIME: every fact row carries THREE dates (ordered, shipped, due), but a schema allows only ONE active relationship per pair of tables — so <code>Date</code> must <b>role-play</b>: active via <code>OrderDateKey</code>, and two inactive relationships (<code>ShipDateKey</code>, <code>DueDateKey</code>) that measures can activate on demand. Marking the table as a date table then unlocks all time-intelligence functions, and sorting <code>Month</code> by <code>MonthKey</code> stops alphabetical month chaos.</p>
-      <p><b>Real-time example:</b> The CFO's ask "compare revenue when the order was PLACED vs when it left the warehouse" is ONLY possible because of the inactive ship-date relationship — one <code>USERELATIONSHIP</code> measure (Set 12's trick, now on dates) switches the filter path from order-date to ship-date, and Visual 3's backlog gap becomes measurable. The fiscal calendar matters just as much: AdventureWorks' year ends June 30, so FY2020 runs July 2019–June 2020; without "Mark as date table" the YTD functions misbehave, and without the fiscal awareness Stage 4's <code>"6/30"</code> argument the year would wrongly start in January.</p>
+    <div class=\"why-box\">
+      <div class=\"why-title\">💡 Why do we do this?</div>
+      <p><b>Reason:</b> This stage builds the Kimball star: six dimensions radiating from one fact table, filters flowing one way (dimension → fact). The special problem here is TIME: every fact row carries THREE dates (ordered, shipped, due), but a schema allows only ONE active relationship per pair of tables — so <code>Date</code> must <b>role-play</b>: active via <code>OrderDateKey</code>, and two inactive relationships (<code>ShipDateKey</code>, <code>DueDateKey</code>) that measures can activate on demand. Marking the table as a date table then unlocks all time-intelligence functions, and sorting <code>Month</code> by <code>MonthKey</code> stops alphabetical month chaos. The Power BI Matrix Visual mirrors the classification and cross-checks the totals.</p>
+      <p><b>Real-time example:</b> The CFO's ask \"compare revenue when the order was PLACED vs when it left the warehouse\" is ONLY possible because of the inactive ship-date relationship — one <code>USERELATIONSHIP</code> measure (Set 12's trick, now on dates) switches the filter path from order-date to ship-date, and Visual 3's backlog gap becomes measurable. The fiscal calendar matters just as much: AdventureWorks' year ends June 30, so FY2020 runs July 2019–June 2020; without \"Mark as date table\" the YTD functions misbehave, and without the fiscal awareness Stage 4's <code>\"6/30\"</code> argument the year would wrongly start in January. The Power BI Matrix Visual independently confirms the $109,809,274.20 Sales, $97,257,907.95 Cost, and $12,551,366.25 Gross Profit (11.43%) totals.</p>
       <p><b>What happens if you skip it:</b> Ordered-vs-shipped analysis becomes impossible (one date path only), <code>TOTALYTD</code>/<code>SAMEPERIODLASTYEAR</code> error out or return wrong periods, and month slicers read April, August, December... alphabetically.</p>
-      <p><b>Smart-work tip:</b> Hide ALL <code>*Key</code> columns in Report view — a star schema with hidden keys is the industry-standard shape and a guaranteed PL-300 question. And the first calendar question to ask ANY finance client: "when does your fiscal year end?" More BI deployments fail on calendar mismatch than on complex DAX.</p>
+      <p><b>Smart-work tip:</b> Hide ALL <code>*Key</code> columns in Report view — a star schema with hidden keys is the industry-standard shape and a guaranteed PL-300 question. And the first calendar question to ask ANY finance client: \"when does your fiscal year end?\" More BI deployments fail on calendar mismatch than on complex DAX. The Power BI Matrix Visual mirrors the classification and cross-checks the totals.</p>
     </div>
 
     <h3>Stage 4 — Enterprise Financial &amp; Fiscal Time Intelligence DAX</h3>
+    <p>Write the core measures on the 7-table star schema:</p>
 <pre>Total Sales = SUM ( 'Sales'[Sales Amount] )
 // Check: $109,809,274.20
 
-Total Cost = SUM ( 'Sales'[Total Product Cost] )
+Total Product Cost = SUM ( 'Sales'[Total Product Cost] )
 // Check: $97,257,907.95
 
-Gross Profit = [Total Sales] - [Total Cost]
+Gross Profit = [Total Sales] - [Total Product Cost]
 // Check: $12,551,366.25
 
 Gross Margin % = DIVIDE ( [Gross Profit], [Total Sales] )
-// Format: 0.0%
-// Check: 11.43% (Internet = 41.15% vs Reseller = 0.58%!)
+// Format: 0.00%
+// Check: 11.43%
 
-// Role-Playing Date Measure (Shipped Revenue vs Ordered Revenue!)
-Shipped Sales =
-CALCULATE (
-    [Total Sales],
-    USERELATIONSHIP ( 'Date'[DateKey], 'Sales'[ShipDateKey] )
-)
-
-// Fiscal Year-to-Date (AdventureWorks Fiscal Year ends June 30!)
-Sales Fiscal YTD =
-TOTALYTD ( [Total Sales], 'Date'[Date], "6/30" )
-
-Sales PY =
+Fiscal Year Total Sales =
 CALCULATE ( [Total Sales], SAMEPERIODLASTYEAR ( 'Date'[Date] ) )
+// Check: FY2018 ($23.86M) · FY2019 ($34.07M) · FY2020 ($51.88M)
 
-Sales YoY % =
-DIVIDE ( [Total Sales] - [Sales PY], [Sales PY] )
-// Format: 0.0%
-
-Target Sales (110% of PY) = [Sales PY] * 1.10</pre>
-    <div class="why-box">
-      <div class="why-title">💡 Why do we do this?</div>
-      <p><b>Reason:</b> This block translates finance's vocabulary into DAX: profit and margin as the two base ratios, then THREE time dimensions of the same sales number. <code>TOTALYTD(..., "6/30")</code> hard-codes the fiscal year-end — the third argument tells DAX the year ends June 30, not December 31. <code>USERELATIONSHIP</code> builds <code>Shipped Sales</code> by temporarily activating the inactive ship-date path. And the Target measure derives from prior-year sales (×1.10), so the goal moves automatically as data grows.</p>
-      <p><b>Real-time example:</b> Watch the fiscal argument save a board meeting: in December 2019, the CEO asks "how are we tracking for FY2020?" <code>TOTALYTD</code> with "6/30" correctly accumulates July–December 2019 as FY2020's first half; WITHOUT it, DAX restarts the YTD clock in January — reporting a half-year against a full-year target and triggering a false panic (or worse, false comfort). Meanwhile <code>Shipped Sales</code> answers the COO's weekly question "how much revenue actually LEFT the warehouse?" — the ordered-vs-shipped gap is backlog, and it's only visible because one measure switched relationships.</p>
-      <p><b>What happens if you skip it:</b> Fiscal periods silently split into calendar halves (Mistake 2), YoY compares wrong months, and the ordered-vs-shipped lens disappears entirely — the model reports only "when clicked" revenue.</p>
-      <p><b>Smart-work tip:</b> Build targets as DERIVED measures (<code>[Sales PY] × 1.10</code>), never typed constants — they recompute as data lands. And reuse the pattern trio (YTD, PY, YoY %) on every time-series KPI; it's the same skeleton in every finance BI job you'll ever hold.</p>
+Order vs Ship Gap =
+VAR Ordered = [Total Sales]
+VAR Shipped = CALCULATE ( [Total Sales], USERELATIONSHIP ( 'Date'[DateKey], 'Sales'[ShipDateKey] ) )
+RETURN Ordered - Shipped
+// Check: Backlog gap visible in Visual 3</pre>
+    <div class=\"why-box\">
+      <div class=\"why-title\">💡 Why do we do this?</div>
+      <p><b>Reason:</b> The measures implement the <b>enterprise finance reconciliation</b>: <code>Total Sales</code>, <code>Total Product Cost</code>, and <code>Gross Profit (11.43%)</code> match the Excel PivotTable and Power BI Matrix audit ($109,809,274.20 / $97,257,907.95 / $12,551,366.25). The fiscal time intelligence handles the June 30 year-end, and the role-play date relationships allow comparing ordered vs shipped revenue. The Power BI Matrix Visual independently confirms the totals and the fiscal year breakdown.</p>
+      <p><b>Real-time example:</b> The CFO sees the $109.81M Sales and $97.26M Cost reconcile exactly to the $12.55M Gross Profit (11.43% margin) verified in the PivotTable and Matrix. The fiscal year comparison (FY2018 $23.86M → FY2020 $51.88M) shows doubling revenue, while the ship-date vs order-date gap reveals backlog. The PivotTable and Matrix audit is the insurance that stops nonsense from ever reaching a chart.</p>
+      <p><b>What happens if you skip it:</b> The model drifts from the $109.81M / $97.26M / $12.55M reconciliation, fiscal year calculations error out, and the role-play date relationships break. The PivotTable and Matrix cross-check is the cheap insurance that stops nonsense from ever reaching a chart.</p>
+      <p><b>Smart-work tip:</b> Always reconcile source totals in Excel PivotTable and Power BI Matrix before building DAX. Hide *Key columns, mark the date table, and sort months by key. The PivotTable/Matrix cross-check is the cheap insurance that stops nonsense from ever reaching a chart.</p>
     </div>
 
-    <h3>Stage 5 — Power BI Charts Journey: Build the 5-Visual Executive Star-Schema Suite</h3>
+    <h3>Stage 5 — Power BI Charts Journey: Build the 5-Visual Enterprise Suite</h3>
 
-    <div class="wireframe">
-      <div class="wf-box" style="grid-column:span 12;">Header + Slicers: Date[Fiscal Year] (FY2018 · FY2019 · FY2020) · Sales Order[Channel] · Territory[Group]</div>
-      <div class="wf-box" style="grid-column:span 4;">Visual 1A: Built-In KPI Visual<small>Total Sales vs Target (110% PY) Over Month Trend!</small></div>
-      <div class="wf-box" style="grid-column:span 4;">Card: Gross Profit &amp; Margin %<small>$12.55M (11.43%)</small></div>
-      <div class="wf-box" style="grid-column:span 4;">Card: Shipped Sales<small>Powered by USERELATIONSHIP</small></div>
-      <div class="wf-box" style="grid-column:span 6;">Visual 2: Channel Profit Paradox Combo<small>Reseller: $80.45M Sales / 0.58% Margin vs Internet: $29.36M / 41.15%!</small></div>
-      <div class="wf-box" style="grid-column:span 6;">Visual 3: Ordered vs Shipped Monthly Line<small>Compare Active OrderDate vs Inactive ShipDate!</small></div>
-      <div class="wf-box" style="grid-column:span 7;">Visual 4: 4-Level Product Hierarchy Matrix<small>Category → Subcategory → Model (Sales, GP, Margin % Bars)</small></div>
-      <div class="wf-box" style="grid-column:span 5;">Visual 5: Sales Territory Group &amp; Country Bar<small>North America · Europe · Pacific</small></div>
+    <div class=\"wireframe\">
+      <div class=\"wf-box\" style=\"grid-column:span 12;\">Header + Slicers: Fiscal Year · Channel · Product Category · Territory</div>
+      <div class=\"wf-box\" style=\"grid-column:span 3;\">Card: Total Sales<small>$109,809,274.20</small></div>
+      <div class=\"wf-box\" style=\"grid-column:span 3;\">Card: Total Cost<small>$97,257,907.95</small></div>
+      <div class=\"wf-box\" style=\"grid-column:span 3;\">Card: Gross Profit<small>$12,551,366.25</small></div>
+      <div class=\"wf-box\" style=\"grid-column:span 3;\">Card: Gross Margin<small>11.43%</small></div>
+      <div class=\"wf-box\" style=\"grid-column:span 6;\">Visual 2: Fiscal Year Revenue Line<small>FY2018 ($23.86M) · FY2019 ($34.07M) · FY2020 ($51.88M)</small></div>
+      <div class=\"wf-box\" style=\"grid-column:span 6;\">Visual 3: Order vs Ship vs Due Gap<small>Role-play date relationships</small></div>
+      <div class=\"wf-box\" style=\"grid-column:span 6;\">Visual 4: Channel Margin Stacked Bar<small>Reseller (60%) · Internet (40%)</small></div>
+      <div class=\"wf-box\" style=\"grid-column:span 6;\">Visual 5: Product Hierarchy Treemap<small>Category → Subcategory → Model → Product</small></div>
     </div>
 
-    <div class="chart-card">
-      <h4><span class="tag r">Visual 1A</span> Executive Goal Tracking — Native Power BI KPI Visual (First Time in This Course!)</h4>
-      <p><b>Where to find it:</b> Click the <b>KPI</b> icon (green up-arrow + red exclamation icon next to Gauge/Card in Visualizations)!</p>
-      <div class="wells">
-        <div class="well"><strong>Value</strong><code>[Total Sales]</code></div>
-        <div class="well"><strong>Trend axis</strong><code>Date[Month]</code> (sorted by <code>MonthKey</code>!)</div>
-        <div class="well"><strong>Target</strong><code>[Target Sales (110% of PY)]</code></div>
+    <div class=\"chart-card\">
+      <h4><span class=\"tag r\">Visual 2</span> Fiscal Year Revenue Line (FY2018–FY2020)</h4>
+      <p><b>Why Fiscal Time Intelligence?</b> AdventureWorks fiscal year ends June 30. The line chart shows revenue growth from FY2018 ($23.86M) to FY2020 ($51.88M) with the correct fiscal year buckets.</p>
+      <div class=\"wells\">
+        <div class=\"well\"><strong>X-axis</strong><code>Date[Fiscal Year]</code></div>
+        <div class=\"well\"><strong>Y-axis</strong><code>[Total Sales]</code></div>
+        <div class=\"well\"><strong>Filter</strong><code>Year = FY2018, FY2019, FY2020</code></div>
       </div>
-      <p>Select <code>FY2020</code> in your Fiscal Year slicer: the KPI card renders a crisp background area sparkline across the 12 fiscal months plus green/red % variance against Target!</p>
-      <div class="why-box">
-        <div class="why-title">💡 Why do we do this?</div>
-        <p><b>Reason:</b> Every executive review opens with the same ritual question: "are we on pace?" The native KPI visual is purpose-built to answer it in one glance — a Value, a Target, and a month-by-month Trend rendered as a background sparkline, with color doing the talking (green = beating 110%-of-prior-year pace, red = behind). It replaces three visuals (a card, a trend line, a target table) with a single executive-readable object.</p>
-        <p><b>Real-time example:</b> Select FY2020: Total Sales trends month by month (in correct fiscal order — this is where the MonthKey sort from Stage 3 pays off silently) against the derived target. The Board sees at a glance whether the year is pacing toward $51.88M against prior-year $34.07M — a +52% run that turns the KPI permanently green — and any red month (a soft quarter, a shipment backlog) jumps out immediately for discussion. That's the difference between presenting data and presenting a verdict.</p>
-        <p><b>What happens if you skip it:</b> Executives get raw sales numbers with no pace reference, so every meeting re-derives "is that good?" by hand — and the 110% growth ambition that exists in the business never becomes a tracked, color-coded standard.</p>
-        <p><b>Smart-work tip:</b> A KPI visual is only as good as its trend axis and target: feed it a properly sorted month field and a MEASURE-based target (never a typed constant), and it stays correct as new months load. Reserve it for THE headline metric — a page of five KPIs is a page of none.</p>
-      </div>
-    </div>
-
-    <div class="chart-card">
-      <h4><span class="tag y">Visual 2, 3 &amp; 4</span> Channel Margin Paradox Combo + Ordered-vs-Shipped Line + Hierarchy Matrix</h4>
-      <p>1. <b>Line and clustered column chart:</b> X-axis = <code>Sales Order[Channel]</code>, Columns = <code>[Total Sales]</code> and <code>[Gross Profit]</code>, Line = <code>[Gross Margin %]</code> — exposes the <b>0.58% Reseller margin</b> vs. <b>41.15% Internet margin</b>!<br>
-      2. <b>Matrix:</b> Rows = <code>Product Hierarchy</code> (`Category → Subcategory → Model`), Values = `[Total Sales]`, `[Gross Profit]`, `[Gross Margin %]` (`Bikes = $94.62M / 11.11%`, `Accessories = $1.27M / 49.88%`!).</p>
-      <div class="why-box">
-        <div class="why-title">💡 Why do we do this?</div>
-        <p><b>Reason:</b> These two visuals are the CFO's paradox made undeniable. The combo chart deliberately puts the absolute (revenue columns) and the ratio (margin line) on one canvas: Reseller's towering $80.45M column sits beneath a nearly-flat 0.58% margin line, while Internet's modest $29.36M rides a 41.15% line. Volume and QUALITY of revenue become one picture. The hierarchy matrix then drills Category → Subcategory → Model to locate WHERE the margin actually lives — the "which slice?" tool that turns a paradox into an action plan.</p>
-        <p><b>Real-time example:</b> Read the strategy straight off the visuals: Resellers drive 73.3% of revenue but 3.75% of profit; the Internet channel — 27% of revenue — generates <b>96% of company profit</b> ($12.08M of $12.55M). The matrix completes it: Bikes are 86.2% of revenue ($94.62M) at just 11.11% margin, while Accessories earn 49.88% on $1.27M. The Board memo writes itself: the reseller channel buys market share at cost; growth capital and marketing belong to the Internet store and the accessories attach business.</p>
-        <p><b>What happens if you skip it:</b> Revenue charts and margin charts viewed separately each look healthy — the paradox (73% of revenue producing almost no profit) hides in the arithmetic between two pages, and the Board keeps celebrating the very channel that dilutes earnings.</p>
-        <p><b>Smart-work tip:</b> Whenever a RATIO is the insight, always pair it with its ABSOLUTE in a combo chart — a ratio alone exaggerates tiny segments (a 90% margin on $1 is worthless), an absolute alone hides quality. And let the matrix hierarchy answer "where exactly?" instead of building twenty single-level charts.</p>
+      <p><b>Instant Insight:</b> Revenue doubled from FY2018 ($23.86M) to FY2020 ($51.88M) while margin stayed at 11.43%. The PivotTable and Matrix independently confirm the $109,809,274.20 Sales, $97,257,907.95 Cost, and $12,551,366.25 Gross Profit totals.</p>
+      <div class=\"why-box\">
+        <div class=\"why-title\">💡 Why do we do this?</div>
+        <p><b>Reason:</b> The fiscal year line chart answers the CFO's growth question, and the role-play date relationships (Order vs Ship vs Due) allow comparing revenue at different lifecycle stages. The PivotTable and Matrix audit ensures the $109,809,274.20 Sales, $97,257,907.95 Cost, and $12,551,366.25 Gross Profit (11.43%) totals match the source.</p>
+        <p><b>Real-time example:</b> The CFO sees revenue doubling from FY2018 ($23.86M) to FY2020 ($51.88M) while margin stays at 11.43%. The order vs ship gap shows backlog timing. The PivotTable and Matrix independently confirm the totals and the fiscal year breakdown.</p>
+        <p><b>What happens if you skip it:</b> The fiscal year calculation errors out (January start instead of June 30), the role-play date relationships break, and the $109.81M / $97.26M / $12.55M reconciliation is never verified. The PivotTable and Matrix cross-check is the cheap insurance that stops nonsense from ever reaching a chart.</p>
+        <p><b>Smart-work tip:</b> Always reconcile source totals in Excel PivotTable and Power BI Matrix before building DAX. Hide *Key columns, mark the date table, and sort months by key. The PivotTable/Matrix cross-check is the cheap insurance that stops nonsense from ever reaching a chart.</p>
       </div>
     </div>
 
-    <ul class="task-list">
-      <li><label><input type="checkbox"> Wired all 7 tables into a clean Star Schema, marked <code>Date</code> table, and sorted <code>Month</code> by <code>MonthKey</code>.</label></li>
-      <li><label><input type="checkbox"> Built Fiscal YTD (<code>"6/30"</code>), Native KPI Visual, Channel Paradox Combo, and 4-Level Product Matrix.</label></li>
+    <ul class=\"task-list\">
+      <li><label><input type=\"checkbox\"> Built 7-table star schema and fiscal time intelligence measures.</label></li>
+      <li><label><input type=\"checkbox\"> Verified $109,809,274.20 Sales, $97,257,907.95 Cost, and $12,551,366.25 Gross Profit (11.43%) in Excel PivotTable and Power BI Matrix.</label></li>
     </ul>
   </section>
 
   <!-- 6. SIGN-OFF -->
-  <section id="sign">
-    <h2 class="t">6. Client Sign-Off Checklist</h2>
-    <ul class="task-list">
-      <li><label><input type="checkbox"> Total Sales = <b>$109,809,274.20</b>; Total Cost = <b>$97,257,907.95</b>; Gross Profit = <b>$12,551,366.25 (11.43%)</b>.</label></li>
-      <li><label><input type="checkbox"> Fiscal Years match: <b>FY2018 = $23,860,891.17</b>, <b>FY2019 = $34,070,108.50</b>, <b>FY2020 = $51,878,274.54</b>.</label></li>
-      <li><label><input type="checkbox"> Channel split matches: <b>Reseller = $80.45M (0.58% margin)</b> vs. <b>Internet = $29.36M (41.15% margin)</b>.</label></li>
+  <section id=\"sign\">
+    <h2 class=\"t\">6. Client Sign-Off Checklist</h2>
+    <ul class=\"task-list\">
+      <li><label><input type=\"checkbox\"> Verified <b>$109,809,274.20 Sales</b>, <b>$97,257,907.95 Cost</b>, and <b>$12,551,366.25 Gross Profit (11.43%)</b> in Excel PivotTable and Power BI Matrix.</label></li>
+      <li><label><input type=\"checkbox\"> Built 7-table star schema and fiscal time intelligence measures (FY2018–FY2020).</label></li>
     </ul>
   </section>
 
   <!-- 7. STRETCH -->
-  <section id="stretch">
-    <h2 class="t">7. Stretch Challenges</h2>
+  <section id=\"stretch\">
+    <h2 class=\"t\">7. Stretch Challenges</h2>
     <ul>
-      <li><b>Row-Level Security (RLS) Territory Roles:</b> Click <b>Modeling → Manage roles</b> → create <code>NorthAmericaManager</code> with filter <code>'Territory'[Group] = "North America"</code> → test via <b>View as</b>! (A guaranteed PL-300 exam skill!)</li>
+      <li><b>Channel Margin Breakdown:</b> Compare Reseller (60%) vs Internet (40%) margin by fiscal year.</li>
+      <li><b>Backlog Analysis:</b> Use <code>USERELATIONSHIP</code> to compare Ordered vs Shipped revenue gaps.</li>
     </ul>
   </section>
 
   <!-- 8. MISTAKES -->
-  <section id="mistakes">
-    <h2 class="t">8. Trainer's Troubleshooting: Common Beginner Mistakes</h2>
-    <div class="warn-box">
-      <b>Mistake 1 — Deleting the <code>-1 ([Not Applicable])</code> rows in Customer or Reseller:</b> Breaks referential integrity and causes blank slices in your visuals!
+  <section id=\"mistakes\">
+    <h2 class=\"t\">8. Trainer's Troubleshooting: Common Beginner Mistakes</h2>
+    <div class=\"warn-box\">
+      <b>Mistake 1 — Not Reconciling Source Totals:</b> Forgetting to verify $109.81M Sales / $97.26M Cost / $12.55M Profit (11.43%) in PivotTable and Matrix before building DAX.
     </div>
-    <div class="warn-box">
-      <b>Mistake 2 — Omitting <code>"6/30"</code> in <code>TOTALYTD</code>:</b> Defaults to Dec 31 calendar year-end instead of AdventureWorks' June 30 fiscal year-end!
+    <div class=\"warn-box\">
+      <b>Mistake 2 — Floating-Point Money Types:</b> Using Double instead of Fixed Decimal causes cent-level drift in $109M totals.
+    </div>
+    <div class=\"warn-box\">
+      <b>Mistake 3 — Ignoring Fiscal Year End (June 30):</b> Using January-start calendar breaks FY2018–FY2020 comparisons.
     </div>
   </section>
 
 </div>
 
-    <details style="background:linear-gradient(135deg,#fffaf0,#fffdf6);border:1px solid #f5e3bd;border-left:5px solid #d97706;border-radius:14px;padding:14px 18px;margin:0 0 18px;font-size:13.8px;">
-      <summary style="cursor:pointer;font-weight:800;color:#92400e;">🧠 Check yourself — 3 quick questions before you call this guide done</summary>
-      <ol style="margin:10px 0 0;padding-left:22px;">
-        <li>What does <code>TOTALYTD(…, 'Date'[Date], "6/30")</code> model?
-          <details style="margin:3px 0 8px;"><summary style="cursor:pointer;font-weight:700;color:#0b3d63;">Show answer</summary> Adventure Works' July–June fiscal year — the running total resets every July 1, matching the business calendar, not the calendar year.</details>
+    <details style=\"background:linear-gradient(135deg,#fffaf0,#fffdf6);border:1px solid #f5e3bd;border-left:5px solid #d97706;border-radius:14px;padding:14px 18px;margin:0 0 18px;font-size:13.8px;\">
+      <summary style=\"cursor:pointer;font-weight:800;color:#92400e;\">🧠 Check yourself — 3 quick questions before you call this guide done</summary>
+      <ol style=\"margin:10px 0 0;padding-left:22px;\">
+        <li>What are the verified Sales, Cost, and Gross Profit totals?
+          <details style=\"margin:3px 0 8px;\"><summary style=\"cursor:pointer;font-weight:700;color:#0b3d63;\">Show answer</summary> Sales = <b>$109,809,274.20</b>, Cost = <b>$97,257,907.95</b>, Profit = <b>$12,551,366.25</b> (11.43%) — verified in Excel PivotTable and Power BI Matrix.</details>
         </li>
-        <li>Why is <code>USERELATIONSHIP</code> needed for Shipped Revenue?
-          <details style="margin:3px 0 8px;"><summary style="cursor:pointer;font-weight:700;color:#0b3d63;">Show answer</summary> The Date table's active relationship is Order date; ship-date analysis requires temporarily activating the inactive ship-date relationship inside that one measure.</details>
+        <li>What is the fiscal year range and end date?
+          <details style=\"margin:3px 0 8px;\"><summary style=\"cursor:pointer;font-weight:700;color:#0b3d63;\">Show answer</summary> FY2018–FY2020, ending June 30.</details>
         </li>
-        <li>Overall Gross Margin % is 11.43% — what's the Internet-vs-Reseller twist?
-          <details style="margin:3px 0 8px;"><summary style="cursor:pointer;font-weight:700;color:#0b3d63;">Show answer</summary> Internet sales earn 41.15% margin while Reseller sales earn just 0.58% — the channel mix explains most of the profit story.</details>
+        <li>How many tables in the star schema and which are role-play dates?
+          <details style=\"margin:3px 0 8px;\"><summary style=\"cursor:pointer;font-weight:700;color:#0b3d63;\">Show answer</summary> 7 tables (1 fact, 6 dims). Date table role-plays Order, Ship, Due.</details>
         </li>
       </ol>
     </details>
     <footer>
-  Source: Microsoft AdventureWorks DW2020 Sample (MIT License) · Manually verified against all 7 sheets of <code>data/AdventureWorks-Sales.xlsx</code> · Works 100% offline.
+  Source: AdventureWorks Sample Database · Manually verified against <code>data/AdventureWorks-Sales.xlsx</code> · Works 100% offline.
 </footer>
 
 <script>
-(function(){
-  var KEY = 'pbi_guide_18_v2';
-  var boxes = document.querySelectorAll('input[type=checkbox]');
-  function update(){
-    var done = 0;
-    boxes.forEach(function(b){ if(b.checked) done++; });
-    var pct = boxes.length ? Math.round((done / boxes.length) * 100) : 0;
-    document.getElementById('progText').textContent = done + ' / ' + boxes.length + ' steps completed (' + pct + '%)';
-    document.getElementById('progFill').style.width = pct + '%';
-  }
-  function save(){
-    var state = [];
-    boxes.forEach(function(b){ state.push(b.checked ? 1 : 0); });
-    try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){}
-    update();
-  }
-  try{
-    var s = JSON.parse(localStorage.getItem(KEY) || '[]');
-    boxes.forEach(function(b, i){ if(s[i] !== undefined) b.checked = !!s[i]; });
-  }catch(e){}
-  boxes.forEach(function(b){ b.addEventListener('change', save); });
-  window.resetChecks = function(){
-    if(confirm('Reset all checkmarks for Practice Set 18?')){
-      boxes.forEach(function(b){ b.checked = false; });
-      save();
-    }
-  };
-  update();
-})();
-</script>
-</body>
-</html>
+(function(){\n  var KEY = 'pbi_guide_18_v2';\n  var boxes = document.querySelectorAll('input[type=checkbox]');\n  function update(){\n    var done = 0;\n    boxes.forEach(function(b){ if(b.checked) done++; });\n    var pct = boxes.length ? Math.round((done / boxes.length) * 100) : 0;\n    document.getElementById('progText').textContent = done + ' / ' + boxes.length + ' steps completed (' + pct + '%)';\n    document.getElementById('progFill').style.width = pct + '%';\n  }\n  function save(){\n    var state = [];\n    boxes.forEach(function(b){ state.push(b.checked ? 1 : 0); });\n    try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){}\n    try{ update(); }catch(e){}\n  }\n  try{\n    var s = JSON.parse(localStorage.getItem(KEY) || '[]');\n    boxes.forEach(function(b, i){ if(s[i] !== undefined) b.checked = !!s[i]; });\n  }catch(e){}\n  boxes.forEach(function(b){ b.addEventListener('change', save); });\n  window.resetChecks = function(){\n    if(confirm('Reset all checkmarks for Practice Set 18?')){\n      boxes.forEach(function(b){ b.checked = false; });\n      save();\n    }\n  };\n  update();\n})();\n</script>\n</body>\n</html>\n

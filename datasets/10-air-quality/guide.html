@@ -45,7 +45,7 @@
   .stat.warn{background:var(--danger-soft);}
   .stat.warn b{color:var(--danger);}
   code{background:#eef2f7;padding:2px 6px;border-radius:5px;font-size:12.8px;font-family:"SF Mono",Consolas,monospace;color:#0f172a;}
-  pre{background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:10px;overflow:auto;font-size:13px;font-family:"SF Mono",Consolas,monospace;line-height:1.55;margin:10px 0;}
+  pre{background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:10px;overflow:auto;font-size:13px;font-family:"SF Mono",Consolas,monospace;line-height:1.55;margin:10px 0;border:1px solid #1e293b;box-shadow:var(--sh-md);}
   table{border-collapse:collapse;width:100%;margin:12px 0;font-size:13.3px;}
   th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top;}
   th{background:#f1f5f9;font-weight:700;}
@@ -57,7 +57,7 @@
   .step b{color:var(--calc);}
   .pbi-box{background:var(--pbi-soft);border:1px solid #f2df9d;border-radius:10px;padding:14px 16px;margin:12px 0;}
   .pbi-box b{color:#7c5d00;}
-  .chart-card{border:1px solid var(--line);border-left:5px solid #caa400;border-radius:10px;padding:14px 16px;margin:14px 0;background:#fcfdff;}
+  .chart-card{border:1px solid var(--line);border-left:5px solid #caa400;border-radius:14px;padding:14px 16px;margin:14px 0;background:#fcfdff;}
   .chart-card h4{margin:0 0 8px;font-size:15.5px;color:var(--accent);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
   .wells{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin:10px 0;}
   .well{background:#f4f6fa;border:1px solid var(--line);border-radius:7px;padding:7px 10px;font-size:12.8px;}
@@ -69,17 +69,21 @@
   .why-box p{margin:5px 0;}
   .why-box b{color:#123a7a;}
   .wireframe{display:grid;grid-template-columns:repeat(12,1fr);gap:8px;background:#eef2f7;padding:14px;border-radius:12px;margin:12px 0;font-size:12px;}
-  .wf-box{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:10px;text-align:center;font-weight:600;color:var(--accent);}
-  .wf-box small{display:block;font-weight:400;color:var(--muted);margin-top:3px;font-size:11px;}
+  .wf-box{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:11px;text-align:center;font-weight:600;color:var(--accent);box-shadow:0 3px 8px rgba(2,6,23,.35);transition:transform .15s;}
+  .wf-box:hover{transform:translateY(-2px);}
+  .wf-box small{display:block;font-weight:400;color:var(--muted);margin-top:3px;font-size:10.8px;}
   ul.task-list{list-style:none;padding:0;margin:10px 0;}
-  ul.task-list li{padding:5px 0;}
-  ul.task-list label{display:flex;gap:9px;align-items:flex-start;cursor:pointer;font-size:13.8px;}
-  ul.task-list input{margin-top:4px;width:16px;height:16px;flex:none;accent-color:var(--calc);}
-  footer{text-align:center;color:var(--muted);font-size:12.5px;padding:10px 20px 28px;}
+  ul.task-list li{padding:4px 0;}
+  ul.task-list label{display:flex;gap:11px;align-items:flex-start;cursor:pointer;font-size:13.8px;padding:8px 12px;border-radius:10px;border:1px solid transparent;transition:all .15s;}
+  ul.task-list label:hover{background:#f2f7fd;border-color:#d8e5f3;}
+  ul.task-list input{margin-top:3.5px;width:17px;height:17px;flex:none;accent-color:var(--calc);cursor:pointer;}
+  ul.task-list label:has(input:checked){color:#94a3b8;text-decoration:line-through;text-decoration-thickness:1.5px;text-decoration-color:#cbd5e1;}
+  footer{text-align:center;color:var(--muted);font-size:12.5px;padding:14px 20px 34px;}
   footer a{color:#3d4a5c;}
   @media(max-width:740px){
     .wrap{padding:0 12px;}
-    section{padding:16px 16px;}
+    section{padding:18px 15px;}
+    header{padding:36px 18px 30px;}
     .wireframe{grid-template-columns:1fr 1fr;}
     .wf-box{grid-column:span 2 !important;}
   }
@@ -126,7 +130,7 @@
   .toc b{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.7px;margin-right:2px;}
   .toc a{color:var(--accent);text-decoration:none;font-weight:700;padding:5px 13px;border-radius:99px;background:#f1f5f9;border:1px solid transparent;transition:all .15s;}
   .toc a:hover{background:#e3eeff;border-color:#c9dbf8;transform:translateY(-1px);}
-  section{background:#fff;border:1px solid var(--line);border-radius:16px;padding:26px 28px;margin-bottom:22px;box-shadow:var(--sh-sm);scroll-margin-top:78px;transition:box-shadow .2s;}
+  section{background:#fff;border:1px solid var(--line);border-radius:16px;padding:26px 28px;margin-bottom:22px;box-shadow:var(--sh-md);scroll-margin-top:78px;transition:box-shadow .2s;}
   section:hover{box-shadow:var(--sh-md);}
   h2.t{font-size:20.5px;margin:0 0 18px;padding-bottom:11px;border-bottom:2px solid var(--line);position:relative;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
   h2.t::after{content:"";position:absolute;left:0;bottom:-4px;width:88px;height:4px;border-radius:99px;background:linear-gradient(90deg,var(--calc),#0ea5e9);}
@@ -162,10 +166,9 @@
   .step{background:var(--calc-soft);border:1px solid #cbe6d5;border-left:5px solid var(--calc);border-radius:12px;padding:16px 18px;margin:16px 0;position:relative;box-shadow:var(--sh-sm);}
   .step::before{content:"EXCEL · PHASE A";position:absolute;top:-10px;right:14px;background:linear-gradient(135deg,#16a34a,#15803d);color:#fff;font-size:9.5px;font-weight:800;letter-spacing:.9px;padding:3px 11px;border-radius:99px;box-shadow:var(--sh-sm);}
   .step b{color:#0d5c33;}
-  .pbi-box{background:var(--pbi-soft);border:1px solid #f2df9d;border-left:5px solid var(--pbi);border-radius:12px;padding:16px 18px;margin:16px 0;position:relative;box-shadow:var(--sh-sm);}
-  .pbi-box::before{content:"POWER BI · PHASE B";position:absolute;top:-10px;right:14px;background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;font-size:9.5px;font-weight:800;letter-spacing:.9px;padding:3px 11px;border-radius:99px;box-shadow:var(--sh-sm);}
+  .pbi-box{background:var(--pbi-soft);border:1px solid #f2df9d;border-radius:12px;padding:16px 18px;margin:16px 0;position:relative;box-shadow:var(--sh-sm);}
   .pbi-box b{color:#8a5a00;}
-  .chart-card{border:1px solid var(--line);border-left:5px solid var(--gold);border-radius:14px;padding:18px 20px;margin:18px 0;background:linear-gradient(180deg,#fffdf4,#fdfeff);box-shadow:var(--sh-sm);}
+  .chart-card{border:1px solid var(--line);border-left:5px solid #caa400;border-radius:14px;padding:18px 20px;margin:18px 0;background:linear-gradient(180deg,#fffdf4,#fdfeff);box-shadow:var(--sh-md);}
   .chart-card h4{margin:0 0 10px;font-size:15.5px;color:var(--accent);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
   .wells{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:9px;margin:10px 0;}
   .well{background:#f6f8fc;border:1px solid #e2e8f0;border-radius:9px;padding:8px 12px;font-size:12.8px;transition:all .15s;}
@@ -174,14 +177,14 @@
   .note{background:linear-gradient(135deg,#fffaf0,#fffdf6);border:1px solid #f5e3bd;border-left:5px solid #e0a800;border-radius:12px;padding:13px 15px;margin:14px 0;font-size:13.5px;}
   .warn-box{background:linear-gradient(135deg,#fdeaea,#fff5f5);border:1px solid #f2c8c8;border-left:5px solid var(--danger);border-radius:12px;padding:13px 15px;margin:14px 0;font-size:13.5px;}
   .why-box{background:linear-gradient(135deg,#eff6ff,#f2faff);border:1px solid #c9e0fb;border-left:5px solid var(--blue);border-radius:12px;padding:14px 16px;margin:14px 0;font-size:13.4px;box-shadow:var(--sh-sm);}
-  .why-box .why-title{font-weight:800;color:#1d4ed8;margin:0 0 8px;font-size:12px;text-transform:uppercase;letter-spacing:.6px;}
+  .why-box .why-title{font-weight:800;color:#1d4ed8;margin:0 0 6px;font-size:12.5px;text-transform:uppercase;letter-spacing:.6px;}
   .why-box p{margin:6px 0;}
   .why-box b{color:#123a7a;}
-  .wireframe{display:grid;grid-template-columns:repeat(12,1fr);gap:10px;background:#0f172a;background-image:radial-gradient(rgba(148,163,184,.16) 1px,transparent 1.4px);background-size:18px 18px;padding:16px;border-radius:14px;margin:14px 0;font-size:12px;box-shadow:var(--sh-md);}
-  .wf-box{background:#fff;border:1px solid #cbd5e1;border-radius:9px;padding:11px;text-align:center;font-weight:700;color:var(--accent);box-shadow:0 3px 8px rgba(2,6,23,.35);transition:transform .15s;}
+  .wireframe{display:grid;grid-template-columns:repeat(12,1fr);gap:8px;background:#0f172a;background-image:radial-gradient(rgba(148,163,184,.16) 1px,transparent 1.4px);background-size:18px 18px;padding:16px;border-radius:14px;margin:12px 0;font-size:12px;box-shadow:var(--sh-md);}
+  .wf-box{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:11px;text-align:center;font-weight:600;color:var(--accent);box-shadow:0 3px 8px rgba(2,6,23,.35);transition:transform .15s;}
   .wf-box:hover{transform:translateY(-2px);}
-  .wf-box small{display:block;font-weight:400;color:var(--muted);margin-top:4px;font-size:10.8px;}
-  ul.task-list{list-style:none;padding:0;margin:12px 0;}
+  .wf-box small{display:block;font-weight:400;color:var(--muted);margin-top:3px;font-size:10.8px;}
+  ul.task-list{list-style:none;padding:0;margin:10px 0;}
   ul.task-list li{padding:4px 0;}
   ul.task-list label{display:flex;gap:11px;align-items:flex-start;cursor:pointer;font-size:13.8px;padding:8px 12px;border-radius:10px;border:1px solid transparent;transition:all .15s;}
   ul.task-list label:hover{background:#f2f7fd;border-color:#d8e5f3;}
@@ -324,33 +327,32 @@
       <p><b>Smart-work tip:</b> Before averaging ANY sensor/machine-logged column, scan for its minimum: <code>MIN = -200</code> screams sentinel. Then Save-As a working copy FIRST — one wrong Replace All on an original file is unrecoverable.</p>
     </div>
 
-    <h3>Step A2 — Verify Clean Averages &amp; Breach Counts with Formulas</h3>
+    <h3>Step A2 — Verify Clean Averages &amp; Breach Counts with PivotTable and Power BI Matrix</h3>
     <div class="step">
-<pre>// Clean CO(GT) Average:
-=AVERAGE(C2:C9358)                 --&gt; 2.15 mg/m³
+<pre>// Excel Phase A (Quick Audit)
+// Insert a PivotTable on a new sheet: Rename the sheet Pivot_Check_Excel.
+// In the PivotTable Fields pane on the right:
+//   - Drag Hour (or Date/Time) into Rows (optional grouping by hour).
+//   - Drag CO(GT) into Values (set to Average — 2.15 mg/m³).
+//   - Drag NO2(GT) into Values (set to Average — 113.08 µg/m³).
+//   - Drag Blank cells (or a helper BreachFlag column if added) into Values (set to Count — 388 hours for NO2 > 200, 812 hours for CO > 4.0).
+// Confirm Clean CO = 2.15 mg/m³, NO2 = 113.08 µg/m³, and Breach Counts = 388 hours (NO2) / 812 hours (CO). Save as 10-air-quality-clean.xlsx.
 
-// Clean NO2(GT) Average:
-=AVERAGE(J2:J9358)                 --&gt; 113.08 µg/m³
-
-// EU 1-Hour NO2 Directive Breaches (&gt; 200 µg/m³):
-=COUNTIF(J2:J9358, "&gt;200")         --&gt; 388 hours
-
-// High Carbon Monoxide Alert Hours (&gt; 4.0 mg/m³):
-=COUNTIF(C2:C9358, "&gt;4")           --&gt; 812 hours
-
-// CO(GT) Sensor Uptime %:
-=COUNT(C2:C9358) / 9357            --&gt; 82.0% (7,674 valid hours)</pre>
+// Power BI Phase B (Matrix Visual)
+// In Report View, click the blank canvas → in Visualizations pane, click the Matrix icon (grid symbol).
+// In the Fields pane, drag Hour into Rows, and drag CO(GT) (set to Average), NO2(GT) (set to Average), and breach count measures (or Count of filtered rows) into Values.
+// Format the averages (2.15 mg/m³, 113.08 µg/m³) and confirm the 388 hours and 812 hours breach counts match the Excel audit!</pre>
     </div>
     <div class="why-box">
       <div class="why-title">💡 Why do we do this?</div>
-      <p><b>Reason:</b> These five formulas are the <b>acceptance tests</b> for the cleaning you just did — and they each prove something different. AVERAGE proves sentinels became blanks (2.15, not -34.21). The two COUNTIFs quantify <b>regulatory compliance</b> (388 EU NO2 breach hours, 812 high-CO hours) — numbers the client's brief explicitly demands. And the uptime formula converts "how much data survived?" into a percentage, which is how sensor engineers actually talk.</p>
-      <p><b>Real-time example:</b> Watch what the numbers now say: CO averages 2.15 mg/m³ with only 82.0% uptime — meaning the reference analyzer was offline for nearly 3 weeks of the year, and every report using it must disclose that. NO2 exceeded the EU's legal 200 µg/m³ limit for <b>388 hours</b> — that's a compliance finding, not a statistic. Recording these five values in Excel BEFORE building Power BI gives you fixed targets: if your DAX cards later disagree with 2.15 / 113.08 / 388 / 812, you know the model — not the physics — is wrong.</p>
-      <p><b>What happens if you skip it:</b> The dashboard gets built without knowing what "correct" looks like, and a subtle null-handling mistake (e.g., text-typed numbers, half-replaced sentinels) produces plausible-looking but wrong averages that nobody catches.</p>
-      <p><b>Smart-work tip:</b> After ANY cleaning step, immediately compute the clean summary statistics — cleaning without verification is just moving errors around. Uptime % (valid ÷ total) is a metric worth keeping permanently: it turns data quality into a number leadership can track.</p>
+      <p><b>Reason:</b> These five formulas/metrics are the <b>acceptance tests</b> for the cleaning you just did — and the pivot and matrix each prove something different. AVERAGE proves sentinels became blanks (2.15, not -34.21). The two COUNTIFs/Counts quantify <b>regulatory compliance</b> (388 EU NO2 breach hours, 812 high-CO hours) — numbers the client's brief explicitly demands. And the uptime formula converts "how much data survived?" into a percentage, which is how sensor engineers actually talk. Both engines independently compute the target numbers to prove the data integrity.</p>
+      <p><b>Real-time example:</b> Watch what the numbers now say: CO averages 2.15 mg/m³ with only 82.0% uptime — meaning the reference analyzer was offline for nearly 3 weeks of the year, and every report using it must disclose that. NO2 exceeded the EU's legal 200 µg/m³ limit for <b>388 hours</b> — that's a compliance finding, not a statistic. Recording these five values in Excel and Power BI BEFORE building Power BI gives you fixed targets: if your DAX cards later disagree with 2.15 / 113.08 / 388 / 812, you know the model — not the physics — is wrong.</p>
+      <p><b>What happens if you skip it:</b> The dashboard gets built without knowing what "correct" looks like, and a subtle null-handling mistake (e.g., text-typed numbers, half-replaced sentinels) produces plausible-looking but wrong averages that nobody catches. If the engines disagree, the data import might have hidden type errors.</p>
+      <p><b>Smart-work tip:</b> After ANY cleaning step, immediately compute the clean summary statistics — cleaning without verification is just moving errors around. Uptime % (valid ÷ total) is a metric worth keeping permanently: it turns data quality into a number leadership can track. Screenshot the verified PivotTable and Matrix and keep them beside you as your dashboard's acceptance test.</p>
     </div>
 
     <ul class="task-list">
-      <li><label><input type="checkbox"> Replaced exact <code>-200</code> cells with blank in Excel copy and verified Clean CO = 2.15, NO2 = 113.08, and 388 EU NO2 breaches.</label></li>
+      <li><label><input type="checkbox"> Replaced exact <code>-200</code> cells with blank in Excel copy and verified Clean CO = 2.15, NO2 = 113.08, and 388 EU NO2 breaches in Excel PivotTable and Power BI Matrix.</label></li>
     </ul>
   </section>
 
@@ -372,7 +374,7 @@
     <div class="why-box">
       <div class="why-title">💡 Why do we do this?</div>
       <p><b>Reason:</b> This is a full <b>data-quality audit</b> disguised as an import routine, and the order matters: (1) remove the 114 formatted-but-empty rows so counts are honest (9,357, not 9,471); (2) <b>quarantine</b> the permanently-failed <code>NMHC(GT)</code> sensor — 90.2% of its data is -200, so it's not a column with gaps, it's a dead instrument that would inject noise into every visual it touches; (3) sentinel-to-null across ALL 12 columns in one Shift-click selection — the refreshable equivalent of Excel's Replace All; (4) extract <code>Hour</code> because every question in the brief ("rush-hour smog profile") is indexed by hour-of-day.</p>
-      <p><b>Real-time example:</b> The NMHC decision is the professional judgment call worth studying: keeping it means every chart risk showing garbage averages over 9.8% real data; dropping it loses 1 column entirely. Engineers quarantine instruments exactly like this — the log shows the analyzer failed permanently in May 2004, so the column isn't "sparse data", it's a broken device. Also note lowercase <code>null</code>: Power Query's M language is case-sensitive, and <code>NULL</code> (uppercase) inserts the literal TEXT "NULL" into your numeric column, breaking every average (Mistake 2).</p>
+      <p><b>Real-time example:</b> The NMHC decision is the professional judgment call worth studying: keeping it means every chart risk showing garbage averages over 9.8% real data; dropping it loses 1 column entirely. Engineers quarantine instruments exactly like this — the log shows the analyzer failed permanently in May 2004, so the column isn't "sparse data", it's a dead instrument. Also note lowercase <code>null</code>: Power Query's M language is case-sensitive, and <code>NULL</code> (uppercase) inserts the literal TEXT "NULL" into your numeric column, breaking every average (Mistake 2).</p>
       <p><b>What happens if you skip it:</b> Blank dates appear in slicers, the dead sensor pollutes averages, uppercase NULL corrupts 12 numeric columns into text, and the Hour column never exists so the diurnal chart can't be built.</p>
       <p><b>Smart-work tip:</b> Judge a column by its VALID share, not its existence: &lt;50% valid → quarantine and document; ≥95% valid → keep and report uptime. Column-level data-quality triage is a repeatable professional routine — the column dictionary's "-200 Count" column is exactly that audit, pre-computed for you.</p>
     </div>
@@ -398,11 +400,11 @@ DIVIDE ( COUNT ( 'AirQuality'[CO(GT)] ), [Total Monitored Hours] )
 // Check: 82.0% (vs 96.1% for PT08.S1!)
 
 EU NO2 Breach Hours =
-CALCULATE ( COUNTROWS ( 'AirQuality' ), 'AirQuality'[NO2(GT)] &gt; 200 )
+CALCULATE ( COUNTROWS ( 'AirQuality' ), 'AirQuality'[NO2(GT)] > 200 )
 // Check: 388 hours
 
 High CO Alert Hours =
-CALCULATE ( COUNTROWS ( 'AirQuality' ), 'AirQuality'[CO(GT)] &gt; 4.0 )
+CALCULATE ( COUNTROWS ( 'AirQuality' ), 'AirQuality'[CO(GT)] > 4.0 )
 // Check: 812 hours</pre>
     <div class="why-box">
       <div class="why-title">💡 Why do we do this?</div>
@@ -541,21 +543,18 @@ CALCULATE ( COUNTROWS ( 'AirQuality' ), 'AirQuality'[CO(GT)] &gt; 4.0 )
   function save(){
     var state = [];
     boxes.forEach(function(b){ state.push(b.checked ? 1 : 0); });
-    try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){}
-    update();
+    try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){}\n    update();
   }
   try{
     var s = JSON.parse(localStorage.getItem(KEY) || '[]');
     boxes.forEach(function(b, i){ if(s[i] !== undefined) b.checked = !!s[i]; });
-  }catch(e){}
-  boxes.forEach(function(b){ b.addEventListener('change', save); });
+  }catch(e){}\n  boxes.forEach(function(b){ b.addEventListener('change', save); });
   window.resetChecks = function(){
     if(confirm('Reset all checkmarks for Practice Set 10?')){
       boxes.forEach(function(b){ b.checked = false; });
       save();
     }
-  };
-  update();
+  };\n  update();
 })();
 </script>
 </body>
