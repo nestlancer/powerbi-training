@@ -224,10 +224,16 @@
 
 <div class="wrap">
 
-  <div class="prog-bar">
-    <span class="prog-text" id="progText">0 / 0 steps completed</span>
-    <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+  <div class="prog-bar" role="region" aria-label="Your progress on this guide">
+    <span class="prog-text" id="progText" aria-live="polite">0 / 0 steps completed</span>
+    <div class="prog-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-labelledby="progText"><div class="prog-fill" id="progFill"></div></div>
     <button class="btn-sm" type="button" onclick="resetChecks()">Reset checklist</button>
+  </div>
+
+  <div class="quickfacts" style="background:linear-gradient(135deg,#f8fbff,#f1f7f3);border:1px solid var(--line);border-left:5px solid #16a34a;border-radius:14px;padding:14px 18px;margin:0 0 18px;font-size:13.5px;line-height:1.75;">
+    <b>⚡ Quick info:</b> ⏱ <b>90–120 min</b> &nbsp;·&nbsp; 🧰 <b>Excel 2016+</b> + <b>Power BI Desktop</b> (<a href="https://aka.ms/pbidesktop">free download</a>) — ⚠️ <b>this guide's XLOOKUP needs Microsoft 365 / Excel 2021+</b> (an INDEX/MATCH fallback is shown in the step) &nbsp;·&nbsp; 📂 Data: <a href="data/customer-feedback.xlsx" download>customer-feedback.xlsx</a> &nbsp;·&nbsp; 🧭 Prereq: guide 12 recommended (multi-table modeling)
+    <br>🩺 <b>If a formula shows an error:</b> <code>#NAME?</code> = misspelled function/name <i>or XLOOKUP on an older Excel</i> &nbsp;·&nbsp; <code>#DIV/0!</code> = divide by zero or blank &nbsp;·&nbsp; <code>#N/A</code> = lookup value not found &nbsp;·&nbsp; <code>#VALUE!</code> = text where a number is expected &nbsp;·&nbsp; Power Query <code>Expression.Error</code> = a renamed/missing column &nbsp;·&nbsp; DAX shows <code>(Blank)</code> = filters match no rows.
+    <br>📖 New jargon? <a href="../glossary.html">Open the glossary</a> &nbsp;·&nbsp; ◀ <a href="../16-co2-emissions/guide.html">Previous: Guide 16</a> &nbsp;·&nbsp; <a href="../18-adventureworks-sales/guide.html">Next: Guide 18 · AdventureWorks</a> ▶
   </div>
 
   <div class="toc">
@@ -298,7 +304,7 @@
     <h3>Step A1 — Enrich <code>Customer Table</code> Using <code>XLOOKUP</code> &amp; <code>COUNTIF</code></h3>
     <div class="step">
       Open <code>datasets/17-customer-feedback/data/customer-feedback.xlsx</code>. On <code>Customer Table</code>, test how onboarding and support friction drive Low CSAT:<br>
-      • <code>K2 (RoleName)</code>: <code>=XLOOKUP(F2, Role!$A$2:$A$4, Role!$B$2:$B$4)</code><br>
+      • <code>K2 (RoleName)</code>: <code>=XLOOKUP(F2, Role!$A$2:$A$4, Role!$B$2:$B$4)</code> (⚠️ needs Microsoft 365 / Excel 2021+ — on older Excel use <code>=INDEX(Role!$B$2:$B$4, MATCH(F2, Role!$A$2:$A$4, 0))</code>, which returns the identical result)<br>
       • <code>L2 (TicketCount)</code>: <code>=COUNTIF('Support Tickets'!$B$2:$B$126645, A2)</code><br>
       <i>You'll see:</i> K2 shows the text <code>publisher</code> (row 2's Role = 1 → the Role sheet maps 1 → publisher) and L2 shows the whole number <code>4</code> — customer <code>10000000</code> has exactly 4 support tickets. Text and counts: no number formatting needed.<br>
       Insert a PivotTable with <code>Completed tutorial</code> in Rows and <code>Rating</code> in Columns (% of Row Total): confirm <b><code>no</code> = 16.71% Low</b> vs. <b><code>yes</code> = 7.71% Low</b>!
@@ -483,7 +489,21 @@ CALCULATE ( [Total Tickets], 'Support Tickets'[Duration] &gt; 4 ),
 
 </div>
 
-<footer>
+    <details style="background:linear-gradient(135deg,#fffaf0,#fffdf6);border:1px solid #f5e3bd;border-left:5px solid #d97706;border-radius:14px;padding:14px 18px;margin:0 0 18px;font-size:13.8px;">
+      <summary style="cursor:pointer;font-weight:800;color:#92400e;">🧠 Check yourself — 3 quick questions before you call this guide done</summary>
+      <ol style="margin:10px 0 0;padding-left:22px;">
+        <li>Which Excel versions can run this guide's <code>XLOOKUP</code> as written?
+          <details style="margin:3px 0 8px;"><summary style="cursor:pointer;font-weight:700;color:#0b3d63;">Show answer</summary> Microsoft 365 / Excel 2021+. Older Excel shows <code>#NAME?</code> — use the INDEX/MATCH fallback shown in the step.</details>
+        </li>
+        <li>What's the Low-CSAT rate for customers who skipped the tutorial vs those who took it?
+          <details style="margin:3px 0 8px;"><summary style="cursor:pointer;font-weight:700;color:#0b3d63;">Show answer</summary> 16.71% without vs 7.71% with — skipping onboarding makes low satisfaction 2.17× more likely.</details>
+        </li>
+        <li>Customer 10000000 — what RoleName and TicketCount does the guide's helper produce?
+          <details style="margin:3px 0 8px;"><summary style="cursor:pointer;font-weight:700;color:#0b3d63;">Show answer</summary> Role 1 maps to <code>publisher</code>, and this customer has exactly <code>4</code> support tickets.</details>
+        </li>
+      </ol>
+    </details>
+    <footer>
   Source: Microsoft Power BI Official Key Influencers Sample · Manually verified against all 7 sheets of <code>data/customer-feedback.xlsx</code> · Works 100% offline.
 </footer>
 

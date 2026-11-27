@@ -224,10 +224,16 @@
 
 <div class="wrap">
 
-  <div class="prog-bar">
-    <span class="prog-text" id="progText">0 / 0 steps completed</span>
-    <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+  <div class="prog-bar" role="region" aria-label="Your progress on this guide">
+    <span class="prog-text" id="progText" aria-live="polite">0 / 0 steps completed</span>
+    <div class="prog-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-labelledby="progText"><div class="prog-fill" id="progFill"></div></div>
     <button class="btn-sm" type="button" onclick="resetChecks()">Reset checklist</button>
+  </div>
+
+  <div class="quickfacts" style="background:linear-gradient(135deg,#f8fbff,#f1f7f3);border:1px solid var(--line);border-left:5px solid #16a34a;border-radius:14px;padding:14px 18px;margin:0 0 18px;font-size:13.5px;line-height:1.75;">
+    <b>⚡ Quick info:</b> ⏱ <b>90–120 min</b> &nbsp;·&nbsp; 🧰 <b>Excel 2016+</b> + <b>Power BI Desktop</b> (<a href="https://aka.ms/pbidesktop">free download</a>) &nbsp;·&nbsp; 📂 Data: <a href="data/default%20of%20credit%20card%20clients.xls" download>default of credit card clients.xls</a> &nbsp;·&nbsp; 🧭 Prereq: guide 01 recommended &nbsp;·&nbsp; 💱 <b>Currency: NT$ (New Taiwan dollars)</b>
+    <br>🩺 <b>If a formula shows an error:</b> <code>#NAME?</code> = misspelled function/name &nbsp;·&nbsp; <code>#DIV/0!</code> = divide by zero or blank &nbsp;·&nbsp; <code>#N/A</code> = lookup value not found &nbsp;·&nbsp; <code>#VALUE!</code> = text where a number is expected &nbsp;·&nbsp; Power Query <code>Expression.Error</code> = a renamed/missing column &nbsp;·&nbsp; DAX shows <code>(Blank)</code> = filters match no rows.
+    <br>📖 New jargon? <a href="../glossary.html">Open the glossary</a> &nbsp;·&nbsp; ◀ <a href="../06-bank-marketing/guide.html">Previous: Guide 06</a> &nbsp;·&nbsp; <a href="../08-chicago-payroll/guide.html">Next: Guide 08 · Chicago Payroll</a> ▶
   </div>
 
   <div class="toc">
@@ -525,7 +531,21 @@ Severe Delinquent Clients = CALCULATE ( [Total Clients], 'Clients'[PAY_0] &gt;= 
 
 </div>
 
-<footer>
+    <details style="background:linear-gradient(135deg,#fffaf0,#fffdf6);border:1px solid #f5e3bd;border-left:5px solid #d97706;border-radius:14px;padding:14px 18px;margin:0 0 18px;font-size:13.8px;">
+      <summary style="cursor:pointer;font-weight:800;color:#92400e;">🧠 Check yourself — 3 quick questions before you call this guide done</summary>
+      <ol style="margin:10px 0 0;padding-left:22px;">
+        <li><code>LIMIT_BAL</code> averages NT$167,484. Which currency is this, and what goes wrong if you assume USD?
+          <details style="margin:3px 0 8px;"><summary style="cursor:pointer;font-weight:700;color:#0b3d63;">Show answer</summary> New Taiwan dollars. Reading it as USD makes limits look absurdly small (~$5,200) — currency context changes the whole risk story.</details>
+        </li>
+        <li>Client #1 has <code>PAY_0 = 2</code>. Which <code>DelinquencyTier</code> does the formula return, and what does it mean?
+          <details style="margin:3px 0 8px;"><summary style="cursor:pointer;font-weight:700;color:#0b3d63;">Show answer</summary> <code>3. 2+ Months Late</code> — this client was already two months behind on their September 2005 statement.</details>
+        </li>
+        <li>Why are <code>BILL_AMT1..6</code> dangerous to sum into one number?
+          <details style="margin:3px 0 8px;"><summary style="cursor:pointer;font-weight:700;color:#0b3d63;">Show answer</summary> They're six monthly snapshots of a revolving balance — summing multiplies the same debt 6×. Use <code>BILL_AMT1</code> (latest) against <code>LIMIT_BAL</code> for utilization.</details>
+        </li>
+      </ol>
+    </details>
+    <footer>
   Source: UCI Default of Credit Card Clients (Yeh &amp; Lien, 2009) · Manually verified against <code>data/default of credit card clients.xls</code> · Works 100% offline.
 </footer>
 
