@@ -147,6 +147,7 @@
       <tr><td><code>D</code>, <code>E</code>, <code>F</code></td><td><code>Total</code>, <code>Men</code>, <code>Women</code></td><td>Whole Number</td><td>Graduate headcounts. <b>HIDDEN DIRT:</b> Row 23 (<code>Rank 22, FOOD SCIENCE</code>) has <b>blank</b> <code>Total</code>, <code>Men</code>, <code>Women</code>, and <code>ShareWomen</code>! Keep the row (its salary &amp; employment data are valid), just leave those 4 cells null/blank.</td></tr>
       <tr><td><code>G</code></td><td><code>Major_category</code></td><td>Text</td><td>16 academic families (Engineering, Business, Health, Education, etc.).</td></tr>
       <tr><td><code>H</code></td><td><code>ShareWomen</code></td><td>Decimal (0–1)</td><td><code>Women ÷ Total</code> for that single major. Do NOT average across categories — write a weighted DAX measure!</td></tr>
+      <tr><td><code>I</code></td><td><code>Sample_size</code></td><td>Whole Number</td><td>Number of graduates surveyed for the salary estimates of that major (full-time year-round). Whole Number — safe to <code>SUM</code>, but rarely needed on charts.</td></tr>
       <tr><td><code>J</code>–<code>N</code></td><td><code>Employed</code>, <code>Full_time</code>, <code>Part_time</code>, <code>Full_time_year_round</code>, <code>Unemployed</code></td><td>Whole Number</td><td>Headcounts in the labor force. Additive — safe to <code>SUM</code>!</td></tr>
       <tr><td><code>O</code></td><td><code>Unemployment_rate</code></td><td>Decimal (0–1)</td><td><code>Unemployed ÷ (Employed + Unemployed)</code> for that major. Recompute with <code>DIVIDE</code> in Power BI!</td></tr>
       <tr><td><code>P</code>, <code>Q</code>, <code>R</code></td><td><code>Median</code>, <code>P25th</code>, <code>P75th</code></td><td>Currency</td><td>50th, 25th, and 75th percentile full-time year-round pay. <b>NEVER SUM salaries across majors!</b> Use <code>AVERAGE</code> or <code>MEDIAN</code>.</td></tr>
@@ -195,7 +196,7 @@
       <ol style="margin:0;padding-left:20px;">
         <li>Open a blank Excel workbook → click the <b>Data</b> tab on the top ribbon → click <b>From Text/CSV</b> (far left).</li>
         <li>Select <code>datasets/02-college-majors/data/recent-grads.csv</code> → click <b>Import</b>.</li>
-        <li>In the preview window, confirm <b>Delimiter = Comma</b> and check that 21 columns appear cleanly → click <b>Load</b>. (Excel automatically formats it as a green Excel Table named <code>recent_grads</code> and freezes headers when scrolling!)</li>
+        <li>In the preview window, confirm <b>Delimiter = Comma</b> and check that 21 columns appear cleanly → click <b>Load</b>. (Excel automatically loads it as a formatted Excel Table named <code>recent_grads</code> — the hyphen becomes an underscore because Excel Table names forbid hyphens — and as you scroll inside the table its header names replace the A, B, C column letters, so headers stay visible even though Freeze Panes is never turned on!)</li>
       </ol>
     </div>
     <div class="why-box">
@@ -261,7 +262,7 @@
       <div class="why-title">💡 Why do we do this?</div>
       <p><b>Reason:</b> The pivot verifies three things at once: <b>completeness</b> (Count of Major = 173 proves no row was lost or duplicated in import), <b>correct summarization</b> (Median must be AVERAGED — summing 173 salaries produces a nonsense "$6.95M total median"), and <b>your target numbers</b> (Engineering #1 at $57,383, grand average $40,151) that the Power BI dashboard must reproduce exactly.</p>
       <p><b>Real-time example:</b> When your Power BI card later shows <code>$40,151</code>, you already know it's right — the pivot said so. When the Dean asks "which field should we market hardest?", you can say "Engineering: highest median pay <b>$57,383</b> across 29 majors" with full confidence, because two independent tools agree. That is the habit that separates analysts from spreadsheet-fillers.</p>
-      <p><b>What happens if you skip it:</b> Power BI defaults numeric columns to <b>SUM</b>; if nobody verified the pivot first, the very first draft dashboard may report "Total Median = $6,946,000" and the error travels into every percent-of-total calculation built on top of it.</p>
+      <p><b>What happens if you skip it:</b> Power BI defaults numeric columns to <b>SUM</b>; if nobody verified the pivot first, the very first draft dashboard may report "Total Median = $6,946,200" and the error travels into every percent-of-total calculation built on top of it.</p>
       <p><b>Smart-work tip:</b> On ANY new import, validate in this order: <i>row count → column count → one spot-checked total</i>. Count first (fastest to debug), values second. Save the clean copy under the project-named convention so it's findable months later.</p>
     </div>
 
@@ -317,7 +318,7 @@
     </div>
     <div class="why-box">
       <div class="why-title">💡 Why do we do this?</div>
-      <p><b>Reason:</b> Two silent traps get disarmed here. (1) Power BI defaults every numeric column to SUM — drag <code>Rank</code> onto a visual and it happily reports "Sum of Rank = 14,000", which is meaningless. Setting <b>Don't summarize</b> turns rank/IDs into labels instead of quantities. (2) The row-level <code>Unemployment_rate</code> column is <i>unweighted</i> — averaging it gives 6.82%, but the true graduate-weighted unemployment is <b>7.19%</b>. Hiding the raw column forces every report user through your correct measure.</p>
+      <p><b>Reason:</b> Two silent traps get disarmed here. (1) Power BI defaults every numeric column to SUM — drag <code>Rank</code> onto a visual and it happily reports "Sum of Rank = 15,051", which is meaningless. Setting <b>Don't summarize</b> turns rank/IDs into labels instead of quantities. (2) The row-level <code>Unemployment_rate</code> column is <i>unweighted</i> — averaging it gives 6.82%, but the true graduate-weighted unemployment is <b>7.19%</b>. Hiding the raw column forces every report user through your correct measure.</p>
       <p><b>Real-time example:</b> Why the difference matters: Education is a huge category (559,129 grads) with low 4.95% unemployment, while several tiny majors have 15%+ rates. An unweighted average lets 30 small majors outvote 559K graduates; the weighted measure counts people, not majors. Presenting 6.82% to the Dean undercounts real unemployment by nearly half a point — someone with a calculator will catch it in the meeting.</p>
       <p><b>What happens if you skip it:</b> Someone drags the hidden-but-visible raw rate into a card, gets the unweighted number, and now your own dashboard shows two different "unemployment rates" — the exact confusion model view cleanup exists to prevent.</p>
       <p><b>Smart-work tip:</b> Treat rate columns like plutonium: compute them fresh from additive numerators/denominators (<code>Unemployed ÷ (Employed + Unemployed)</code>) with <code>DIVIDE</code>, then hide the raw ingredient. Also note: this dataset has no dates, so no Date Table — professionals don't build scaffolding they don't need.</p>
@@ -532,7 +533,7 @@ Interquartile Pay Spread = [Avg P75 Pay] - [Avg P25 Pay]
   <section id="mistakes">
     <h2 class="t">8. Trainer's Troubleshooting: Common Beginner Mistakes</h2>
     <div class="warn-box">
-      <b>Mistake 1 — Summing Median, P25th, or P75th:</b> Power BI defaults numeric columns to <code>SUM</code>, which produces nonsense like "$6.95M total median salary." Always wrap salary columns in <code>AVERAGE()</code> or <code>MEDIAN()</code>!
+      <b>Mistake 1 — Summing Median, P25th, or P75th:</b> Power BI defaults numeric columns to <code>SUM</code>, which produces nonsense like "$6.95M total median salary" and a meaningless "Sum of Rank = 15,051" (every rank from 1 to 173 added together). Always wrap salary columns in <code>AVERAGE()</code> or <code>MEDIAN()</code>!
     </div>
     <div class="warn-box">
       <b>Mistake 2 — Deleting Row 23 (Food Science) or replacing blanks with 0:</b> If you replace <code>ShareWomen</code> blank with <code>0</code>, Food Science looks 100% male when its gender split was simply unreported. Leave unknown demographics as <i>null</i>.

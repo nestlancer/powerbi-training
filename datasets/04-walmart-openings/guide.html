@@ -147,7 +147,7 @@
       <tr><th>Excel Col</th><th>Header</th><th>Type</th><th>Meaning &amp; Beginner Rule</th></tr>
       <tr><td><code>A</code></td><td><code>storenum</code></td><td>Whole Number</td><td>Store identifier (Store #1 = Rogers, AR). Do NOT sum!</td></tr>
       <tr><td><code>B</code></td><td><code>OPENDATE</code> ⚠️</td><td>Text (M/D/YY)</td><td>2-digit year string (<code>7/1/62</code>). Replace or rebuild using Columns <code>P, N, O</code>!</td></tr>
-      <tr><td><code>C</code></td><td><code>date_super</code></td><td>Date (nullable)</td><td>Date converted/opened as Supercenter; blank on the 1,046 non-Supercenter stores.</td></tr>
+      <tr><td><code>C</code></td><td><code>date_super</code> ⚠️</td><td>Text M/D/YY (nullable)</td><td>Date converted/opened as Supercenter (<code>3/1/97</code>); blank on the 1,046 non-Supercenter stores. Also uses 2-digit years! The default 30–99 → 1930–1999 rule happens to read them correctly here (conversions range 1988–2006), but always spot-check the parsed range after typing.</td></tr>
       <tr><td><code>D</code></td><td><code>conversion</code></td><td>Int (nullable)</td><td><code>1</code> = converted (1,557), <code>0</code> = built as Supercenter (389), blank = never became Supercenter (1,046).</td></tr>
       <tr><td><code>E</code>, <code>F</code></td><td><code>st</code>, <code>county</code></td><td>Whole Number</td><td>Census FIPS state/county numeric codes. Hide in Report View.</td></tr>
       <tr><td><code>G</code>–<code>J</code></td><td><code>STREETADDR</code>, <code>STRCITY</code>, <code>STRSTATE</code>, <code>ZIPCODE</code></td><td>Text</td><td>Address fields. Keep <code>ZIPCODE</code> as <b>Text</b> (never Number!). Set <code>STRSTATE</code> Data Category = State or Province.</td></tr>
@@ -337,7 +337,7 @@ CALCULATE (
     <div class="why-box">
       <div class="why-title">💡 Why do we do this?</div>
       <p><b>Reason:</b> Each measure encodes a reusable DAX pattern. <code>Converted Stores = SUM(conversion)</code> is an elegant null-safe count: 1s contribute 1, 0s and nulls contribute nothing — so a SUM becomes a conditional count with zero extra logic. <code>Cumulative Stores</code> is your first <b>running total</b>: <code>ALL('Calendar')</code> temporarily removes the date filter, then <code>'Calendar'[Date] &lt;= MAX('Calendar'[Date])</code> re-adds only the dates up to "now" — summing every store opened so far.</p>
-      <p><b>Real-time example:</b> Why SUM works where COUNT fails: <code>COUNT(conversion)</code> would count every non-blank row (1,557 + 389 = 1,946 — wrong!), but SUM reads the column as 1/0/null flags, landing exactly on <b>1,557</b>. And the running total tells the growth story a yearly bar never can: the fleet crossed 1,000 stores around 1988 and doubled again within 10 years — an S-curve of compounding expansion the VP can annotate ("when did we reach half today's fleet?").</p>
+      <p><b>Real-time example:</b> Why SUM works where COUNT fails: <code>COUNT(conversion)</code> would count every non-blank row (1,557 + 389 = 1,946 — wrong!), but SUM reads the column as 1/0/null flags, landing exactly on <b>1,557</b>. And the running total tells the growth story a yearly bar never can: the fleet crossed 1,000 stores in 1987 and doubled again within 10 years — an S-curve of compounding expansion the VP can annotate ("when did we reach half today's fleet?").</p>
       <p><b>What happens if you skip it:</b> Without the <code>ALL</code> pattern, "cumulative" at each year equals just that year's openings (the filter never lifts), and the line collapses to a copy of the columns — the #1 beginner running-total bug. Without null-aware counting, conversion counts silently include stores that never converted.</p>
       <p><b>Smart-work tip:</b> Memorize the skeleton <code>CALCULATE([X], FILTER(ALL(DateTable), Date &lt;= MAX(Date)))</code> — it's the universal YTD, lifetime-to-date, and inventory-accumulation pattern. Verify the endpoints (1 in 1962, 2,992 in 2006) and one midpoint; three checks prove the whole curve.</p>
     </div>
@@ -402,7 +402,7 @@ CALCULATE (
       <div class="why-box">
         <div class="why-title">💡 Why do we do this?</div>
         <p><b>Reason:</b> This combo pairs two different mathematical questions about the same timeline: <i>pace</i> (columns: how many NEW stores per year?) and <i>accumulated scale</i> (line: how big is the fleet so far?). They need separate axes because one is a small yearly number (max 178) and the other is a growing total (up to 2,992) — on one axis, either the peaks or the curve would be crushed.</p>
-        <p><b>Real-time example:</b> Read it the way an executive does: the columns reveal <b>when</b> Walmart pushed hardest (peaks of 178 in 1990 and 161 in 1991 — the Supercenter gold-rush years) and when it cooled; the S-curve line reveals <b>what those years added up to</b> — half the fleet arriving after the mid-1980s. Together they answer both "when was the push?" and "how did we end up at 2,992?" in one glance. A speedometer and an odometer, on one chart.</p>
+        <p><b>Real-time example:</b> Read it the way an executive does: the columns reveal <b>when</b> Walmart pushed hardest (peaks of 178 in 1990 and 161 in 1991 — the Supercenter gold-rush years) and when it cooled; the S-curve line reveals <b>what those years added up to</b> — half the fleet arriving only by 1990. Together they answer both "when was the push?" and "how did we end up at 2,992?" in one glance. A speedometer and an odometer, on one chart.</p>
         <p><b>What happens if you skip it:</b> Two separate charts force mental chart-matching; one chart with both fields on a single axis renders the 178-store columns invisible next to a 2,992 line — the flat-column trap from Set 01, in a different costume.</p>
         <p><b>Smart-work tip:</b> Whenever you have "events per period" + "cumulative total", this combo is the standard shape (works identically for sales + revenue-to-date, hires + headcount, tickets + backlog). Your <code>ALL('Calendar')</code> running-total measure is what makes the line true at every year.</p>
       </div>
@@ -433,7 +433,7 @@ CALCULATE (
     <h2 class="t">6. Client Sign-Off Checklist</h2>
     <ul class="task-list">
       <li><label><input type="checkbox"> Total Stores = <b>2,992</b>, Supercenters = <b>1,946</b> (65.0%), Converted Stores = <b>1,557</b> (52.0%).</label></li>
-      <li><label><input type="checkbox"> Opening date axis spans <b>1962</b> to <b>2006</b> (no future 2062–2079 dates!).</label></li>
+      <li><label><input type="checkbox"> Opening date axis spans <b>1962</b> to <b>2006</b> (no future 2062-style dates!).</label></li>
       <li><label><input type="checkbox"> Peak annual opening bar is <b>1990</b> at <b>178 stores</b>, and Cumulative line ends at <b>2,992</b>.</label></li>
       <li><label><input type="checkbox"> Top state is <b>TX</b> (<b>315 stores</b>, <b>200 conversions</b>), and <b>GA</b> maps inside the USA (not Europe!).</label></li>
     </ul>

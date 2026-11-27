@@ -135,7 +135,7 @@
     <div class="note">
       <b>What Your Dashboard Will Reveal to the Marketing Director:</b><br>
       1. <b>Massive Misallocation of Agent Effort:</b> Agents dialed <b>blue-collar</b> workers more than any other group (<code>9,732</code> calls), yet they convert at the <b>lowest rate (7.27%)</b>! Meanwhile <b>students (28.68%)</b> and <b>retirees (22.79%)</b> received only <code>3,202</code> calls combined.<br>
-      2. <b>Warm Re-Targeting Goldmine:</b> Past subscribers (<code>poutcome = "success"</code>) convert at <b>64.73%</b> (7× higher than cold leads at 9.16%).<br>
+      2. <b>Warm Re-Targeting Goldmine:</b> Past subscribers (<code>poutcome = "success"</code>) convert at <b>64.73%</b> (7× higher than cold leads with <code>poutcome = "unknown"</code> at 9.16%).<br>
       3. <b>Call Fatigue Kills ROI:</b> Conversion drops from <b>14.60%</b> on Call #1 → <b>11.20%</b> on Call #2 → <b>8.63%</b> on Calls 4–5 → <b>5.81%</b> on 6+ calls!<br>
       4. <b>Debt Drag:</b> Clients <i>without</i> a housing mortgage convert at <b>16.70%</b> vs <b>7.70%</b> for mortgage holders.
     </div>
@@ -149,7 +149,7 @@
       <tr><td><code>I</code>, <code>J</code>, <code>K</code></td><td><code>contact</code>, <code>day</code>, <code>month</code></td><td>Text / Int / Text</td><td>Last contact channel &amp; calendar month (<code>jan..dec</code>, lowercase text).</td></tr>
       <tr><td><code>L</code></td><td><code>duration</code></td><td>Whole Number (s)</td><td>Call length in seconds (Avg = <code>258.2s</code>). Note: known only <i>after</i> the call ends, great for Funnel engagement analysis!</td></tr>
       <tr><td><code>M</code></td><td><code>campaign</code></td><td>Whole Number</td><td>Number of calls made to this client during THIS campaign (<code>1</code> to <code>63</code>!).</td></tr>
-      <tr><td><code>N</code>, <code>O</code>, <code>P</code></td><td><code>pdays</code>, <code>previous</code>, <code>poutcome</code></td><td>Int / Int / Text</td><td><b>Sentinel Trap:</b> <code>pdays = -1</code> means <b>never contacted in a prior campaign</b> (36,959 rows) — do NOT average <code>-1</code> as "-1 days"!</td></tr>
+      <tr><td><code>N</code>, <code>O</code>, <code>P</code></td><td><code>pdays</code>, <code>previous</code>, <code>poutcome</code></td><td>Int / Int / Text</td><td><b>Sentinel Trap:</b> <code>pdays = -1</code> means <b>never contacted in a prior campaign</b> (36,954 rows — note: <code>poutcome = "unknown"</code> covers 36,959 rows, a tiny 5-row bookkeeping quirk in the source data; the two are not perfectly identical) — do NOT average <code>-1</code> as "-1 days"!</td></tr>
       <tr><td><code>Q</code></td><td><code>y</code></td><td>Text (yes/no)</td><td>Target outcome: <code>"yes"</code> (5,289 subscribed) or <code>"no"</code> (39,922 declined).</td></tr>
     </table>
 
@@ -229,7 +229,7 @@
     <div class="why-box">
       <div class="why-title">💡 Why do we do this?</div>
       <p><b>Reason:</b> Putting <b>effort</b> (calls dialed) and <b>yield</b> (conversion rate) side-by-side in one pivot sets up the campaign's central diagnosis: are agent hours going where deposits actually come from? Sorting by rate turns a table of numbers into a ranked target list for next quarter.</p>
-      <p><b>Real-time example:</b> Read the sorted pivot as the Head of Retail Deposits would: the bank dialed <b>9,732</b> blue-collar numbers — more than any other group — and converted just <b>7.3%</b>; meanwhile students (938 calls, <b>28.7%</b>) and retirees (2,264 calls, <b>22.8%</b>) were barely touched. Rough math says re-routing even 2,000 dials from blue-collar to student/retired segments at those rates wins roughly +430 extra subscriptions without one additional euro of payroll. That's the "smart work" version of campaign management: reallocate, don't just dial more.</p>
+      <p><b>Real-time example:</b> Read the sorted pivot as the Head of Retail Deposits would: the bank dialed <b>9,732</b> blue-collar numbers — more than any other group — and converted just <b>7.3%</b>; meanwhile students (938 calls, <b>28.7%</b>) and retirees (2,264 calls, <b>22.8%</b>) were barely touched. Rough math says re-routing even 2,000 dials from blue-collar (7.3%) to the student/retired segments (blended ≈ 24.5%) wins roughly +345 extra subscriptions without one additional euro of payroll. That's the "smart work" version of campaign management: reallocate, don't just dial more.</p>
       <p><b>What happens if you skip it:</b> The dashboard gets built, but nobody can state WHERE to shift effort — the client asked for priorities, not pictures. The pivot is where the recommendation gets its evidence.</p>
       <p><b>Smart-work tip:</b> Verify with three anchors: the two extremes (student 28.7%, blue-collar 7.3%) and the grand total (11.7%). If all three match in Power BI later, every intermediate segment is almost certainly right too — endpoints + total are a cheap, strong correctness proof.</p>
     </div>
@@ -422,7 +422,7 @@ SWITCH (
   <section id="stretch">
     <h2 class="t">7. Stretch Challenges</h2>
     <ul>
-      <li><b>Contact-Prior-Days Measure Excluding <code>-1</code>:</b> Write <code>Avg Days Since Prior Contact = CALCULATE(AVERAGE('Calls'[pdays]), 'Calls'[pdays] &gt;= 0)</code> so the 36,959 never-contacted leads (<code>-1</code>) don't corrupt the average!</li>
+      <li><b>Contact-Prior-Days Measure Excluding <code>-1</code>:</b> Write <code>Avg Days Since Prior Contact = CALCULATE(AVERAGE('Calls'[pdays]), 'Calls'[pdays] &gt;= 0)</code> so the 36,954 never-contacted leads (<code>-1</code>) don't corrupt the average!</li>
       <li><b>What-If Reallocation Calculator:</b> Calculate how many extra deposits the bank would win if 5,000 calls were shifted from 6+-dial blue-collar leads (5.8%) to 1st-dial retirees/tertiary-educated non-mortgage clients!</li>
     </ul>
   </section>

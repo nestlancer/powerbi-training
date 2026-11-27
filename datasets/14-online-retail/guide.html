@@ -128,7 +128,7 @@
         <div class="stat warn"><b>-£896,812</b><span>9,288 'C' Credit-Note Lines (8.41%)</span></div>
         <div class="stat"><b>£9,747,748</b><span>All-Rows Net Revenue (SUMX)</span></div>
         <div class="stat"><b>84.00% UK</b><span>£8.19M Domestic · £1.56M Export</span></div>
-        <div class="stat"><b>4,372</b><span>Registered Accounts (+24.9% Guest!)</span></div>
+        <div class="stat"><b>4,372</b><span>Registered Accounts (Guests = 24.9% of rows!)</span></div>
       </div>
     </div>
 
@@ -216,7 +216,7 @@ else "Stock Write-Off"</pre>
     <div class="why-box">
       <div class="why-title">💡 Why do we do this?</div>
       <p><b>Reason:</b> Four quiet landmines get defused. (1) <b>Types</b>: <code>InvoiceNo</code> contains <code>C536379</code> and <code>StockCode</code> contains <code>85123A</code> — force them to Text or the C-prefixed credit notes become Error cells and <b>-£896,812 of returns silently vanishes</b>, overstating revenue by 9% (Mistake 1 exactly). (2) <b>Guests</b>: 135,080 blank-CustomerID lines are real £1.45M walk-in/guest sales — labeling them "Guest" preserves them instead of dropping 25% of rows. (3) <b>Country codes</b>: EIRE, RSA, and Channel Islands are customs abbreviations — without mapping, "EIRE" plots nowhere on a map and Ireland's £263K disappears from the export story. (4) The <code>EntryType</code> conditional column moves the classification into refreshable Power Query.</p>
-      <p><b>Real-time example:</b> Consider what each fix buys: keeping guests means the Registered-vs-Guest chart (Visual 5) can reveal that 24.9% of revenue comes from customers you can't remarket to — a CRM gap worth £1.45M. Fixing EIRE means the export map shows Ireland correctly instead of dropping it — which changes the "top export market" ranking. Small mapping edits, big strategic numbers.</p>
+      <p><b>Real-time example:</b> Consider what each fix buys: keeping guests means the Registered-vs-Guest chart (Visual 5) can reveal that 24.9% of all invoice lines — £1.45M, about 14.9% of net revenue — come from customers you can't remarket to. Fixing EIRE means the export map shows Ireland correctly instead of dropping it — which changes the "top export market" ranking. Small mapping edits, big strategic numbers.</p>
       <p><b>What happens if you skip it:</b> Numbers become Error cells, 25% of rows vanish, two countries vanish from maps, and the whole reconciliation drifts from the Excel checkpoint.</p>
       <p><b>Smart-work tip:</b> Scan identifier columns for letters BEFORE letting any import guess types — "IDs with prefixes/suffixes must be Text" is a law, not a preference. And never treat blanks in a key column as deletable; ask what business reality the blank represents (here: guest checkout) and LABEL it.</p>
     </div>

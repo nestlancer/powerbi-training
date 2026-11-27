@@ -90,11 +90,11 @@
 <header>
   <div class="kicker">Practice Set 16 of 20 · Wide-Table Pruning, Power Query Unpivot &amp; ESG Sustainability BI</div>
   <h1>16 · Global CO2 Emissions (OWID) — 79-Column Pruning, Unpivoting Fuels &amp; ESG Views</h1>
-  <p>Tame Our World in Data's massive <b>56,269-row × 79-column</b> climate history (<code>1750–2025</code>)! Prune 79 columns down to 12 lean fields, separate 220 ISO-3 countries from <code>OWID_*</code> / blank regional rollups in one rule, <b>Unpivot 5 fossil-fuel columns</b> into a tidy Fuel Stacked Area Chart, and contrast Annual vs. Cumulative vs. Per-Capita emissions!</p>
+  <p>Tame Our World in Data's massive <b>56,269-row × 79-column</b> climate history (<code>1750–2025</code>)! Prune 79 columns down to 13 lean fields, separate 223 ISO-3 economies from blank regional rollups in one rule, <b>Unpivot 5 fossil-fuel columns</b> into a tidy Fuel Stacked Area Chart, and contrast Annual vs. Cumulative vs. Per-Capita emissions!</p>
   <div class="top-nav">
     <a class="pill" href="../index.html">← All 20 Practice Sets</a>
     <a class="pill" href="../../index.html">← Main Excel &amp; Power BI Outline</a>
-    <span class="pill">Skills Taught: Choose Columns (79→12) · Unpivot Columns · Fuel Stacked Area · Annual vs Cumulative vs Per-Capita</span>
+    <span class="pill">Skills Taught: Choose Columns (79→13) · Unpivot Columns · Fuel Stacked Area · Annual vs Cumulative vs Per-Capita</span>
   </div>
 </header>
 
@@ -124,7 +124,7 @@
     <div class="facts">
       <div class="grid">
         <div class="stat"><b>56,269 × 79</b><span>Raw Rows × Columns (1750–2025)</span></div>
-        <div class="stat"><b>220</b><span>Clean 3-Letter ISO Economies</span></div>
+        <div class="stat"><b>223</b><span>ISO-3 Economies (220 with CO2 data)</span></div>
         <div class="stat"><b>37,748 Mt</b><span>2025 Country Sum (World = 38,995 Mt*)</span></div>
         <div class="stat"><b>China (12.42B t)</b><span>#1 Annual Emitter (2025)</span></div>
         <div class="stat"><b>USA (439.3B t)</b><span>#1 Cumulative Emitter (1750–2025)</span></div>
@@ -134,8 +134,8 @@
 
     <div class="note">
       <b>Two Essential OWID Climate Rules:</b><br>
-      1. <b>One-Line Country Filter (<code>Text.Length([iso_code]) = 3</code>):</b> Every regional/income aggregate (<code>World</code>, <code>Asia</code>, <code>High-income countries</code>, <code>OWID_WRL</code>) has either a blank <code>iso_code</code> or an 8-character <code>OWID_*</code> prefix! Filtering <code>Text.Length([iso_code]) = 3</code> isolates the exact <b>220 territorial economies</b> (`37,452.85 Mt` in 2024; `37,747.93 Mt` in 2025).<br>
-      <i>*Why is the <code>World</code> row (`38,995.11 Mt` in 2025) ~1,247 Mt higher than the 220-country sum?</i> Because ~1.25 billion tonnes come from <b>International Aviation &amp; Shipping</b> over open oceans!<br>
+      1. <b>One-Line Country Filter (<code>Text.Length([iso_code]) = 3</code>):</b> Every regional/income aggregate (<code>World</code>, <code>Asia</code>, <code>High-income countries</code>) has a <b>blank</b> <code>iso_code</code> in this export (older OWID versions carried 8-character codes like <code>OWID_WRL</code> for World)! Filtering <code>Text.Length([iso_code]) = 3</code> isolates the <b>223 territorial economies</b> — the 220 that report CO2 in recent years sum to `37,452.85 Mt` in 2024 and `37,747.93 Mt` in 2025 (Monaco, San Marino &amp; Vatican carry codes but no recent readings).<br>
+      <i>*Why is the <code>World</code> row (`38,995.11 Mt` in 2025) ~1,247 Mt higher than the reporting countries' sum?</i> Because ~1.25 billion tonnes come from <b>International Aviation &amp; Shipping</b> over open oceans!<br>
       2. <b>Never Average Per-Capita Columns Across Countries:</b> Compute weighted Per-Capita in DAX via <code>DIVIDE(SUM(co2) * 1000000, SUM(population))</code>!
     </div>
 
@@ -163,7 +163,7 @@
   <!-- 3. REQUIREMENTS -->
   <section id="req">
     <h2 class="t">3. Project Requirements (Beginner → Advanced)</h2>
-    <div class="req"><span class="tag g">Beginner</span><div><b>Prune 79 Columns to 12 (`Choose Columns`) + Keep `LEN(iso_code) = 3`:</b> Build a fast, clean 220-country fact table (`Emissions`).</div></div>
+    <div class="req"><span class="tag g">Beginner</span><div><b>Prune 79 Columns to 13 (`Choose Columns`) + Keep `LEN(iso_code) = 3`:</b> Build a fast, clean 223-economy fact table (220 reporting CO2).</div></div>
     <div class="req"><span class="tag y">Inter.</span><div><b>Unpivot the 5 Fuel Columns (`coal_co2`, `oil_co2`, `gas_co2`, `cement_co2`, `flaring_co2`):</b> Build a `FuelEmissions` child table in Power Query to power a Fuel-Source Stacked Area Chart!</div></div>
     <div class="req"><span class="tag r">Advan.</span><div><b>3-Lens ESG Comparison (Annual vs. Cumulative vs. Per-Capita) + Emitter Rank-Shift Ribbon Chart (1950–2025).</b></div></div>
   </section>
@@ -178,14 +178,14 @@
     </div>
     <div class="why-box">
       <div class="why-title">💡 Why do we do this?</div>
-      <p><b>Reason:</b> This file ships 79 columns because it serves a research website, not your report — 65 of them are specific gases, consumption-based accounting, and share percentages your cockpit will never use. Pruning FIRST (79 → 13) shrinks the model's memory, speeds every refresh, and — most importantly for learning — leaves a Data pane you can actually read. The <code>LEN(iso_code) = 3</code> filter is the elegant one-line aggregate detector from Set 09: real economies carry ISO-3 codes (USA, CHN, IND); OWID's own rollups are either blank or 8-character <code>OWID_*</code> prefixes — so length = 3 cleanly separates 220 countries from World/Asia/income-tier rows.</p>
-      <p><b>Real-time example:</b> Why the ISO rule beats name-based filtering: "World" and "Asia" are names, but there are also entities like "Europe (excl. EU-27)" and "OECD (GCP)" whose names you'd have to hunt down one by one. The code length test catches ALL of them by STRUCTURE, not by list. And the verification sums matter for a subtle honesty point: the 220-country 2025 total (37,748 Mt) will NEVER match OWID's World row (38,995 Mt) — the ~1,247 Mt gap is international aviation and shipping over open oceans, which belong to no country. Knowing that gap BY NAME turns an apparent bug into an insight you can cite.</p>
-      <p><b>What happens if you skip it:</b> Mistake 2: global CO2 appears to be ~5× reality (every Chinese ton counted 6 more times across Asia, High-income, World...), and 65 unused columns bloat the pbix and bury the fields you need.</p>
+      <p><b>Reason:</b> This file ships 79 columns because it serves a research website, not your report — 66 of them are specific gases, consumption-based accounting, and share percentages your cockpit will never use. Pruning FIRST (79 → 13) shrinks the model's memory, speeds every refresh, and — most importantly for learning — leaves a Data pane you can actually read. The <code>LEN(iso_code) = 3</code> filter is the elegant one-line aggregate detector from Set 09: real economies carry ISO-3 codes (USA, CHN, IND); in this export OWID's own rollups all have a blank <code>iso_code</code> (older OWID versions used codes like <code>OWID_WRL</code>) — so length = 3 cleanly separates the 223 economies from World/Asia/income-tier rows.</p>
+      <p><b>Real-time example:</b> Why the ISO rule beats name-based filtering: "World" and "Asia" are names, but there are also entities like "Europe (excl. EU-27)" and "OECD (GCP)" whose names you'd have to hunt down one by one. The code length test catches ALL of them by STRUCTURE, not by list. And the verification sums matter for a subtle honesty point: the reporting countries' 2025 total (37,748 Mt) will NEVER match OWID's World row (38,995 Mt) — the ~1,247 Mt gap is international aviation and shipping over open oceans, which belong to no country. Knowing that gap BY NAME turns an apparent bug into an insight you can cite.</p>
+      <p><b>What happens if you skip it:</b> Mistake 2: global CO2 appears to be ~5× reality (every Chinese ton counted 6 more times across Asia, High-income, World...), and 66 unused columns bloat the pbix and bury the fields you need.</p>
       <p><b>Smart-work tip:</b> On any research-grade CSV (OWID, World Bank, Eurostat), prune to your question's columns FIRST and filter aggregates by code structure, not by name lists. And when a total "doesn't reconcile," hunt for the legitimate unattributed category before assuming an error — here it's shipping &amp; aviation.</p>
     </div>
 
     <ul class="task-list">
-      <li><label><input type="checkbox"> Pruned 79 columns in Excel Power Query and verified 220 ISO-3 countries totaling 37,747.93 Mt in 2025.</label></li>
+      <li><label><input type="checkbox"> Pruned 79 columns in Excel Power Query and verified the ISO-3 economies (220 reporting CO2) totaling 37,747.93 Mt in 2025.</label></li>
     </ul>
   </section>
 

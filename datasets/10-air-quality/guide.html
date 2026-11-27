@@ -190,7 +190,7 @@
       <div class="why-title">💡 Why do we do this?</div>
       <p><b>Reason:</b> <code>-200</code> is not a pollution reading — it's a <b>sentinel code</b> meaning "analyzer offline for calibration". Old industrial loggers couldn't write blanks, so they wrote -200 for every offline hour. Treating it as a number poisons everything: CO's raw average computes to <b>-34.21 mg/m³</b> — literally claiming the air has negative pollution, which is physically impossible and instantly discredits the whole report to any engineer.</p>
       <p><b>Real-time example:</b> The <b>Match entire cell contents</b> checkbox is the quiet hero: without it, Find &amp; Replace does substring matching — so sensor reading <code>1200</code> becomes <code>1</code> (the "200" inside got replaced!), and <code>-2000</code> becomes a blank. One unchecked box silently corrupts hundreds of valid readings, and the corrupted values still LOOK plausible. This is why data engineers replace sentinels with <i>blank/null, never zero</i>: 0 would mean "we measured zero pollution for 1,683 hours" — a fake fact — while blank means "we don't know", which is the truth.</p>
-      <p><b>What happens if you skip it:</b> Raw averages go negative, breach counts get computed over fake zeros (Mistake 1: CO average drops from 2.15 to a wrong 1.76), and the engineering team rejects the entire dashboard on sight.</p>
+      <p><b>What happens if you skip it:</b> Raw averages go negative, breach counts get computed over fake zeros (Mistake 1: CO average drops from 2.15 to a wrong 1.77), and the engineering team rejects the entire dashboard on sight.</p>
       <p><b>Smart-work tip:</b> Before averaging ANY sensor/machine-logged column, scan for its minimum: <code>MIN = -200</code> screams sentinel. Then Save-As a working copy FIRST — one wrong Replace All on an original file is unrecoverable.</p>
     </div>
 
@@ -246,6 +246,7 @@
       <p><b>What happens if you skip it:</b> Blank dates appear in slicers, the dead sensor pollutes averages, uppercase NULL corrupts 12 numeric columns into text, and the Hour column never exists so the diurnal chart can't be built.</p>
       <p><b>Smart-work tip:</b> Judge a column by its VALID share, not its existence: &lt;50% valid → quarantine and document; ≥95% valid → keep and report uptime. Column-level data-quality triage is a repeatable professional routine — the column dictionary's "-200 Count" column is exactly that audit, pre-computed for you.</p>
     </div>
+    <h3>Stage 3 &amp; 4 — Environmental KPI DAX Measures</h3>
 <pre>Total Monitored Hours = COUNTROWS ( 'AirQuality' )
 // Check: 9,357
 
@@ -368,7 +369,7 @@ CALCULATE ( COUNTROWS ( 'AirQuality' ), 'AirQuality'[CO(GT)] &gt; 4.0 )
   <section id="mistakes">
     <h2 class="t">8. Trainer's Troubleshooting: Common Beginner Mistakes</h2>
     <div class="warn-box">
-      <b>Mistake 1 — Replacing <code>-200</code> with <code>0</code> instead of <code>null</code>:</b> Putting <code>0</code> tells Power BI that the street had 0.00 pollution for 1,683 hours, dragging <code>CO(GT)</code> down from <code>2.15</code> to <code>1.76 mg/m³</code>! Always use <code>null</code>.
+      <b>Mistake 1 — Replacing <code>-200</code> with <code>0</code> instead of <code>null</code>:</b> Putting <code>0</code> tells Power BI that the street had 0.00 pollution for 1,683 hours, dragging <code>CO(GT)</code> down from <code>2.15</code> to <code>1.77 mg/m³</code>! Always use <code>null</code>.
     </div>
     <div class="warn-box">
       <b>Mistake 2 — Typing <code>NULL</code> in uppercase in Power Query:</b> Power Query M is case-sensitive — always type lowercase <code>null</code>!
