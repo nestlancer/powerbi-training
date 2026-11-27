@@ -64,6 +64,10 @@
   .well strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-bottom:2px;}
   .note{background:#fffaf0;border-left:4px solid #e0a800;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
   .warn-box{background:var(--danger-soft);border-left:4px solid var(--danger);border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
+  .why-box{background:#eaf3ff;border-left:4px solid #2563eb;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.4px;}
+  .why-box .why-title{font-weight:800;color:#1d4ed8;margin:0 0 6px;font-size:12.5px;text-transform:uppercase;letter-spacing:.5px;}
+  .why-box p{margin:5px 0;}
+  .why-box b{color:#123a7a;}
   .wireframe{display:grid;grid-template-columns:repeat(12,1fr);gap:8px;background:#eef2f7;padding:14px;border-radius:12px;margin:12px 0;font-size:12px;}
   .wf-box{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:10px;text-align:center;font-weight:600;color:var(--accent);}
   .wf-box small{display:block;font-weight:400;color:var(--muted);margin-top:3px;font-size:11px;}
@@ -171,6 +175,13 @@
     <div class="step">
       In Excel, use <b>Data → From Text/CSV</b> (UTF-8) to load <code>airports.csv</code> onto sheet <code>Airports</code> and <code>routes.csv</code> onto sheet <code>Routes</code>.
     </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> For the first time in the course, you're not cleaning one table — you're preparing a <b>relationship</b> between two tables: <code>Routes</code> (the fact: 67,663 events) and <code>Airports</code> (the dimension: 7,698 entities). Everything downstream — VLOOKUP, XLOOKUP, star schema, relationships — depends on loading them cleanly and separately, each into its own named tab, from UTF-8 (airport names like <code>São Paulo</code> again).</p>
+      <p><b>Real-time example:</b> This two-tab structure is the miniature version of every real BI warehouse: one long "events" table (flights, orders, clicks) and one "directory" table (airports, customers, products) that describes the entities the events point at. The reason airports live separately is obvious the moment you think about updates: airport data (coordinates, names) changes rarely; route data changes constantly. Separating them means 7,698 rows of description stored once instead of duplicated across 67,663 route rows — smaller file, single point of truth, no contradictions.</p>
+      <p><b>What happens if you skip it:</b> Merging or mangling the two loads at import time forces manual column-copying later, and any airport attribute fix has to be applied 67,663 times instead of once.</p>
+      <p><b>Smart-work tip:</b> Name tabs after tables and keep fact/dimension roles clear from the first minute — the mental model (long events + short directory + a key connecting them) is the same one you'll use in every database and BI tool for the rest of your career.</p>
+    </div>
 
     <h3>Step A2 — Enrich <code>Routes</code> Using <code>XLOOKUP</code> on <code>airport_id</code></h3>
     <div class="step">
@@ -184,6 +195,13 @@
 // L2 (RouteScope — International vs Domestic):
 =IF(OR(J2="Unmatched",K2="Unmatched"), "Unmatched", IF(J2=K2, "Domestic", "International"))</pre>
       Verify with a PivotTable on <code>RouteScope</code>: <b>34,710 International (51.98%)</b> vs. <b>32,061 Domestic (48.02%)</b> across the 66,771 doubly-matched routes! Save as <code>12-openflights-clean.xlsx</code>.
+    </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> Three decisions in one step. (1) <b>Join on <code>airport_id</code>, never <code>iata</code></b>: 1,626 small airfields have <code>\N</code> instead of an IATA code, so an iata-join produces duplicate-key collisions and lost rows — while <code>airport_id</code> is a unique 1..7,698 surrogate key with zero blanks. (2) <b>Graceful misses</b>: XLOOKUP's 4th argument returns "Unmatched" instead of an error, so unmatched routes are LABELLED, not crashed — and the RouteScope formula routes them to an honest "Unmatched" bucket instead of silently calling them Domestic. (3) <b>Derived classification</b>: RouteScope (same country on both ends = Domestic) turns two lookups into the business answer the client asked for.</p>
+      <p><b>Real-time example:</b> Feel what the wrong key does: join on <code>iata</code> and every "\N" source/destination route either fails to match or worse, collides — rows vanish or multiply, and the "Total Routes = 67,663" card starts drifting by hundreds with no error message. The <code>VALUE(D2)</code> wrapper matters too: routes.csv stores IDs as text, and a text "1852" will never match the numeric 1852 — Excel's classic VLOOKUP #N/A that isn't really about missing data at all.</p>
+      <p><b>What happens if you skip it:</b> Mistake 1 in full: mangled many-to-many joins, phantom mismatches, and an international/domestic split computed over the wrong subset of routes.</p>
+      <p><b>Smart-work tip:</b> When a dimension offers both a business code (IATA) and a surrogate integer key, join on the surrogate — business codes get reused, blanked, and recycled; surrogate keys don't. And always give lookups a fallback value: an explicit "Unmatched" bucket is data you can audit; #N/A is data that stops your whole column.</p>
     </div>
 
     <ul class="task-list">
@@ -204,6 +222,13 @@
         <li>Click <b>Home → Close &amp; Apply</b>.</li>
       </ol>
     </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> Every MySQL-flavored export uses the string <code>\N</code> to mark nulls, and here it poisons the JOIN KEYS specifically: <code>source_airport_id</code> and <code>dest_airport_id</code> must become Whole Numbers to match <code>Airports[airport_id]</code> — the literal text "\N" blocks that conversion for every row it touches. Replacing across ALL columns of BOTH tables in one pass (Ctrl+A → Replace Values) also catches hidden sentinels in columns you weren't watching (e.g., <code>altitude</code>). The <code>HubLabel</code> and <code>codeshare</code> renames are presentation hygiene: "Y"/"" legends force users to memorize a codebook.</p>
+      <p><b>Real-time example:</b> Watch the failure if you skip the replace: Power BI tries to type <code>source_airport_id</code> as Whole Number, hits "\N" rows, and throws an error on load — or worse, leaves the column as Text, so the relationship to Airports silently matches nothing (dashed join, zero-filtered visuals). And the readability win is real: "Y" vs blank as a legend makes every airline chart unreadable; "Codeshare" vs "Operated" reads itself.</p>
+      <p><b>What happens if you skip it:</b> Relationships form on the wrong type, maps get phantom pins at null coordinates, and slicer items show literal "\N" entries — the classic MySQL-export smell in a Power BI model.</p>
+      <p><b>Smart-work tip:</b> On any database-flavored CSV, do a global "\N → null" sweep FIRST, before typing columns — sentinels in key columns block type conversion, and sentinels in measure columns corrupt aggregates. Ten seconds here saves an hour of "why won't this relationship form?"</p>
+    </div>
 
     <h3>Stage 3 — Build Active + Inactive Relationships in Model View (Interview Gold!)</h3>
     <div class="pbi-box">
@@ -216,6 +241,13 @@
 Airports[airport_id] (1) ─────────────────► (*) Routes[source_airport_id]
 Airports[airport_id] (1) - - - - - - - - -► (*) Routes[dest_airport_id]
              Inactive (Dashed Line: Destination — activated via USERELATIONSHIP!)</pre>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> <code>Airports</code> is a <b>role-playing dimension</b> — the same table describes an airport as an ORIGIN (source_airport_id) and as a DESTINATION (dest_airport_id). Power BI allows only one ACTIVE filter path between two tables (two active relationships would create contradictory, ambiguous filtering), so the second relationship is created <b>inactive (dashed)</b>: dormant, but ready to be switched on by <code>USERELATIONSHIP()</code> whenever a measure needs the "destination" role. The alternative — duplicating Airports into OriginAirports + DestAirports — works, but then one airport slicer can't drive both sides, and the model doubles in size (Mistake 2).</p>
+      <p><b>Real-time example:</b> The same pattern runs real analytics stacks everywhere: a Date table plays "Order Date", "Ship Date", and "Payment Date" roles; an Employee table plays "Manager" and "Report"; a Customer table plays "Buyer" and "Recipient". Modelers keep ONE copy of the dimension and multiple relationships, activating the needed role per measure. Learning it here on Airports (where the two roles have an intuitive meaning) is the standard interview-grade modeling lesson this stage promises.</p>
+      <p><b>What happens if you skip it:</b> Only outbound analysis is possible; "how many routes land here?" (the inbound half of the brief) has no path through the model — or gets hacked with duplicated tables that break single-slicer interactivity.</p>
+      <p><b>Smart-work tip:</b> Read the diagram convention: solid line = filter flows now, dashed = filter flows when summoned by USERELATIONSHIP. Draw this picture before writing the measures — knowing WHICH relationship serves which question is the whole design.</p>
+    </div>
 
     <h3>Stage 4 — Role-Playing DAX Measures</h3>
 <pre>Outbound Routes = COUNTROWS ( 'Routes' )
@@ -245,6 +277,13 @@ DIVIDE (
 // Check overall: 99.98% (67,652 of 67,663)
 
 Connected Hubs = DISTINCTCOUNT ( 'Routes'[source_airport_id] )</pre>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> <code>[Outbound Routes] = COUNTROWS('Routes')</code> works because the ACTIVE relationship filters Routes to rows departing the sliced airport — a plain count becomes origin-specific with zero extra syntax. <code>[Inbound Routes]</code> then does the magic: <code>CALCULATE(COUNTROWS('Routes'), USERELATIONSHIP(Airports[airport_id], Routes[dest_airport_id]))</code> temporarily swaps the active path for the inactive one, so the same airport row filters Routes by ARRIVAL instead. One dimension table, two filtering roles, two measures.</p>
+      <p><b>Real-time example:</b> Verify it live as the guide says: slice to <code>ATL</code> — Outbound <b>915</b>, Inbound <b>911</b> (nearly symmetric: Atlanta's Delta hub lands about as many as it launches). Slice to <code>LAX</code> — Outbound <b>492</b>, Inbound <b>498</b> (slightly net-inbound: LA attracts more arrivals). Those tiny asymmetries, previously unmeasurable, are exactly what <code>[Net Route Imbalance]</code> exposes — and network planners care because imbalanced airports need repositioned aircraft and crews. Without USERELATIONSHIP, the inbound column simply cannot exist.</p>
+      <p><b>What happens if you skip it:</b> You'd show every hub as "outbound only", the symmetry table collapses to one number, and half the client brief goes unanswered. Also note <code>Non-Stop Share % = 99.98%</code> — an almost-suspicious number worth flagging in commentary (this dataset records route legs, not journeys) — showing numbers, then questioning them, is analyst maturity.</p>
+      <p><b>Smart-work tip:</b> Test inactive relationships with TWO contrasting airports (one symmetric, one asymmetric) — if both measures respond correctly, the role-switching works everywhere. And remember: <code>USERELATIONSHIP</code> only functions inside <code>CALCULATE</code>, never on its own.</p>
+    </div>
 
     <h3>Stage 5 — Power BI Charts Journey: Build the 5-Visual Aviation Network Suite</h3>
 
@@ -268,6 +307,13 @@ Connected Hubs = DISTINCTCOUNT ( 'Routes'[source_airport_id] )</pre>
         <div class="well"><strong>Bubble size</strong><code>[Outbound Routes]</code> (filter visual to <code>[Outbound Routes] &gt;= 20</code> so major hubs shine crisply!)</div>
         <div class="well"><strong>Tooltips</strong><code>Airports[HubLabel]</code>, <code>[Inbound Routes]</code>, <code>[Codeshare Share %]</code></div>
       </div>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> Airport coordinates are EXACT (down to runway precision), so a GPS lat/lon bubble map beats a country choropleth here — connectivity is a point-level phenomenon, not a national average. The <code>&gt;= 20 routes</code> filter is a readability decision: 7,698 airports include thousands of tiny airstrips, and plotting them all turns the map into static; keeping the 300+ real hubs makes Atlanta, Heathrow, and Beijing glow as the network's arteries.</p>
+        <p><b>Real-time example:</b> Read the map the way the alliance-planning team does: giant clusters over the US East (ATL, ORD, DFW), Western Europe (LHR, CDG, FRA), and East Asia (PEK) — the three legs of global connectivity, instantly visible as geography rather than a ranked table. Bubble size (outbound routes) shows relative dominance at a glance, while tooltips carry the negotiation detail: inbound routes and codeshare share for each hub. This is the "where should our alliance deepen partnerships?" view — the answer is literally pinned to the ground.</p>
+        <p><b>What happens if you skip it:</b> Without the threshold filter, thousands of sub-20-route airfields drown the mega-hubs (the map becomes gray noise); without exact lat/lon, "Atlanta" might geocode to Atlanta, Texas or a national centroid — the Set 04 geocoding lesson, now with GPS precision available.</p>
+        <p><b>Smart-work tip:</b> Match visual granularity to decision granularity: alliance strategy needs hubs (points), country-level policy needs choropleths (shapes). Use thresholds to control density — "show only what matters" is a legitimate, documented filter, not cheating.</p>
+      </div>
     </div>
 
     <div class="chart-card">
@@ -277,12 +323,26 @@ Connected Hubs = DISTINCTCOUNT ( 'Routes'[source_airport_id] )</pre>
         <div class="well"><strong>X-axis</strong><code>[Outbound Routes]</code> AND <code>[Inbound Routes]</code></div>
       </div>
       <p><b>Verify Your Model Live:</b> Hover over <code>ATL — Atlanta</code>: Outbound = <b>915</b>, Inbound = <b>911</b>! Hover over <code>LAX — Los Angeles</code>: Outbound = <b>492</b>, Inbound = <b>498</b>! That proves both your active and inactive relationships are working simultaneously!</p>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> This chart is both an <b>insight</b> and a <b>test</b>. As insight: pairing Outbound and Inbound bars per hub reveals network symmetry — balanced hubs (ATL 915/911) are classic two-way connection machines, while asymmetric ones (LAX more inbound, some airports heavily net-outbound) reveal directional business roles like leisure destinations vs. departure megabases. As test: both bars appearing correctly per airport proves the active AND the USERELATIONSHIP-activated relationships work simultaneously in one visual — the model's hardest trick, verified in two hovers.</p>
+        <p><b>Real-time example:</b> Why planners pay for this: a hub that launches 600 routes but receives 400 (net +200 outbound) is a fleet-origin imbalance — aircraft and crews pile up elsewhere and must be repositioned overnight (real cost). A near-zero imbalance hub like Atlanta is operationally self-balancing. The bar pair turns "symmetry" from a consultant's word into a visible, comparable measurement per airport — with the table (Visual 5) supplying the exact imbalance column for the top of the priority list.</p>
+        <p><b>What happens if you skip it:</b> If the Inbound bar shows the SAME number as Outbound everywhere, the inactive relationship isn't being used (a classic copy-paste bug — both measures counting the active path), and the whole role-playing model is silently wasted.</p>
+        <p><b>Smart-work tip:</b> When a measure uses <code>USERELATIONSHIP</code>, verify it against a visual where the two values must differ for at least one category — identical values everywhere is the smell of an inactive relationship that never activated.</p>
+      </div>
     </div>
 
     <div class="chart-card">
       <h4><span class="tag y">Visual 4 &amp; 5</span> Top Airlines Stacked Column + Hub Imbalance Table</h4>
       <p>1. <b>Stacked column chart:</b> X-axis = <code>Routes[airline]</code> (Top 12), Y-axis = <code>[Outbound Routes]</code>, Legend = <code>Routes[codeshare]</code>. Notice how Ryanair (<code>FR = 2,484</code>) is ~100% Operated (ultra-low-cost point-to-point!) while legacy alliance carriers rely heavily on Codeshares!<br>
       2. <b>Table:</b> <code>Airports[HubLabel]</code>, <code>Airports[country]</code>, <code>[Outbound Routes]</code>, <code>[Inbound Routes]</code>, and <code>[Net Route Imbalance]</code>.</p>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> The codeshare split per airline answers a business-model question, not just a count: how much of an airline's network is its OWN metal versus partners' flights sold under its code? Stacking "Operated" under "Codeshare" makes the ratio visible per carrier — and the contrast is striking enough to reveal strategy. The imbalance table then completes the page as the operations view: the numeric counterpart to Visual 3's bars, ready for sorting and export.</p>
+        <p><b>Real-time example:</b> Read the stack and two airline species emerge: Ryanair (FR, 2,484 routes) is a near-solid "Operated" column — the ultra-low-cost model flies everything itself, point-to-point, no alliances. Legacy carriers show thick codeshare bands — selling partner-operated flights under their own code is how alliances (oneworld, Star) assemble global coverage without flying every leg. For the client (an alliance-planning team), this chart quantifies WHO already behaves like an alliance partner and who never will — a targeting list for partnership outreach, derived from data alone.</p>
+        <p><b>What happens if you skip it:</b> "Codeshare Share % = 21.6%" as one number hides the distribution entirely — the 21.6% is NOT spread evenly; it concentrates in legacy carriers while LCCs sit at ~0%, and that unevenness IS the insight.</p>
+        <p><b>Smart-work tip:</b> Averages and totals describe populations; STACKS reveal composition — always split strategic metrics by the categorical that carries business meaning (business model, region, channel). And keep one numeric table per page as the "receipts" layer for whatever the charts dramatize.</p>
+      </div>
     </div>
 
     <ul class="task-list">

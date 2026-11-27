@@ -64,6 +64,10 @@
   .well strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-bottom:2px;}
   .note{background:#fffaf0;border-left:4px solid #e0a800;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
   .warn-box{background:var(--danger-soft);border-left:4px solid var(--danger);border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
+  .why-box{background:#eaf3ff;border-left:4px solid #2563eb;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.4px;}
+  .why-box .why-title{font-weight:800;color:#1d4ed8;margin:0 0 6px;font-size:12.5px;text-transform:uppercase;letter-spacing:.5px;}
+  .why-box p{margin:5px 0;}
+  .why-box b{color:#123a7a;}
   .wireframe{display:grid;grid-template-columns:repeat(12,1fr);gap:8px;background:#eef2f7;padding:14px;border-radius:12px;margin:12px 0;font-size:12px;}
   .wf-box{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:10px;text-align:center;font-weight:600;color:var(--accent);}
   .wf-box small{display:block;font-weight:400;color:var(--muted);margin-top:3px;font-size:11px;}
@@ -163,6 +167,13 @@
     <div class="step">
       Use <b>Data → From Text/CSV → Load To… → PivotTable Report (Add to Data Model)</b> on <code>datasets/20-talentfirst-hr/data/hr_workforce.csv</code>. Put <code>OverTime</code> in Rows and <code>Attrition</code> in Columns (% of Row Total): verify <b><code>OverTime = Yes</code> → 33.71% Attrition</b> vs. <b><code>No</code> → 17.58%</b>!
     </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> The CHRO's brief opens with a scary bill — $2.41B of turnover cost — but before costing anything you must validate the DRIVERS, and OverTime is the prime suspect. The hand-built cross-tab with <b>% of Row Total</b> converts raw counts into comparable quit rates per group (the Set 17 discipline: rates within groups, never counts across groups). It's the cheapest possible root-cause test, and its result becomes the app's headline statistic.</p>
+      <p><b>Real-time example:</b> The pivot delivers the shock number instantly: employees working overtime quit at <b>33.71%</b> — nearly DOUBLE the 17.58% baseline of those who don't. And the exposure is big: 48,295 employees (21.95% of staff) carry OverTime. In one pivot you've found the largest CONTROLLABLE attrition lever in the company — overtime policy — which becomes Page 1's shock bar, Page 2's toggle, and the justification for the entire burnout intervention program.</p>
+      <p><b>What happens if you skip it:</b> The app ships as a headcount scorecard ("we lose 21% of staff") with no lever — the CHRO already knows the aggregate; what she needs is the driver she can act on.</p>
+      <p><b>Smart-work tip:</b> In people analytics, hand-test every hypothesized driver (overtime, satisfaction, promotion wait, tenure) as a simple 2×2 cross-tab before building anything — the ones that survive become the app's visuals, and you'll know the story before you open Power BI.</p>
+    </div>
 
     <ul class="task-list">
       <li><label><input type="checkbox"> Verified 220,000 employee records, 21.12% Attrition, and 33.71% OverTime Attrition in Excel PivotTable.</label></li>
@@ -187,6 +198,13 @@ else "3 - Normal"</pre>
         </li>
         <li>Click <b>Home → Close &amp; Apply</b>.</li>
       </ol>
+    </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> This stage converts an HRIS export into an action system. The <code>TenureBand</code> orders the attrition curve so the onboarding-dip pattern can be read (Set 15's banding, third appearance). The <code>FlightRiskTier</code> custom column is the capstone's most consequential move: it encodes the CHRO's triage POLICY as DATA — every employee gets a tier derived from their burnout profile. Building it in Power Query (not DAX) makes the tier a real column: slicable, RLS-filterable, and exportable to the roster.</p>
+      <p><b>Real-time example:</b> Read the tier logic as hospital triage: <b>Red Alert</b> = active + overtime + BOTH survey scores at the minimum — the triple-burnout cohort that historically quits at <b>50.27%</b> (565 people have ever fit it; <b>281 still work here</b>). <b>High Risk</b> = overtime plus ANY single red flag, including 5+ years since promotion (a 135,269-person stagnation pool worth monitoring at 23.30% attrition). The tier column is literally the CHRO's intuition written in M — auditable, consistent, and applied identically to all 220,000 employees.</p>
+      <p><b>What happens if you skip it:</b> HR Business Partners receive a 220,000-row export and must ask "who do I call first?" — retention effort spreads evenly over everyone instead of concentrating on the 281 imminent resignations where it actually pays.</p>
+      <p><b>Smart-work tip:</b> The moment a stakeholder describes a manual triage rule ("I'd worry about people with X and Y"), encode it as a tier column immediately — turning expert intuition into a filterable, consistent artifact is the core skill of people analytics.</p>
     </div>
 
     <h3>Stage 3 &amp; 4 — People-Analytics &amp; Financial ROI DAX + What-If Parameter</h3>
@@ -229,6 +247,13 @@ CALCULATE (
     'Workforce'[FlightRiskTier] = "1 - Critical Red Alert"
 )
 // Check: Exactly 281 active employees!</pre>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> The headcount measures are simple filters, but the centerpiece is <code>Estimated Turnover Cost</code> — and it teaches a money lesson HR analytics specifically needs: replacement cost (recruiting fees, lost productivity, ramp-up time) is genuinely UNKNOWABLE per employee — industry convention estimates 30–100% of annual salary. Instead of pretending precision, the measure multiplies departed payroll ($4.83B) by a user-set What-If multiplier: the assumption becomes an interactive slider the CFO can defend.</p>
+      <p><b>Real-time example:</b> At the default 50%, the card reads <b>$2.41B</b> ($2,413,178,590) — a number bigger than most product lines' revenue, which is exactly why the retention program gets funded. Slide to 30% for the conservative case (~$1.45B) or 100% for worst case ($4.83B): the board now debates the MULTIPLIER instead of disputing the model. Notice also what the <code>Critical Flight-Risk Active</code> check does: counting exactly 281 validates the tier logic against the guide's verified roster — a reconciliation check, in people-analytics form.</p>
+      <p><b>What happens if you skip it:</b> Turnover cost appears either as an ignored footnote or as one fabricated number nobody trusts — and the 281-person roster can't be tracked as a KPI without its measure.</p>
+      <p><b>Smart-work tip:</b> When a key input is inherently uncertain, surface it as a What-If parameter with a defensible range (here the 30–100% replacement-cost convention) — uncertainty made interactive is more credible than false precision, and it invites the CFO into the model instead of against it.</p>
+    </div>
 
     <h3>Stage 5 — Build All 3 Pages of the CHRO App</h3>
 
@@ -246,12 +271,26 @@ CALCULATE (
       <h4><span class="tag y">Page 2</span> Burnout Heatmap Matrix &amp; DEI Compensation Equity Lab</h4>
       <p>1. <b>Heatmap Matrix:</b> Rows = <code>JobSatisfaction</code> (1..4), Columns = <code>WorkLifeBalance</code> (1..4), Values = <code>[Attrition Rate %]</code> (enable Background color gradient!), plus an <code>OverTime</code> toggle button — watch cell <code>(Sat=1, WLB=1)</code> glow bright crimson at <b>50.27% attrition</b> when <code>OverTime = Yes</code>!<br>
       2. <b>DEI Pay-Equity Clustered Bar:</b> Y = <code>Department</code>, X = <code>[Avg Annual Salary]</code>, Legend = <code>Gender</code> (`Female $104,541` · `Non-binary $104,323` · `Male $104,250`) — verifying compensation parity across all 8 departments!</p>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> The heatmap is a burnout INTERACTION detector: satisfaction × work-life-balance on the grid, attrition % as color, and the OverTime toggle turning it into a 2×2×2 experiment. Attrition drivers rarely act alone — the most alarming number in this dataset is a COMBINATION, not a single factor. The DEI bar is the audit half of the page: pay parity per department, deliberately placed beside burnout because compensation equity and workload equity are both retention levers, and CHRO reviews always cover both.</p>
+        <p><b>Real-time example:</b> Use the toggle as the demo moment: with OverTime = No, the worst heatmap cell is elevated but survivable. Flick OverTime = Yes and cell (Sat=1, WLB=1) burns crimson at <b>50.27%</b> — HALF of that cohort quits. That's proof overtime AMPLIFIES low satisfaction and low WLB into resignations far beyond what any factor does alone (33.71% OT, 29.95% Sat=1, 28.62% WLB=1 individually). Meanwhile the DEI bar reads Female $104,541 · Non-binary $104,323 · Male $104,250 — near-perfect parity (~0.3% spread) the CHRO can now SHOW the board and auditors rather than merely assert.</p>
+        <p><b>What happens if you skip it:</b> Burnout stays three disconnected KPIs; the interaction effect — the single most alarming statistic available — never appears anywhere, and the DEI position stays an unsupported claim in a compliance document.</p>
+        <p><b>Smart-work tip:</b> Heatmaps with a categorical toggle are a poor man's interaction analysis. Always color-scale the RATE (never headcount) so tiny groups can't fake danger. And pair audits with risk analyses on one page: audits prove fairness, risk analyses demand action — CHRO pages need both.</p>
+      </div>
     </div>
 
     <div class="chart-card">
       <h4><span class="tag r">Page 3</span> Proactive HRBP Flight-Risk Roster (281 Critical Employees) + RLS</h4>
       <p>1. Filter Page 3 to <code>Attrition = "No"</code> and add a Slicer on <code>FlightRiskTier</code> defaulted to <code>1 - Critical Red Alert</code> (<b>281 employees</b>!). Display <code>EmployeeID</code>, <code>Name</code>, <code>Department</code>, <code>JobRole</code>, <code>OfficeLocation</code>, <code>AnnualSalary</code>, <code>YearsSinceLastPromotion</code>, and <code>TrainingHours</code> so HR Business Partners can schedule immediate stay-interviews and workload relief!<br>
       2. <b>Configure Row-Level Security (RLS) for Privacy:</b> Click <b>Modeling → Manage roles</b> → create role <code>IndiaHRBP</code> with DAX filter <code>'Workforce'[OfficeLocation] IN {"Mumbai", "Bengaluru", "Delhi", "Hyderabad"}</code> so regional HR managers only view PII in their assigned country!</p>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> The roster is where people analytics crosses its finish line: prediction converted into a named, schedulable list. The 281 red-alert employees surface with department, promotion wait, salary, and training hours — everything an HRBP needs for a stay-interview. And RLS is non-negotiable in HR: employee PII and compensation data must be visible ONLY to the regional owners accountable for acting on it — a privacy requirement, not a feature.</p>
+        <p><b>Real-time example:</b> Watch the loop close in Bengaluru: the IndiaHRBP role filters to Mumbai, Bengaluru, Delhi, Hyderabad, so that HRBP sees their regional slice of the 281 red-alert employees (4 of the 10 global hubs are Indian, so a large share of the roster) and schedules stay-interviews and workload relief THIS WEEK — while being structurally unable to see Tokyo's salaries, and vice versa. Then the What-If retention-bonus calculator completes the business case: the cost of intervening on 281 people is trivially small against the $2.41B turnover baseline — saving even a quarter of the cohort pays back multiples.</p>
+        <p><b>What happens if you skip it:</b> Analytics stops at a diagnosis deck; the 281 resign over the coming quarters and the $2.41B lands on next year's P&amp;L. And publishing unsecured employee-level salary data is an instant privacy incident (Mistake 2) — in HR, that single mistake can terminate the entire analytics program.</p>
+        <p><b>Smart-work tip:</b> Every predictive people-analytics project should end with an RLS-protected roster, a named owner, and a scheduled action — a risk model that produces no worklist is a research paper, not an app. Configure RLS BEFORE publishing, always test with <b>View as</b>, and remember the pattern (Set 18's stretch, now mission-critical).</p>
+      </div>
     </div>
 
     <ul class="task-list">

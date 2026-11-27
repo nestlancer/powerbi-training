@@ -64,6 +64,10 @@
   .well strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-bottom:2px;}
   .note{background:#fffaf0;border-left:4px solid #e0a800;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
   .warn-box{background:var(--danger-soft);border-left:4px solid var(--danger);border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
+  .why-box{background:#eaf3ff;border-left:4px solid #2563eb;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.4px;}
+  .why-box .why-title{font-weight:800;color:#1d4ed8;margin:0 0 6px;font-size:12.5px;text-transform:uppercase;letter-spacing:.5px;}
+  .why-box p{margin:5px 0;}
+  .why-box b{color:#123a7a;}
   .wireframe{display:grid;grid-template-columns:repeat(12,1fr);gap:8px;background:#eef2f7;padding:14px;border-radius:12px;margin:12px 0;font-size:12px;}
   .wf-box{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:10px;text-align:center;font-weight:600;color:var(--accent);}
   .wf-box small{display:block;font-weight:400;color:var(--muted);margin-top:3px;font-size:11px;}
@@ -176,6 +180,13 @@
       • <code>J2 (EntryType)</code>: <code>=IF(LEFT(A2,1)="C","Credit Note",IF(F2&lt;0,"Bad Debt",IF(D2&gt;0,"Gross Sale","Stock Adj")))</code><br>
       Insert a PivotTable with <code>EntryType</code> in Rows and <code>Sum of LineAmount</code> in Values: verify <b>Gross Sale = £10,666,684.54</b>, <b>Credit Note = -£896,812.49</b>, <b>Bad Debt = -£22,124.12</b>, and <b>Grand Total = £9,747,747.93</b>!
     </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> At half a million rows, Excel strategy changes: volatile formulas (VLOOKUP chains, whole-column references) recalculate on every edit and freeze the workbook — the client's exact complaint. Two small helper columns + one PivotTable is the scale-appropriate pattern: the pivot's engine summarizes 541,909 rows in memory without touching a single other cell. The <code>EntryType</code> classification is the intellectual core: raw ERP lines mix sales, returns (invoices prefixed "C"), and write-offs (negative prices, prefixed "A") — until you LABEL them, a simple SUM produces a number that is neither gross nor net and answers no finance question.</p>
+      <p><b>Real-time example:</b> Watch the reconciliation logic come alive: Gross Sale £10,666,684.54 − Credit Notes £896,812.49 − Bad Debt £22,124.12 = <b>£9,747,747.93</b> — the exact number the FD will sign off. That's not rounding luck: the classification is complete (every row lands in exactly one bucket), so the buckets MUST sum to the ledger total. When Power BI reproduces all four numbers, you've proven the whole model to the penny — and the 8.41% return rate emerges as a real KPI rather than a buried column.</p>
+      <p><b>What happens if you skip it:</b> Unlabeled negatives pollute "revenue" (beginners report £9.75M as "gross" or panic at negative lines), and nobody can separate "customers returning goods" from "accounting write-offs" — two completely different management problems.</p>
+      <p><b>Smart-work tip:</b> At 100K+ rows, prefer pivot summaries over formula floods, and classify transaction types as DATA (a column), not as separate formulas per question. One EntryType column now answers every "how much was returns?" question forever.</p>
+    </div>
 
     <ul class="task-list">
       <li><label><input type="checkbox"> Reconciled all four ERP <code>EntryType</code> buckets in Excel to £9,747,747.93 Net Revenue.</label></li>
@@ -201,6 +212,13 @@ else "Stock Write-Off"</pre>
         </li>
         <li>Extract <code>OrderDate</code> (Date Only) from <code>InvoiceDate</code>. Click <b>Home → Close &amp; Apply</b> — watch Power BI's VertiPaq engine compress 541,909 rows into ~12 MB in seconds!</li>
       </ol>
+    </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> Four quiet landmines get defused. (1) <b>Types</b>: <code>InvoiceNo</code> contains <code>C536379</code> and <code>StockCode</code> contains <code>85123A</code> — force them to Text or the C-prefixed credit notes become Error cells and <b>-£896,812 of returns silently vanishes</b>, overstating revenue by 9% (Mistake 1 exactly). (2) <b>Guests</b>: 135,080 blank-CustomerID lines are real £1.45M walk-in/guest sales — labeling them "Guest" preserves them instead of dropping 25% of rows. (3) <b>Country codes</b>: EIRE, RSA, and Channel Islands are customs abbreviations — without mapping, "EIRE" plots nowhere on a map and Ireland's £263K disappears from the export story. (4) The <code>EntryType</code> conditional column moves the classification into refreshable Power Query.</p>
+      <p><b>Real-time example:</b> Consider what each fix buys: keeping guests means the Registered-vs-Guest chart (Visual 5) can reveal that 24.9% of revenue comes from customers you can't remarket to — a CRM gap worth £1.45M. Fixing EIRE means the export map shows Ireland correctly instead of dropping it — which changes the "top export market" ranking. Small mapping edits, big strategic numbers.</p>
+      <p><b>What happens if you skip it:</b> Numbers become Error cells, 25% of rows vanish, two countries vanish from maps, and the whole reconciliation drifts from the Excel checkpoint.</p>
+      <p><b>Smart-work tip:</b> Scan identifier columns for letters BEFORE letting any import guess types — "IDs with prefixes/suffixes must be Text" is a law, not a preference. And never treat blanks in a key column as deletable; ask what business reality the blank represents (here: guest checkout) and LABEL it.</p>
     </div>
 
     <h3>Stage 3 &amp; 4 — Calendar Table + Gross/Net &amp; 80/20 Pareto DAX</h3>
@@ -239,6 +257,13 @@ VAR CumRev =
     )
 RETURN
     DIVIDE ( CumRev, TotalRegRev )</pre>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> Two DAX milestones live here. First, <b>SUMX again</b>: revenue must be computed line-by-line (<code>Quantity × UnitPrice</code> per row, then summed) — <code>SUM(Quantity) * SUM(UnitPrice)</code> multiplies the total units by the total price and produces a trillion-pound fantasy (Mistake 2). Second, the <b>Pareto cumulative %</b>: this pattern ranks every registered customer, sums revenue of everyone at-or-above the current rank, and divides by all registered revenue — the classic 80/20 construction, made possible by <code>ALLSELECTED</code> (which respects the user's slicers while ignoring the chart's own row context).</p>
+      <p><b>Real-time example:</b> The other measures form the finance KPI family the FD asked for: <code>Gross Sales</code>, <code>Credit Note Returns</code>, and <code>Return Rate % = 8.41%</code> (note the <code>ABS()</code> — returns are stored negative, and a negative return RATE would confuse every reader). Each is the same [Net Revenue] core with a different <code>EntryType</code> filter — one source of truth, four lenses. When the waterfall later shows 10.67 − 0.897 − 0.022 = 9.75, you're seeing this measure family rendered as a story.</p>
+      <p><b>What happens if you skip it:</b> The Pareto line can't be drawn (it's not a native visual), return rate reads as -8.41%, and the trillion-pound SUM error wipes out the whole report's credibility instantly.</p>
+      <p><b>Smart-work tip:</b> Read the Pareto measure slowly once — <code>ALLSELECTED</code> (keep user filters, drop row context) + <code>FILTER(..., [Net Revenue] &gt;= CurrentCustRev)</code> (everyone ranked above me) + <code>SUMX</code> over them — this exact skeleton powers every cumulative/running-share calculation in real BI work. Build it once, reuse it on products, regions, and SKUs forever.</p>
+    </div>
 
     <h3>Stage 5 — Power BI Charts Journey: Build the 5-Visual Wholesale Ledger Suite</h3>
 
@@ -261,6 +286,13 @@ RETURN
         <div class="well"><strong>Y-axis</strong><code>[Net Revenue]</code></div>
       </div>
       <p>Green bar starts at <code>£10.67M</code> (Gross Sale), drops red by <code>-£896.8K</code> (Credit Note) and <code>-£22.1K</code> (Bad Debt), and lands cleanly on the blue <b>Total = £9.75M</b> pillar!</p>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> This is the waterfall's home turf (Set 01 taught the shape; here it carries an actual ledger). "Gross revenue" and "net revenue" are different numbers that finance must reconcile, and the bridge between them — returns and write-offs — is exactly what a waterfall visualizes as drops. Filtering out the £0.00 "Stock Write-Off" bucket keeps the visual clean (a zero-height bar teaches nothing and invites questions).</p>
+        <p><b>Real-time example:</b> Present it as the FD would read it: "We invoiced £10.67M. Customers returned £897K — 8.41% of everything we sold. Write-offs cost £22K. Net: £9.75M." Each drop is now a management conversation: 8.41% returns is the giftware sector's reality (wholesale buyers order speculative stock), but if that red bar GROWS next quarter, it means quality or description problems — and the chart makes the trend visible the moment it shifts. The waterfall converts accounting entries into a narrative: earned, lost, kept.</p>
+        <p><b>What happens if you skip it:</b> The team quotes "£9.75M revenue" with no awareness that £919K leaked out on the way — the return problem stays invisible until year-end accounting, 9 months too late to fix.</p>
+        <p><b>Smart-work tip:</b> Waterfalls need the category field ordered by the LEDGER'S logic (gross → deductions → net), not by size — which is exactly why EntryType as a discrete category works here. When drops matter more than the endpoint, reach for this shape before any bar chart.</p>
+      </div>
     </div>
 
     <div class="chart-card">
@@ -271,12 +303,26 @@ RETURN
         <div class="well"><strong>Line Y-axis</strong><code>[Pareto Cumulative %]</code> (format as <code>0.0%</code>!)</div>
       </div>
       <p><b>Executive Insight:</b> Just the Top 5 wholesale accounts (<code>14646</code>, <code>18102</code>, <code>17450</code>, <code>14911</code>, <code>12415</code>) generate nearly <b>£980,000</b> — over 11% of all registered wholesale revenue!</p>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> The Pareto (80/20) chart answers a question no other visual can: <b>how concentrated is our revenue?</b> Columns rank customers by spend; the cumulative % line climbs from each bar to 100%, so the reader sees HOW FEW customers carry HOW MUCH of the business. This is the standard tool of key-account management everywhere: identify the vital few, because losing one of them is not a data point — it's an event.</p>
+        <p><b>Real-time example:</b> Read it as the FD: the curve hits roughly 20% of revenue by the time it passes just a handful of accounts — the Top 5 (led by customer <code>14646</code> in the Netherlands at £279K) already carry ~11% of registered wholesale revenue, and the Top 40 carry vastly more. The management consequences: (1) those accounts deserve named relationship owners and priority stock allocation; (2) credit terms offered to them are a real risk exposure (if <code>14646</code> went bankrupt, £279K of receivables wobble); (3) growth strategy needs BOTH deepening these whales AND widening the tail — the Pareto quantifies exactly how much each path is worth.</p>
+        <p><b>What happens if you skip it:</b> Revenue looks like "4,372 healthy customers" when it's really a few pillars plus a long tail — risk and opportunity both get misread, and key-account investment decisions are made blind.</p>
+        <p><b>Smart-work tip:</b> Whenever a distribution is skewed (customers, products, SKUs, bugs), a Pareto turns the skew into a visible curve. Filter to Top N (here 40) so the columns stay readable — the cumulative line still computes over ALL selected customers thanks to <code>ALLSELECTED</code>.</p>
+      </div>
     </div>
 
     <div class="chart-card">
       <h4><span class="tag y">Visual 4 &amp; 5</span> International Export Map + Holiday Wholesale Surge</h4>
       <p>1. <b>Map:</b> Location = <code>Retail[Country]</code>, Bubble size = <code>[Net Revenue]</code>, Visual filter: <code>Country is not United Kingdom</code> (so the 36 export countries aren't dwarfed by the UK's 84%!). Confirm <b>Netherlands (£285K)</b>, <b>Ireland (£263K)</b>, and <b>Germany (£222K)</b> lead exports!<br>
       2. <b>Stacked column chart:</b> X-axis = <code>Calendar[YearMonth]</code>, Y-axis = <code>[Net Revenue]</code>, spotting the massive Sep–Nov 2011 retail restocking surge ahead of Christmas!</p>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> Two visual judgments worth internalizing. (1) The map EXCLUDES the UK on purpose: at 84% of revenue, the UK bubble is 20× bigger than the next country — keep it on and the entire export story becomes one giant blob over Britain (the "dominant category drowns the rest" problem). Removing it is a deliberate, labeled scope choice that lets 36 export markets be compared. (2) The monthly column chart (registered vs guest stacked) exists because wholesale businesses live on <b>seasonality</b> — buyers stock up months before retail demand lands.</p>
+        <p><b>Real-time example:</b> Read the export map as the Export Sales Lead: Netherlands, Ireland, and Germany lead — continental Europe within one shipping day — with Australia's £137K proving demand reaches 10,000 miles away. That's the expansion shortlist the brief wanted. The monthly chart then shows the Sep–Nov 2011 surge: wholesalers buying Christmas stock in autumn means the factory's real planning deadline is <i>September</i>, not December — production capacity, cash flow, and warehouse space must peak three months before consumers see the products. Miss the surge and you miss the year.</p>
+        <p><b>What happens if you skip it:</b> The export strategy is invisible (UK drowns it), and the company plans staffing and inventory on calendar Christmas instead of wholesale Christmas — three months late, every year.</p>
+        <p><b>Smart-work tip:</b> When one category is 50%+ of a total, ALWAYS consider a "rest-of" view (exclude the giant, label the exclusion) — both views together tell the truth, neither alone does. And learn your industry's real seasonal calendar from the data, not from the consumer calendar; wholesale ≠ retail timing.</p>
+      </div>
     </div>
 
     <ul class="task-list">

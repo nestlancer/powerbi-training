@@ -64,6 +64,10 @@
   .well strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-bottom:2px;}
   .note{background:#fffaf0;border-left:4px solid #e0a800;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
   .warn-box{background:var(--danger-soft);border-left:4px solid var(--danger);border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
+  .why-box{background:#eaf3ff;border-left:4px solid #2563eb;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.4px;}
+  .why-box .why-title{font-weight:800;color:#1d4ed8;margin:0 0 6px;font-size:12.5px;text-transform:uppercase;letter-spacing:.5px;}
+  .why-box p{margin:5px 0;}
+  .why-box b{color:#123a7a;}
   .wireframe{display:grid;grid-template-columns:repeat(12,1fr);gap:8px;background:#eef2f7;padding:14px;border-radius:12px;margin:12px 0;font-size:12px;}
   .wf-box{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:10px;text-align:center;font-weight:600;color:var(--accent);}
   .wf-box small{display:block;font-weight:400;color:var(--muted);margin-top:3px;font-size:11px;}
@@ -183,6 +187,13 @@
         <li>Click <b>View → Freeze Panes → Freeze Top Row</b>.</li>
       </ol>
     </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> Academic/research exports often carry a machine-readable variable-tag row (<code>X1..X23, Y</code>) ABOVE the human-readable header row. Any import engine — Excel, Power Query, a database — will promote whichever row it finds first. Leaving <code>X1..Y</code> in place forces every real number below into <b>Text</b>, because the columns' "first values" are strings like <code>X2</code>. One deleted row converts 25 text columns into 25 numeric ones.</p>
+      <p><b>Real-time example:</b> Skip the delete and watch the cascade: Power BI loads 30,001 rows (the real header row became "data"), <code>LIMIT_BAL</code> can't be averaged (it's text), your default-rate measure errors or — worse — silently returns blank, and the CRO's first question becomes "why does your report say zero?" The 10-second right-click delete prevents an afternoon of type-migration archaeology. Notice also <b>Freeze Top Row</b> — with 25 columns and 30K rows, scrolling without headers means misreading <code>PAY_4</code> as <code>PAY_2</code>, which in credit data is the difference between "last month late" and "4 months late".</p>
+      <p><b>What happens if you skip it:</b> Mistake 1 in full: X-named columns, everything Text, garbage counts, and a dashboard that must be rebuilt from the import step anyway.</p>
+      <p><b>Smart-work tip:</b> On ANY new file, read the first TWO rows before importing — header rows and unit rows hide above the data more often than beginners expect. If Power Query already promoted the wrong row, "Use First Row as Headers" twice (remove + promote) is the repair.</p>
+    </div>
 
     <h3>Step A2 — Add 3 Helper Columns (Columns Z, AA, AB)</h3>
     <div class="step">
@@ -192,10 +203,24 @@
         <li><b>Column AB — <code>LimitBand</code> (from <code>LIMIT_BAL</code> in B2):</b> <code>=IF(B2&lt;=50000,"1. <=50K",IF(B2&lt;=150000,"2. 51K-150K",IF(B2&lt;=300000,"3. 151K-300K","4. >300K")))</code></li>
       </ol>
     </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> The CRO explicitly said: <i>"Don't hand me cryptic numbers like Education=3 and PAY_0=2."</i> These helper columns translate database codes into risk vocabulary. <code>EduLabel</code> also absorbs undocumented codes (<code>0, 5, 6</code> → "4. Other", 468 clients) — real datasets contain codes the dictionary never mentioned, and if you don't bucket them, Power BI prints a bare "6" category on the chart. <code>DelinquencyTier</code> compresses <code>PAY_0</code>'s −2…8 range into 3 actionable tiers, because collections teams act on "current / 1 month late / 2+ months late", not on 11 code values. <code>LimitBand</code> turns a continuous NT$ limit into 4 comparable exposure groups.</p>
+      <p><b>Real-time example:</b> Why tiering matters so much here: inside <code>PAY_0</code>, a client 2 months late defaults at <b>69.55%</b> and 3 months late at <b>75.78%</b> — versus 13.83% for current clients. That's a cliff, not a slope. A chart of 11 raw code values buries the cliff; a 3-tier chart makes the red wall visible from across the room — and tells the collections team exactly where to send the dialers.</p>
+      <p><b>What happens if you skip it:</b> Charts show "EDUCATION = 6" categories, slicers list −2 to 8 as separate items, and the dashboard violates the client's very first instruction.</p>
+      <p><b>Smart-work tip:</b> Always click a coded column's filter dropdown and compare its values against the data dictionary — <code>0, 5, 6</code> hiding in EDUCATION is how you find undocumented codes BEFORE the meeting. Then fold them into an honest "Other" bucket instead of pretending they don't exist.</p>
+    </div>
 
     <h3>Step A3 — PivotTable Check</h3>
     <div class="step">
       Insert a PivotTable: Rows = <code>DelinquencyTier</code>, Columns = <code>LimitBand</code>, Values = <code>Average of default payment next month</code> (formatted as <code>0.0%</code>). Confirm overall Grand Total = <b>22.1% (22.12%)</b>, <code>3. 2+ Months Late</code> = <b>69.6%</b>, and <b>Save As</b> <code>07-credit-clients-clean.xlsx</code> (saving as modern <code>.xlsx</code> is also much faster for Power BI than legacy 97–2003 <code>.xls</code>!).
+    </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> Because <code>default payment next month</code> is already a 0/1 flag, <b>Average of the flag IS the default rate</b> — the pivot computes 6,636 ÷ 30,000 = 22.12% with no formula at all. The Tier × Band cross-tab previews the dashboard's most important interaction: does late-payment risk <i>compound</i> with low credit limit? And the .xlsx save matters for speed: Power BI's .xls connector is legacy and slower.</p>
+      <p><b>Real-time example:</b> Read the cross-tab the way a credit committee would: the "2+ Months Late × ≤50K" cell is the portfolio's furnace — severely delinquent borrowers with tiny limits, where default rates spike toward 70%+. Low limits aren't just an exposure size question; they're a <i>who got approved</i> question, and the cross-tab shows the two risk factors stacking. That cell is precisely what Visual 4's red traffic-light icon will flag for the collections team — you've now seen the story in Excel before designing it in Power BI.</p>
+      <p><b>What happens if you skip it:</b> You lose the compounding insight (tier and band interact), and the dashboard gets built around two separate bar charts that answer less than the cross-tab did in five minutes.</p>
+      <p><b>Smart-work tip:</b> 0/1 flags make pivots into instant rate calculators — remember this property (Average of flag = rate) for churn, fraud, late-pay, or any binary outcome. It replaces COUNTIF chains everywhere.</p>
     </div>
 
     <ul class="task-list">
@@ -225,10 +250,24 @@
         <li>Click <b>Home → Close &amp; Apply</b>.</li>
       </ol>
     </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> Power Query is where the repair becomes repeatable: "Use First Row as Headers" + "Detect Data Type" recorded as steps means next quarter's .xls export cleans itself. Renaming <code>default payment next month</code> → <code>DefaultFlag</code> is developer hygiene — DAX like <code>SUM(Clients[DefaultFlag])</code> reads cleanly and never breaks over a 25-character name with spaces. The conditional label columns mirror your Excel helpers, but now as refresh-proof query steps.</p>
+      <p><b>Real-time example:</b> Note the deliberate choice to KEEP raw coded columns (<code>SEX</code>, <code>EDUCATION</code>, <code>PAY_0</code>) alongside their labels: <code>PAY_0</code> stays numeric because measures like <code>Severe Delinquent Clients = CALCULATE(..., PAY_0 &gt;= 2)</code> need the real number for comparisons — a text label "3. 2+ Months Late" can't be compared with <code>&gt;=</code>. This is a pattern you'll use everywhere: <i>keep the numeric key for math, add the label for display, hide whichever the report shouldn't touch.</i></p>
+      <p><b>What happens if you skip it:</b> Every manual fix lives only in this one PBIX; the DAX gets written against fragile long column names; and label-only tables lose the ability to do numeric tier logic.</p>
+      <p><b>Smart-work tip:</b> Name flags after what 1 means (<code>DefaultFlag</code>), not what the column was called in the research paper. Future readers — including you — should understand measures without opening the data dictionary.</p>
+    </div>
 
     <h3>Stage 3 &amp; 4 — Model Hygiene &amp; Credit-Risk DAX Measures</h3>
     <div class="pbi-box">
       Set <code>ID</code>, <code>SEX</code>, <code>EDUCATION</code>, <code>MARRIAGE</code>, and <code>PAY_0..PAY_6</code> Summarization = <b>Don't summarize</b> (or hide raw code columns!). Then create these measures:
+    </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> Power BI's default summarization is SUM — which is correct for money and counts but nonsensical for identifiers and codes. Left at default, dragging <code>ID</code> or <code>PAY_0</code> onto any value field produces instant garbage, and those garbage choices sit at the top of every field list tempting beginners. Setting <b>Don't summarize</b> forces the model to refuse implicit aggregation; hiding the raw codes (while keeping them for DAX) keeps the Report view clean without losing the numeric keys the measures need for comparisons like <code>PAY_0 &gt;= 2</code>.</p>
+      <p><b>Real-time example:</b> See the failure it prevents: <code>PAY_0</code> holds repayment-delay codes from −2 to 8 for 30,000 clients. Summed by default, a card cheerfully reports something like "Sum of PAY_0 ≈ 90,000" — a number with no meaning a human can state, yet it looks official on a dashboard. And <code>SEX</code> (coded 1/2) summed gives a fake "headcount". With Don't summarize, Power BI blocks these implicit aggregations and the analyst must write an explicit, reviewed measure instead.</p>
+      <p><b>What happens if you skip it:</b> "Sum of ID"-style junk cards ship in decks, field lists mislead every future developer, and implicit totals silently disagree with the real DAX measures sitting next to them.</p>
+      <p><b>Smart-work tip:</b> Hygiene sweep on every model: identifiers and coded columns get Don't summarize or Hidden; only genuinely additive columns (money, counts) keep default aggregation. It's the Set 04 ZIP-code rule generalized: identifiers are labels, not quantities.</p>
     </div>
 <pre>Total Clients = COUNTROWS ( 'Clients' )
 // Check: 30,000
@@ -251,6 +290,13 @@ DIVIDE ( SUM ( 'Clients'[BILL_AMT1] ), SUM ( 'Clients'[LIMIT_BAL] ), 0 )
 
 Severe Delinquent Clients = CALCULATE ( [Total Clients], 'Clients'[PAY_0] &gt;= 2 )
 // Check: 3,130 high-risk accounts (69.55% default rate!)</pre>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> Two subtleties make these measures "credit-grade" rather than "spreadsheet-grade". (1) <code>Credit Utilization %</code> divides <b>one month's</b> statement balance by the limit — a portfolio-level ratio computed as sum÷sum, NOT a sum of six monthly snapshots. Summing <code>BILL_AMT1..6</code> would multiply every revolving balance by 6 and report "utilization" over 180% — mathematically legal, financially absurd. (2) <code>Risk Ceiling % = 0.20</code> is a measure, not a typed number, so the Gauge and every conditional-formatting rule reference one editable threshold.</p>
+      <p><b>Real-time example:</b> Picture the CRO validating your card: Total Clients 30,000, Defaults 6,636, rate 22.12% — breaching the 20% ceiling. Now the useful part: <code>Severe Delinquent Clients</code> isolates 3,130 accounts (10.4% of the book) carrying a <b>69.55%</b> default rate. That tiny segment produces 2,177 of the 6,636 defaults — <b>a third of all losses from a tenth of the accounts</b>. That one measure reframes the whole meeting from "the portfolio is bad" to "3,130 accounts are the problem — here is the list".</p>
+      <p><b>What happens if you skip it:</b> Utilization gets computed from summed bills (nonsense), the 20% ceiling gets hardcoded in three places and drifts out of sync, and the severity of the delinquent segment stays buried inside the blended 22.12%.</p>
+      <p><b>Smart-work tip:</b> Before summing any column family like <code>BILL_AMT1..6</code>, ask whether they are <i>sequential snapshots of the same thing</i> (balances, inventory, headcount) — if yes, pick ONE snapshot or average them; never add. And define risk thresholds as measures the moment a client mentions a number like "20% ceiling".</p>
+    </div>
 
     <h3>Stage 5 — Power BI Charts Journey: Build the 5-Visual CRO Risk Suite</h3>
 
@@ -279,11 +325,25 @@ Severe Delinquent Clients = CALCULATE ( [Total Clients], 'Clients'[PAY_0] &gt;= 
         <li>Drag <code>[Default Rate %]</code> to <b>Analyze</b> and the 4 category fields to <b>Explain by</b>.</li>
         <li>Click the <code>+</code> sign next to the root <code>Default Rate % (22.12%)</code> bar → click <b>High value</b> (lightbulb icon)! Power BI automatically tests all 4 columns and picks <code>DelinquencyTier</code> because <code>3. 2+ Months Late</code> jumps to <b>69.55%</b>! Click <code>+ → High value</code> again on <code>3. 2+ Months Late</code> to drill straight into the highest-risk credit band!</li>
       </ol>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> The client's exact words: <i>"an interactive root-cause tree so my collections managers can drill."</i> A Decomposition Tree is the visual that makes reports <b>self-serve</b>: instead of the analyst pre-deciding the 10 charts the CRO might want, the tree holds one measure and four candidate splits, and the AI "High value" logic proposes the most informative cut at each level, live. Executives explore; you stop being a chart factory.</p>
+        <p><b>Real-time example:</b> In the meeting: root reads 22.12% (breach!). Click <code>+ → High value</code> — the tree picks <b>DelinquencyTier</b> on its own, because 2+ Months Late (69.55%) is the biggest jump among all four candidates. Click again → it splits into <b>LimitBand</b>, exposing the ≤50K furnace. Two clicks and 20 seconds, the meeting has traveled from "we're above appetite" to "the collections list is: severe-delinquent, low-limit accounts" — the same conclusion a static report would need 10 pre-built charts and perfect guessing to deliver.</p>
+        <p><b>What happens if you skip it:</b> Every un-anticipated drill question becomes "we'll follow up offline" — and the CRO (who asked for exactly this) sends the dashboard back.</p>
+        <p><b>Smart-work tip:</b> Keep <b>Tooltips</b> = counts ([Total Clients], [Defaulted Clients]) on the tree: a rate like 69.55% is scary but the count (3,130 accounts) is what makes it actionable. Order the Explain-by fields by likely business sequence (behavior → exposure → demographics) so manual drills follow a natural story.</p>
+      </div>
     </div>
 
     <div class="chart-card">
       <h4><span class="tag y">Visual 3</span> Credit Limit Exposure vs. Default Rate — Combo Chart</h4>
       <p>Put <code>LimitBand</code> on X-axis, <code>[Total Clients]</code> on Column y-axis, and <code>[Default Rate %]</code> on Line y-axis. Shows default risk dropping smoothly from <b>31.8% (&lt;=50K) → 23.7% → 16.8% → 13.3% (&gt;300K)</b>.</p>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> Risk management always asks two questions at once: <i>how many accounts</i> (exposure = columns) and <i>how likely to default</i> (probability = line). Plotting only the rate hides where the volume sits; plotting only counts hides where the danger is. The combo shows both scales against one ordered X-axis — and the smooth downward slope of the line is itself a finding: credit limits <i>are</i> an effective risk screen.</p>
+        <p><b>Real-time example:</b> Read the story: the two biggest columns sit on the left — 7,676 accounts in ≤50K at <b>31.79%</b> and 8,724 in 51–150K at <b>23.72%</b> — meaning most of the book lives in the highest-risk bands. The rate falls to 13.26% above NT$300K. That gap (31.8% vs 13.3%) is the empirical justification for the CRO's underwriting policy: the limit a customer is granted correlates directly with how much risk they carry, and the chart quantifies exactly how much. If a future committee proposes relaxing low-limit approvals, this visual is the counter-evidence.</p>
+        <p><b>What happens if you skip it:</b> The exposure-vs-risk trade-off stays abstract; the meeting debates "low limits are risky" as opinion instead of reading a measured 18-point spread across ordered bands.</p>
+        <p><b>Smart-work tip:</b> Keep the bands in business order (1→4, thanks to the numbered labels) — an unordered X-axis would scramble the monotonic slope that makes the insight obvious. This combo pattern (counts + rate over an ordered dimension) is the standard for any portfolio/segment risk review.</p>
+      </div>
     </div>
 
     <div class="chart-card">
@@ -294,6 +354,13 @@ Severe Delinquent Clients = CALCULATE ( [Total Clients], 'Clients'[PAY_0] &gt;= 
         <div class="well"><strong>Values</strong><code>[Total Clients]</code>, <code>[Default Rate %]</code></div>
       </div>
       <p>Right-click <code>[Default Rate %]</code> in Values → <b>Conditional formatting → Icons</b> → Rules: Green circle if <code>&lt; 0.18</code>, Amber triangle if <code>&gt;= 0.18 and &lt; 0.30</code>, Red diamond/circle if <code>&gt;= 0.30</code> → click <b>OK</b>!</p>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> A collections team doesn't consume analysis — it consumes a <b>work queue</b>. The Tier × Band matrix with traffic-light icons converts the model into their daily triage tool: red = call today, amber = monitor, green = leave alone. Icons beat background shading here because they encode <i>action categories</i> (3 discrete states), not magnitude — and they survive printing and color-blind viewing better than pure color gradients.</p>
+        <p><b>Real-time example:</b> Scan the finished matrix as a collections manager: the red row is "2+ Months Late" across every band (69.55% average), and the reddest corner is severe-delinquent ≤50K accounts. Meanwhile "Current × >300K" sits green at ~13.8% — no dialer time wasted there. The thresholds (0.18 / 0.30) are anchored to the CRO's 20% risk appetite, so a cell's icon literally means "this segment is above/below our stated tolerance" — the visual speaks the same policy language the risk committee does.</p>
+        <p><b>What happens if you skip it:</b> The team receives rates as raw decimals and triages by gut feel; or worse, everyone optimizes for the loudest average (22.12%) instead of the highest-priority cells.</p>
+        <p><b>Smart-work tip:</b> Tie icon thresholds to official policy numbers (the 20% ceiling), not arbitrary round values — then the dashboard enforces policy automatically after every refresh. Keep account counts next to the icon so effort is allocated by cell size AND severity.</p>
+      </div>
     </div>
 
     <ul class="task-list">

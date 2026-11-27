@@ -64,6 +64,10 @@
   .well strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-bottom:2px;}
   .note{background:#fffaf0;border-left:4px solid #e0a800;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
   .warn-box{background:var(--danger-soft);border-left:4px solid var(--danger);border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
+  .why-box{background:#eaf3ff;border-left:4px solid #2563eb;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.4px;}
+  .why-box .why-title{font-weight:800;color:#1d4ed8;margin:0 0 6px;font-size:12.5px;text-transform:uppercase;letter-spacing:.5px;}
+  .why-box p{margin:5px 0;}
+  .why-box b{color:#123a7a;}
   .wireframe{display:grid;grid-template-columns:repeat(12,1fr);gap:8px;background:#eef2f7;padding:14px;border-radius:12px;margin:12px 0;font-size:12px;}
   .wf-box{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:10px;text-align:center;font-weight:600;color:var(--accent);}
   .wf-box small{display:block;font-weight:400;color:var(--muted);margin-top:3px;font-size:11px;}
@@ -182,6 +186,13 @@
         <li>Click <b>Replace All</b>. Excel ignores blank cells inside <code>AVERAGE()</code> automatically!</li>
       </ul>
     </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> <code>-200</code> is not a pollution reading — it's a <b>sentinel code</b> meaning "analyzer offline for calibration". Old industrial loggers couldn't write blanks, so they wrote -200 for every offline hour. Treating it as a number poisons everything: CO's raw average computes to <b>-34.21 mg/m³</b> — literally claiming the air has negative pollution, which is physically impossible and instantly discredits the whole report to any engineer.</p>
+      <p><b>Real-time example:</b> The <b>Match entire cell contents</b> checkbox is the quiet hero: without it, Find &amp; Replace does substring matching — so sensor reading <code>1200</code> becomes <code>1</code> (the "200" inside got replaced!), and <code>-2000</code> becomes a blank. One unchecked box silently corrupts hundreds of valid readings, and the corrupted values still LOOK plausible. This is why data engineers replace sentinels with <i>blank/null, never zero</i>: 0 would mean "we measured zero pollution for 1,683 hours" — a fake fact — while blank means "we don't know", which is the truth.</p>
+      <p><b>What happens if you skip it:</b> Raw averages go negative, breach counts get computed over fake zeros (Mistake 1: CO average drops from 2.15 to a wrong 1.76), and the engineering team rejects the entire dashboard on sight.</p>
+      <p><b>Smart-work tip:</b> Before averaging ANY sensor/machine-logged column, scan for its minimum: <code>MIN = -200</code> screams sentinel. Then Save-As a working copy FIRST — one wrong Replace All on an original file is unrecoverable.</p>
+    </div>
 
     <h3>Step A2 — Verify Clean Averages &amp; Breach Counts with Formulas</h3>
     <div class="step">
@@ -199,6 +210,13 @@
 
 // CO(GT) Sensor Uptime %:
 =COUNT(C2:C9358) / 9357            --&gt; 82.0% (7,674 valid hours)</pre>
+    </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> These five formulas are the <b>acceptance tests</b> for the cleaning you just did — and they each prove something different. AVERAGE proves sentinels became blanks (2.15, not -34.21). The two COUNTIFs quantify <b>regulatory compliance</b> (388 EU NO2 breach hours, 812 high-CO hours) — numbers the client's brief explicitly demands. And the uptime formula converts "how much data survived?" into a percentage, which is how sensor engineers actually talk.</p>
+      <p><b>Real-time example:</b> Watch what the numbers now say: CO averages 2.15 mg/m³ with only 82.0% uptime — meaning the reference analyzer was offline for nearly 3 weeks of the year, and every report using it must disclose that. NO2 exceeded the EU's legal 200 µg/m³ limit for <b>388 hours</b> — that's a compliance finding, not a statistic. Recording these five values in Excel BEFORE building Power BI gives you fixed targets: if your DAX cards later disagree with 2.15 / 113.08 / 388 / 812, you know the model — not the physics — is wrong.</p>
+      <p><b>What happens if you skip it:</b> The dashboard gets built without knowing what "correct" looks like, and a subtle null-handling mistake (e.g., text-typed numbers, half-replaced sentinels) produces plausible-looking but wrong averages that nobody catches.</p>
+      <p><b>Smart-work tip:</b> After ANY cleaning step, immediately compute the clean summary statistics — cleaning without verification is just moving errors around. Uptime % (valid ÷ total) is a metric worth keeping permanently: it turns data quality into a number leadership can track.</p>
     </div>
 
     <ul class="task-list">
@@ -221,8 +239,13 @@
         <li>Click <b>Home → Close &amp; Apply</b>.</li>
       </ol>
     </div>
-
-    <h3>Stage 3 &amp; 4 — Core Telemetry &amp; Compliance DAX Measures</h3>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> This is a full <b>data-quality audit</b> disguised as an import routine, and the order matters: (1) remove the 114 formatted-but-empty rows so counts are honest (9,357, not 9,471); (2) <b>quarantine</b> the permanently-failed <code>NMHC(GT)</code> sensor — 90.2% of its data is -200, so it's not a column with gaps, it's a dead instrument that would inject noise into every visual it touches; (3) sentinel-to-null across ALL 12 columns in one Shift-click selection — the refreshable equivalent of Excel's Replace All; (4) extract <code>Hour</code> because every question in the brief ("rush-hour smog profile") is indexed by hour-of-day.</p>
+      <p><b>Real-time example:</b> The NMHC decision is the professional judgment call worth studying: keeping it means every chart risk showing garbage averages over 9.8% real data; dropping it loses 1 column entirely. Engineers quarantine instruments exactly like this — the log shows the analyzer failed permanently in May 2004, so the column isn't "sparse data", it's a broken device. Also note lowercase <code>null</code>: Power Query's M language is case-sensitive, and <code>NULL</code> (uppercase) inserts the literal TEXT "NULL" into your numeric column, breaking every average (Mistake 2).</p>
+      <p><b>What happens if you skip it:</b> Blank dates appear in slicers, the dead sensor pollutes averages, uppercase NULL corrupts 12 numeric columns into text, and the Hour column never exists so the diurnal chart can't be built.</p>
+      <p><b>Smart-work tip:</b> Judge a column by its VALID share, not its existence: &lt;50% valid → quarantine and document; ≥95% valid → keep and report uptime. Column-level data-quality triage is a repeatable professional routine — the column dictionary's "-200 Count" column is exactly that audit, pre-computed for you.</p>
+    </div>
 <pre>Total Monitored Hours = COUNTROWS ( 'AirQuality' )
 // Check: 9,357
 
@@ -249,6 +272,13 @@ CALCULATE ( COUNTROWS ( 'AirQuality' ), 'AirQuality'[NO2(GT)] &gt; 200 )
 High CO Alert Hours =
 CALCULATE ( COUNTROWS ( 'AirQuality' ), 'AirQuality'[CO(GT)] &gt; 4.0 )
 // Check: 812 hours</pre>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> Notice what these measures do NOT do: none of them sum a pollution reading — concentrations are averaged, because "total CO of the year" is physically meaningless. <code>CO Sensor Uptime %</code> divides COUNT (which counts only non-null values) by COUNTROWS (all monitored hours) — that contrast between the two counting functions IS the uptime calculation. The breach measures wrap threshold conditions in <code>CALCULATE</code> so they respond to every slicer (weekends, months, date ranges) while always enforcing the legal limit.</p>
+      <p><b>Real-time example:</b> Trace one number through the pipeline: Excel said CO = 2.15 mg/m³; Power BI's <code>AVERAGE</code> — which automatically skips nulls — lands on exactly 2.15 again. That agreement certifies that the Power Query null-replacement replicated the Excel cleanup perfectly (including the lowercase-null subtlety). Meanwhile <code>EU NO2 Breach Hours</code> gives the environmental team a legal-grade number: 388 hours above the EU directive limit, filterable by month or weekday — a static Excel COUNTIF could never slice.</p>
+      <p><b>What happens if you skip it:</b> If uptime isn't reported, decision-makers can't weigh how much they trust the averages; if breach conditions live in visual filters instead of measures, the count changes when someone rescales an axis — compliance numbers must come from measures, never from formatting.</p>
+      <p><b>Smart-work tip:</b> Use <code>COUNT</code> vs <code>COUNTROWS</code> deliberately: the gap between them is always your null share. And encode regulatory thresholds (200 µg/m³, 4.0 mg/m³) directly in measures or as constant measures — one definition, every visual consistent.</p>
+    </div>
 
     <h3>Stage 5 — Power BI Charts Journey: Build the 5-Visual Environmental Suite</h3>
 
@@ -271,6 +301,13 @@ CALCULATE ( COUNTROWS ( 'AirQuality' ), 'AirQuality'[CO(GT)] &gt; 4.0 )
         <div class="well"><strong>Y-axis</strong><code>[Avg CO (mg/m3)]</code> (or add a Field Parameter / 2nd chart for <code>[Avg NO2 (ug/m3)]</code>)</div>
       </div>
       <p><b>Add Your First Analytics Constant Line:</b> With the Line Chart selected, click the magnifying-glass icon at the top of the Visualizations pane (<b>Add further analyses to your visual / Analytics pane</b>) → expand <b>Y-axis constant line</b> → click <b>+ Add line</b> → Value = <code>3.0</code> → Color = Red, Style = Dashed, Data label = On (Text: <code>Rush-Hour Smog Alert (3.0 mg/m³)</code>). Notice how only the <code>18:00–20:00</code> evening hours pierce above 3.0 on average!</p>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> The diurnal (24-hour) curve exists because pollution is <b>behavioral</b> — it follows human traffic, not random weather. Plotting average CO per hour-of-day turns 9,357 messy rows into one readable daily rhythm. The Analytics <b>constant line</b> adds the decision boundary: a threshold ON the chart converts "the peak is 3.73" into "the evening peak CROSSES our 3.0 alert level" — a statement someone can act on. Lines from the Analytics pane are also visual-native: they recompute correctly when slicers filter the data.</p>
+        <p><b>Real-time example:</b> Read the curve like the smart-city team: trough at 05:00 (0.71 mg/m³ — empty pre-dawn streets), morning rush spike at 09:00 (2.97), evening peak at 19:00 (3.73 — when commuting and evening traffic stack up). The dashed red line at 3.0 shows that <i>only the 18:00–20:00 window</i> breaches it on an average day — which directly targets the client's intervention: congestion pricing or traffic-light retiming aimed at the evening window, not blanket restrictions. Without the threshold line, the peak reads as trivia; with it, the peak reads as a trigger.</p>
+        <p><b>What happens if you skip it:</b> The audience sees a wave with no reference — is 3.73 high? Dangerous? Normal? Without a benchmark, every viewer invents their own threshold, and the meeting drifts.</p>
+        <p><b>Smart-work tip:</b> Analytics-pane lines (constant, average, min/max, trend) are professional-grade because they're bound to the data, not drawn by hand — prefer them over the old trick of adding a fake "threshold table" to the legend. One chart, one clear question; here: "when does average pollution cross the alert line?"</p>
+      </div>
     </div>
 
     <div class="chart-card">
@@ -281,12 +318,26 @@ CALCULATE ( COUNTROWS ( 'AirQuality' ), 'AirQuality'[CO(GT)] &gt; 4.0 )
         <div class="well"><strong>Y-axis</strong><code>AVERAGE(AirQuality[PT08.S1(CO)])</code> (Low-cost Tin-Oxide Sensor)</div>
       </div>
       <p><b>Turn On Linear Trend Line:</b> Open the <b>Analytics pane (magnifying glass)</b> → toggle <b>Trend line = On</b>! The tight upward slope proves to the engineering team that the cheap IoT sensor tracks real Carbon Monoxide reliably — and maintains <b>96.1% uptime</b> vs. <b>82.0%</b> for the reference analyzer!</p>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> This is a <b>calibration study</b>, the classic use of a scatter chart: X = the expensive reference analyzer (ground truth), Y = the cheap IoT sensor, each point = one hour. If the cloud hugs a rising trend line, the low-cost sensor is a valid proxy; if the cloud is diffuse, it isn't. The Analytics trend line gives the visual its statistical claim without leaving Power BI.</p>
+        <p><b>Real-time example:</b> This visual answers a real purchase decision: "Can we deploy 100 more PT08.S1 sensors at €50 each instead of reference analyzers at €5,000 each?" The tight upward slope says yes — the tin-oxide sensor tracks true CO. The uptime comparison sharpens it: the IoT unit was online <b>96.1%</b> of hours vs the reference analyzer's <b>82.0%</b> — the "cheap" sensor is actually the MORE reliable instrument. An engineer can now justify the IoT rollout with evidence, not vendor brochures. Note the practical trick too: 9,357 hourly points render slowly, so using the Index column or daily averages keeps the scatter responsive.</p>
+        <p><b>What happens if you skip it:</b> The team debates sensor accuracy anecdotally ("seems okay I guess") and the IoT expansion decision stalls or gets made on marketing claims.</p>
+        <p><b>Smart-work tip:</b> Whenever one column is "truth" and another is a "candidate measurement", scatter + trend line is the pattern (sensor vs lab, forecast vs actual, model vs observed). If you need more rigor later, compute a correlation coefficient in DAX — but the visual alone carries most of the argument.</p>
+      </div>
     </div>
 
     <div class="chart-card">
       <h4><span class="tag y">Visual 4 &amp; 5</span> Winter Inversion Combo Chart + Top Breach Hours Table</h4>
       <p>1. <b>Line and clustered column chart:</b> X-axis = <code>Date</code> (Year + Month hierarchy), Column Y-axis = <code>[EU NO2 Breach Hours]</code>, Line Y-axis = <code>[Avg Temp (C)]</code>. Notice how breaches skyrocket in cold winter months (Nov–Feb) when cold air traps vehicle exhaust near street level!<br>
       2. <b>Table:</b> List <code>Date</code>, <code>Hour</code>, <code>CO(GT)</code>, <code>NO2(GT)</code>, <code>C6H6(GT)</code>, and <code>T</code> sorted by <code>NO2(GT)</code> descending (peaking at <code>339.7 µg/m³</code>!).</p>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> The winter combo tests a <b>hypothesis</b>: if temperature inversions drive smog, breach hours and temperature should move in opposite phase — high columns when the line dips. The breach-hours table then serves the enforcement workflow: regulators don't act on monthly averages; they cite specific episodes (exact date, hour, reading) when fining or issuing alerts.</p>
+        <p><b>Real-time example:</b> Read the combo and the physics appears: Nov–Feb columns tower while the temperature line sinks — cold air layers trap exhaust at street level (the "inversion" effect), so the same traffic produces double the pollution. That's a causal argument a city planner can budget against: winter-focused traffic measures, not year-round ones. The table then documents the smoking gun: the worst hour peaked at <b>339.7 µg/m³</b> of NO2 — 70% over the EU limit — with its date and hour on record for the official file. Statistics motivate; episodes prosecute.</p>
+        <p><b>What happens if you skip it:</b> "Breaches happen more in winter" stays a hunch nobody can show to a council committee, and enforcement has no evidentiary table — just charts.</p>
+        <p><b>Smart-work tip:</b> When testing a suspected driver (temperature → pollution), plot the suspected cause and effect on SEPARATE axes of one combo chart — inverse phase jumps out. And always pair aggregate visuals with one sorted detail table; that's where "show me the worst case" questions get answered without leaving the page.</p>
+      </div>
     </div>
 
     <ul class="task-list">

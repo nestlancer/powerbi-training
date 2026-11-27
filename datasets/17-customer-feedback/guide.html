@@ -64,6 +64,10 @@
   .well strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-bottom:2px;}
   .note{background:#fffaf0;border-left:4px solid #e0a800;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
   .warn-box{background:var(--danger-soft);border-left:4px solid var(--danger);border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
+  .why-box{background:#eaf3ff;border-left:4px solid #2563eb;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.4px;}
+  .why-box .why-title{font-weight:800;color:#1d4ed8;margin:0 0 6px;font-size:12.5px;text-transform:uppercase;letter-spacing:.5px;}
+  .why-box p{margin:5px 0;}
+  .why-box b{color:#123a7a;}
   .wireframe{display:grid;grid-template-columns:repeat(12,1fr);gap:8px;background:#eef2f7;padding:14px;border-radius:12px;margin:12px 0;font-size:12px;}
   .wf-box{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:10px;text-align:center;font-weight:600;color:var(--accent);}
   .wf-box small{display:block;font-weight:400;color:var(--muted);margin-top:3px;font-size:11px;}
@@ -174,6 +178,13 @@
       • <code>L2 (TicketCount)</code>: <code>=COUNTIF('Support Tickets'!$B$2:$B$126645, A2)</code><br>
       Insert a PivotTable with <code>Completed tutorial</code> in Rows and <code>Rating</code> in Columns (% of Row Total): confirm <b><code>no</code> = 16.71% Low</b> vs. <b><code>yes</code> = 7.71% Low</b>!
     </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> This step is a manual rehearsal for the AI visual that comes later — and doing it by hand first teaches you WHAT the AI actually computes. <code>XLOOKUP</code> pulls the human-readable role name onto the customer row; <code>COUNTIF</code> builds each customer's ticket count, turning the separate tickets sheet into a per-customer attribute the pivot can use. The cross-tab with <b>% of Row Total</b> then answers the CCO's question in miniature: does onboarding drive Low CSAT?</p>
+      <p><b>Real-time example:</b> Read the cross-tab carefully — the numbers <b>16.71% vs 7.71%</b> are a 2.17× risk multiplier: customers who skipped the tutorial are more than TWICE as likely to rate the product Low. That's the difference between "some customers are unhappy" (unactionable) and "unhappy customers are concentrated among people who never learned the product" (an onboarding mandate). Note the discipline of "% of Row Total" too: raw counts would mislead because far more customers completed the tutorial — you must compare RATES within groups, not counts across groups.</p>
+      <p><b>What happens if you skip it:</b> When the Key Influencers visual later shows the same finding, you'd take it on faith; having hand-computed it, you can verify the AI and defend it in front of Product.</p>
+      <p><b>Smart-work tip:</b> Before using any AI root-cause visual, hand-test the two or three hypotheses you'd bet on (onboarding, ticket volume, role) with simple cross-tabs. You learn the data, validate the AI, and build the narrative instinct AI can't replace.</p>
+    </div>
 
     <ul class="task-list">
       <li><label><input type="checkbox"> Verified in Excel that skipping the tutorial more than doubles Low-CSAT rate (16.71% vs 7.71%).</label></li>
@@ -200,12 +211,26 @@
         <li>In <code>Support Tickets</code>, ensure <code>Date Created</code> and <code>Date Completed</code> are <b>Date</b>, and <code>Escalated</code> and <code>Duration</code> are <b>Whole Number</b>. Click <b>Home → Close &amp; Apply</b>.</li>
       </ol>
     </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> This is a <b>snowflake-to-star</b> transformation, the modeling move the set's title advertises. The workbook is "snowflaked": Customers connects to 4 tiny lookup tables (3–10 rows each) which connect to nothing else. A 7-table web of relationships for 19 rows of lookup data is clutter with no benefit — so Power Query's Merge Queries (Left Outer join) PULLS the labels onto Customers, and disabling load on the staging queries removes them from the model entirely. Seven tables → three; the Data pane and the relationship diagram become instantly readable.</p>
+      <p><b>Real-time example:</b> Why "Enable load OFF" matters as much as the merge: if the 4 tiny tables load anyway, every future developer sees 7 tables and wonders which relationships are safe to build; with them as italic staging queries, the model self-documents: "these feed Customers, nothing else". Real BI teams do exactly this with dimension hierarchies — flattening a snowflake (Product → Subcategory → Category) into a star when no other table needs the intermediate levels. Simplicity is a feature.</p>
+      <p><b>What happens if you skip it:</b> A cluttered 7-node diagram invites wrong relationships, filters must hop two hops to reach facts (slower, easier to break), and every slicer list duplicates fields from both the merge source and the standalone table.</p>
+      <p><b>Smart-work tip:</b> Rule of thumb: if a lookup table connects to exactly ONE fact/dimension and adds only descriptive labels, MERGE it in and stage it out. Keep separate tables only for entities with their own measures or multiple relationships.</p>
+    </div>
 
     <h3>Stage 3 — Clean 3-Table Star Architecture + Customer Ticket Bucket Column</h3>
     <pre>Device (*) ◄──── (1) Customers (1) ────► (*) Support Tickets</pre>
     <div class="pbi-box">
       In <b>Data view</b> on <code>Customers</code>, add ONE calculated column so Key Influencers can test whether heavy support-ticket volume drives Low CSAT:<br>
       <code>Ticket Tier = VAR n = CALCULATE(COUNTROWS('Support Tickets')) RETURN IF(n=0, "0 Tickets", IF(n&lt;=3, "1–3 Tickets", "4+ Tickets"))</code>
+    </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> Two modeling lessons in one small stage. (1) The diagram IS the deliverable: <code>Device (*) → Customers (1) ← (*) Support Tickets</code> — both fact-like tables hang as children of the ONE customer dimension, because a customer can have many devices AND many tickets, but devices and tickets have NO direct relationship to each other. (2) The <code>Ticket Tier</code> calculated column exists specifically for the Key Influencers visual: AI visuals explain a column using OTHER COLUMNS on the same table — so support friction must be materialized as a customer-level column before the AI can test it.</p>
+      <p><b>Real-time example:</b> The chasm trap it prevents: a beginner connects <code>Device</code> directly to <code>Support Tickets</code> (both contain Customer ID — "surely they're related?"). Now one multi-device customer with 2 devices and 5 tickets makes the join produce 10 rows — every ticket count doubles for multi-device users, and SLA metrics silently inflate. Routing both through Customers keeps counts exact (Mistake 1). The Ticket Tier column then lets the AI ask "do customers with 4+ tickets rate us Low more often?" — turning an event history into a per-customer attribute the model can reason about.</p>
+      <p><b>What happens if you skip it:</b> Many-to-many chaos (inflated counts, ambiguous filters) and a Key Influencers run that can't even consider support friction — half the CCO's question becomes unanswerable.</p>
+      <p><b>Smart-work tip:</b> When two fact tables share a natural key, NEVER join them directly — both belong as many-side children of their shared dimension. And when preparing for AI visuals, remember they work on COLUMNS of one table: pre-compute behavioral aggregates (tiers, flags) as columns if you want them tested.</p>
     </div>
 
     <h3>Stage 4 — SaaS Support &amp; CSAT DAX Measures</h3>
@@ -237,10 +262,17 @@ Avg Resolution Days = AVERAGE ( 'Support Tickets'[Duration] )
 
 SLA Breach Rate (&gt;4d) % =
 DIVIDE (
-    CALCULATE ( [Total Tickets], 'Support Tickets'[Duration] &gt; 4 ),
-    [Total Tickets]
+CALCULATE ( [Total Tickets], 'Support Tickets'[Duration] &gt; 4 ),
+        [Total Tickets]
 )
 // Check: 33.30% (42,169 tickets!)</pre>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> These measures operationalize the CCO's three headline complaints into trackable KPIs. <code>Low CSAT Rate %</code> (11.71%) is the outcome; <code>Escalation Rate %</code> (12.04%) measures support quality; and <code>SLA Breach Rate</code> (33.30% of tickets take over 4 days) measures operational capacity — the number that will sit in a Gauge against a 15% target, making the gap (more than double the tolerance) permanently visible. Each is a DIVIDE of two CALCULATE-filtered counts: the same skeleton you've built all course, now tuned per business definition.</p>
+      <p><b>Real-time example:</b> Notice what the 33.30% breach rate does to a support-ops conversation: "tickets sometimes take a while" is unquantified and unowned; "42,169 of our 126,644 tickets blew the 4-day SLA last period — 2.2× our target" is a budget line. The measure turns an adjective into a target-vs-actual pair, which is what gets resourced. And because all three measures respect slicers, the CCO can instantly ask "is the breach rate also 33% in Europe? On Premier subscriptions?" — every slicing question answered without new formulas.</p>
+      <p><b>What happens if you skip it:</b> The dashboard shows ticket counts (volume) but never rates (quality), so the meeting debates size instead of failure rate — and the 15% SLA target, which exists in the business but not in the model, stays an unenforced aspiration.</p>
+      <p><b>Smart-work tip:</b> Encode every client-stated target (SLA &lt; 15%, CSAT ceiling, escalation cap) as a constant measure the moment you hear it — targets belong in the model where gauges and conditional rules can enforce them, not in slide footnotes.</p>
+    </div>
 
     <h3>Stage 5 — Power BI Charts Journey: Build the 5-Visual SaaS Customer Success Suite</h3>
 
@@ -264,12 +296,26 @@ DIVIDE (
         <div class="well"><strong>Explain by</strong><code>Completed tutorial</code>, <code>Role in Org</code>, <code>Company Size</code>, <code>Subscription Type</code>, <code>Continent</code>, <code>Ticket Tier</code></div>
       </div>
       <p><b>Watch Power BI Run Logistic Regression Automatically:</b> Click each bubble in the left rank list AND click the <b>Top segments</b> tab at the top of the visual — Power BI automatically discovers multi-factor customer segments where Low CSAT spikes above 30%–40%!</p>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> Until now, YOU formed hypotheses and tested them one cross-tab at a time. The Key Influencers visual inverts the workflow: you name the OUTCOME (Rating = Low) and hand it every candidate explanation column, and it runs a logistic-regression-style analysis over all combinations, ranking single influences by effect size and finding multi-factor segments automatically. It's the fastest path from "11.7% are unhappy" to "here are the specific people and why."</p>
+        <p><b>Real-time example:</b> Watch what it surfaces beyond the manual cross-tab: tutorial-skip (2.17× risk) you already predicted — but the <b>Top segments</b> tab goes further, finding intersections like "consumers who skipped the tutorial AND filed 4+ tickets" where Low CSAT spikes above 30–40%: segments no single cross-tab would have shown, delivered as an actionable target list for Onboarding and Support. The CCO gets "who exactly to fix first" instead of a list of correlation words — that's the difference between a dashboard and a decision engine.</p>
+        <p><b>What happens if you skip it:</b> Product and Onboarding receive raw complaint counts (Visual 3) but no causal ranking — the meeting produces "improve everything" instead of "fix onboarding for consumer-role accounts with high ticket volume".</p>
+        <p><b>Smart-work tip:</b> Key Influencers evaluates at the grain of the table whose column you Analyze (here: one row per customer — exactly right). Never feed it a measure without understanding that grain (Mistake 2), and always sanity-check its top finding against a manual cross-tab — you've already built that habit in Step A1.</p>
+      </div>
     </div>
 
     <div class="chart-card">
       <h4><span class="tag y">Visual 3, 4 &amp; 5</span> Complaint Theme Bar + SLA Gauge + Customer Success Matrix</h4>
       <p>1. <b>Clustered bar chart:</b> Y-axis = <code>Customers[Theme]</code>, X-axis = <code>CALCULATE([Total Customers], 'Customers'[Rating]="Low")</code> → proves <b><code>speed</code> (1,301)</b> is the #1 product pain point!<br>
       2. <b>Gauge + Matrix:</b> Track <code>[SLA Breach Rate (&gt;4d) %]</code> (`33.3%`) and cross-tabulate <code>Role in Org × Completed tutorial</code>.</p>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> This trio translates the AI's statistical findings into each team's native language. The theme bar answers Product's question ("WHAT are they complaining about?" — <code>speed</code> with 1,301 Low ratings, nearly double the next theme); the SLA gauge answers Support Ops' question ("HOW far off target are we?" — 33.3% vs 15%, the needle visually past the target line); and the Role × Tutorial matrix hands Onboarding its hit list (which role groups skip tutorials and suffer most).</p>
+        <p><b>Real-time example:</b> Follow one insight to its owner: Key Influencers says low ratings concentrate among non-tutorial consumers; the theme bar says their top complaint is <b>speed</b>; the matrix confirms consumers + no-tutorial is the biggest Low-CSAT cell. Now the CCO can walk into the Product meeting with three connected facts — a segment, a complaint, and a size — instead of three disconnected charts. That hand-off structure (AI finds WHO, themes say WHAT, gauges show HOW BAD) is how analysis becomes an org-wide action plan.</p>
+        <p><b>What happens if you skip it:</b> The AI's statistical output stays abstract ("tutorial affects rating") — without the theme and SLA views, Product can't prioritize engineering work and Support can't justify headcount, so the findings die in the deck.</p>
+        <p><b>Smart-work tip:</b> Pair every "discovery" visual with one "accountability" visual per owning team — discovery without a metric to track improvement is just trivia. And remember the gauge's target (15%) came from the business: visuals that encode the company's own standards get acted on far faster than generic charts.</p>
+      </div>
     </div>
 
     <ul class="task-list">

@@ -64,6 +64,10 @@
   .well strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-bottom:2px;}
   .note{background:#fffaf0;border-left:4px solid #e0a800;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
   .warn-box{background:var(--danger-soft);border-left:4px solid var(--danger);border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
+  .why-box{background:#eaf3ff;border-left:4px solid #2563eb;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.4px;}
+  .why-box .why-title{font-weight:800;color:#1d4ed8;margin:0 0 6px;font-size:12.5px;text-transform:uppercase;letter-spacing:.5px;}
+  .why-box p{margin:5px 0;}
+  .why-box b{color:#123a7a;}
   .wireframe{display:grid;grid-template-columns:repeat(12,1fr);gap:8px;background:#eef2f7;padding:14px;border-radius:12px;margin:12px 0;font-size:12px;}
   .wf-box{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:10px;text-align:center;font-weight:600;color:var(--accent);}
   .wf-box small{display:block;font-weight:400;color:var(--muted);margin-top:3px;font-size:11px;}
@@ -178,6 +182,13 @@
 // Col O (DurationNum) — integer before first space:
 =VALUE(LEFT(J2, FIND(" ", J2)-1))</pre>
     </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> Three invisible traps are being disarmed at the door. (1) <b>Encoding</b>: without <b>File Origin = UTF-8</b>, international names like <code>João Miguel</code> or Korean titles arrive as mojibake (<code>JoÃ£o</code>) — and mojibake can't be searched, grouped, or joined reliably. (2) <b>Whitespace</b>: the 88 leading spaces in <code>date_added</code> would make <code>RIGHT(TRIM(G2),4)</code> wrong without TRIM, and would block every date parse. (3) <b>Mixed units</b>: <code>duration</code> stores "90 min" AND "4 Seasons" in one column — so <code>DurationNum</code> extracts the number and <code>type</code> decides whether it means minutes or seasons. One number, two meanings, and averaging it blindly would average minutes with seasons.</p>
+      <p><b>Real-time example:</b> Why the helper columns are worth it: <code>PrimaryCountry</code> (text before the first comma) converts "United States, Ghana, United Kingdom" — a co-production — into the one country analysts will chart; without it, the same title counts as 3 different "countries" and country bars double-count. <code>DurationNum</code> is what lets Excel compute <code>AVERAGEIF(type="Movie")</code> = 99.3 minutes — an answer the raw string column can never give.</p>
+      <p><b>What happens if you skip it:</b> Dates fail to parse (or parse as the wrong month/day order), international titles become unsearchable garbage, and the 99.3-minutes metric is impossible without the numeric split.</p>
+      <p><b>Smart-work tip:</b> When importing international data, set encoding FIRST — it's the one mistake you can't fix by re-reading the column later. And whenever one column packs number + unit ("90 min"), split into value + unit and let a type column disambiguate before averaging anything.</p>
+    </div>
 
     <h3>Step A2 — Verify Key Catalog Stats in Excel</h3>
     <div class="step">
@@ -187,6 +198,13 @@
         <li><code>=AVERAGEIF(B2:B7788,"TV Show",O2:O7788)</code> → <b>1.78 seasons</b></li>
       </ul>
       Save as <code>11-netflix-clean.xlsx</code>.
+    </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> These aren't trivia — they're the <b>benchmarks</b> the entire dashboard must reproduce, computed with the right tool for each question: COUNTIF for category counts, AVERAGEIF for type-specific averages (the only safe way to average <code>DurationNum</code> while it holds both minutes and seasons). Doing this in Excel first means you know the truth before Power BI can disagree with it.</p>
+      <p><b>Real-time example:</b> The numbers already sketch the strategy story: the library is <b>69.1% movies</b> at 99.3 minutes (Netflix's original DVD-era DNA is film licensing), but the TV side carries the surprise — <b>66.7% of shows have only 1 season</b> (1,608 of 2,410). That's the "cancellation/miniseries rate" card: two-thirds of Netflix series never get a season 2 — an acquisition-committee talking point about risk and churn that falls out of two simple formulas. Without AVERAGEIF-by-type, the movie average would be poisoned by the 1.78-season values and read something meaningless like 27.4.</p>
+      <p><b>What happens if you skip it:</b> You discover in Power BI that averages look wrong (mixing units) and spend the afternoon debugging what a 3-line Excel check would have flagged in a minute.</p>
+      <p><b>Smart-work tip:</b> Whenever a numeric column has mixed semantics (minutes vs seasons, kg vs lb), compute each semantic group's average separately BEFORE trusting any overall average. AVERAGEIF is the cheap insurance that stops nonsense from ever reaching a chart.</p>
     </div>
 
     <ul class="task-list">
@@ -216,10 +234,24 @@
         <li>Click <b>Home → Close &amp; Apply</b>.</li>
       </ol>
     </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> Two lessons hide here. First, <b>Trim before locale-parse</b>: " August 14, 2020" with its leading space can parse as text-but-not-date, or the wrong date — trim first, then parse with an explicit locale (US month-first format), because implicit parsing depends on your machine's regional settings and fails differently on every laptop. Second, the <b>bridge table</b>: one title can have up to 3 genres in a comma-joined string, and "Split into ROWS" (not columns!) inside a <b>Reference</b> query converts each title into one row per genre — turning an unanalyzable text blob into a proper 1-to-many relationship.</p>
+      <p><b>Real-time example:</b> Feel the difference split-rows makes: "International Movies, Dramas, Comedies" becomes 3 rows in <code>TitleGenres</code>, each pointing at the same <code>show_id</code>. Suddenly "rank genres" is a trivial bar chart: International Movies <b>2,437</b>, Dramas <b>2,106</b> — the real ranking the VP asked for. Split into columns instead (Mistake 1) and each genre lands in Genre.1/Genre.2/Genre.3 depending on its position, so "Dramas" fragments across three columns and no single bar chart can ever count it properly.</p>
+      <p><b>What happens if you skip it:</b> Genre analysis stays impossible (or wrong), dates break on non-US machines, and the whole Visual 4 deliverable dies.</p>
+      <p><b>Smart-work tip:</b> The Reference-query bridge table is THE standard pattern for any multi-value field — genres, tags, cast members, skills, product categories. Keep the original one-row-per-title fact intact and explode multi-values into a linked detail query: both questions ("count titles" and "rank tags") get answered correctly from the same model.</p>
+    </div>
 
     <h3>Stage 3 — Connect <code>Titles (1) → (*) TitleGenres</code> in Model View</h3>
     <div class="pbi-box">
       Open <b>Model view</b>: confirm <code>Titles[show_id]</code> (<b>1</b>) connects to <code>TitleGenres[show_id]</code> (<b>*</b>), Single cross-filter direction (or Both if you want clicking a Genre bar to filter Country/Trend charts — since <code>Titles</code> is the only fact table here, setting Cross-filter direction = <b>Both</b> on this 2-table model lets clicking <code>Dramas</code> slice every visual on the page!).
+    </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> The 1-to-many relationship is what makes the bridge useful: one <code>show_id</code> in Titles matches its 1–3 genre rows in TitleGenres, so filters can flow between "what the title is" and "what genres it carries". Cross-filter <b>direction</b> then decides whether the story can flow BACKWARDS: from a genre (the many side) up to titles (the one side) and onward to every other visual.</p>
+      <p><b>Real-time example:</b> Compare the two settings in a meeting: with Single direction (the safe default), clicking <code>Dramas</code> on the genre bar filters only what can flow down — basically nothing else, because the genre table has no country or year columns. With <b>Both</b> directions on this tiny 2-table model, clicking Dramas filters Titles → which filters the country mix, the stacked area, and the KPI cards: "how much of the Dramas catalog is Indian?" becomes a single click. On large multi-table models, Both-direction can create ambiguous filter paths — but here, with one fact table, it's simply the correct setting.</p>
+      <p><b>What happens if you skip it:</b> The genre bar chart becomes decorative — click a genre and the rest of the page ignores you, which users experience as a broken dashboard.</p>
+      <p><b>Smart-work tip:</b> Default to single-direction relationships and consciously upgrade specific ones to Both when a "many-side" category (like Genre) is meant to drive the whole page. Always test the click-through after changing direction — interactions are only real if you've seen them fire.</p>
     </div>
 
     <h3>Stage 4 — DAX Measures</h3>
@@ -243,6 +275,13 @@ One-Season TV Rate % =
 VAR OneS = CALCULATE ( [TV Show Count], 'Titles'[DurationNum] = 1 )
 RETURN DIVIDE ( OneS, [TV Show Count] )
 // Check: 66.7% (1,608 of 2,410 TV Shows!)</pre>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> <code>Total Titles = DISTINCTCOUNT(show_id)</code> is the load-bearing decision in this model. Because <code>TitleGenres</code> exploded each title into up to 3 rows, any naive <code>COUNTROWS</code> under a genre context reports the number of GENRE TAGS, not titles — 17,071 tags, not 7,787 titles (Mistake 2 exactly). DISTINCTCOUNT collapses back to unique shows no matter how the bridge slices the data. The other measures follow the earlier patterns: CALCULATE-filtered averages per type (units discipline), and a VAR-based ratio for the 1-season rate.</p>
+      <p><b>Real-time example:</b> Watch the measure save the genre chart: clicking <code>Dramas</code> (2,106 tags) with DISTINCTCOUNT returns <b>the number of unique Drama titles</b> — the correct business question — while COUNTROWS would have returned tag-rows including titles counted 2–3 times. Same discipline protects the KPI strip when a user filters by genre: the "Total Library" card must still say 7,787 with no filter and a correct smaller number with one. That is what "measure is correct in every filter context" means concretely.</p>
+      <p><b>What happens if you skip it:</b> The first click on any genre bar inflates every count on the page ~2.2×, and nobody notices because every number is still plausible-looking — until the VP compares against the published catalog size.</p>
+      <p><b>Smart-work tip:</b> The instant you build a bridge/exploded table, audit every count measure in the model and switch them to DISTINCTCOUNT of the fact key. Bridge tables change the grain of every visual they touch — the model owner must keep the "one entity" definition stable.</p>
+    </div>
 
     <h3>Stage 5 — Power BI Charts Journey: Build the 5-Visual Streaming Strategy Suite</h3>
 
@@ -265,6 +304,13 @@ RETURN DIVIDE ( OneS, [TV Show Count] )
         <div class="well"><strong>Y-axis</strong><code>[Total Titles]</code></div>
         <div class="well"><strong>Legend</strong><code>Titles[type]</code> (Netflix Red <code>#E50914</code> for Movies, Dark Slate for TV Shows!)</div>
       </div>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> The acquisition question is "how fast did the library grow, and which format drove it?" — a parts-plus-total-over-time question, which is exactly what a Stacked Area is for (the Set 03 rule re-applied). The layer split by <code>type</code> shows whether Movies or TV Shows led each surge, and the total envelope answers "how big is the catalog wave". Note the honest exclusions baked into the filters: years before 2013 are sparse and 2021 contains only January — plotting partial periods produces fake cliffs that mislead every reader.</p>
+        <p><b>Real-time example:</b> Read the wave as a strategy timeline: near-flat through 2015, then an explosive climb to the <b>2,153-title peak in 2019</b> — the height of the streaming wars when Netflix outspent every rival on originals and international licensing. The layer colors show the growth was broad-based in Movies (red) with TV Shows (slate) accelerating late. An acquisition VP reading this chart immediately asks the right follow-up: "what did we buy in 2019 that we should renew this year?" — the chart frames renewals strategy, not just history.</p>
+        <p><b>What happens if you skip it:</b> With 2021's partial January included, the chart's last point collapses to ~8% of a normal year — readers conclude "Netflix collapsed in 2021" and the meeting derails over a data-coverage artifact.</p>
+        <p><b>Smart-work tip:</b> ALWAYS check the last period of any time series for partial coverage before publishing — it's the single most common time-chart lie. Either filter the partial period out (as here) or annotate it visibly.</p>
+      </div>
     </div>
 
     <div class="chart-card">
@@ -276,12 +322,26 @@ RETURN DIVIDE ( OneS, [TV Show Count] )
         <div class="well"><strong>Legend</strong><code>Titles[type]</code></div>
       </div>
       <p><b>Instant Insight:</b> <b>India</b> is <b>92.4% Movies</b> (Bollywood film licensing), whereas <b>South Korea</b> is <b>78.4% TV Shows</b> (K-Dramas) and <b>Japan</b> is <b>68.4% TV Shows</b> (Anime series)!</p>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> Countries differ by 15× in catalog size (US 2,883 vs South Korea 194), so a normal stacked bar would make every small country invisible — the composition question ("what's the MOVIE-vs-TV strategy per country?") needs equal-length bars, which is precisely the 100% Stacked Bar's contract (same normalization lesson as Set 02's gender chart). Filtering to the Top 10 by size and excluding <code>Unknown</code> keeps the comparison honest and readable.</p>
+        <p><b>Real-time example:</b> The chart hands the licensing team a country playbook: <b>India = 92.4% movies</b> (Bollywood's film-first industry — a deal pipeline should target film packages), while <b>South Korea = 78.4% TV shows</b> (the K-Drama engine) and <b>Japan = 68.4% TV</b> (anime series). Same platform, three opposite format strategies — invisible on absolute counts, unmistakable on normalized bars. This is competitive intelligence in one glance: negotiate with each market according to what it actually produces.</p>
+        <p><b>What happens if you skip it:</b> On absolute bars, South Korea's 194 titles are a sliver next to the US block and its 78.4% TV skew — the single most actionable insight on the page — is literally invisible. The office concludes "countries look about the same" and licenses accordingly.</p>
+        <p><b>Smart-work tip:</b> Reach for the 100% variant whenever the comparison is about MIX across differently-sized groups (market shares, workforce composition, content strategy). Keep absolute counts in tooltips so a reader can still ask "but how big was Korea?" — hover answers 194.</p>
+      </div>
     </div>
 
     <div class="chart-card">
       <h4><span class="tag y">Visual 4 &amp; 5</span> Exploded Genre Bar Chart + Maturity Rating Matrix</h4>
       <p>1. <b>Clustered bar chart:</b> Y-axis = <code>TitleGenres[Genre]</code> (Top 12), X-axis = <code>[Total Titles]</code>. Verify #1 <code>International Movies = 2,437</code>, #2 <code>Dramas = 2,106</code>, #3 <code>Comedies = 1,471</code>!<br>
       2. <b>Matrix:</b> Rows = <code>Titles[rating]</code>, Columns = <code>Titles[type]</code>, Values = <code>[Total Titles]</code>.</p>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> The genre bar is the payoff of the entire bridge-table architecture: a true ranking of INDIVIDUAL genres — impossible from the comma-joined strings — now falls out of one measure and one field. The rating × type matrix then answers the maturity question the VP asked ("how heavily does the library skew adult?") with a compact cross-tab instead of four pie charts.</p>
+        <p><b>Real-time example:</b> Read the ranking for acquisition implications: <b>International Movies #1 (2,437)</b> tells the team Netflix's single biggest genre commitment is non-English film — a direct counter to the assumption that US content dominates. The matrix then lands the maturity fact: <b>TV-MA (2,863, 36.8%)</b> and TV-14 together cover the majority of the catalog — the library skews adult, which shapes both advertising fit and regional censorship risk. Cross-check the counts with the DISTINCTCOUNT measure (Mistake 2's protection) so a genre's bar means unique titles, not tag rows.</p>
+        <p><b>What happens if you skip it:</b> Genre and maturity questions — two of the client's four explicit asks — go unanswered, because the raw <code>listed_in</code> string can't be ranked and ratings hidden in a 14-value column tell no story.</p>
+        <p><b>Smart-work tip:</b> When a bar chart's values could be inflated by bridge-table grain, glance at one genre's number against expectations (Dramas ≈ 2,106 unique titles, not 2,900+ tags). A 10-second sanity check against a known title count catches grain bugs instantly.</p>
+      </div>
     </div>
 
     <ul class="task-list">

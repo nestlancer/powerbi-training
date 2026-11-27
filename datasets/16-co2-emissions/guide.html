@@ -64,6 +64,10 @@
   .well strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-bottom:2px;}
   .note{background:#fffaf0;border-left:4px solid #e0a800;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
   .warn-box{background:var(--danger-soft);border-left:4px solid var(--danger);border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
+  .why-box{background:#eaf3ff;border-left:4px solid #2563eb;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.4px;}
+  .why-box .why-title{font-weight:800;color:#1d4ed8;margin:0 0 6px;font-size:12.5px;text-transform:uppercase;letter-spacing:.5px;}
+  .why-box p{margin:5px 0;}
+  .why-box b{color:#123a7a;}
   .wireframe{display:grid;grid-template-columns:repeat(12,1fr);gap:8px;background:#eef2f7;padding:14px;border-radius:12px;margin:12px 0;font-size:12px;}
   .wf-box{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:10px;text-align:center;font-weight:600;color:var(--accent);}
   .wf-box small{display:block;font-weight:400;color:var(--muted);margin-top:3px;font-size:11px;}
@@ -172,6 +176,13 @@
     <div class="step">
       Click <b>Data → From Text/CSV</b> → select <code>datasets/16-co2-emissions/data/owid-co2-data.csv</code> → click <b>Transform Data</b>! Click <b>Home → Choose Columns</b> and check ONLY: <code>country, year, iso_code, population, gdp, co2, co2_per_capita, cumulative_co2, coal_co2, oil_co2, gas_co2, cement_co2, flaring_co2</code>. Filter <code>iso_code</code> where length = 3 (or in Excel Pivot filter <code>LEN(iso_code)=3</code>) and verify 2024 sum = <b>37,452.85 Mt</b> and 2025 sum = <b>37,747.93 Mt</b>!
     </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> This file ships 79 columns because it serves a research website, not your report — 65 of them are specific gases, consumption-based accounting, and share percentages your cockpit will never use. Pruning FIRST (79 → 13) shrinks the model's memory, speeds every refresh, and — most importantly for learning — leaves a Data pane you can actually read. The <code>LEN(iso_code) = 3</code> filter is the elegant one-line aggregate detector from Set 09: real economies carry ISO-3 codes (USA, CHN, IND); OWID's own rollups are either blank or 8-character <code>OWID_*</code> prefixes — so length = 3 cleanly separates 220 countries from World/Asia/income-tier rows.</p>
+      <p><b>Real-time example:</b> Why the ISO rule beats name-based filtering: "World" and "Asia" are names, but there are also entities like "Europe (excl. EU-27)" and "OECD (GCP)" whose names you'd have to hunt down one by one. The code length test catches ALL of them by STRUCTURE, not by list. And the verification sums matter for a subtle honesty point: the 220-country 2025 total (37,748 Mt) will NEVER match OWID's World row (38,995 Mt) — the ~1,247 Mt gap is international aviation and shipping over open oceans, which belong to no country. Knowing that gap BY NAME turns an apparent bug into an insight you can cite.</p>
+      <p><b>What happens if you skip it:</b> Mistake 2: global CO2 appears to be ~5× reality (every Chinese ton counted 6 more times across Asia, High-income, World...), and 65 unused columns bloat the pbix and bury the fields you need.</p>
+      <p><b>Smart-work tip:</b> On any research-grade CSV (OWID, World Bank, Eurostat), prune to your question's columns FIRST and filter aggregates by code structure, not by name lists. And when a total "doesn't reconcile," hunt for the legitimate unattributed category before assuming an error — here it's shipping &amp; aviation.</p>
+    </div>
 
     <ul class="task-list">
       <li><label><input type="checkbox"> Pruned 79 columns in Excel Power Query and verified 220 ISO-3 countries totaling 37,747.93 Mt in 2025.</label></li>
@@ -199,6 +210,13 @@
         <li>Click <b>Home → Close &amp; Apply</b> and relate <code>Emissions[CountryYear] (1) → (*) FuelBreakdown[CountryYear]</code>!</li>
       </ol>
     </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> This stage teaches <b>tidy data</b>: the principle that one observation should occupy one row. The fuel columns (<code>coal_co2</code>, <code>oil_co2</code>, <code>gas_co2</code>...) are "wide" — the fuel TYPE lives in the column NAME, which is invisible to visuals. Unpivoting rotates 5 columns into (FuelType, FuelMtCO2) rows, making fuel a DATA VALUE that can sit in a Legend, a Slicer, or an axis. The <code>CountryYear</code> composite key then ties the exploded child table back to the parent without any ambiguity.</p>
+      <p><b>Real-time example:</b> Feel the before/after: with 5 columns, a stacked area chart's Legend needs 5 separate fields — impossible; a "show me Gas vs Coal only" slicer needs 5 filters; adding a 6th fuel next year means editing every visual. After Unpivot: one <code>FuelType</code> field drops into Legend and it's done — the chart in Visual 2 literally cannot be built without this rotation. This wide→long reshape is the same muscle as the Set 11 genre bridge, and it's ubiquitous: monthly columns, product-category columns, survey-answer columns — all want unpivoting before analysis.</p>
+      <p><b>What happens if you skip it:</b> No fuel mix chart, no fuel slicer, and a model where every new question about fuels requires hand-built DAX multiplying 5 columns — all because the data's shape fought the question instead of serving it.</p>
+      <p><b>Smart-work tip:</b> Whenever you catch yourself wanting "a slicer over columns" or "a legend across columns", that's the signal to Unpivot. Column names are for the source system; values are for analysis. Reference-query + Unpivot keeps the original wide table intact for questions it still serves well.</p>
+    </div>
 
     <h3>Stage 3 &amp; 4 — Snapshot-Safe ESG DAX Measures</h3>
 <pre>Selected Year = MAX ( 'Emissions'[year] )
@@ -223,6 +241,13 @@ RETURN DIVIDE ( Tonnes, Pop )
 // Check 2025: ~4.59 t territorial (4.74 t incl. aviation/shipping)
 
 Fuel CO2 (Mt) = SUM ( 'FuelBreakdown'[FuelMtCO2] )</pre>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> The subtlest measure here is <code>Weighted CO2 per Capita</code>. OWID ships a ready-made <code>co2_per_capita</code> column — and the WRONG instinct is to average it across countries. Averaging gives every country equal weight, so Malta's 5t counts as much as China's — producing a nonsense "global average" skewed by 40 tiny tax-haven islands. The correct measure rebuilds the ratio from totals: <code>SUM(co2) × 1,000,000 ÷ SUM(population)</code> — countries weighted by their people, exactly how "global average" should work. The snapshot pattern (MAX year + CALCULATE) then keeps annual vs cumulative vs per-capita measures all answering "the selected year".</p>
+      <p><b>Real-time example:</b> The three lenses genuinely disagree — and that IS the story the ESG advisory sells: <b>Annual</b>: China #1 (12,417 Mt) — who's emitting now. <b>Cumulative</b>: USA #1 (439,343 Mt since 1750) — who built today's climate problem. <b>Per-capita</b>: Saudi Arabia 18.5t, USA 14.5t, India just 2.19t — who emits per person. A diplomat, a historian, and an equity advocate each need a different lens; one cockpit serving all three — without mixing them — is the entire deliverable.</p>
+      <p><b>What happens if you skip it:</b> AVERAGING per-capita columns produces a wrong "world average" (tiny countries overrepresented), cumulative and annual get confused in headlines, and the deck's numbers fail the first journalist's sanity check.</p>
+      <p><b>Smart-work tip:</b> When a source ships pre-computed ratios (per capita, per GDP, % share), treat them as display helpers for SINGLE rows, never as cross-row averages — always rebuild ratios from summed numerator ÷ summed denominator. The Set 07/09 weighted-vs-simple lesson, now a permanent law.</p>
+    </div>
 
     <h3>Stage 5 — Power BI Charts Journey: Build the 5-Visual ESG Climate Cockpit</h3>
 
@@ -246,6 +271,13 @@ Fuel CO2 (Mt) = SUM ( 'FuelBreakdown'[FuelMtCO2] )</pre>
         <div class="well"><strong>Legend</strong><code>FuelBreakdown[FuelType]</code> (Coal, Oil, Gas, Cement, Flaring)</div>
       </div>
       <p><b>Why Unpivoting Was Essential:</b> When fuels were 5 separate columns, you couldn't put <code>FuelType</code> into a Legend or Slicer! Unpivoting turns 5 rigid columns into 1 dynamic Legend field!</p>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> This chart is the 125-year energy-history answer to "which fossil fuels drive global emissions?" — and it's ONLY possible because Unpivot made fuel a legend-able category. The stacked layers show both the total envelope (climbing toward ~38,000 Mt) and the composition of each era's emissions, which is where the policy story lives: different fuels peak, plateau, or grow at different times.</p>
+        <p><b>Real-time example:</b> Read the strata like a geologist: Coal is the thick bottom layer (40.3% of 2025 emissions, 15,721 Mt — and visibly exploding after 2000 as China industrialized); Oil widens through the entire 20th century (cars, aviation); Gas grows fastest after 1990 (the "bridge fuel" era); Cement and Flaring stay thin but permanent. The cockpit insight for the ESG client: emission- reduction policy must be fuel-specific — a coal phase-out and an oil phase-out are DIFFERENT fights with different industries, timelines, and geographies, and this one chart shows why a single "reduce emissions" target is too blunt to manage.</p>
+        <p><b>What happens if you skip it:</b> Without the unpivot there's no legend, so the best you can draw is five separate line charts — the reader must stack them mentally (and won't). The fuel-attribution question — the client's fourth lens — goes unanswered.</p>
+        <p><b>Smart-work tip:</b> Filter the chart to 1900+ (as the stage suggests): pre-1900 years are near-zero and squash the modern era into unreadable thinness. Always give time-series charts a meaningful starting window — history that predates the question dilutes the answer.</p>
+      </div>
     </div>
 
     <div class="chart-card">
@@ -253,6 +285,13 @@ Fuel CO2 (Mt) = SUM ( 'FuelBreakdown'[FuelMtCO2] )</pre>
       <p>1. <b>Clustered bar chart:</b> Compare <code>[Annual CO2 (Mt)]</code> vs. <code>[Cumulative CO2 (Mt)]</code> (or use two side-by-side bars) to show how China leads today (`12.4B t`) while the US still holds #1 historical responsibility since 1750 (`439.3B t`).<br>
       2. <b>Ribbon chart:</b> X = `year` (`1950, 1970, 1990, 2005, 2015, 2025`), Y = `[Annual CO2 (Mt)]`, Legend = Top 8 `country`.<br>
       3. <b>Table / Map:</b> Contrast total vs. per-capita (`India = 2.19 t` vs `USA = 14.50 t` vs `Saudi Arabia = 18.46 t`).</p>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> These three visuals are the three political framings of climate responsibility, each with its own chart type because each answers a different question. The annual-vs-cumulative bars expose the headline disagreement: China emits the most TODAY; the US emitted the most EVER — both statements are true, and the bars show why the two camps in every climate negotiation cite different numbers. The ribbon chart (Set 09's rank-shift tool) then shows WHEN leadership changed: China's ribbon crossing the US around 2006, India's overtaking Russia. The per-capita table completes the equity lens.</p>
+        <p><b>Real-time example:</b> See how the cockpit serves an actual briefing: a policy advisor asked "is China the problem?" answers with the annual bar (yes, 12.4B t — 32% of the world today), then the cumulative bar (but the US owns 439B t of atmospheric history — 1.5× China's), then the per-capita table (the average American emits 14.5t/year vs India's 2.19t — 6.6×). Three charts, no single "villain" — because the honest answer is that annual, historical, and per-person responsibility are three different questions. That's precisely why the client asked for "all four lenses without double-counting."</p>
+        <p><b>What happens if you skip it:</b> A single-lens deck gets argued down instantly ("but who made the mess?", "but who's emitting NOW?") — and the analyst looks partisan instead of prepared. The cockpit's power is having every lens pre-built and consistent.</p>
+        <p><b>Smart-work tip:</b> When stakeholders disagree about METRICS rather than facts, build all competing lenses side-by-side in one page — it de-escalates debates by making each framing's data visible. And reuse the ribbon chart whenever "who overtook whom, and when?" is the question.</p>
+      </div>
     </div>
 
     <ul class="task-list">

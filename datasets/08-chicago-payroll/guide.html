@@ -64,6 +64,10 @@
   .well strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-bottom:2px;}
   .note{background:#fffaf0;border-left:4px solid #e0a800;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
   .warn-box{background:var(--danger-soft);border-left:4px solid var(--danger);border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
+  .why-box{background:#eaf3ff;border-left:4px solid #2563eb;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.4px;}
+  .why-box .why-title{font-weight:800;color:#1d4ed8;margin:0 0 6px;font-size:12.5px;text-transform:uppercase;letter-spacing:.5px;}
+  .why-box p{margin:5px 0;}
+  .why-box b{color:#123a7a;}
   .wireframe{display:grid;grid-template-columns:repeat(12,1fr);gap:8px;background:#eef2f7;padding:14px;border-radius:12px;margin:12px 0;font-size:12px;}
   .wf-box{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:10px;text-align:center;font-weight:600;color:var(--accent);}
   .wf-box small{display:block;font-weight:400;color:var(--muted);margin-top:3px;font-size:11px;}
@@ -185,6 +189,13 @@
     <div class="step">
       Open Excel → <b>Data → From Text/CSV</b> → select <code>datasets/08-chicago-payroll/data/chicago-salaries.csv</code> → Delimiter = Comma → <b>Load</b>. Format columns <code>G</code> (<code>Annual Salary</code>) and <code>H</code> (<code>Hourly Rate</code>) as Currency <code>$#,##0.00</code>.
     </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> Before touching anything, you must recognize this file's special shape: it stores <b>two different pay systems in one table</b>. Salaried workers fill <code>Annual Salary</code> (and leave hours/rate blank); hourly workers fill <code>Typical Hours</code> + <code>Hourly Rate</code> (and leave salary blank). Those blanks are <b>structural</b> — they mean "this worker isn't paid that way", not "data is missing". Knowing this BEFORE cleaning stops you from ever "fixing" them.</p>
+      <p><b>Real-time example:</b> This is exactly how the intern in the client brief went wrong: they saw 7,361 blank salaries, treated the file as one pay system, summed <code>Annual Salary</code>, and published that Streets &amp; Sanitation costs "$35M" — omitting 1,817 hourly sanitation workers whose real combined cost is $203M. A 6× understatement, caused entirely by misreading structural blanks as empty data. Spotting the SALARY/HOURLY split at import time is the difference between the intern's report and yours.</p>
+      <p><b>What happens if you skip it:</b> Currency formats get applied wrong, blanks get mistaken for gaps, and the two-system design — the central analytical challenge of this dataset — is discovered mid-build instead of at first sight.</p>
+      <p><b>Smart-work tip:</b> On any import, check which columns can be blank and ask <i>"does blank mean missing, or does it mean not-applicable?"</i> Not-applicable blanks are information — they encode the record's type — and should be preserved, never filled.</p>
+    </div>
 
     <h3>Step A2 — Add Helper Columns I &amp; J</h3>
     <div class="step">
@@ -195,10 +206,24 @@
         <li><b>Column J — <code>EmploymentType</code>:</b> <code>=IF(D2="F", "Full-Time", "Part-Time")</code></li>
       </ol>
     </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> <code>EstAnnualPay</code> creates the <b>one comparable currency</b> the entire report runs on: salaried workers keep their exact figure, hourly workers get annualized (<code>Typical Hours × Hourly Rate × 52</code>). Only after this unification can departments be compared on total cost at all — it converts two incompatible pay columns into one budget-grade number per employee.</p>
+      <p><b>Real-time example:</b> Watch the discovery happen: Water Management's <code>Sum of Annual Salary</code> reads a modest <b>$47.4M</b> — until you remember 1,636 of its 2,052 workers (80%) are hourly road crews earning ~$48/hr × 40 hrs × 52 weeks ≈ $100K each. Add the hourly annualization and Water Management's true budget is <b>$238.8M — the #3 department in Chicago</b>, ahead of Aviation. The "$710M hidden payroll" is 22.8% of the workforce that no salary-only report can see.</p>
+      <p><b>What happens if you skip it:</b> Every department comparison, treemap, and Top-10 chart reproduces the intern's error — union-heavy departments (Water, Sanitation, Aviation, CDOT) all understate their cost by 50–85%, and the transparency portal publishes wrong numbers to citizens.</p>
+      <p><b>Smart-work tip:</b> The ×52 annualization (hours × rate × 52 weeks) is the standard payroll convention; say it out loud in your report ("estimated on 52 scheduled weeks") because an ESTIMATE must be labeled as one. Also keep the two raw measures ([Salaried Payroll], [Est Hourly Payroll]) separate in the dashboard so citizens can see BOTH layers, not just the blended total.</p>
+    </div>
 
     <h3>Step A3 — PivotTable Check</h3>
     <div class="step">
       Insert a PivotTable: Rows = <code>Department</code>, Values = <code>Count of Name</code> (<b>32,226</b>), <code>Sum of Annual Salary</code> (<b>$2,882,248,082.04</b>), and <code>Sum of EstAnnualPay</code> (<b>$3,592,272,113.64</b>). Verify <b>CHICAGO POLICE DEPARTMENT = $1.44B</b> (#1) and save as <code>08-chicago-payroll-clean.xlsx</code>.
+    </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> The pivot pins three canonical totals — headcount (32,226), salaried bill ($2.88B), combined payroll ($3.59B) — that every Power BI visual must reproduce. Note the deliberate choice of <b>Count of Name</b> (a row count) rather than "distinct names": a 32K-person workforce certainly contains duplicate names, and counting distinct names would silently undercount real employees.</p>
+      <p><b>Real-time example:</b> Scan the department rows and the transparency story organizes itself: Police $1.44B (40% of combined payroll by itself!), Fire $606M — and then the trap departments where salaried and combined disagree wildly (Water $47M → $239M). Having verified both totals in Excel, when your Power BI donut shows 77.2%/22.8% and your stacked bar reproduces the $3.59B sum, you KNOW the model is intact — including that no hourly row was dropped or zero-filled during load.</p>
+      <p><b>What happens if you skip it:</b> If even one hourly row got mis-loaded, [Est Hourly Payroll] drifts from $710.02M and nothing looks broken — the error only surfaces when a journalist compares the portal against the city's published budget.</p>
+      <p><b>Smart-work tip:</b> For public-facing numbers, verify with BOTH the column total AND the row count — dollars without a headcount check can't catch a duplicated or dropped row. Count + sum together certify a table.</p>
     </div>
 
     <ul class="task-list">
@@ -219,6 +244,13 @@
         <li>Optional readability polish: Duplicate <code>Department</code> as <code>DeptClean</code> → <b>Transform → Replace Values</b> (remove <code>"CHICAGO "</code> and <code>"DEPARTMENT OF "</code>) → <b>Format → Capitalize Each Word</b> so bar labels read <code>Police</code>, <code>Fire</code>, <code>Water Management</code> instead of 45-character uppercase strings!</li>
         <li>Add Conditional Column <code>ScheduleType</code>: <code>Full or Part-Time = "F" → Full-Time</code>, Else → <code>Part-Time</code>. Click <b>Home → Close &amp; Apply</b>.</li>
       </ol>
+    </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> Two jobs in this stage. (1) <b>Preserve the nulls</b>: keeping blanks as <i>null</i> (not 0) is what lets <code>AVERAGE()</code> later skip hourly workers when computing average salary — fill them with 0 and every average in the report breaks. (2) <b>Readable labels</b>: "CHICAGO DEPARTMENT OF WATER MANAGEMENT" is 45 characters; on a chart axis it truncates, wraps, or forces tiny fonts. Stripping the boilerplate and title-casing gives "Water Management" — same data, more pixels for the actual information.</p>
+      <p><b>Real-time example:</b> Compare two versions of the Top-10 bar: one with 45-character ALL-CAPS labels squeezed to 7pt gray, one with clean two-word labels at normal size. The second reads faster AND leaves more canvas width for the bars — where the actual data lives. Label polish is not cosmetics; it's chart real-estate engineering. Meanwhile the <code>ScheduleType</code> column turns the cryptic "F"/"P" codes into citizen-friendly words for the transparency portal.</p>
+      <p><b>What happens if you skip it:</b> Mistake 1 (nulls → 0) drags average salary from the true <b>$115,916</b> to a fake <b>$89,439</b> — a 23% error caused by one Replace-Values click. And every visual fights its own labels for space.</p>
+      <p><b>Smart-work tip:</b> Do label beautification on a DUPLICATED column (<code>DeptClean</code>) and keep the original untouched — public portals sometimes need exact official department names for legal text, while charts need short ones. Two columns, two audiences, zero rework.</p>
     </div>
 
     <h3>Stage 3 &amp; 4 — DAX Measures (Handling Salaried + Hourly Safely)</h3>
@@ -255,6 +287,13 @@ Avg Base Salary = AVERAGE ( 'Payroll'[Annual Salary] )
 
 Avg Hourly Rate = AVERAGE ( 'Payroll'[Hourly Rate] )
 // Check: $48.06</pre>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> Three DAX lessons live here. (1) <b>COUNTROWS for headcount</b> — every row is a person; <code>DISTINCTCOUNT(Name)</code> collapses "MICHAEL SMITH" the officer and "MICHAEL SMITH" the plumber into one phantom headcount. (2) <b>SUMX for row-wise math</b>: the hourly annualization (<code>Hours × Rate × 52</code>) must be computed PER ROW, then summed — <code>SUM</code> can't multiply columns; <code>SUMX(FILTER(...), expr)</code> walks each hourly row and adds up the products. (3) <b>AVERAGE + nulls</b>: averaging <code>Annual Salary</code> over salaried rows only works because the hourly rows are null, not zero.</p>
+      <p><b>Real-time example:</b> Feel the SUMX difference: <code>SUM(Typical Hours)</code> × <code>SUM(Hourly Rate)</code> × 52 would multiply the city's total weekly hours by its total hourly rate — a number meaning nothing. SUMX computes each worker's personal annual estimate first (e.g., 40 hrs × $48.06 × 52 ≈ $99,964), THEN totals: <b>$710.02M</b>. Row-wise-then-aggregate is the fundamental iterator pattern in DAX; every inventory value, revenue-at-price, and annualization calculation you'll ever write uses it.</p>
+      <p><b>What happens if you skip it:</b> DISTINCTCOUNT miscounts the city's workforce; the hourly bill collapses to garbage; and the null→0 version of Avg Base Salary ($89,439 vs $115,916) gets quoted in a public portal — Mistakes 1 and 2 verbatim.</p>
+      <p><b>Smart-work tip:</b> The <code>FILTER(... Salary or Hourly = "HOURLY")</code> guard inside SUMX is defense-in-depth: even if a salaried row somehow carried stray hours/rate data, it can't contaminate the hourly estimate. Guard your iterators against data you don't trust yet.</p>
+    </div>
 
     <h3>Stage 5 — Power BI Charts Journey: Build the 5-Visual Municipal Budget Portal</h3>
 
@@ -278,6 +317,13 @@ Avg Hourly Rate = AVERAGE ( 'Payroll'[Hourly Rate] )
         <div class="well"><strong>Tooltips</strong><code>[Headcount]</code>, <code>[Hourly Share %]</code></div>
       </div>
       <p>Color <code>[Salaried Payroll]</code> navy blue and <code>[Est Hourly Payroll]</code> gold. Look at <b>Water Management</b>, <b>Aviation</b>, and <b>Streets &amp; Sanitation</b>: huge gold bars appear that were completely invisible when looking only at <code>Annual Salary</code>!</p>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> Stacking the two pay systems in one bar makes the "hidden payroll" physically visible: the navy segment (salaries) and the gold segment (annualized hourly pay) add up to each department's TRUE budget. The Top N = 10 by <code>[Combined Payroll]</code> filter guarantees the ranking uses the corrected numbers — not the salary-only numbers that would have ranked Water Management 8th instead of 3rd.</p>
+        <p><b>Real-time example:</b> This one visual is the intern's correction, drawn: Streets &amp; Sanitation shows a small navy stub ($34.6M) followed by a towering gold block ($168.6M from 1,817 hourly workers — 85% of the department). Water Management and Aviation show the same gold-heavy shape. A citizen or alderperson who last year saw "$35M" now sees the full $203.1M — and the tooltip explains why (Hourly Share %). Budget credibility restored by one bar chart.</p>
+        <p><b>What happens if you skip it:</b> A salary-only bar chart publicly repeats the exact error the Budget Director hired you to fix; the five gold-heavy departments remain misranked and the portal loses its honesty.</p>
+        <p><b>Smart-work tip:</b> Color-encode pay type consistently (navy = salary, gold = hourly) across ALL visuals on the page — donut, stacked bar, treemap if possible — so the audience learns one legend. And always anchor Top N filters on the CORRECTED total; filtering on the wrong measure silently ranks the wrong world.</p>
+      </div>
     </div>
 
     <div class="chart-card">
@@ -289,11 +335,25 @@ Avg Hourly Rate = AVERAGE ( 'Payroll'[Hourly Rate] )
         <div class="well"><strong>Tooltips</strong><code>[Headcount]</code>, <code>[Avg Base Salary]</code></div>
       </div>
       <p>Turn <b>Drill down</b> (single downward arrow at top-right of the visual) ON, then click the giant <b>Police</b> rectangle to see exact budget blocks for Police Officer, Sergeant, Detective, and Lieutenant!</p>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> A treemap encodes money as AREA, letting 39 departments fit in one compact block where the eye ranks them instantly — 39 slices would destroy a pie chart, but rectangles tile fine. Its second job is <b>hierarchy drilling</b>: Department → Job Titles turns a "where does the money go?" answer into a one-click drill that satisfies the transparency portal's core promise: show citizens the specific roles behind the budget.</p>
+        <p><b>Real-time example:</b> Click the giant Police rectangle and it splits into honest detail: the vast majority of the $1.44B is <b>Police Officer</b> rank-and-file pay, with Sergeant, Detective, and Lieutenant blocks trailing — instantly answering "is it bosses or beat cops costing us?" A treemap of departments alone couldn't answer that; a table of 800 job titles couldn't show proportion. The drillable treemap does both in one visual — proportion at level 1, exact roles at level 2.</p>
+        <p><b>What happens if you skip it:</b> Citizens get a ranked bar list (fine) but no sense of SHARE, and no path from "Police = $1.44B" to "that's mostly officer salaries" — the drill-down detail that makes a transparency portal feel accountable rather than evasive.</p>
+        <p><b>Smart-work tip:</b> Use treemaps when categories are numerous (10+) AND a drill hierarchy exists; use bars when you need precise comparison. Turn drill-down mode ON deliberately — without it, clicking Police just cross-filters the page instead of exploring inside it.</p>
+      </div>
     </div>
 
     <div class="chart-card">
       <h4><span class="tag g">Visual 4 &amp; 5</span> Workforce Donut + Searchable Job Roles Table</h4>
       <p>Add a 2-slice <b>Donut chart</b> (<code>Salary or Hourly</code> in Legend, <code>[Headcount]</code> in Values) and a <b>Table</b> of <code>Job Titles</code> sorted by <code>[Combined Payroll]</code> with Data Bars on headcount and payroll.</p>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> The 2-slice donut states the workforce's structural fact — 77.2% salaried vs 22.8% hourly — the composition that explains WHY salary-only reports understate union departments. The searchable job-title table with data bars is the portal's "show me MY question" endpoint: every aggregate chart eventually raises a specific question ("what do 911 operators earn?") that only a lookup table can answer.</p>
+        <p><b>Real-time example:</b> A citizen searches the table for "police officer": the row shows headcount, average salary, and combined cost, with the data bar making its size comparable against every other job title in the city at a glance. A journalist writing about overtime-adjacent pay finds the biggest title-cost blocks sorted for them. This is what "transparency" actually means operationally: not prettier summaries, but a lookup layer under every summary where specific questions get specific answers.</p>
+        <p><b>What happens if you skip it:</b> The portal answers only the questions the designer anticipated; every citizen query beyond that becomes a records-request email. And without the donut, the 22.8% hourly workforce that motivates the whole report remains an unexplained footnote.</p>
+        <p><b>Smart-work tip:</b> Data bars inside tables let a dense table be SCANNED like a chart (in-cell visualization) without adding a second visual. Sort the table by the money measure, not alphabetically — citizens scan by "biggest cost", and Ctrl+F-style search slicers handle the rest.</p>
+      </div>
     </div>
 
     <ul class="task-list">

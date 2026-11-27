@@ -64,6 +64,10 @@
   .well strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-bottom:2px;}
   .note{background:#fffaf0;border-left:4px solid #e0a800;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
   .warn-box{background:var(--danger-soft);border-left:4px solid var(--danger);border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
+  .why-box{background:#eaf3ff;border-left:4px solid #2563eb;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.4px;}
+  .why-box .why-title{font-weight:800;color:#1d4ed8;margin:0 0 6px;font-size:12.5px;text-transform:uppercase;letter-spacing:.5px;}
+  .why-box p{margin:5px 0;}
+  .why-box b{color:#123a7a;}
   .wireframe{display:grid;grid-template-columns:repeat(12,1fr);gap:8px;background:#eef2f7;padding:14px;border-radius:12px;margin:12px 0;font-size:12px;}
   .wf-box{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:10px;text-align:center;font-weight:600;color:var(--accent);}
   .wf-box small{display:block;font-weight:400;color:var(--muted);margin-top:3px;font-size:11px;}
@@ -173,6 +177,13 @@
       • <code>=SUM(Sales_data!N2:N121254)</code> → <b>$97,257,907.95</b> (<code>Total Product Cost</code>)<br>
       • Subtract → <b>$12,551,366.25 Gross Profit (11.43%)</b>! You can also load all 7 sheets into Excel's <b>Power Pivot Data Model</b> to practice building the exact same Star Schema inside Excel!
     </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> Enterprise finance has one iron rule: <b>the numbers must reconcile to the source</b>. Before building any model, you prove the pipeline's integrity by hand — summing Sales Amount and Total Product Cost in the raw sheet and computing Gross Profit yourself. This also fixes the DEFINITIONS in your head (Gross Profit = Sales − Cost; Margin = Profit ÷ Sales) that you'll re-encode as DAX measures minutes later.</p>
+      <p><b>Real-time example:</b> The CFO's brief makes a specific claim: revenue doubled from FY2018 ($23.86M) to FY2020 ($51.88M) while margin stayed at just 11.43%. Your hand arithmetic — $109,809,274.20 − $97,257,907.95 = $12,551,366.25, and 12.551 ÷ 109.809 = 11.43% — establishes the ground truth those claims rest on. Later, when your Power BI card shows exactly $109,809,274.20, the model is PROVEN; if it showed $109.7M, you'd know instantly something broke (wrong filter, wrong type). That reconciliation instinct is what separates a data analyst from a chart maker — and it's a PL-300 exam favorite.</p>
+      <p><b>What happens if you skip it:</b> A model error surfaces in the board meeting instead of in development — and once one number is challenged, EVERY number in the deck is doubted.</p>
+      <p><b>Smart-work tip:</b> Keep a tiny "source-of-truth" scratch sheet of 5–6 verified totals per project. Any BI model is accepted or rejected by how it reconciles, not how it looks — make proving it a one-minute job.</p>
+    </div>
 
     <ul class="task-list">
       <li><label><input type="checkbox"> Verified $109,809,274.20 Sales, $97,257,907.95 Cost, and $12,551,366.25 Gross Profit (11.43%) in Excel.</label></li>
@@ -191,6 +202,13 @@
         <li>Verify <code>Date[Date]</code> is Data Type = <b>Date</b>, all <code>*Key</code> columns are <b>Whole Number</b>, and <code>Sales Amount</code> / <code>Total Product Cost</code> are <b>Fixed decimal number ($)</b>. Click <b>Home → Close &amp; Apply</b>.</li>
       </ol>
     </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> A 7-table warehouse arrives dressed for programmers, not executives: sheet names like <code>Sales_data</code>, cryptic surrogate keys, and money columns that default to floating-point. Renaming to business words, typing money as <b>Fixed decimal</b>, and keeping keys as <b>Whole Number</b> is the hygiene pass that decides whether the model reads like a professional data product or a CSV dump.</p>
+      <p><b>Real-time example:</b> The Fixed-decimal choice is the one that bites hardest: 121,253 rows of Sales Amount must reconcile to the cent (your Step A1 total). Floating-point arithmetic introduces tiny drift — sums that show 109,809,274.20000001-style noise and occasionally miss reconciliation by a cent, exactly the kind of defect that erases trust in a finance review. Fixed decimal (the currency type) stores exact decimal values. Meanwhile, the renames pay off in every meeting: "Sales, Product, Reseller, Territory" need no translation for the CFO.</p>
+      <p><b>What happens if you skip it:</b> Meetings argue about what <code>Sales_data</code> contains, money totals drift at the 10th decimal place, and joins on mistyped keys silently drop rows.</p>
+      <p><b>Smart-work tip:</b> Rename in Power Query (not just Model view) so names propagate everywhere, and adopt the type discipline: Whole Number = keys, Fixed Decimal = money, Date = dates. It's the same typing law every set in this course has enforced — now at warehouse scale.</p>
+    </div>
 
     <h3>Stage 3 — Wire the 7-Table Star Schema + Mark Date Table</h3>
     <div class="pbi-box">
@@ -198,6 +216,13 @@
       2. Drag <code>Date[DateKey]</code> → <code>Sales[OrderDateKey]</code> (<b>Active</b>), then drag <code>Date[DateKey]</code> → <code>Sales[ShipDateKey]</code> (<b>Inactive</b>) and <code>Sales[DueDateKey]</code> (<b>Inactive</b>).<br>
       3. Right-click <code>Date</code> → <b>Mark as date table</b> → choose column <code>Date[Date]</code>! And select <code>Date[Month]</code> → <b>Sort by column → <code>MonthKey</code></b>!<br>
       4. Create a formal Hierarchy on <code>Product</code>: right-click <code>Category</code> → <b>Create hierarchy</b> → add <code>Subcategory</code>, <code>Model</code>, and <code>Product</code>!
+    </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> This stage builds the Kimball star: six dimensions radiating from one fact table, filters flowing one way (dimension → fact). The special problem here is TIME: every fact row carries THREE dates (ordered, shipped, due), but a schema allows only ONE active relationship per pair of tables — so <code>Date</code> must <b>role-play</b>: active via <code>OrderDateKey</code>, and two inactive relationships (<code>ShipDateKey</code>, <code>DueDateKey</code>) that measures can activate on demand. Marking the table as a date table then unlocks all time-intelligence functions, and sorting <code>Month</code> by <code>MonthKey</code> stops alphabetical month chaos.</p>
+      <p><b>Real-time example:</b> The CFO's ask "compare revenue when the order was PLACED vs when it left the warehouse" is ONLY possible because of the inactive ship-date relationship — one <code>USERELATIONSHIP</code> measure (Set 12's trick, now on dates) switches the filter path from order-date to ship-date, and Visual 3's backlog gap becomes measurable. The fiscal calendar matters just as much: AdventureWorks' year ends June 30, so FY2020 runs July 2019–June 2020; without "Mark as date table" the YTD functions misbehave, and without the fiscal awareness Stage 4's <code>"6/30"</code> argument the year would wrongly start in January.</p>
+      <p><b>What happens if you skip it:</b> Ordered-vs-shipped analysis becomes impossible (one date path only), <code>TOTALYTD</code>/<code>SAMEPERIODLASTYEAR</code> error out or return wrong periods, and month slicers read April, August, December... alphabetically.</p>
+      <p><b>Smart-work tip:</b> Hide ALL <code>*Key</code> columns in Report view — a star schema with hidden keys is the industry-standard shape and a guaranteed PL-300 question. And the first calendar question to ask ANY finance client: "when does your fiscal year end?" More BI deployments fail on calendar mismatch than on complex DAX.</p>
     </div>
 
     <h3>Stage 4 — Enterprise Financial &amp; Fiscal Time Intelligence DAX</h3>
@@ -231,6 +256,13 @@ Sales YoY % =
 DIVIDE ( [Total Sales] - [Sales PY], [Sales PY] )
 
 Target Sales (110% of PY) = [Sales PY] * 1.10</pre>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> This block translates finance's vocabulary into DAX: profit and margin as the two base ratios, then THREE time dimensions of the same sales number. <code>TOTALYTD(..., "6/30")</code> hard-codes the fiscal year-end — the third argument tells DAX the year ends June 30, not December 31. <code>USERELATIONSHIP</code> builds <code>Shipped Sales</code> by temporarily activating the inactive ship-date path. And the Target measure derives from prior-year sales (×1.10), so the goal moves automatically as data grows.</p>
+      <p><b>Real-time example:</b> Watch the fiscal argument save a board meeting: in December 2019, the CEO asks "how are we tracking for FY2020?" <code>TOTALYTD</code> with "6/30" correctly accumulates July–December 2019 as FY2020's first half; WITHOUT it, DAX restarts the YTD clock in January — reporting a half-year against a full-year target and triggering a false panic (or worse, false comfort). Meanwhile <code>Shipped Sales</code> answers the COO's weekly question "how much revenue actually LEFT the warehouse?" — the ordered-vs-shipped gap is backlog, and it's only visible because one measure switched relationships.</p>
+      <p><b>What happens if you skip it:</b> Fiscal periods silently split into calendar halves (Mistake 2), YoY compares wrong months, and the ordered-vs-shipped lens disappears entirely — the model reports only "when clicked" revenue.</p>
+      <p><b>Smart-work tip:</b> Build targets as DERIVED measures (<code>[Sales PY] × 1.10</code>), never typed constants — they recompute as data lands. And reuse the pattern trio (YTD, PY, YoY %) on every time-series KPI; it's the same skeleton in every finance BI job you'll ever hold.</p>
+    </div>
 
     <h3>Stage 5 — Power BI Charts Journey: Build the 5-Visual Executive Star-Schema Suite</h3>
 
@@ -254,12 +286,26 @@ Target Sales (110% of PY) = [Sales PY] * 1.10</pre>
         <div class="well"><strong>Target</strong><code>[Target Sales (110% of PY)]</code></div>
       </div>
       <p>Select <code>FY2020</code> in your Fiscal Year slicer: the KPI card renders a crisp background area sparkline across the 12 fiscal months plus green/red % variance against Target!</p>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> Every executive review opens with the same ritual question: "are we on pace?" The native KPI visual is purpose-built to answer it in one glance — a Value, a Target, and a month-by-month Trend rendered as a background sparkline, with color doing the talking (green = beating 110%-of-prior-year pace, red = behind). It replaces three visuals (a card, a trend line, a target table) with a single executive-readable object.</p>
+        <p><b>Real-time example:</b> Select FY2020: Total Sales trends month by month (in correct fiscal order — this is where the MonthKey sort from Stage 3 pays off silently) against the derived target. The Board sees at a glance whether the year is pacing toward $51.88M against prior-year $34.07M — a +52% run that turns the KPI permanently green — and any red month (a soft quarter, a shipment backlog) jumps out immediately for discussion. That's the difference between presenting data and presenting a verdict.</p>
+        <p><b>What happens if you skip it:</b> Executives get raw sales numbers with no pace reference, so every meeting re-derives "is that good?" by hand — and the 110% growth ambition that exists in the business never becomes a tracked, color-coded standard.</p>
+        <p><b>Smart-work tip:</b> A KPI visual is only as good as its trend axis and target: feed it a properly sorted month field and a MEASURE-based target (never a typed constant), and it stays correct as new months load. Reserve it for THE headline metric — a page of five KPIs is a page of none.</p>
+      </div>
     </div>
 
     <div class="chart-card">
       <h4><span class="tag y">Visual 2, 3 &amp; 4</span> Channel Margin Paradox Combo + Ordered-vs-Shipped Line + Hierarchy Matrix</h4>
       <p>1. <b>Line and clustered column chart:</b> X-axis = <code>Sales Order[Channel]</code>, Columns = <code>[Total Sales]</code> and <code>[Gross Profit]</code>, Line = <code>[Gross Margin %]</code> — exposes the <b>0.58% Reseller margin</b> vs. <b>41.15% Internet margin</b>!<br>
       2. <b>Matrix:</b> Rows = <code>Product Hierarchy</code> (`Category → Subcategory → Model`), Values = `[Total Sales]`, `[Gross Profit]`, `[Gross Margin %]` (`Bikes = $94.62M / 11.11%`, `Accessories = $1.27M / 49.88%`!).</p>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> These two visuals are the CFO's paradox made undeniable. The combo chart deliberately puts the absolute (revenue columns) and the ratio (margin line) on one canvas: Reseller's towering $80.45M column sits beneath a nearly-flat 0.58% margin line, while Internet's modest $29.36M rides a 41.15% line. Volume and QUALITY of revenue become one picture. The hierarchy matrix then drills Category → Subcategory → Model to locate WHERE the margin actually lives — the "which slice?" tool that turns a paradox into an action plan.</p>
+        <p><b>Real-time example:</b> Read the strategy straight off the visuals: Resellers drive 73.3% of revenue but 3.75% of profit; the Internet channel — 27% of revenue — generates <b>96% of company profit</b> ($12.08M of $12.55M). The matrix completes it: Bikes are 86.2% of revenue ($94.62M) at just 11.11% margin, while Accessories earn 49.88% on $1.27M. The Board memo writes itself: the reseller channel buys market share at cost; growth capital and marketing belong to the Internet store and the accessories attach business.</p>
+        <p><b>What happens if you skip it:</b> Revenue charts and margin charts viewed separately each look healthy — the paradox (73% of revenue producing almost no profit) hides in the arithmetic between two pages, and the Board keeps celebrating the very channel that dilutes earnings.</p>
+        <p><b>Smart-work tip:</b> Whenever a RATIO is the insight, always pair it with its ABSOLUTE in a combo chart — a ratio alone exaggerates tiny segments (a 90% margin on $1 is worthless), an absolute alone hides quality. And let the matrix hierarchy answer "where exactly?" instead of building twenty single-level charts.</p>
+      </div>
     </div>
 
     <ul class="task-list">

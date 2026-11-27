@@ -64,6 +64,10 @@
   .well strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-bottom:2px;}
   .note{background:#fffaf0;border-left:4px solid #e0a800;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
   .warn-box{background:var(--danger-soft);border-left:4px solid var(--danger);border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
+  .why-box{background:#eaf3ff;border-left:4px solid #2563eb;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.4px;}
+  .why-box .why-title{font-weight:800;color:#1d4ed8;margin:0 0 6px;font-size:12.5px;text-transform:uppercase;letter-spacing:.5px;}
+  .why-box p{margin:5px 0;}
+  .why-box b{color:#123a7a;}
   .wireframe{display:grid;grid-template-columns:repeat(12,1fr);gap:8px;background:#eef2f7;padding:14px;border-radius:12px;margin:12px 0;font-size:12px;}
   .wf-box{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:10px;text-align:center;font-weight:600;color:var(--accent);}
   .wf-box small{display:block;font-weight:400;color:var(--muted);margin-top:3px;font-size:11px;}
@@ -193,6 +197,13 @@
         <li>Instead, open Excel → <b>Data → From Text/CSV</b> → select <code>datasets/06-bank-marketing/data/bank-full.csv</code> → in the preview dropdown change <b>Delimiter</b> to <b>Semicolon</b> → verify 17 crisp columns (<code>age</code> through <code>y</code>) → click <b>Load</b>.</li>
       </ol>
     </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> "CSV" means comma-separated, but plenty of real-world exports (especially European ones, where the comma is the decimal separator) use <b>semicolons</b> instead. Excel's double-click importer assumes commas, finds none, and dumps each entire row — 17 fields mashed together — into Column A. The From Text/CSV preview exists precisely so you can catch the delimiter BEFORE the data lands.</p>
+      <p><b>Real-time example:</b> A teammate double-clicks the file, sees one giant column of <code>age;job;marital;education;...</code>, and spends an hour with Text-to-Columns trying to un-mangle 45,211 rows — then discovers row-level inconsistencies where quoted fields contained semicolons. The import-route analyst set one dropdown to <b>Semicolon</b> and got 17 clean columns in 10 seconds. Same file, same data, 60× time difference — purely from knowing the trap exists.</p>
+      <p><b>What happens if you skip it:</b> Everything lands in <code>Column1</code> (Mistake 1), no helpers or pivots work, and because the mash LOOKS like text data, the error survives longer than a crash would.</p>
+      <p><b>Smart-work tip:</b> In the import preview, always glance at the column count against the data dictionary (here: 17). One second of checking confirms the parse; the row count (45,211) confirms completeness. Two numbers certify the whole import.</p>
+    </div>
 
     <h3>Step A2 — Add Helper Columns R &amp; S</h3>
     <div class="step">
@@ -203,10 +214,24 @@
         <code>=IF(M2=1,"1. 1 call",IF(M2=2,"2. 2 calls",IF(M2=3,"3. 3 calls",IF(M2&lt;=5,"4. 4-5 calls","5. 6+ calls"))))</code></li>
       </ol>
     </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> A 0/1 flag column is one of the most powerful habits in analytics, because of a magic property: <b>SUM of the flag = count of "yes"</b>, and <b>AVERAGE of the flag = the rate itself</b>. One column, two aggregations, no COUNTIF gymnastics. The <code>CallBucket</code> column exists because raw <code>campaign</code> runs from 1 to 63 dials — charting 63 bars hides the pattern, but 5 buckets reveal the fatigue curve the client suspects.</p>
+      <p><b>Real-time example:</b> In the next pivot, <code>Average of Subscribed</code> formatted as 0.0% instantly prints each job's conversion rate — student 28.7%, blue-collar 7.3% — with zero formula re-writing. And the buckets turn the marketing question "are we annoying people?" into a chartable staircase: at some number of repeat dials, each extra call starts costing money. Without buckets, a "conversion by campaign" chart would have 63 mostly-empty bars where the interesting 6+ region is a long noisy tail.</p>
+      <p><b>What happens if you skip it:</b> You count subscriptions with fragile COUNTIF formulas everywhere, and the fatigue analysis — one of the client's four explicit asks — can't be drawn at all.</p>
+      <p><b>Smart-work tip:</b> Whenever a column is yes/no or condition-based, ask "would a 0/1 flag make this easier to aggregate?" — it usually does. And bucket any long-tailed numeric column (dials, tenure, order sizes) into 4–6 named ranges before charting it.</p>
+    </div>
 
     <h3>Step A3 — PivotTable Verification</h3>
     <div class="step">
       Insert a PivotTable: Rows = <code>job</code>, Values = <code>Count of y</code> (Calls), <code>Sum of Subscribed</code> (Yes count), and <code>Average of Subscribed</code> (formatted as <code>0.0%</code>). Sort by <code>Average of Subscribed</code> descending: verify <b>student = 28.7%</b>, <b>retired = 22.8%</b>, <b>blue-collar = 7.3%</b>, and Grand Total = <b>45,211 calls / 5,289 yes / 11.7%</b>! Save as <code>06-bank-marketing-clean.xlsx</code>.
+    </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> Putting <b>effort</b> (calls dialed) and <b>yield</b> (conversion rate) side-by-side in one pivot sets up the campaign's central diagnosis: are agent hours going where deposits actually come from? Sorting by rate turns a table of numbers into a ranked target list for next quarter.</p>
+      <p><b>Real-time example:</b> Read the sorted pivot as the Head of Retail Deposits would: the bank dialed <b>9,732</b> blue-collar numbers — more than any other group — and converted just <b>7.3%</b>; meanwhile students (938 calls, <b>28.7%</b>) and retirees (2,264 calls, <b>22.8%</b>) were barely touched. Rough math says re-routing even 2,000 dials from blue-collar to student/retired segments at those rates wins roughly +430 extra subscriptions without one additional euro of payroll. That's the "smart work" version of campaign management: reallocate, don't just dial more.</p>
+      <p><b>What happens if you skip it:</b> The dashboard gets built, but nobody can state WHERE to shift effort — the client asked for priorities, not pictures. The pivot is where the recommendation gets its evidence.</p>
+      <p><b>Smart-work tip:</b> Verify with three anchors: the two extremes (student 28.7%, blue-collar 7.3%) and the grand total (11.7%). If all three match in Power BI later, every intermediate segment is almost certainly right too — endpoints + total are a cheap, strong correctness proof.</p>
     </div>
 
     <ul class="task-list">
@@ -229,6 +254,13 @@
         <li>Add a Month Sort column (<code>MonthNum</code>: <code>jan=1 … dec=12</code>) if you also chart seasonal calls. Click <b>Home → Close &amp; Apply</b>.</li>
       </ol>
     </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> Power Query replicates (and makes refreshable) everything Excel did: the semicolon parse is recorded in the Source step (fixable in one click if wrong), the <code>CallBucket</code> Conditional Column replaces the nested IF, and <code>MonthNum</code> pre-empts alphabetical month sorting. Type checks matter too — <code>campaign</code> as a Whole Number enables the ≤5 bucket logic; as text it would sort "10" before "2".</p>
+      <p><b>Real-time example:</b> Note that <code>duration</code> (call seconds) is kept as a number, not formatted away — it becomes the raw material for the funnel stages (≥60s engaged, ≥180s deep pitch). And <code>balance</code> including negative values (overdrawn accounts) is fine as-is: averaging negatives is correct here, unlike the <code>pdays = -1</code> sentinel where -1 is a CODE, not a measurement. Distinguishing "real negative number" from "negative-as-missing-code" is exactly the kind of judgment a professional makes in this step.</p>
+      <p><b>What happens if you skip it:</b> The one-click delimiter fix (Mistake 1) isn't recorded, so next month's export scrambles again; buckets and month sorts vanish on refresh; and chart axes order themselves alphabetically.</p>
+      <p><b>Smart-work tip:</b> Before averaging ANY numeric column, scan its minimum value: <code>MIN(pdays) = -1</code> is the smoke that says "sentinel code ahead — read the dictionary first." Ninety percent of corrupted averages in the wild come from codes hiding inside numeric columns.</p>
+    </div>
 
     <h3>Stage 3 — Model View: Create the 4-Row Funnel Stage Table</h3>
     <p>How do professional Power BI developers build a multi-metric <b>Funnel Chart</b> when stages come from row conditions on one table? With a tiny 4-row disconnected helper table!</p>
@@ -246,6 +278,13 @@ DATATABLE (
     }
 )</pre>
       Select <code>FunnelStages[StageName]</code> → <b>Column tools → Sort by column → StageOrder</b>. Leave <code>FunnelStages</code> <b>unrelated</b> in Model view (your DAX measure connects it dynamically!).
+    </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> The funnel's 4 stages are not 4 columns in the data — they're 4 different <i>conditions</i> on one table (all rows, duration ≥ 60s, duration ≥ 180s, y = "yes"). A Funnel visual needs one category field and one value field, so professionals build a tiny <b>disconnected helper table</b> listing the stages, and let a <code>SWITCH</code> measure decide WHAT to calculate for whichever stage is on each row. "Disconnected" is deliberate: a relationship would filter the measure by itself and break it — <code>SELECTEDVALUE</code> is the bridge instead.</p>
+      <p><b>Real-time example:</b> Without this pattern, beginners try to force the funnel from four separate measures and get four separate visuals — or they build a calculated table of precomputed stage counts that goes STALE the moment someone clicks a slicer. With the helper-table + SWITCH pattern, click <code>housing = no</code> on your slicer and the funnel instantly re-stages itself for that segment: same 4 labels, new numbers. The visual shape stays fixed; the logic stays live.</p>
+      <p><b>What happens if you skip it:</b> No funnel visual (or a static one that ignores every slicer) — and this dashboard's centerpiece dies.</p>
+      <p><b>Smart-work tip:</b> The "disconnected parameter-style table + SWITCH/SELECTEDVALUE" pattern is a reusable Power BI design tool — it powers funnels, dynamic axis switching, scenario selectors, and what-if controls. Learn it once here; you'll use it for years. Always <code>Sort by column = StageOrder</code> or the funnel draws itself in alphabetical order!</p>
     </div>
 
     <h3>Stage 4 — DAX Measures (Beginner → Advanced)</h3>
@@ -277,6 +316,13 @@ SWITCH (
     4, [Subscribed Clients]
 )
 // Respects every slicer (Job, Housing, Prior Outcome)! Unfiltered check: 45,211 -> 40,552 -> 22,674 -> 5,289</pre>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> The measures follow two professional rules. First, <b>constants become measures</b> (<code>Target Rate % = 0.15</code>) instead of typed numbers — when management changes the target to 16%, you edit one measure and the Gauge, the matrix's green rule, and any tooltip all update together. Second, the funnel's <code>SWITCH</code> branches wrap each stage in <code>CALCULATE</code> so the stage definitions apply INSIDE whatever filter context the slicers create — which is what makes the funnel live.</p>
+      <p><b>Real-time example:</b> Consider <code>Conversion Rate % = DIVIDE([Subscribed Clients], [Total Calls])</code>: on the gauge with no filters it reads 11.70%; click <code>poutcome = success</code> and the SAME measure computes 1,511 ÷ 1,511-context correctly into <b>64.7%</b>. One formula, every segment's true rate. That's impossible with any pasted or row-level number — and it's why the whole report is built on 7 measures rather than 45,211 computed cells.</p>
+      <p><b>What happens if you skip it:</b> Hardcoded 11.7% ignores slicers and quietly lies the first time someone filters; the funnel measure without CALCULATE returns the unfiltered totals in every stage, producing a fake "flat" funnel.</p>
+      <p><b>Smart-work tip:</b> Test the funnel measure at BOTH ends after building (hover stage 1 = 45,211 unfiltered; stage 4 = 5,289) and once WITH a slicer active. Three checks prove the SWITCH, the CALCULATE filters, and the slicer wiring all agree.</p>
+    </div>
 
     <h3>Stage 5 — Power BI Charts Journey: Build the 6-Visual CRM Campaign Dashboard</h3>
 
@@ -300,6 +346,13 @@ SWITCH (
         <div class="well"><strong>Maximum value</strong>Create <code>Gauge Max = 0.30</code> (or set Max = 0.30 in Format)</div>
       </div>
       <p>Click the semicircle <b>Gauge</b> icon! Now test an executive scenario: click <code>success</code> on your <code>poutcome</code> slicer — watch the Gauge needle shoot past the 15% target line to <b>64.7%</b>!</p>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> A gauge is the right visual when ONE headline KPI must be judged against ONE target — the bank's exact situation (11.7% actual vs 15.0% goal). The needle's position makes "how far off are we?" perceptual instead of arithmetic, and because the value is a live measure, the gauge re-judges every filtered view of the business automatically.</p>
+        <p><b>Real-time example:</b> Watch it answer the campaign's strategic question live: unfiltered, the needle sits BELOW the 15% target line — the campaign missed. Click <code>poutcome = success</code> and the needle rockets to <b>64.7%</b>: warm leads alone blow past the target 4× over. That single visual moment justifies the entire warm re-targeting strategy ("call people who already said yes last year") without a word of narrative. Set the Max to 0.30 deliberately — a 0–100% gauge would cram both 11.7% and 64.7% into the bottom sixth and the needle drama would be invisible.</p>
+        <p><b>What happens if you skip it:</b> The client asked "did we hit target?" — without a target-referencing visual, every answer is a mental comparison against a remembered number, and the miss (or the warm-lead opportunity) doesn't land emotionally.</p>
+        <p><b>Smart-work tip:</b> Fix a gauge's max to a business-plausible ceiling (here 30%), not the default; scales are storytelling. And remember the gauge reflects ALL slicers — a gauge per segment via a slicer is often more persuasive than ten gauges on one page.</p>
+      </div>
     </div>
 
     <div class="chart-card">
@@ -309,6 +362,13 @@ SWITCH (
         <div class="well"><strong>Values</strong><code>[Funnel Volume]</code></div>
       </div>
       <p>Click <b>Funnel</b> (inverted pyramid bars icon). In <b>Format visual → Conversion rate</b>, keep conversion labels ON (`100%` at top, `11.7%` at bottom). Hover any stage to see both step-to-step retention (`55.9%` of 1-min calls reach 3 mins; `23.3%` of 3-min calls subscribe!).</p>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> A sales process is a sequence of shrinking stages, and the funnel is the one visual designed to show <i>where the people leak out</i>. Each bar's size is less interesting than each bar's <b>conversion % from the previous stage</b> — that's where improvement effort should aim, so we turn the conversion labels on deliberately.</p>
+        <p><b>Real-time example:</b> Read the leaks like the call-center manager would: 45,211 dialed → 40,552 engaged (90% pick-up: fine) → 22,674 reach 3 minutes (the big leak — more than a third of engaged calls die inside the first minute, a script problem!) → only <b>23.3%</b> of deep-pitched calls subscribe (a closing problem, and the 11.7% end-to-end number is just these stage rates multiplied). The funnel converts one vague miss ("we hit 11.7%") into two named, fixable leaks. That is diagnostic, not decorative.</p>
+        <p><b>What happens if you skip it:</b> With only the KPI cards, the meeting argues about the FINAL number; with the funnel, the meeting discusses the <i>largest leak</i> — which is the only lever that actually moves the end rate.</p>
+        <p><b>Smart-work tip:</b> Funnels only make sense when stages are genuinely sequential — pick stage thresholds that mirror your real process. And test with a slicer (try <code>education = tertiary</code>): if stage sizes shift but stage SHAPE stays similar, your script problem is universal; if shape changes, some segments leak differently — target the worst shaper.</p>
+      </div>
     </div>
 
     <div class="chart-card">
@@ -319,12 +379,26 @@ SWITCH (
         <div class="well"><strong>Line y-axis</strong><code>[Conversion Rate %]</code></div>
       </div>
       <p>Sort descending by <code>[Conversion Rate %]</code>: on the far left, tiny columns for <code>student</code> and <code>retired</code> tower above a 22–29% conversion line; on the far right, a giant <code>blue-collar</code> column sits under a 7.3% conversion line — instant proof of where to reallocate phone agents!</p>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> Effort and yield are two different scales (thousands of calls vs 7–29% rates), so they need the combo chart's dual axes — and they MUST be seen together, because the campaign's failure is precisely the <i>mismatch</i> between them. This visual is the evidence for the reallocation decision the client asked for.</p>
+        <p><b>Real-time example:</b> The picture argues better than the pivot did: reading left to right (sorted by rate), small student/retired columns stand under a high line, then the trend inverts — the tallest column on the chart (blue-collar, 9,732 dials) sits under the LOWEST point of the line (7.3%). Where the line dips and the columns rise is where payroll evaporates. The Head of Deposits can screenshot this one image as the entire justification for next quarter's target-list change.</p>
+        <p><b>What happens if you skip it:</b> A conversion-rate-only chart says "call students" but not "and STOP over-dialing blue-collar"; a calls-only chart says nothing about quality. Neither alone supports the reallocation math — the mismatch is only visible when both scales share one X-axis.</p>
+        <p><b>Smart-work tip:</b> This "volume columns + rate line" combo is the standard shape for quality-vs-quantity questions everywhere: campaigns, support tickets per agent, recruiters per hire. Sort by the RATE (the thing you optimize), and the tall-column-low-line cells identify themselves.</p>
+      </div>
     </div>
 
     <div class="chart-card">
       <h4><span class="tag y">Visual 4 &amp; 5</span> Call Fatigue Column Chart + Lead-Scoring Matrix</h4>
       <p>1. <b>Clustered column chart:</b> X-axis = <code>Calls[CallBucket]</code>, Y-axis = <code>[Conversion Rate %]</code>, Tooltips = <code>[Total Calls]</code>. Shows steady decay from <code>14.6% → 11.2% → 11.2% → 8.6% → 5.8%</code>.<br>
       2. <b>Matrix:</b> Rows = <code>Calls[education]</code>, Columns = <code>Calls[housing]</code>, Values = <code>[Conversion Rate %]</code> &amp; <code>[Subscribed Clients]</code>, with Rule-based Conditional Formatting turning cells <code>&gt;= 0.15</code> bright green!</p>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> The fatigue chart answers "how many dials is too many?" with a decay curve — the client asked at exactly which repeat call payroll starts being wasted. The lead-scoring matrix operationalizes everything else: it's the <i>next quarter's calling list</i>, pre-scored, with cells that beat the 15% target lit green by a rule that updates itself when data refreshes.</p>
+        <p><b>Real-time example:</b> The fatigue staircase is damning: call #1 converts at <b>14.6%</b>, by calls 4–5 it's <b>8.6%</b>, and at 6+ dials it's <b>5.8%</b> — agents spending six-plus attempts per prospect are working at 40% of first-call effectiveness, and there are thousands of such rows. Paired with the matrix's green cells (tertiary-educated, no-mortgage clients clearing 15%+), the manager has a complete playbook: cap repeat dials at 3, and feed the recovered hours into green-cell segments — paying for itself in conversion points alone.</p>
+        <p><b>What happens if you skip it:</b> The campaign keeps "throwing more dials" at stubborn leads (the classic response to a missed target), which this data proves makes things WORSE — the exact opposite of what the client hoped to hear but exactly what they needed to see.</p>
+        <p><b>Smart-work tip:</b> Rule-based conditional formatting (≥ 0.15 → green) beats hand-highlighting because the rule re-evaluates on every refresh and every slicer click — the matrix self-updates into a living target list. Keep volume (<code>[Subscribed Clients]</code>) beside the rate so tiny-but-green cells don't get chased at the expense of big wins.</p>
+      </div>
     </div>
 
     <ul class="task-list">

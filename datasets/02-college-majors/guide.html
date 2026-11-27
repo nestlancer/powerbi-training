@@ -64,6 +64,10 @@
   .well strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-bottom:2px;}
   .note{background:#fffaf0;border-left:4px solid #e0a800;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
   .warn-box{background:var(--danger-soft);border-left:4px solid var(--danger);border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
+  .why-box{background:#eaf3ff;border-left:4px solid #2563eb;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.4px;}
+  .why-box .why-title{font-weight:800;color:#1d4ed8;margin:0 0 6px;font-size:12.5px;text-transform:uppercase;letter-spacing:.5px;}
+  .why-box p{margin:5px 0;}
+  .why-box b{color:#123a7a;}
   .wireframe{display:grid;grid-template-columns:repeat(12,1fr);gap:8px;background:#eef2f7;padding:14px;border-radius:12px;margin:12px 0;font-size:12px;}
   .wf-box{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:10px;text-align:center;font-weight:600;color:var(--accent);}
   .wf-box small{display:block;font-weight:400;color:var(--muted);margin-top:3px;font-size:11px;}
@@ -194,6 +198,13 @@
         <li>In the preview window, confirm <b>Delimiter = Comma</b> and check that 21 columns appear cleanly → click <b>Load</b>. (Excel automatically formats it as a green Excel Table named <code>recent_grads</code> and freezes headers when scrolling!)</li>
       </ol>
     </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> Double-clicking a CSV opens it in Excel's "quick and dirty" mode: Excel guesses every column's type and often mangles data silently. Importing through <b>Data → From Text/CSV</b> shows you a preview first, lets you confirm the delimiter, and creates a proper Excel Table with a reusable connection — the data arrives the way the file actually stored it.</p>
+      <p><b>Real-time example:</b> Classic CSV disasters from double-clicking: a ZIP-style code <code>0113</code> becomes the number <code>113</code>, a long ID turns into scientific notation <code>1.13E+12</code>, and free-text like <code>NA</code> or <code>MEN_ONLY</code> can get re-typed into dates or formulas. On a dataset like <code>recent-grads.csv</code> — 173 rows × 21 columns of headcounts, rates, and salaries — one silent type mistake corrupts every downstream average before you even start.</p>
+      <p><b>What happens if you skip it:</b> You inherit hidden type errors you won't notice until a PivotTable looks strange, and because double-clicking creates no refreshable connection, next year's updated CSV means starting the whole import by hand again.</p>
+      <p><b>Smart-work tip:</b> In the preview window, actually <i>read</i> the first rows of every column — 60 seconds of inspection beats 60 minutes of debugging. The green Table + frozen headers that Excel gives you afterward are free gifts: use them.</p>
+    </div>
 
     <h3>Step A2 — Inspect Row 23 (Food Science) &amp; Format Numbers</h3>
     <div class="step">
@@ -203,6 +214,13 @@
         <li>Format columns <code>P:R</code> (<code>Median</code>, <code>P25th</code>, <code>P75th</code>) as <b>Currency ($#,##0, 0 decimals)</b>.</li>
         <li>Format headcount columns <code>D:F</code>, <code>J:N</code>, and <code>S:U</code> as <b>Number with comma separator (#,##0)</b>.</li>
       </ol>
+    </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> This step teaches the most important data-cleaning distinction in analytics: <b>missing ≠ zero</b>. Row 23 (Food Science) has 4 blank cells because the census simply did not publish its gender split — the information is <i>unknown</i>, not <i>zero women</i>. Deleting the row would throw away its perfectly valid salary (<code>$53,000</code>) and employment (<code>3,149 employed</code>) data; replacing blanks with 0 would invent a fact that was never measured.</p>
+      <p><b>Real-time example:</b> Suppose you "fixed" <code>ShareWomen</code> blank by typing <code>0</code>. Food Science instantly looks like a 100%-male major in every chart — a fabricated statistic presented to a Dean. Conversely, if you deleted the row, your majors count drops to 172 and every "of 173 majors" statement in your report becomes wrong. Both mistakes are invisible until someone who knows the data checks you.</p>
+      <p><b>What happens if you skip it:</b> Unformatted decimals like <code>0.0789</code> read as noise, so humans verify nothing; and there is no record anywhere that row 23's blanks were a deliberate decision rather than an oversight.</p>
+      <p><b>Smart-work tip:</b> When you find blanks, run through the 3-question checklist: <i>Is it truly unknown? Does the rest of the row stay valid? Should anyone downstream see a fake 0?</i> Keeping the row with nulls — like Power BI does automatically — is the professional answer here.</p>
     </div>
 
     <h3>Step A3 — Add 3 Helper Columns (Columns V, W, X)</h3>
@@ -219,6 +237,13 @@
         This measures earning upside within each major (e.g., <code>$125,000 - $95,000 = $30,000</code> for Petroleum Engineering).</li>
       </ol>
     </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> Each helper column answers a different real question. <code>MajorClean</code> fixes presentation (ALL CAPS reads like shouting and wraps badly on chart axes). <code>PayBand</code> turns 173 different salaries into 5 comparable buckets for a histogram. <code>PaySpread</code> measures <i>upside</i> — how much a 75th-percentile graduate out-earns a 25th-percentile one — which a raw median alone can never show.</p>
+      <p><b>Real-time example:</b> A student asks the advising office: "Is Petroleum Engineering really that much better, or just at the top?" Median says <code>$110,000</code>; <code>PaySpread</code> adds the nuance: even within Petroleum, the spread is <code>$30,000</code> — so the honest answer is "high floor AND high ceiling". The numbered prefixes in <code>PayBand</code> ("1. Under $30K", "2. $30K–$39K"...) are a sneaky-smart trick: text sorts alphabetically, so building the number INTO the label means every future PivotTable and chart sorts the salary ladder correctly with zero extra effort.</p>
+      <p><b>What happens if you skip it:</b> Slicers display <code>PETROLEUM ENGINEERING</code> in full caps, the histogram's bars land in alphabetical order (<code>$70K+</code> first!), and no one can answer the "how much upside?" question without manual math per major.</p>
+      <p><b>Smart-work tip:</b> Encode sort order into labels when you can't add a separate sort column — it's a legitimate pro shortcut for Excel-only workflows. One formula per question, filled down once by the Table, reused forever.</p>
+    </div>
 
     <h3>Step A4 — Validate with an Excel PivotTable</h3>
     <div class="step">
@@ -231,6 +256,13 @@
         <li>Sort by <code>Average of Median</code> Largest to Smallest: confirm <b>Engineering = $57,383</b> at the top, <b>Psychology &amp; Social Work = $30,100</b> at the bottom, and Grand Total Average = <b>$40,151</b>!</li>
         <li>Save the workbook as <code>02-college-majors-clean.xlsx</code>.</li>
       </ol>
+    </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> The pivot verifies three things at once: <b>completeness</b> (Count of Major = 173 proves no row was lost or duplicated in import), <b>correct summarization</b> (Median must be AVERAGED — summing 173 salaries produces a nonsense "$6.95M total median"), and <b>your target numbers</b> (Engineering #1 at $57,383, grand average $40,151) that the Power BI dashboard must reproduce exactly.</p>
+      <p><b>Real-time example:</b> When your Power BI card later shows <code>$40,151</code>, you already know it's right — the pivot said so. When the Dean asks "which field should we market hardest?", you can say "Engineering: highest median pay <b>$57,383</b> across 29 majors" with full confidence, because two independent tools agree. That is the habit that separates analysts from spreadsheet-fillers.</p>
+      <p><b>What happens if you skip it:</b> Power BI defaults numeric columns to <b>SUM</b>; if nobody verified the pivot first, the very first draft dashboard may report "Total Median = $6,946,000" and the error travels into every percent-of-total calculation built on top of it.</p>
+      <p><b>Smart-work tip:</b> On ANY new import, validate in this order: <i>row count → column count → one spot-checked total</i>. Count first (fastest to debug), values second. Save the clean copy under the project-named convention so it's findable months later.</p>
     </div>
 
     <ul class="task-list">
@@ -269,14 +301,26 @@
         <li>Click <b>Home → Close &amp; Apply</b>.</li>
       </ol>
     </div>
-
-    <h3>Stage 3 — Model View Cleanup (Stop Accidental Summing!)</h3>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> Power Query is where cleaning becomes <i>repeatable</i>. "Capitalize Each Word" replaces your <code>PROPER()</code> formula; data-type clicks replace formatting; the Conditional Column rebuilds <code>PayBand</code> — and every action is saved as an Applied Step that replays on next year's updated CSV with one Refresh click.</p>
+      <p><b>Real-time example:</b> Watch how Power Query treats Food Science's blanks: it shows them as <i>null</i> and keeps them null — it does NOT quietly turn them into <code>0</code> like a careless hand-cleanup would. That means your later <code>Women Share %</code> measure stays honest (Food Science simply drops out of gender math) without you writing a single defensive formula. This is the engine protecting you from the exact trap in Step A2.</p>
+      <p><b>What happens if you skip it:</b> Manually fixing the CSV in Excel means every new academic year starts with re-doing the same cleanup, and one forgotten step (say, capitalization) leaves this year's slicers full of <code>COMPUTER SCIENCE</code> while last year's notes say <code>Computer Science</code>.</p>
+      <p><b>Smart-work tip:</b> Rename the query to <code>Majors</code> — DAX then reads like a sentence: <code>COUNTROWS('Majors')</code>. Always do type fixes in Power Query rather than in report-view later, because types fixed upstream fix EVERYWHERE (charts, slicers, filters, exports).</p>
+    </div>
     <div class="pbi-box">
       <ol style="margin:0;padding-left:20px;">
         <li>This dataset is a single 173-row cross-sectional benchmark table — <b>no Date Table is needed because there are no dates</b>.</li>
         <li>In the <b>Data</b> pane, click <code>Rank</code> → on the <b>Column tools</b> ribbon change <b>Summarization → Don't summarize</b>. Repeat for <code>Major_code</code>. (This prevents Power BI from ever summing Major Codes!)</li>
         <li>Hide raw rate columns <code>ShareWomen</code> and <code>Unemployment_rate</code> (right-click → <b>Hide</b>) so report users use your accurate weighted DAX measures instead!</li>
       </ol>
+    </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> Two silent traps get disarmed here. (1) Power BI defaults every numeric column to SUM — drag <code>Rank</code> onto a visual and it happily reports "Sum of Rank = 14,000", which is meaningless. Setting <b>Don't summarize</b> turns rank/IDs into labels instead of quantities. (2) The row-level <code>Unemployment_rate</code> column is <i>unweighted</i> — averaging it gives 6.82%, but the true graduate-weighted unemployment is <b>7.19%</b>. Hiding the raw column forces every report user through your correct measure.</p>
+      <p><b>Real-time example:</b> Why the difference matters: Education is a huge category (559,129 grads) with low 4.95% unemployment, while several tiny majors have 15%+ rates. An unweighted average lets 30 small majors outvote 559K graduates; the weighted measure counts people, not majors. Presenting 6.82% to the Dean undercounts real unemployment by nearly half a point — someone with a calculator will catch it in the meeting.</p>
+      <p><b>What happens if you skip it:</b> Someone drags the hidden-but-visible raw rate into a card, gets the unweighted number, and now your own dashboard shows two different "unemployment rates" — the exact confusion model view cleanup exists to prevent.</p>
+      <p><b>Smart-work tip:</b> Treat rate columns like plutonium: compute them fresh from additive numerators/denominators (<code>Unemployed ÷ (Employed + Unemployed)</code>) with <code>DIVIDE</code>, then hide the raw ingredient. Also note: this dataset has no dates, so no Date Table — professionals don't build scaffolding they don't need.</p>
     </div>
 
     <h3>Stage 4 — DAX Measures (Beginner → Advanced)</h3>
@@ -315,6 +359,13 @@ College Job Match % = DIVIDE ( SUM ( 'Majors'[College_jobs] ), SUM ( 'Majors'[Em
 // --- ADVANCED MEASURE (Pay Upside Spread) ---
 Interquartile Pay Spread = [Avg P75 Pay] - [Avg P25 Pay]
 // Format: Currency ($#,0) -> Shows salary growth potential from 25th to 75th percentile</pre>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> Half these measures exist to <i>prevent</i> wrong math, not just produce right math. <code>Avg Median Pay</code> uses AVERAGE because medians can't be summed. <code>Weighted Unemployment %</code> rebuilds the ratio from summed headcounts (<code>Unemployed ÷ (Employed + Unemployed)</code>) so big categories count proportionally. <code>Women Share %</code> divides summed Women by summed Total — automatically weighted by graduate population.</p>
+      <p><b>Real-time example:</b> The two-unemployment-values trap again, now in DAX terms: <code>AVERAGE('Majors'[Unemployment_rate])</code> = <b>6.82%</b> (each of 173 majors gets one equal vote) versus your measure = <b>7.19%</b> (each graduate gets one equal vote). The second is the real-world number — and the sign-off checklist literally refuses 6.82%. Same logic for gender: Health is <b>83.7%</b> women across 463K graduates — a number that only emerges correctly from weighted division, not from averaging 12 per-major shares.</p>
+      <p><b>What happens if you skip it:</b> The dashboard ships with plausible-looking but wrong ratios, and because both versions display fine, the error can survive for months until an external researcher compares it to the published census figure.</p>
+      <p><b>Smart-work tip:</b> Ask of every ratio measure: <i>"what is one unit here — a major or a person?"</i> Here the client cares about people, so sums go on top and bottom. Keep each measure's check-value (7.19%, 57.5%, $40,151) in a comment so future-you can re-verify in seconds after any change.</p>
+    </div>
 
     <h3>Stage 5 — Power BI Charts Journey: Build the 6-Visual Career ROI Dashboard</h3>
 
@@ -334,6 +385,13 @@ Interquartile Pay Spread = [Avg P75 Pay] - [Avg P25 Pay]
     <div class="chart-card">
       <h4><span class="tag g">Visual 1</span> 4-Card Benchmark Strip</h4>
       <p>Create 4 formatted <b>Card</b> visuals across the top showing <code>[Total Graduates]</code> (<code>6.77M</code>), <code>[Avg Median Pay]</code> (<code>$40,151</code>), <code>[Weighted Unemployment %]</code> (<code>7.19%</code>), and <code>[Women Share %]</code> (<code>57.5%</code>).</p>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> Before comparing any single major or category, you need the <b>national baseline</b>. These 4 cards are that baseline — every later chart is judged against them ("above/below average pay", "safer/riskier than 7.19%"). Benchmarks turn isolated numbers into meaning.</p>
+        <p><b>Real-time example:</b> A parent asks "Is $38,000 for Health majors good?" Without a baseline, the advisor hesitates. With the strip: "The all-major average is $40,151, so Health sits slightly below — but Health's weighted unemployment is 5.63%, better than the 7.19% national figure." The same $38,000 suddenly gets an honest, defensible interpretation. That is what a benchmark strip buys you in every conversation.</p>
+        <p><b>What happens if you skip it:</b> Users jump straight into detailed charts with no reference point, and the office falls back on anecdotes ("I heard engineering pays well") instead of the verified numbers on the top of the page.</p>
+        <p><b>Smart-work tip:</b> Order the cards to tell the market's story left-to-right: how many people (6.77M), what they earn ($40,151), how risky it is (7.19%), who they are (57.5% women). It reads like a headline paragraph without any text.</p>
+      </div>
     </div>
 
     <div class="chart-card">
@@ -357,6 +415,13 @@ Interquartile Pay Spread = [Avg P75 Pay] - [Avg P25 Pay]
         </li>
         <li><b>How to read the 4 quadrants:</b> Bottom-Right = <b>Sweet Spot</b> (High Pay + Low Unemployment: <i>Engineering, Physical Sciences</i>); Top-Left = <b>Tough Market</b> (Low Pay + High Unemployment: <i>Arts, Humanities, Social Science</i>); Bottom-Left = <b>High Job Security, Modest Pay</b> (<i>Education</i>!).</li>
       </ol>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> A scatter is the only standard visual that compares TWO numeric measures at once (pay on X, unemployment risk on Y) while a third (bubble size = graduates) rides along. Adding the two Analytics constant lines converts it into a <b>decision map</b>: every bubble now has an address — "above/below average pay, safer/riskier than average" — instead of just a position.</p>
+        <p><b>Real-time example:</b> The Dean asks: "Where does Psychology &amp; Social Work land?" Answer by looking, not by reading a table: low-ish pay, above-average unemployment — Top-Left "Tough Market" quadrant, 481K students. Education lands Bottom-Left: modest pay but the LOWEST unemployment (<b>4.95%</b>) — a security story, not a wealth story. One picture now answers the two questions parents ask every week, for all 16 categories simultaneously.</p>
+        <p><b>What happens if you skip it:</b> A beginner puts the fields on a scatter without anything in <b>Values</b> and gets ONE giant aggregated dot (the Mistake-3 warning below). Or you hand the office a 173-row table and the "quadrant" conversation never happens at all.</p>
+        <p><b>Smart-work tip:</b> Start with <code>Major_category</code> in Values (16 clean bubbles) for the story, then swap <code>Major</code> into Values for advisor-level drilldowns — same visual, two zoom levels. Bubble size keeps small-but-excellent majors honest: they may score well, but they hire few people.</p>
+      </div>
     </div>
 
     <div class="chart-card">
@@ -372,6 +437,13 @@ Interquartile Pay Spread = [Avg P75 Pay] - [Avg P25 Pay]
         <li>Drag <code>Major_category</code> to Y-axis, and both <code>[Total Women]</code> and <code>[Total Men]</code> to X-axis.</li>
         <li>Turn <b>Data labels</b> ON and add a 50% vertical constant line in the Analytics pane so parity (50/50) is obvious at a glance!</li>
       </ol>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> Categories range from 12K graduates to 1.3M (Business). A normal stacked bar would render small categories as invisible slivers — the biggest bar always wins the eye. The <b>100%</b> version rescales every bar to the same length so you compare <i>composition</i> (what % women) rather than <i>volume</i> (how many) — a different question needs a different normalization.</p>
+        <p><b>Real-time example:</b> With parity line at 50%, the field-level story appears instantly: Health <b>83.7%</b> women, Education <b>81.5%</b>, Psychology <b>79.6%</b> on one side; Engineering <b>24.1%</b> and Computers &amp; Math <b>30.2%</b> far on the other. A Dean planning outreach programs sees exactly which fields to target without doing a single division. The 50% line is the "fairness ruler" that makes "over/under half" readable at a glance.</p>
+        <p><b>What happens if you skip it:</b> With raw counts, Business's 1.3M bar dwarfs Law &amp; Public Policy's 179K bar and the gender pattern in small fields disappears entirely — the office concludes "we can't see a pattern" when the pattern was always there, just scaled away.</p>
+        <p><b>Smart-work tip:</b> Absolute counts still matter, so park <code>[Total Graduates]</code> and <code>[Avg Median Pay]</code> in Tooltips — hovering Business shows "48.7% women of 1.3M". Best of both: fair comparison on the canvas, real numbers under the cursor.</p>
+      </div>
     </div>
 
     <div class="chart-card">
@@ -386,6 +458,13 @@ Interquartile Pay Spread = [Avg P75 Pay] - [Avg P25 Pay]
         <li>Open the <b>Filters</b> pane (right of canvas) → under <b>Filters on this visual</b>, expand <code>Major</code> → change <b>Filter type</b> from <i>Basic filtering</i> to <b>Top N</b> → Show items: <b>Top</b> <code>10</code> → drag <code>[Avg Median Pay]</code> into <b>By value</b> → click <b>Apply filter</b>!</li>
         <li>Confirm <b>Petroleum Engineering</b> leads at <code>$95K / $110K / $125K</code>, followed by Mining, Metallurgical, Naval Architecture, and Chemical Engineering!</li>
       </ol>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> The <b>Top N filter</b> is a core Power BI skill: 173 bars need a scrollbar and show nothing; 10 bars show a ranking. And plotting all three percentiles (<code>P25th</code>, <code>Median</code>, <code>P75th</code>) instead of one number teaches the deeper lesson: <i>every salary is a range, not a point</i>. The gap between the small bar and the big bar IS the story.</p>
+        <p><b>Real-time example:</b> A top student choosing between majors reads Petroleum Engineering as "median $110K" — good, but flat. The percentile bars reveal: even the 25th-percentile graduate earns <b>$95K</b> (a high floor), and the 75th reaches <b>$125K</b> (a high ceiling). Compare that with a major whose median looks decent but whose spread is tiny: less downside, but also less upside. The advising office can finally answer "what if I'm just average in this field?" — look at the left bar.</p>
+        <p><b>What happens if you skip it:</b> Without Top N, the visual drowns in 173 rows; without percentile bars, students fixate on medians and never learn that majors differ in <i>risk and upside</i>, not just level. Careers advice stays one-dimensional.</p>
+        <p><b>Smart-work tip:</b> The "By value" box in a Top N filter accepts a MEASURE — that means your Top 10 re-ranks automatically when a slicer (say, a category) is clicked. Try it: filter to Engineering and watch the Top 10 recompute. That is interactivity no static spreadsheet ranking can offer.</p>
+      </div>
     </div>
 
     <div class="chart-card">
@@ -396,6 +475,13 @@ Interquartile Pay Spread = [Avg P75 Pay] - [Avg P25 Pay]
         <div class="well"><strong>Tooltips</strong><code>[Total Graduates]</code></div>
       </div>
       <p>Click <b>Clustered column chart</b>, place <code>PayBand</code> on X-axis and <code>[Majors Count]</code> on Y-axis, and sort ascending by <code>PayBand</code>. Turn <b>Format visual → Columns → Layout → Space between categories</b> down to <code>8%</code> so the bars look like a classic statistical histogram!</p>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> An average describes the center of a distribution; a histogram shows its <b>shape</b> — and shape carries information the average destroys. This visual answers "how common is each salary level across all 173 majors?" — the question behind "what does a typical major pay?"</p>
+        <p><b>Real-time example:</b> The average is <code>$40,151</code> — but the histogram shows WHERE majors actually cluster: a tall pile in the <code>$30K–$40K</code> bands, a thin tail stretching to <code>$70K+</code>. So the honest advising message becomes: "The typical major pays $30–40K; salaries above $70K exist but are rare — usually engineering-heavy fields." A parent hearing only the $40,151 average would overestimate how many majors actually pay that much. Averages flatter; distributions tell the truth.</p>
+        <p><b>What happens if you skip it:</b> The office quotes one mean number forever, students graduate expecting the average when the typical outcome sits below it, and nobody ever sees the outlier structure (which majors are the rare exceptions).</p>
+        <p><b>Smart-work tip:</b> Narrowing the gap to 8% makes adjacent bars read as one continuous shape — a real histogram — instead of separated categories. The numbered PayBand labels (from Step A3) keep the X-axis in salary order with zero sorting effort.</p>
+      </div>
     </div>
 
     <div class="chart-card">
@@ -405,6 +491,13 @@ Interquartile Pay Spread = [Avg P75 Pay] - [Avg P25 Pay]
         <li>Right-click <code>[Avg Median Pay]</code> in the Columns well → <b>Conditional formatting → Data bars</b> → click <b>OK</b>.</li>
         <li>Add two <b>Slicers</b> at the top: <code>Major_category</code> (Dropdown) and <code>PayBand</code> (Tile). Bonus tip: click <code>...</code> on a Major slicer → turn <b>Search</b> ON so a student can type <i>"Computer"</i> or <i>"Nursing"</i> to find any major instantly!</li>
       </ol>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> Charts summarize; a searchable table <b>looks things up</b>. The advising office's real workflow is student-by-student ("what about Nursing specifically?"), so the dashboard needs one place that answers individual questions on demand. Data bars embed a mini-chart inside each pay cell so the eye can scan the whole column like a chart without leaving the table.</p>
+        <p><b>Real-time example:</b> A student sits down and says "I'm considering Computer Engineering." Type it in the search box: in 2 seconds the table shows its graduates, median pay with its data bar length, weighted unemployment, and <code>College Job Match %</code> — the exact four numbers a good advisor needs, next to the quadrant chart for context. Before this visual existed, the same question meant opening the CSV and hunting row by row with Ctrl+F.</p>
+        <p><b>What happens if you skip it:</b> The dashboard answers category-level questions only; every specific student question ("but what about THIS major?") becomes a manual lookup — the office stops using the tool within a week.</p>
+        <p><b>Smart-work tip:</b> <code>College Job Match %</code> is the quiet hero column: it separates "graduates employed" from "graduates employed in jobs that actually require a degree" — the strongest evidence a major pays off. Data bars ON for pay, conditional red for high unemployment, search ON for slicers: three tiny format choices that make the table feel like an app.</p>
+      </div>
     </div>
 
     <ul class="task-list">

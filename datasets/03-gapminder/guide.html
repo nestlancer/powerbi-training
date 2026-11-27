@@ -64,6 +64,10 @@
   .well strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-bottom:2px;}
   .note{background:#fffaf0;border-left:4px solid #e0a800;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
   .warn-box{background:var(--danger-soft);border-left:4px solid var(--danger);border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
+  .why-box{background:#eaf3ff;border-left:4px solid #2563eb;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:13.4px;}
+  .why-box .why-title{font-weight:800;color:#1d4ed8;margin:0 0 6px;font-size:12.5px;text-transform:uppercase;letter-spacing:.5px;}
+  .why-box p{margin:5px 0;}
+  .why-box b{color:#123a7a;}
   .wireframe{display:grid;grid-template-columns:repeat(12,1fr);gap:8px;background:#eef2f7;padding:14px;border-radius:12px;margin:12px 0;font-size:12px;}
   .wf-box{background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:10px;text-align:center;font-weight:600;color:var(--accent);}
   .wf-box small{display:block;font-weight:400;color:var(--muted);margin-top:3px;font-size:11px;}
@@ -189,12 +193,26 @@
         <li>Format column <code>C</code> (<code>pop</code>) as <code>#,##0</code>, column <code>E</code> (<code>lifeExp</code>) as <code>0.0</code>, and column <code>F</code> (<code>gdpPercap</code>) as Currency <code>$#,##0</code>.</li>
       </ol>
     </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> This dataset is <b>panel data</b> — the same 142 countries measured 12 times (1952, 1957, … 2007) — so verifying <code>1,704 = 142 × 12</code> proves the panel is <i>balanced</i> (no country missing years). Balanced-ness is a fact you want confirmed BEFORE modeling, because every line chart and animation assumes each country has a point in every wave.</p>
+      <p><b>Real-time example:</b> If one country were missing 3 of its 12 years, the import would show 1,701 rows — easy to overlook, but your "average across 142 countries" for those years would silently become an average of 141. Use multiplication as free QA: expected rows = countries × waves. This trick works everywhere (142 × 12 = 1,704; 50 states × 10 years = 500) and catches dropped rows faster than eyeballing.</p>
+      <p><b>What happens if you skip it:</b> A partially-loaded file produces charts with countries that fade in and out across time, and panel gaps are painful to diagnose after ten visuals already depend on the data.</p>
+      <p><b>Smart-work tip:</b> Formats (<code>#,##0</code> for pop, <code>0.0</code> for lifeExp) are not decoration — they let a human spot-check values fast. <code>8425333</code> is hard to read; <code>8,425,333</code> is instantly recognized as "an 8-million country". Verification speed IS analytical speed.</p>
+    </div>
 
     <h3>Step A2 — Add Helper Column G (<code>TotalGDP</code>)</h3>
     <div class="step">
       In cell <code>G1</code> type <code>TotalGDP</code>. In cell <code>G2</code> type:<br>
       <code>=C2*F2</code><br>
       Format column <code>G</code> as Currency <code>$#,##0</code>. Because <code>pop</code> is people and <code>gdpPercap</code> is dollars per person, multiplying them gives true additive national economic output!
+    </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> <code>gdpPercap</code> is a <i>per-person ratio</i> — and ratios can never be added. Summing India's ~$2,500 per capita with Luxembourg's ~$52,000 produces a number that describes no actual place. But multiply each country's per-capita income by its population and you get <b>Total National GDP</b> — true additive dollars that CAN be summed across countries and compared across years.</p>
+      <p><b>Real-time example:</b> Imagine a board member asks "What is Asia's total economy?" If you answer by summing <code>gdpPercap</code> across 33 Asian countries you might report a meaningless "$200K". With <code>TotalGDP</code>, the same question is one clean SUM: Asia 2007 = <b>$47.5 trillion</b> — because India's output is 1.1 billion people × $2,500, not just "$2,500". The units tell you what's legal to sum: <i>"per person", "%", "rate", "average" columns never add up; counts and totals always do.</i></p>
+      <p><b>What happens if you skip it:</b> You either can't answer total-economy questions at all, or you commit the famous Mistake 2 from the troubleshooting section — presenting summed per-capita values as "World GDP" and losing the room.</p>
+      <p><b>Smart-work tip:</b> Before using any column in a SUM, read its units: people, dollars (totals) → additive ✓. Dollars-per-person, years, percentages → build the numerator × denominator product first (like <code>pop × gdpPercap</code>), then sum. One multiplication row now saves every aggregate later.</p>
     </div>
 
     <h3>Step A3 — Prove 1952 vs. 2007 in an Excel PivotTable</h3>
@@ -208,6 +226,13 @@
         <li>Verify against Section 1: Oceania = <b>80.7 yrs</b>, Europe = <b>77.6 yrs</b>, Africa = <b>54.8 yrs</b>, Overall 2007 Average = <b>67.0 yrs</b>, Total Pop = <b>6,251,013,179</b>, Total GDP = <b>$58.11 Trillion</b>!</li>
         <li>Clear any filter on the raw data tab (leave all 1,704 rows intact!) and <b>Save As</b> <code>03-gapminder-clean.xlsx</code>.</li>
       </ol>
+    </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> Putting <code>year</code> in the PivotTable <b>Filters</b> box (not Rows or Columns) builds a manual "snapshot machine": set it to 2007 and the pivot shows a one-year cross-section. This teaches the core skill this whole dataset exists for — computing <i>single-snapshot</i> values (population, life expectancy, GDP of ONE year) from panel data — and it fixes your verification targets before Power BI is even opened.</p>
+      <p><b>Real-time example:</b> Compare your pivot's 2007 snapshot against Section 1: Oceania <b>80.7 yrs</b> (just Australia + New Zealand!), Africa <b>54.8 yrs</b>, world pop <b>6,251,013,179</b>, world GDP <b>$58.11T</b>. Later, your Power BI cards must reproduce these exactly — and when they do, you've proven both your import AND your DAX. Notice also the deliberate last move: <i>clearing the filter</i> so all 1,704 rows stay intact for the model. History must survive into Power BI for trends and animation to work.</p>
+      <p><b>What happens if you skip it:</b> Without a verified snapshot you can't tell a correct dashboard from a subtly wrong one — for example, one that "averages" 1952's life expectancy together with 2007's, producing a meaningless 58-year figure that describes no actual year on Earth.</p>
+      <p><b>Smart-work tip:</b> In pivots, <b>Filters</b> area = snapshot, <b>Rows/Columns</b> = breakdown. Choose by question shape: "what does the world look like in 2007?" → filter; "how did continents change over time?" → put year in Rows/Columns instead.</p>
     </div>
 
     <ul class="task-list">
@@ -229,6 +254,13 @@
         <li><b>Important:</b> Keep all 12 years (1,704 rows)! Click <b>Home → Close &amp; Apply</b>.</li>
       </ol>
     </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> The strongest instinct to fight here is "I only need 2007, so let me delete the old years." Don't — because <b>history is not clutter, it is fuel</b>. Trend lines, the Stacked Area chart, and the Play Axis animation all need the 12 waves as rows. The snapshot for cards is handled later in DAX with <code>MAX(year)</code>, so the model keeps ALL detail while visuals still show "latest year" by default.</p>
+      <p><b>Real-time example:</b> Hans Rosling's famous talk is moving precisely BECAUSE bubbles travel through 55 years of history. Filter the data to 2007 and hit Play: the animation has one frame — a frozen picture — and the entire "world has improved" narrative dies. Same for the Stacked Area chart: with only 2007 rows it's a flat single point, not the 2.41B → 6.25B growth story the foundation wants to tell.</p>
+      <p><b>What happens if you skip it:</b> Filtering to 142 rows in Power Query permanently deletes history from the model (the CSV still has it, but this PBIX doesn't), and three of your five planned visuals become impossible without re-importing.</p>
+      <p><b>Smart-work tip:</b> Golden modeling rule: <i>keep the grain complete in the model; filter late, in visuals or measures.</i> Data you delete in Power Query can't be brought back by any chart; data you keep but don't show costs nothing. When in doubt — keep all rows, control scope with slicers and DAX.</p>
+    </div>
 
     <h3>Stage 3 — Model Setup</h3>
     <div class="pbi-box">
@@ -236,6 +268,13 @@
         <li>Select <code>Gapminder[year]</code> → <b>Column tools → Summarization → Don't summarize</b> (otherwise Power BI tries to sum 1952 + 1957 + …!).</li>
         <li>Select <code>Gapminder[country]</code> → <b>Column tools → Data category → Country</b>.</li>
       </ol>
+    </div>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> <code>year</code> looks like a number, so Power BI's default is to SUM it — and a visual that drags year in would happily announce the "sum of years" = 1952+1957+…+2007 = <b>23,736</b>, which is gibberish. Setting <b>Don't summarize</b> re-labels year as an <i>identity</i> (a point in time), not a quantity. Likewise, tagging <code>country</code> with the <b>Country</b> data category teaches Power BI what the text MEANS geographically, enabling map visuals and better geo recognition.</p>
+      <p><b>Real-time example:</b> A colleague drags <code>year</code> into a card's field well before this setting exists: the card shows 23,736 "years" and they spend 20 minutes wondering if their data is broken. After <b>Don't summarize</b>, the same drag shows a clean list of distinct years instead. Type semantics — what a column IS — decide what math is legal on it.</p>
+      <p><b>What happens if you skip it:</b> Sum-of-years junk appears in visuals; maps can't geocode "Brazil" without the data category; and the Scatter chart's Play Axis (Visual 2) behaves badly with a summarized year field.</p>
+      <p><b>Smart-work tip:</b> Audit every column's <b>Summarization</b> and <b>Data category</b> right after import — it's a 60-second habit that prevents the "why does my card say 23,736?" class of bug forever. IDs, codes, years, names → labels; counts, amounts → measures.</p>
     </div>
 
     <h3>Stage 4 — Semi-Additive &amp; Weighted DAX Measures</h3>
@@ -284,6 +323,13 @@ RETURN
         'Gapminder'[year] = Yr
     )
 // Format: $#,0 -> Check (2007): $58.11T ($58,109,334,713,905)</pre>
+    <div class="why-box">
+      <div class="why-title">💡 Why do we do this?</div>
+      <p><b>Reason:</b> Population is <b>semi-additive</b>: it adds across countries within one year, but NOT across years (each country's 2007 population already contains its 1952 people!). The <code>VAR Yr = MAX(year)</code> + <code>CALCULATE(..., year = Yr)</code> pattern is the professional way to handle it: <code>MAX</code> reads the context (no slicer → 2007; slicer on 1952 → 1952; a line-chart year axis → each year), and the CALCULATE pins the sum to exactly that one year.</p>
+      <p><b>Real-time example:</b> Test the naive version first to feel the danger: <code>SUM(pop)</code> with no filter sums all 12 waves → <b>~50 billion people on Earth</b>, a 8× lie that any board member would catch. Now the weighted-average lesson inside <code>Pop Weighted Life Expectancy</code>: simple average = <b>67.0 yrs</b>, but pop-weighted = <b>68.9 yrs</b> — because China and India (2+ billion people) live well above Africa's average, and they deserve more "votes" than tiny territories. Which is right? Depends on the question: "typical country" → simple; "typical human" → weighted. The report shows both, and now you know why both exist.</p>
+      <p><b>What happens if you skip it:</b> Every card overcounts by the number of years in the data, line charts become staircase nonsense (each year's point is the running sum of everything before it), and no stakeholder trusts the report.</p>
+      <p><b>Smart-work tip:</b> Before writing ANY measure on panel data, ask: <i>"if this sum runs over two years at once, is the result still true?"</i> Population, inventory, account balances, headcount → semi-additive, guard with <code>MAX(date)</code>. Sales, births, profit → fully additive, sum freely. That one question is the difference between junior and senior DAX.</p>
+    </div>
 
     <h3>Stage 5 — Power BI Charts Journey: Build the 5-Visual Global Development Canvas</h3>
 
@@ -302,6 +348,13 @@ RETURN
     <div class="chart-card">
       <h4><span class="tag g">Visual 1</span> Snapshot-Safe KPI Strip (4 Cards)</h4>
       <p>Place <code>[Snapshot Population]</code>, <code>[Avg Life Expectancy]</code>, <code>[Snapshot World GDP]</code>, and <code>[Countries Count]</code> into 4 Cards. Notice that even with NO year selected on a slicer, Population reads <b>6.25B</b> (not 50B!) because your DAX locks onto <code>MAX(year) = 2007</code>!</p>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> The cards are deliberately built on the snapshot measures, not raw sums — they are the "current status" panel the foundation opens the briefing with, and they must never fall into the 50-billion trap. And because they're driven by <code>MAX(year)</code>, they double as a <i>context display</i>: whatever year the user selects, the cards retell the world as of that year.</p>
+        <p><b>Real-time example:</b> Watch them respond live: with no slicer they show 2007 — <b>6.25B</b>, <b>67.0 yrs</b>, <b>$58.11T</b>, <b>142 countries</b>. Click <code>1952</code> on the Year slicer and every card flips: <b>2.41B</b>, <b>49.1 yrs</b>, and fewer countries surveyed. A presenter can now walk the room from 1952 to 2007 in four clicks, with the headline numbers keeping pace — no rebuild, no separate report per year.</p>
+        <p><b>What happens if you skip it:</b> Cards wired to <code>SUM(pop)</code> read 50B and the meeting becomes an argument about data quality instead of global development. Worse, if someone "fixed" it by hardcoding 2007, the cards would ignore the 1952 selection and freeze mid-presentation.</p>
+        <p><b>Smart-work tip:</b> Test each card against BOTH extremes (no slicer = 2007 values; 1952 = 2.41B / 49.1 yrs) — two checks confirm the measure respects context in both directions. If a card doesn't change when the slicer changes, the measure isn't reading context, and you should re-read the <code>MAX</code> pattern.</p>
+      </div>
     </div>
 
     <div class="chart-card">
@@ -320,6 +373,13 @@ RETURN
         <li>Click <b>Format visual → X-axis → Scale → Logarithmic</b>! Immediately the curved cloud straightens into a clean upward health-and-wealth diagonal!</li>
         <li>Click the <b>Play (▶)</b> button in the bottom-left corner of the visual: watch China and India (the two giant Asian bubbles) race upward from ~40 years in 1952 to 73 and 65 years by 2007! Click any bubble during playback to trace its historical trail!</li>
       </ol>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> Two chart-design decisions carry this visual. (1) <b>Logarithmic X-axis</b>: incomes are wildly skewed — from ~$300 to $50,000+ — so a linear axis crams 100+ poor countries into the left 5% of the screen while a few rich ones own the rest. A log scale gives every order of magnitude equal room, and the health-wealth relationship straightens into a readable diagonal. (2) <b>Play Axis</b>: 55 years of history becomes a movie, because a time dimension is experienced, not read.</p>
+        <p><b>Real-time example:</b> This is the visual from Hans Rosling's legendary TED talk that debunked "the world never improved." Press Play and watch the whole cloud drift up-and-right: China's giant bubble climbs from ~44 years (1952) to ~73 (2007); India follows to ~65. Health AND wealth improved together — a fact no table conveys as emotionally as that animation. Then click a bubble to trace its trail and answer specific questions ("what happened to my country during the 1990s?").</p>
+        <p><b>What happens if you skip it:</b> On a linear axis, poor countries become an indistinguishable wall of overlapping dots on the left — the audience sees "a mess", not "progress". Without the Play axis you'd need 12 separate screenshots to tell the same story.</p>
+        <p><b>Smart-work tip:</b> Whenever a numeric axis spans more than about 2 orders of magnitude (300 → 50,000), reach for log scale — it's the standard in epidemiology, finance, and economics for exactly this reason. Bubble size (population) ensures small rich territories don't visually outweigh China.</p>
+      </div>
     </div>
 
     <div class="chart-card">
@@ -331,6 +391,13 @@ RETURN
         <div class="well"><strong>Small multiples</strong><code>Gapminder[continent]</code></div>
       </div>
       <p>In <b>Format visual → Small multiples → Layout</b>, set <code>3 rows × 2 columns</code>. Compare Asia's dramatic 24-year leap against Africa's tragic HIV/AIDS stall in the 1990s.</p>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> Five continents on ONE line chart produces "spaghetti" — five crossing lines nobody can attribute. <b>Small multiples</b> splits them into a grid of synchronized mini-charts that share the same X and Y scale, so each continent gets a clean trajectory while comparisons stay honest (same ruler everywhere). It's the chart-design principle of "separate the lines, keep the scales."</p>
+        <p><b>Real-time example:</b> In the 5-panel grid you can finally SEE the two most important facts of the century: Asia's life expectancy leaping ~24 years (1952 → 2007) — the greatest welfare jump in recorded history — and Africa's line flattening in the 1990s (the HIV/AIDS crisis) before recovering. On one spaghetti chart, both facts drown; in the multiples, each is an obvious shape in its own panel.</p>
+        <p><b>What happens if you skip it:</b> Readers squint at crossing lines, misattribute which line is which, and the board spends the meeting decoding colors instead of discussing policy. Also note the two Y measures (simple vs pop-weighted average): they intentionally differ (Asia's weighted dips below its simple average because its smaller countries are richer/healthier) — that contrast is itself a lesson in weighting.</p>
+        <p><b>Smart-work tip:</b> The power of small multiples comes from the shared Y-axis: never let Power BI auto-scale each panel independently ("Match titles"... check the Small multiples settings), or Oceania's modest 2-country wiggle will look as dramatic as Asia's billion-person leap. Same scale = honest comparison.</p>
+      </div>
     </div>
 
     <div class="chart-card">
@@ -341,11 +408,25 @@ RETURN
         <div class="well"><strong>Legend</strong><code>Gapminder[continent]</code></div>
       </div>
       <p>Click <b>Stacked area chart</b> (2nd row of Visualizations). Unlike a Line Chart, Stacked Area shows both each continent's growth AND how they add up to total global population (<code>2.41B → 6.25B</code>).</p>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> The chart choice encodes the question. A Line chart answers "how did EACH continent change?" (5 separate lines). A Stacked Area answers "how did the WORLD total change, and which continent contributed the growth?" — layers stack to the world total, so the reader sees parts AND the sum simultaneously. Choosing visuals by question, not by habit, is the skill being taught here.</p>
+        <p><b>Real-time example:</b> Read the area chart and two facts pop: the total envelope grows <b>2.41B → 6.25B</b> (the world roughly 2.6× in 55 years), and the widening Asian band is responsible for the majority of that growth — while Europe's band is nearly flat (and slightly shrinking late on). For a policy foundation, that's the headline: "global population growth IS Asian population growth" — instantly visible as band widths, no mental math required.</p>
+        <p><b>What happens if you skip it:</b> With a plain line chart, readers must add five lines by eye to know the world total — they won't. And with per-continent line charts, the "parts to whole" question simply has no answer on the page.</p>
+        <p><b>Smart-work tip:</b> Use Stacked Area when "sum of the layers" is meaningful (populations, sales by region) and note your semi-additive DAX makes each year's layer a true single-year snapshot — that's why the total at every X reads a real world population, never a 50B double-count. Line chart for comparing trajectories; stacked area for parts-of-a-growing-whole.</p>
+      </div>
     </div>
 
     <div class="chart-card">
       <h4><span class="tag g">Visual 5</span> Top 10 Countries by Life Expectancy — Clustered Bar (Top-N Filter)</h4>
       <p>Add a <b>Clustered bar chart</b> with <code>country</code> on Y-axis and <code>[Avg Life Expectancy]</code> on X-axis. Apply a visual-level <b>Top N = 10</b> filter on <code>country</code> by <code>[Avg Life Expectancy]</code>, and set X-axis Minimum to <code>75</code> (clearly labeled) so differences between Japan (<code>82.6</code>), Hong Kong (<code>82.2</code>), and Iceland (<code>81.8</code>) stand out.</p>
+      <div class="why-box">
+        <div class="why-title">💡 Why do we do this?</div>
+        <p><b>Reason:</b> Two subtle techniques live in this "simple" bar chart. (1) <b>Top N</b>: 142 countries is a wall; the Top 10 is a podium — leadership questions deserve ranked answers. (2) <b>Axis minimum = 75</b>: when all values sit in a narrow band (81–83 years), a zero-based axis makes ten identical-looking bars; truncating the axis magnifies real differences into visible bar length.</p>
+        <p><b>Real-time example:</b> With min=0, Japan (82.6) and Iceland (81.8) look like the same bar — 0.8 years "invisible". With min=75, Iceland's shorter bar is obvious. This matters for the foundation's story: the leaders are clustered within ~1 year of each other, so small policy differences separate #1 from #10. But notice the honesty rule attached: the truncation is <b>clearly labeled</b>. A hidden truncation is how charts lie; a labeled one is how charts focus.</p>
+        <p><b>What happens if you skip it:</b> Either ten indistinguishable bars (axis starts at 0) or ten bars with invisible truncation — and someone with a ruler accuses the report of exaggerating differences.</p>
+        <p><b>Smart-work tip:</b> Rule of thumb: truncate an axis only when (a) the spread is small relative to the values and (b) the truncation is visible on the visual itself. Everything else starts at zero. Also remember the Top N "By value" field reacts to slicers — select a continent and you get that continent's local Top 10 for free.</p>
+      </div>
     </div>
 
     <ul class="task-list">
